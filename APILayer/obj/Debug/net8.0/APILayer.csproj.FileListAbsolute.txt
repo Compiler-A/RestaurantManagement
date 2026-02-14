@@ -82,3 +82,4 @@ C:\Users\Lenovo\Documents\For My Programming\.vscoomunity\Projects\RestaurantPro
 C:\Users\Lenovo\Documents\For My Programming\.vscoomunity\Projects\RestaurantProjectv2\APILayer\obj\Debug\net8.0\APILayer.pdb
 C:\Users\Lenovo\Documents\For My Programming\.vscoomunity\Projects\RestaurantProjectv2\APILayer\obj\Debug\net8.0\APILayer.genruntimeconfig.cache
 C:\Users\Lenovo\Documents\For My Programming\.vscoomunity\Projects\RestaurantProjectv2\APILayer\obj\Debug\net8.0\ref\APILayer.dll
+C:\Users\Lenovo\Documents\For My Programming\.vscoomunity\Projects\RestaurantProjectv2\APILayer\obj\Debug\net8.0\APILayer.sourcelink.json
