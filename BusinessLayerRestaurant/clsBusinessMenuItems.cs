@@ -10,6 +10,8 @@ namespace BusinessLayerRestaurant
     {
         Task<List<DTOMenuItem>> GetAllMenuItemsAsync(int page);
         Task<DTOMenuItem?> GetMenuItemByIdAsync(int id);
+        Task<List<DTOMenuItem>> GetFilterAllMenuItemsAsync(int page, int StatusMenuID, int TypeItemID);
+        Task<List<DTOMenuItem>> GetAllMenuItemsAvailables();
     }
     
     public interface IWritableMenuItemsBusiness
@@ -106,16 +108,35 @@ namespace BusinessLayerRestaurant
             return businessItem;
         }
 
-        public  async Task<List<DTOMenuItem>> GetAllMenuItemsAsync(int page)
+        private async Task LoadRelatedObjectsForListAsync(List<DTOMenuItem> menuItems)
         {
-            var list = await _menuItemRepo.GetAllMenuItems(page);
-
-            foreach (var item in list)
+            foreach (var item in menuItems)
             {
                 item.TypeItems = await _typeItemRepo.GetTypeItemById(item.TypeItemID);
                 item.StatusMenus = await _statusMenuRepo.GetStatusMenusByID(item.StatusMenuID);
             }
+        }
 
+        public  async Task<List<DTOMenuItem>> GetAllMenuItemsAsync(int page)
+        {
+            var list = await _menuItemRepo.GetAllMenuItems(page);
+ 
+            await LoadRelatedObjectsForListAsync(list);
+
+            return list;
+        }
+
+        public async Task<List<DTOMenuItem>> GetFilterAllMenuItemsAsync(int page, int StatusMenuID, int TypeItemID)
+        {
+            var list = await _menuItemRepo.GetFilterAllMenuItems(page, StatusMenuID, TypeItemID);
+            await LoadRelatedObjectsForListAsync(list);
+            return list;
+        }
+
+        public async Task<List<DTOMenuItem>> GetAllMenuItemsAvailables()
+        {
+            var list = await _menuItemRepo.GetAllMenuItemsAvailables();
+            await LoadRelatedObjectsForListAsync(list);
             return list;
         }
 

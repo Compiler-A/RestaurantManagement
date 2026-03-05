@@ -15,6 +15,14 @@ namespace DataLayerRestaurant
         public string UserName { get; set; } = string.Empty;
         public string Password { get; set; } = string.Empty;
     }
+
+    public class ChangedPassword
+    {
+        public int ID { get; set; }
+        public string CurrentPassword { get; set; } = string.Empty;
+        public string NewPassword { get; set; } = string.Empty;
+    }
+
     public class DTOEmployees 
     {
         public int ID { get; set; }
@@ -47,6 +55,7 @@ namespace DataLayerRestaurant
         Task<int> Add(DTOEmployees employee);
         Task<bool> Update(DTOEmployees employee);
         Task<bool> Delete(int ID);
+        Task<bool> ChangedPassword(ChangedPassword Changed);
     }
 
     public interface IReadableEmployeeData
@@ -86,6 +95,26 @@ namespace DataLayerRestaurant
                 Password = reader.GetString(reader.GetOrdinal("Password"))
             };
             return employee;
+        }
+
+        public async Task<bool> ChangedPassword(ChangedPassword clsChanged)
+        {
+            bool Changed = false;
+
+            using (SqlConnection Connection = new SqlConnection(clsDataAccessLayer.ConnectionString))
+            {
+                using (SqlCommand Command = new SqlCommand("Employees.SP_ChangedPassword", Connection))
+                {
+                    Command.CommandType = System.Data.CommandType.StoredProcedure;
+                    Command.Parameters.AddWithValue("@ID", clsChanged.ID);
+                    Command.Parameters.AddWithValue("@NewPassword", clsGlobal.HashString(clsChanged.NewPassword));
+                    Command.Parameters.AddWithValue("@CurrentPassword", clsGlobal.HashString(clsChanged.CurrentPassword));
+                    await Connection.OpenAsync();
+                    int rowsAffected = await Command.ExecuteNonQueryAsync();
+                    Changed = rowsAffected > 0;
+                }
+            }
+            return Changed;
         }
         public async Task<DTOEmployees?> GetEmployee(string UserName)
         {

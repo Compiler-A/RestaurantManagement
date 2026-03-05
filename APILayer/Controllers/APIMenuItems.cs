@@ -44,6 +44,51 @@ namespace APILayer.Controllers
                 return CreateResponse<List<DTOMenuItem>>(null!, StatusCodes.Status500InternalServerError, $"Internal server error: {ex.Message}");
             }
         }
+        [HttpGet("GetAllMenuItemsAvailables")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<ApiResponse<List<DTOMenuItem>>>> GetAllMenuItemsAvailables()
+        {
+            try
+            {
+                var menuItems = await _BusinessMenuItem.GetAllMenuItemsAvailables();
+                if (menuItems == null || menuItems.Count == 0)
+                    return CreateResponse<List<DTOMenuItem>>(null!, StatusCodes.Status404NotFound, "No Menu Items found.");
+
+                return CreateResponse(menuItems, StatusCodes.Status200OK, "Menu Items retrieved successfully.");
+            }
+            catch (System.Exception ex)
+            {
+                return CreateResponse<List<DTOMenuItem>>(null!, StatusCodes.Status500InternalServerError, $"Internal server error: {ex.Message}");
+            }
+        }
+
+
+        [HttpGet("GetFilterAllMenuItems")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<ApiResponse<List<DTOMenuItem>>>> GetFilterAllMenuItems([FromQuery] int page = 1, [FromQuery] int StatusMenuID = -1, [FromQuery] int TypeItemID = -1)
+        {
+            try
+            {
+                if (page < 1)
+                    return CreateResponse<List<DTOMenuItem>>(null!, StatusCodes.Status400BadRequest, "Page number must be greater than 0.");
+
+                var menuItems = await _BusinessMenuItem.GetFilterAllMenuItemsAsync(page, StatusMenuID, TypeItemID);
+
+                if (menuItems == null || menuItems.Count == 0)
+                    return CreateResponse<List<DTOMenuItem>>(null!, StatusCodes.Status404NotFound, "No Menu Items found with the specified filters.");
+                return CreateResponse(menuItems, StatusCodes.Status200OK, "Filtered Menu Items retrieved successfully.");
+            }
+            catch (System.Exception ex)
+            {
+                return CreateResponse<List<DTOMenuItem>>(null!, StatusCodes.Status500InternalServerError, $"Internal server error: {ex.Message}");
+            }
+        }
 
         // ===================== GET BY ID =====================
         [HttpGet("GetMenuItemByID/{ID}")]

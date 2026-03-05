@@ -1,4 +1,5 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using Azure;
+using Microsoft.Data.SqlClient;
 using RestaurantDataLayer;
 using System;
 using System.Collections.Generic;
@@ -43,19 +44,24 @@ namespace DataLayerRestaurant
         }
     }
 
-    public interface IDataMenuItems
+    public interface IReadableMenuItemsData
     {
         Task<DTOMenuItem?> GetMenuItemByID(int id);
         Task<List<DTOMenuItem>> GetAllMenuItems(int page);
+        Task<List<DTOMenuItem>> GetFilterAllMenuItems(int page, int StatusMenuID, int TypeItemID);
+        Task<List<DTOMenuItem>> GetAllMenuItemsAvailables();
+    }
+
+    public interface IWritableMenuItemsData
+    {
         Task<int> AddMenuItem(DTOMenuItem menuItem);
         Task<bool> UpdateMenuItem(DTOMenuItem menuItem);
         Task<bool> DeleteMenuItem(int id);
     }
 
-
-
-
-
+    public interface IDataMenuItems : IReadableMenuItemsData, IWritableMenuItemsData
+    {
+    }
 
 
     public class clsDataMenuItems : IDataMenuItems
@@ -77,6 +83,25 @@ namespace DataLayerRestaurant
             return menuItem;
         }
 
+        public async Task<List<DTOMenuItem>> GetAllMenuItemsAvailables()
+        {
+            List<DTOMenuItem> menuItems = new List<DTOMenuItem>();
+            using (SqlConnection conn = new SqlConnection(clsDataAccessLayer.ConnectionString))
+            using (SqlCommand cmd = new SqlCommand("MenuItems.SP_GetAllMenuItemsAvailables", conn))
+            {
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+                await conn.OpenAsync();
+                using (SqlDataReader reader = await cmd.ExecuteReaderAsync())
+                {
+                    while (await reader.ReadAsync())
+                    {
+                        menuItems.Add(await MapReaderToMenuItem(reader));
+                    }
+                }
+            }
+            return menuItems;
+        }
         public async Task<List<DTOMenuItem>> GetAllMenuItems(int page)
         {
             List<DTOMenuItem> menuItems = new List<DTOMenuItem>();
@@ -98,6 +123,31 @@ namespace DataLayerRestaurant
             }
             return menuItems;
         }
+        
+        
+        public async Task<List<DTOMenuItem>> GetFilterAllMenuItems(int page, int StatusMenuID, int TypeItemID)
+        {
+            List<DTOMenuItem> menuItems = new List<DTOMenuItem>();
+            using (SqlConnection conn = new SqlConnection(clsDataAccessLayer.ConnectionString))
+            using (SqlCommand cmd = new SqlCommand("MenuItems.SP_GetFilterTypeItemAndStatusMenuMenuItems", conn))
+            {
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@Page", page);
+                cmd.Parameters.AddWithValue("@Rows", clsDataAccessLayer.Rows);
+                cmd.Parameters.AddWithValue("@StatusMenu", StatusMenuID);
+                cmd.Parameters.AddWithValue("@TypeItem", TypeItemID);
+                await conn.OpenAsync();
+                using (SqlDataReader reader = await cmd.ExecuteReaderAsync())
+                {
+                    while (await reader.ReadAsync())
+                    {
+                        menuItems.Add(await MapReaderToMenuItem(reader));
+                    }
+                }
+            }
+            return menuItems;
+        }
+
 
         public async Task<DTOMenuItem?> GetMenuItemByID(int id)
         {

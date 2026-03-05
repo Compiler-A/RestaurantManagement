@@ -42,6 +42,65 @@
   },
   {
     "ContainingType": "APILayer.Controllers.APIEmployees",
+    "Method": "ChangeEmployeePassword",
+    "RelativePath": "api/APIEmployees/ChangedPassword",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "Changed",
+        "Type": "DataLayerRestaurant.ChangedPassword",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "APILayer.ApiResponse\u00601[[System.Boolean, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      },
+      {
+        "Type": "Microsoft.AspNetCore.Mvc.ProblemDetails",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 404
+      },
+      {
+        "Type": "Microsoft.AspNetCore.Mvc.ProblemDetails",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 400
+      },
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 500
+      },
+      {
+        "Type": "Microsoft.AspNetCore.Mvc.ProblemDetails",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 401
+      }
+    ],
+    "EndpointName": "ChangeEmployeePassword"
+  },
+  {
+    "ContainingType": "APILayer.Controllers.APIEmployees",
     "Method": "DeleteEmployee",
     "RelativePath": "api/APIEmployees/DeleteEmployee/{ID}",
     "HttpMethod": "DELETE",
@@ -730,6 +789,108 @@
   },
   {
     "ContainingType": "APILayer.Controllers.APIMenuItems",
+    "Method": "GetAllMenuItemsAvailables",
+    "RelativePath": "api/APIMenuItems/GetAllMenuItemsAvailables",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "APILayer.ApiResponse\u00601[[System.Collections.Generic.List\u00601[[DataLayerRestaurant.DTOMenuItem, DataLayerRestaurant, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      },
+      {
+        "Type": "Microsoft.AspNetCore.Mvc.ProblemDetails",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 404
+      },
+      {
+        "Type": "Microsoft.AspNetCore.Mvc.ProblemDetails",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 400
+      },
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 500
+      }
+    ]
+  },
+  {
+    "ContainingType": "APILayer.Controllers.APIMenuItems",
+    "Method": "GetFilterAllMenuItems",
+    "RelativePath": "api/APIMenuItems/GetFilterAllMenuItems",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "page",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "StatusMenuID",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "TypeItemID",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "APILayer.ApiResponse\u00601[[System.Collections.Generic.List\u00601[[DataLayerRestaurant.DTOMenuItem, DataLayerRestaurant, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      },
+      {
+        "Type": "Microsoft.AspNetCore.Mvc.ProblemDetails",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 404
+      },
+      {
+        "Type": "Microsoft.AspNetCore.Mvc.ProblemDetails",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 400
+      },
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 500
+      }
+    ]
+  },
+  {
+    "ContainingType": "APILayer.Controllers.APIMenuItems",
     "Method": "GetMenuItemByID",
     "RelativePath": "api/APIMenuItems/GetMenuItemByID/{ID}",
     "HttpMethod": "GET",
@@ -976,6 +1137,56 @@
   },
   {
     "ContainingType": "APILayer.Controllers.APIOrderDetails",
+    "Method": "GetAllOrderDetailsByOrderID",
+    "RelativePath": "api/APIOrderDetails/GetAllOrderDetailsByOrderID/{orderID}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "orderID",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "APILayer.ApiResponse\u00601[[System.Collections.Generic.IEnumerable\u00601[[DataLayerRestaurant.DTOOrderDetails, DataLayerRestaurant, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      },
+      {
+        "Type": "Microsoft.AspNetCore.Mvc.ProblemDetails",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 404
+      },
+      {
+        "Type": "Microsoft.AspNetCore.Mvc.ProblemDetails",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 400
+      },
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 500
+      }
+    ],
+    "EndpointName": "GetAllOrderDetailsByOrderID"
+  },
+  {
+    "ContainingType": "APILayer.Controllers.APIOrderDetails",
     "Method": "GetOrderDetailByID",
     "RelativePath": "api/APIOrderDetails/GetOrderDetail/{id}",
     "HttpMethod": "GET",
@@ -1084,7 +1295,7 @@
     "Parameters": [
       {
         "Name": "dto",
-        "Type": "DataLayerRestaurant.DTOOrders",
+        "Type": "DataLayerRestaurant.DTOOrderCreateRequest",
         "IsRequired": true
       }
     ],
@@ -1224,6 +1435,71 @@
   },
   {
     "ContainingType": "APILayer.Controllers.APIOrders",
+    "Method": "GetFilterOrder",
+    "RelativePath": "api/APIOrders/GetFilterOrder",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "Page",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "TableID",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "EmployeeID",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "StatusOrderID",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "APILayer.ApiResponse\u00601[[System.Collections.Generic.List\u00601[[DataLayerRestaurant.DTOOrders, DataLayerRestaurant, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      },
+      {
+        "Type": "Microsoft.AspNetCore.Mvc.ProblemDetails",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 404
+      },
+      {
+        "Type": "Microsoft.AspNetCore.Mvc.ProblemDetails",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 400
+      },
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 500
+      }
+    ],
+    "EndpointName": "GetFilterOrder"
+  },
+  {
+    "ContainingType": "APILayer.Controllers.APIOrders",
     "Method": "GetOrderByID",
     "RelativePath": "api/APIOrders/GetOrder/{id}",
     "HttpMethod": "GET",
@@ -1282,7 +1558,7 @@
     "Parameters": [
       {
         "Name": "dto",
-        "Type": "DataLayerRestaurant.DTOOrders",
+        "Type": "DataLayerRestaurant.DTOOrderUpdateRequest",
         "IsRequired": true
       }
     ],
@@ -2390,6 +2666,176 @@
   },
   {
     "ContainingType": "APILayer.Controllers.APITables",
+    "Method": "GetAllFilterSeatsStatusTables",
+    "RelativePath": "api/APITables/GetAllFilterSeatsStatusTables",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "page",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "StatusTable",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "Seats",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "APILayer.ApiResponse\u00601[[System.Collections.Generic.IEnumerable\u00601[[DataLayerRestaurant.DTOTables, DataLayerRestaurant, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      },
+      {
+        "Type": "Microsoft.AspNetCore.Mvc.ProblemDetails",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 404
+      },
+      {
+        "Type": "Microsoft.AspNetCore.Mvc.ProblemDetails",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 400
+      },
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 500
+      }
+    ],
+    "EndpointName": "GetAllFilterSeatsStatusTables"
+  },
+  {
+    "ContainingType": "APILayer.Controllers.APITables",
+    "Method": "GetAllFilterSeatsTables",
+    "RelativePath": "api/APITables/GetAllFilterSeatsTable",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "page",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "Seats",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "APILayer.ApiResponse\u00601[[System.Collections.Generic.IEnumerable\u00601[[DataLayerRestaurant.DTOTables, DataLayerRestaurant, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      },
+      {
+        "Type": "Microsoft.AspNetCore.Mvc.ProblemDetails",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 404
+      },
+      {
+        "Type": "Microsoft.AspNetCore.Mvc.ProblemDetails",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 400
+      },
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 500
+      }
+    ],
+    "EndpointName": "GetAllFilterSeatsTables"
+  },
+  {
+    "ContainingType": "APILayer.Controllers.APITables",
+    "Method": "GetAllMenuTables",
+    "RelativePath": "api/APITables/GetAllFilterStatusTables",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "page",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "StatusTable",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "APILayer.ApiResponse\u00601[[System.Collections.Generic.IEnumerable\u00601[[DataLayerRestaurant.DTOTables, DataLayerRestaurant, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      },
+      {
+        "Type": "Microsoft.AspNetCore.Mvc.ProblemDetails",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 404
+      },
+      {
+        "Type": "Microsoft.AspNetCore.Mvc.ProblemDetails",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 400
+      },
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 500
+      }
+    ],
+    "EndpointName": "GetAllMenuTables"
+  },
+  {
+    "ContainingType": "APILayer.Controllers.APITables",
     "Method": "GetAllTables",
     "RelativePath": "api/APITables/GetAllTables",
     "HttpMethod": "GET",
@@ -2440,6 +2886,94 @@
   },
   {
     "ContainingType": "APILayer.Controllers.APITables",
+    "Method": "GetAllTablesAvailables",
+    "RelativePath": "api/APITables/GetAllTablesAvailables",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "APILayer.ApiResponse\u00601[[System.Collections.Generic.IEnumerable\u00601[[DataLayerRestaurant.DTOTables, DataLayerRestaurant, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      },
+      {
+        "Type": "Microsoft.AspNetCore.Mvc.ProblemDetails",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 404
+      },
+      {
+        "Type": "Microsoft.AspNetCore.Mvc.ProblemDetails",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 400
+      },
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 500
+      }
+    ],
+    "EndpointName": "GetAllTablesAvailables"
+  },
+  {
+    "ContainingType": "APILayer.Controllers.APITables",
+    "Method": "GetAllTablesNoPagination",
+    "RelativePath": "api/APITables/GetAllTablesNoPagination",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "APILayer.ApiResponse\u00601[[System.Collections.Generic.IEnumerable\u00601[[DataLayerRestaurant.DTOTables, DataLayerRestaurant, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      },
+      {
+        "Type": "Microsoft.AspNetCore.Mvc.ProblemDetails",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 404
+      },
+      {
+        "Type": "Microsoft.AspNetCore.Mvc.ProblemDetails",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 400
+      },
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 500
+      }
+    ],
+    "EndpointName": "GetAllTablesNoPagination"
+  },
+  {
+    "ContainingType": "APILayer.Controllers.APITables",
     "Method": "GetTableByID",
     "RelativePath": "api/APITables/GetTableByID/{ID}",
     "HttpMethod": "GET",
@@ -2487,6 +3021,56 @@
       }
     ],
     "EndpointName": "GetTableByID"
+  },
+  {
+    "ContainingType": "APILayer.Controllers.APITables",
+    "Method": "GetTableByTableName",
+    "RelativePath": "api/APITables/GetTableByTableName",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "tableNumber",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "APILayer.ApiResponse\u00601[[DataLayerRestaurant.DTOTables, DataLayerRestaurant, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      },
+      {
+        "Type": "Microsoft.AspNetCore.Mvc.ProblemDetails",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 404
+      },
+      {
+        "Type": "Microsoft.AspNetCore.Mvc.ProblemDetails",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 400
+      },
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 500
+      }
+    ],
+    "EndpointName": "GetTableByTableName"
   },
   {
     "ContainingType": "APILayer.Controllers.APITables",

@@ -16,7 +16,7 @@ namespace APILayer.Controllers
 
         private readonly IBusinessOrderDetails _businessOrderDetail;
 
-
+        
 
         [HttpGet("GetAllOrderDetails")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -33,6 +33,31 @@ namespace APILayer.Controllers
                     return CreateResponse<IEnumerable<DTOOrderDetails>>(null!, 400, "Page number must be greater than 0.");
                 }
                 var orders = await _businessOrderDetail.GetAllOrderDetailsAsync(page);
+                if (orders.Count == 0 || orders == null)
+                {
+                    return CreateResponse<IEnumerable<DTOOrderDetails>>(null!, 404, "not found");
+                }
+                return CreateResponse<IEnumerable<DTOOrderDetails>>(orders, 200, $"Count: {orders.Count}");
+            }
+            catch (Exception ex)
+            {
+                return CreateResponse<IEnumerable<DTOOrderDetails>>(null!, 500, $"Internal server error: {ex.Message}");
+            }
+        }
+        [HttpGet("GetAllOrderDetailsByOrderID/{orderID}", Name = "GetAllOrderDetailsByOrderID")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<ApiResponse<IEnumerable<DTOOrderDetails>>>> GetAllOrderDetailsByOrderID(int orderID)
+        {
+            try
+            {
+                if (orderID <= 0)
+                {
+                    return CreateResponse<IEnumerable<DTOOrderDetails>>(null!, 400, "Order ID must be greater than 0.");
+                }
+                var orders = await _businessOrderDetail.GetAllOrderDetailsByOrderIDAsync(orderID);
                 if (orders.Count == 0 || orders == null)
                 {
                     return CreateResponse<IEnumerable<DTOOrderDetails>>(null!, 404, "not found");
@@ -88,11 +113,8 @@ namespace APILayer.Controllers
                 if (!result)
                     return CreateResponse<DTOOrderDetails>(null!, 400, "Failed to create order detail");
 
-                return CreatedAtRoute(
-                    "GetOrderDetail",
-                    new { ID = this._businessOrderDetail.dtoOrderDetail!.ID },
-                    _businessOrderDetail.dtoOrderDetail
-                );
+                return CreateResponse<DTOOrderDetails>(_businessOrderDetail.dtoOrderDetail, 200, "Order Detail Added successfully");
+
             }
             catch (Exception ex)
             {

@@ -41,8 +41,14 @@ namespace DataLayerRestaurant
     {
         Task<DTOTables?> GetTableID(int id);
         Task<List<DTOTables>> GetAlltables(int page);
+        Task<List<DTOTables>> GetMenuTables(int page, int StatusTable);
+        Task<List<DTOTables>> GetFilterTables(int page, int FilterSeats);
+        Task<List<DTOTables>?> GetAllTablesWithFilteringData(int page, int StatusTable, int SeatNumber);
+        Task<DTOTables?> GetTableByTableNumber(string  TableNumber);
+        Task<List<DTOTables>> GetAlltables();
+        Task<List<DTOTables>> GetTablesAvailables();
     }
-
+    
     public interface IWritableTables
     {
         Task<(int, string)> AddTable(DTOTables Table);
@@ -67,6 +73,47 @@ namespace DataLayerRestaurant
             };
             return table;
         }
+
+        public async Task<List<DTOTables>> GetTablesAvailables()
+        {
+            List<DTOTables> listTables = new List<DTOTables>();
+            using (SqlConnection Connection = new SqlConnection(clsDataAccessLayer.ConnectionString))
+            {
+                using (SqlCommand Command = new SqlCommand("Tables.SP_GetTablesAvailables", Connection))
+                {
+                    Command.CommandType = System.Data.CommandType.StoredProcedure;
+                    await Connection.OpenAsync();
+                    using (SqlDataReader Reader = await Command.ExecuteReaderAsync())
+                    {
+                        while (await Reader.ReadAsync())
+                        {
+                            listTables.Add(await MapReader(Reader));
+                        }
+                    }
+                }
+            }
+            return listTables;
+        }
+        public async Task<List<DTOTables>> GetAlltables()
+        {
+            List<DTOTables> listTables = new List<DTOTables>();
+            using (SqlConnection Connection = new SqlConnection(clsDataAccessLayer.ConnectionString))
+            {
+                using (SqlCommand Command = new SqlCommand("Tables.SP_GetAllTablesNoPagination", Connection))
+                {
+                    Command.CommandType = System.Data.CommandType.StoredProcedure;
+                    await Connection.OpenAsync();
+                    using (SqlDataReader Reader = await Command.ExecuteReaderAsync())
+                    {
+                        while (await Reader.ReadAsync())
+                        {
+                            listTables.Add(await MapReader(Reader));
+                        }
+                    }
+                }
+            }
+            return listTables;
+        }
         public async Task<DTOTables?> GetTableID(int ID)
         {
             DTOTables? table = new DTOTables();
@@ -85,6 +132,51 @@ namespace DataLayerRestaurant
                 }
             }
             return table;
+        }
+
+        public async Task<DTOTables?> GetTableByTableNumber(string TableNumber)
+        {
+            DTOTables? table = new DTOTables();
+            using (SqlConnection Connection = new SqlConnection(clsDataAccessLayer.ConnectionString))
+            {
+                using (SqlCommand Command = new SqlCommand("Tables.SP_GetTableByTableNumber", Connection))
+                {
+                    Command.CommandType = System.Data.CommandType.StoredProcedure;
+                    Command.Parameters.AddWithValue("@TableNumber", TableNumber);
+
+                    await Connection.OpenAsync();
+                    using (SqlDataReader Reader = await Command.ExecuteReaderAsync())
+                    {
+                        table = (await Reader.ReadAsync()) ? await MapReader(Reader) : null;
+                    }
+                }
+            }
+            return table;
+        }
+
+        public async Task<List<DTOTables>?> GetAllTablesWithFilteringData(int page, int StatusTable, int SeatNumber)
+        {
+            List<DTOTables>? listTables = new List<DTOTables>();
+            using (SqlConnection Connection = new SqlConnection(clsDataAccessLayer.ConnectionString))
+            {
+                using (SqlCommand Command = new SqlCommand("Tables.SP_GetFilterStatusAndFilterSeatsTables", Connection))
+                {
+                    Command.CommandType = System.Data.CommandType.StoredProcedure;
+                    Command.Parameters.AddWithValue("@Page", page);
+                    Command.Parameters.AddWithValue("@Rows", clsDataAccessLayer.Rows);
+                    Command.Parameters.AddWithValue("@StatusID", StatusTable);
+                    Command.Parameters.AddWithValue("@SeatsNumber", SeatNumber);
+                    await Connection.OpenAsync();
+                    using (SqlDataReader Reader = await Command.ExecuteReaderAsync())
+                    {
+                        while (await Reader.ReadAsync())
+                        {
+                            listTables.Add(await MapReader(Reader));
+                        }
+                    }
+                }
+            }
+            return listTables;
         }
         public async Task<List<DTOTables>> GetAlltables(int page)
         {
@@ -108,6 +200,57 @@ namespace DataLayerRestaurant
             }
             return listTables;
         }
+
+        public async Task<List<DTOTables>> GetMenuTables(int page, int StatusTable)
+        {
+            List<DTOTables> listTables = new List<DTOTables>();
+            using (SqlConnection Connection = new SqlConnection(clsDataAccessLayer.ConnectionString))
+            {
+                using (SqlCommand Command = new SqlCommand("Tables.SP_GetMenuTables", Connection))
+                {
+                    Command.CommandType = System.Data.CommandType.StoredProcedure;
+                    Command.Parameters.AddWithValue("@Page", page);
+                    Command.Parameters.AddWithValue("@Rows", clsDataAccessLayer.Rows);
+                    Command.Parameters.AddWithValue("@StatusID", StatusTable);
+                    await Connection.OpenAsync();
+                    using (SqlDataReader Reader = await Command.ExecuteReaderAsync())
+                    {
+                        while (await Reader.ReadAsync())
+                        {
+                            listTables.Add(await MapReader(Reader));
+                        }
+                    }
+                }
+
+            }
+            return listTables;
+        }
+
+        public async Task<List<DTOTables>> GetFilterTables(int page, int FilterSeats)
+        {
+            List<DTOTables> listTables = new List<DTOTables>();
+            using (SqlConnection Connection = new SqlConnection(clsDataAccessLayer.ConnectionString))
+            {
+                using (SqlCommand Command = new SqlCommand("Tables.SP_GetFilterTables", Connection))
+                {
+                    Command.CommandType = System.Data.CommandType.StoredProcedure;
+                    Command.Parameters.AddWithValue("@Page", page);
+                    Command.Parameters.AddWithValue("@Rows", clsDataAccessLayer.Rows);
+                    Command.Parameters.AddWithValue("@Seats", FilterSeats);
+                    await Connection.OpenAsync();
+                    using (SqlDataReader Reader = await Command.ExecuteReaderAsync())
+                    {
+                        while (await Reader.ReadAsync())
+                        {
+                            listTables.Add(await MapReader(Reader));
+                        }
+                    }
+                }
+
+            }
+            return listTables;
+        }
+
         public async Task<(int,string)> AddTable(DTOTables Tables)
         {
             int Result = -1;

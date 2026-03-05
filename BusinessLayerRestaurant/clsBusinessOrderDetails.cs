@@ -10,6 +10,7 @@ namespace BusinessLayerRestaurant
     public interface IReadableOrderDetailsBusiness
     {
         Task<List<DTOOrderDetails>> GetAllOrderDetailsAsync(int page);
+        Task<List<DTOOrderDetails>> GetAllOrderDetailsByOrderIDAsync(int orderID);
         Task<DTOOrderDetails?> GetOrderDetailsAsync(int page);
     }
 
@@ -79,6 +80,15 @@ namespace BusinessLayerRestaurant
                 await LoadDataAsync(item);
             }
 
+            return ldto;
+        }
+        public async Task<List<DTOOrderDetails>> GetAllOrderDetailsByOrderIDAsync(int orderID)
+        {
+            var ldto = await _IDataOrderDetails.GetAllOrderDetailsByOrderIDAsync(orderID);
+            foreach (var item in ldto)
+            {
+                await LoadDataAsync(item);
+            }
             return ldto;
         }
 

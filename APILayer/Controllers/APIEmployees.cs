@@ -40,7 +40,7 @@ namespace APILayer.Controllers
                 return CreateResponse<IEnumerable<DTOEmployees>>(null!, 500, "Internal server error: " + ex.Message);
             }
         }
-
+       
         [HttpPost("Login", Name = "LoginEmployee")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -65,6 +65,33 @@ namespace APILayer.Controllers
             catch (Exception ex)
             {
                 return CreateResponse<DTOEmployees>(null!, 500, "Internal server error: " + ex.Message);
+            }
+        }
+
+        [HttpPost("ChangedPassword", Name = "ChangeEmployeePassword")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public async Task<ActionResult<ApiResponse<bool>>> ChangeEmployeePassword([FromBody] ChangedPassword Changed)
+        {
+            try
+            {
+                if (Changed == null || Changed.ID <= 0 || string.IsNullOrWhiteSpace(Changed.NewPassword))
+                {
+                    return CreateResponse<bool>(false, 400, "Invalid password change request.");
+                }
+                var success = await employees.ChangePasswordAsync(Changed);
+                if (!success)
+                {
+                    return CreateResponse<bool>(false, 404, "Failed to change password.");
+                }
+                return CreateResponse<bool>(true, 200, "Password changed successfully.");
+            }
+            catch (Exception ex)
+            {
+                return CreateResponse<bool>(false, 500, "Internal server error: " + ex.Message);
             }
         }
 

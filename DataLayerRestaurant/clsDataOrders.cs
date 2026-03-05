@@ -8,6 +8,33 @@ using System.Threading.Tasks;
 
 namespace DataLayerRestaurant
 {
+    public class DTOOrderCreateRequest
+    {
+        public int TableID { get; set; }
+        public int EmployerID { get; set; }
+        public int StatusOrderID { get; set; }
+        public DateTime OrderDate { get; set; }
+        public decimal? TotalAmount { get; set; }
+        public DTOOrderCreateRequest(int tableID, int employerID, int statusOrderID, DateTime orderDate, decimal? totalAmount)
+        {
+            TableID = tableID;
+            EmployerID = employerID;
+            StatusOrderID = statusOrderID;
+            OrderDate = orderDate;
+            TotalAmount = totalAmount;
+        }
+    }
+
+    public class DTOOrderUpdateRequest : DTOOrderCreateRequest
+    {
+        public int OrderID { get; set; }
+        
+        public DTOOrderUpdateRequest(int orderID, int tableID, int employerID, int statusOrderID, DateTime orderDate, decimal? totalAmount)
+            : base(tableID, employerID, statusOrderID, orderDate, totalAmount)
+        {
+            OrderID = orderID;
+        }
+    }
 
     public class DTOOrders
     {
@@ -48,11 +75,14 @@ namespace DataLayerRestaurant
     {
         Task<List<DTOOrders>> GetAllOrdersAsync(int page);
         Task<DTOOrders?> GetOrderAsync(int ID);
+        Task<List<DTOOrders>?> GetFilterOrder(int Page, int TableID, int EmployeeID, int StatusOrderID);
     }
+    
+
     public interface IWritableOrdersData
     {
-        Task<int> Add(DTOOrders order);
-        Task<bool> Update(DTOOrders order);
+        Task<int> Add(DTOOrderCreateRequest order);
+        Task<bool> Update(DTOOrderUpdateRequest order);
         Task<bool> Delete(int id);
     }
 
@@ -126,7 +156,37 @@ namespace DataLayerRestaurant
             return result;
         }
 
-        public async Task<int> Add(DTOOrders order)
+        public async Task<List<DTOOrders>?> GetFilterOrder(int Page, int TableID, int EmployeeID, int StatusOrderID)
+        {
+            List<DTOOrders>? result = new List<DTOOrders>();
+
+            using (SqlConnection Connection = new SqlConnection(clsDataAccessLayer.ConnectionString))
+            {
+                using (SqlCommand Command = new SqlCommand("Orders.SP_GetFilterOrders", Connection))
+                {
+                    Command.CommandType = System.Data.CommandType.StoredProcedure;
+                    Command.Parameters.AddWithValue("@Page", Page);
+                    Command.Parameters.AddWithValue("@Rows", clsDataAccessLayer.Rows);
+                    Command.Parameters.AddWithValue("@TableID", TableID);
+                    Command.Parameters.AddWithValue("@EmployeeID", EmployeeID);
+                    Command.Parameters.AddWithValue("@StatusOrderID", StatusOrderID);
+
+
+                    await Connection.OpenAsync();
+                    using (SqlDataReader Reader = await Command.ExecuteReaderAsync())
+                    {
+                        while (await Reader.ReadAsync())
+                        {
+                            result.Add(_GetOrderFromDataBase(Reader));
+                        }
+                    }
+                }
+            }
+            return result;
+        }
+
+
+        public async Task<int> Add(DTOOrderCreateRequest order)
         {
             int NewID = -1;
             using (SqlConnection Connection = new SqlConnection(clsDataAccessLayer.ConnectionString))
@@ -157,7 +217,7 @@ namespace DataLayerRestaurant
             return NewID;
         }
 
-        public async Task<bool> Update(DTOOrders order)
+        public async Task<bool> Update(DTOOrderUpdateRequest order)
         {
             bool Update = false;
             using (SqlConnection Connection = new SqlConnection(clsDataAccessLayer.ConnectionString))
@@ -170,7 +230,7 @@ namespace DataLayerRestaurant
                     Command.Parameters.AddWithValue("@Date", order.OrderDate);
                     Command.Parameters.AddWithValue("@StatusID", order.StatusOrderID);
                     Command.Parameters.AddWithValue("@Amount", (object?)order.TotalAmount ?? DBNull.Value);
-                    Command.Parameters.AddWithValue("@ID", order.ID);
+                    Command.Parameters.AddWithValue("@ID", order.OrderID);
 
                     await Connection.OpenAsync();
                     Update = await Command.ExecuteNonQueryAsync() > 0;

@@ -10,8 +10,15 @@ namespace BusinessLayerRestaurant
     public interface IReadableTablesBusiness
     {
         Task<List<DTOTables>> GetAll(int page);
+        Task<List<DTOTables>> GetAll();
+        Task<List<DTOTables>> GetMenuTables(int Page, int StatusTable);
+        Task<List<DTOTables>> GetFilterTables(int Page, int Seats);
         Task<DTOTables?> LoadByID(int id);
+        Task<DTOTables?> LoadByTableNumber(string tableNumber);
         Task<bool> IsFindStatus(int id);
+        Task<List<DTOTables>?> GetTableWithFilteringData(int page, int StatusTable, int SeatNumber);
+        
+        Task<List<DTOTables>> GetAllTablesAvailables();
     }
 
     public interface IWritableTablesBusiness
@@ -67,9 +74,8 @@ namespace BusinessLayerRestaurant
         }
 
 
-        public async Task<List<DTOTables>> GetAll(int page)
+        private async Task<List<DTOTables>> _GetStatusTableID(List<DTOTables> dto)
         {
-            List<DTOTables> dto = await  _DataTables.GetAlltables(page);
             foreach (var item in dto)
             {
                 item.StatusTable = await _DataStatusTables.GetStatusTableID(item.StatusTableID);
@@ -77,10 +83,59 @@ namespace BusinessLayerRestaurant
             return dto;
         }
 
+        public async Task<List<DTOTables>?> GetTableWithFilteringData(int page, int StatusTable, int SeatNumber)
+        {
+            List<DTOTables>? dto = await _DataTables.GetAllTablesWithFilteringData(page, StatusTable, SeatNumber);
+            if (dto == null)
+                return null;
+            return await _GetStatusTableID(dto);
+        }
+        public async Task<List<DTOTables>> GetAll(int page)
+        {
+            List<DTOTables> dto = await  _DataTables.GetAlltables(page);
+            return await _GetStatusTableID(dto);
+            
+        }
+        public async Task<List<DTOTables>> GetAllTablesAvailables()
+        {
+            List<DTOTables> dto = await _DataTables.GetTablesAvailables();
+            return await _GetStatusTableID(dto);
+        }
+
+        public async Task<List<DTOTables>> GetAll()
+        {
+            List<DTOTables> dto = await _DataTables.GetAlltables();
+            return await _GetStatusTableID(dto);
+        }
+
+        public async Task<List<DTOTables>> GetMenuTables(int Page, int StatusTable)
+        {
+            List<DTOTables> dto = await _DataTables.GetMenuTables(Page, StatusTable);
+            return await _GetStatusTableID(dto);
+        }
+
+        public async Task<List<DTOTables>> GetFilterTables(int page, int Seats)
+        {
+            List<DTOTables> dto = await _DataTables.GetFilterTables(page, Seats);
+            return await _GetStatusTableID(dto);
+        }
+
         public async Task<DTOTables?> LoadByID(int id)
         {
             _dtoTables = await _DataTables.GetTableID(id);
 
+            if (_dtoTables == null)
+            {
+                return null;
+            }
+            await LoadRelatedObjectsAsync();
+            Mode = enMode.Update;
+            return _dtoTables;
+        }
+
+        public async Task<DTOTables?> LoadByTableNumber(string TableNumber)
+        {
+            _dtoTables = await _DataTables.GetTableByTableNumber(TableNumber);
             if (_dtoTables == null)
             {
                 return null;

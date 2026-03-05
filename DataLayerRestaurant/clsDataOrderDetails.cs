@@ -43,7 +43,9 @@ namespace DataLayerRestaurant
     public interface IReadableOrderDetailsData
     {
         Task<List<DTOOrderDetails>> GetAllOrderDetailsAsync(int page);
+        Task<List<DTOOrderDetails>> GetAllOrderDetailsByOrderIDAsync(int orderID);
         Task<DTOOrderDetails?> GetOrderDetailAsync(int ID);
+        
     }
     public interface IWritableOrderDetailsData
     {
@@ -68,6 +70,28 @@ namespace DataLayerRestaurant
                 Quantity = reader.GetInt32(reader.GetOrdinal("Quantity")),
                 SubTotal = reader.GetDecimal(reader.GetOrdinal("SubTotal"))
             };
+        }
+
+        public async Task<List<DTOOrderDetails>> GetAllOrderDetailsByOrderIDAsync(int orderID)
+        {
+            List<DTOOrderDetails> result = new List<DTOOrderDetails>();
+            using (SqlConnection Connection = new SqlConnection(clsDataAccessLayer.ConnectionString))
+            {
+                using (SqlCommand Command = new SqlCommand("OrderDetails.SP_GetItemByOrderID", Connection))
+                {
+                    Command.CommandType = System.Data.CommandType.StoredProcedure;
+                    Command.Parameters.AddWithValue("@OrderID", orderID);
+                    await Connection.OpenAsync();
+                    using (SqlDataReader Reader = await Command.ExecuteReaderAsync())
+                    {
+                        while (await Reader.ReadAsync())
+                        {
+                            result.Add(_GetOrderFromDataBase(Reader));
+                        }
+                    }
+                }
+            }
+            return result;
         }
         public async Task<List<DTOOrderDetails>> GetAllOrderDetailsAsync(int page)
         {

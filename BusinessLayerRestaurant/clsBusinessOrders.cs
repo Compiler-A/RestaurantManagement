@@ -12,6 +12,7 @@ namespace BusinessLayerRestaurant
     {
         Task<List<DTOOrders>> GetAllOrdersAsync(int page);
         Task<DTOOrders?> GetOrderAsync(int ID);
+        Task<List<DTOOrders>?> GetFilterOrdersAsync(int Page, int TableID, int EmployeeID, int StatusOrderID);
     }
 
     public interface IWritableOrdersBusiness
@@ -24,6 +25,8 @@ namespace BusinessLayerRestaurant
     public interface IBusinessOrders : IWritableOrdersBusiness, IRedableOrdersBusiness
     {
         DTOOrders? DTOOrders { get; set; }
+        DTOOrderCreateRequest? DTOOrderRequest { get; set; }
+        DTOOrderUpdateRequest? DTOOrderUpdateRequest { get; set; }
         IBusinessStatusOrder IBusinessStatusOrder { get; set; }
         IBusinessEmployees IBusinessEmployee { get; set; }
 
@@ -43,6 +46,19 @@ namespace BusinessLayerRestaurant
         {
             get => _dtoOrders;
             set => _dtoOrders = value;
+        }
+        private DTOOrderCreateRequest? _dtoOrderRequest { get; set; }
+        public DTOOrderCreateRequest? DTOOrderRequest
+        {
+            get => _dtoOrderRequest;
+            set => _dtoOrderRequest = value;
+        }
+
+        private DTOOrderUpdateRequest? _dtoOrderUpdateRequest { get; set; }
+        public DTOOrderUpdateRequest? DTOOrderUpdateRequest
+        {
+            get => _dtoOrderUpdateRequest;
+            set => _dtoOrderUpdateRequest = value;
         }
 
         IDataOrders _Iorder;
@@ -111,14 +127,35 @@ namespace BusinessLayerRestaurant
             await LoadDataAsync(_dtoOrders);
             return _dtoOrders;
         }
+        public async Task<List<DTOOrders>?> GetFilterOrdersAsync
+            (int Page, int TableID, int EmployeeID, int StatusOrderID)
+        {
+            var koko = await _Iorder.GetFilterOrder(Page, TableID, EmployeeID, StatusOrderID);
+            if (koko == null)
+            {
+                return null;
+            }
+
+            Mode = enMode.Update;
+
+            foreach (var item in koko)
+            {
+                await LoadDataAsync(item);
+            }
+            return koko;
+        }
+
 
 
         private async Task<bool> Add()
         {
-            if (_dtoOrders == null)
+            if (_dtoOrderRequest == null)
                 { return false; }
-
-            _dtoOrders.ID = await _Iorder.Add(_dtoOrders);
+            if (_dtoOrders == null)
+            {
+                _dtoOrders = new DTOOrders();
+            }
+            _dtoOrders.ID = await _Iorder.Add(_dtoOrderRequest);
             if (_dtoOrders.ID != -1)
             {
                 Mode = enMode.Update;
@@ -129,25 +166,46 @@ namespace BusinessLayerRestaurant
 
         private async Task<bool> Update()
         {
-            if (_dtoOrders == null)
+            if (_dtoOrderUpdateRequest == null)
             {
                 return false;
             }
-           return await _Iorder.Update(_dtoOrders);
+           return await _Iorder.Update(_dtoOrderUpdateRequest);
+        }
+
+        private void LoadCreated()
+        {
+            _dtoOrders!.TableID = _dtoOrderRequest!.TableID;
+            _dtoOrders!.EmployerID = _dtoOrderRequest.EmployerID;
+            _dtoOrders!.StatusOrderID = _dtoOrderRequest.StatusOrderID;
+            _dtoOrders!.OrderDate = _dtoOrderRequest.OrderDate;
+            _dtoOrders!.TotalAmount = _dtoOrderRequest.TotalAmount;
+        }
+        private void LoadUpdated()
+        {
+            _dtoOrders!.TableID = _dtoOrderUpdateRequest!.TableID;
+            _dtoOrders!.EmployerID = _dtoOrderUpdateRequest.EmployerID;
+            _dtoOrders!.StatusOrderID = _dtoOrderUpdateRequest.StatusOrderID;
+            _dtoOrders!.OrderDate = _dtoOrderUpdateRequest.OrderDate;
+            _dtoOrders!.TotalAmount = _dtoOrderUpdateRequest.TotalAmount;
         }
 
         public async Task<bool> SaveAsync()
         {
             bool result = false;
-            if (_dtoOrders == null)
-                { return false; }
             switch (Mode)
             {
                 case enMode.Add:
+                    if (_dtoOrderRequest == null)
+                    { return false; }
                     result = await Add();
+                    LoadCreated();
                     break;
                 case enMode.Update:
+                    if (_dtoOrderUpdateRequest == null)
+                    { return false; }
                     result = await Update();
+                    LoadUpdated();
                     break;
                 default:
                     result = false;

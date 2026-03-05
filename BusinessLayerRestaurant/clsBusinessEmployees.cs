@@ -21,6 +21,7 @@ namespace BusinessLayerRestaurant
     {
         Task<bool> Save();
         Task<bool> Delete(int ID);
+        Task<bool> ChangePasswordAsync(ChangedPassword Changed);
     }
 
     public interface IBusinessEmployees : IReadableEmployeesBusiness, IWritableEmployeesBusiness
@@ -52,6 +53,14 @@ namespace BusinessLayerRestaurant
             Mode = enMode.Add;
         }
 
+        public async Task<bool> ChangePasswordAsync(ChangedPassword Changed)
+        {
+            if (Changed == null || Changed.ID <= 0)
+            {
+                return false;
+            }
+            return await _dataEmployees.ChangedPassword(Changed);
+        }
         public async Task<DTOEmployees?> GetEmployeeAsync(string UserName)
         {
             var dto = await _dataEmployees.GetEmployee(UserName);

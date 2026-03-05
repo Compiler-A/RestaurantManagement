@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("DataLayerRestaurant")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6405ca65370a8f9987eaabdb093a971ce6d71aff")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+61a990f0eb6738d7041442e3948d5c3e8557e399")]
 [assembly: System.Reflection.AssemblyProductAttribute("DataLayerRestaurant")]
 [assembly: System.Reflection.AssemblyTitleAttribute("DataLayerRestaurant")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
