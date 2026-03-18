@@ -1,7 +1,8 @@
-﻿using BusinessLayerRestaurant;
-using DataLayerRestaurant;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using DataLayerRestaurant;
+using BusinessLayerRestaurant;
 
 namespace APILayer.Controllers
 {
@@ -9,11 +10,11 @@ namespace APILayer.Controllers
     [ApiController]
     public class APISettings : BaseController
     {
-        private readonly IBusinessSettings businessSettings;
+        private readonly IBusinessSettings _BusinessSettings;
        
         public APISettings(IBusinessSettings s)
         {
-            businessSettings = s;
+            _BusinessSettings = s;
         }
 
         [HttpGet("GetAllSettings", Name = "GetAllSettings")]
@@ -27,18 +28,18 @@ namespace APILayer.Controllers
             {
                 if (page <= 0)
                 {
-                    return CreateResponse<IEnumerable<DTOSettings>>(null!, 400, "Page number must be greater than 0.");
+                    return CreateResponse<IEnumerable<DTOSettings>>(null!, StatusCodes.Status400BadRequest, "Page number must be greater than 0.");
                 }
-                var list = await businessSettings.GetAllSettingsAsync(page);
+                var list = await _BusinessSettings.GetAllSettingsAsync(page);
                 if (list == null || list.Count == 0)
                 {
-                    return CreateResponse<IEnumerable<DTOSettings>>(null!, 404, "Not Found!");
+                    return CreateResponse<IEnumerable<DTOSettings>>(null!, StatusCodes.Status404NotFound, "Not Found!");
                 }
                 return CreateResponse<IEnumerable<DTOSettings>>(list, 200, $"Row: {list.Count}");
             }
             catch (Exception ex)
             {
-                return CreateResponse<IEnumerable<DTOSettings>>(null!, 500, "Internal server error: " + ex.Message);
+                return CreateResponse<IEnumerable<DTOSettings>>(null!, StatusCodes.Status500InternalServerError, "Internal server error: " + ex.Message);
             }
         }
 
@@ -53,18 +54,18 @@ namespace APILayer.Controllers
             {
                 if (ID <= 0)
                 {
-                    return CreateResponse<DTOSettings>(null!, 400, "ID <= 0.");
+                    return CreateResponse<DTOSettings>(null!, StatusCodes.Status400BadRequest, "ID <= 0.");
                 }
-                var DTO = await businessSettings.GetSettingAsync(ID);
+                var DTO = await _BusinessSettings.GetSettingAsync(ID);
                 if (DTO == null)
                 {
-                    return CreateResponse<DTOSettings>(null!, 404, "Not Found!");
+                    return CreateResponse<DTOSettings>(null!, StatusCodes.Status404NotFound, "Not Found!");
                 }
-                return CreateResponse<DTOSettings>(DTO, 200, "Success");
+                return CreateResponse<DTOSettings>(DTO, StatusCodes.Status200OK, "Success");
             }
             catch (Exception ex)
             {
-                return CreateResponse<DTOSettings>(null!, 500, "Internal server error: " + ex.Message);
+                return CreateResponse<DTOSettings>(null!, StatusCodes.Status500InternalServerError, "Internal server error: " + ex.Message);
             }
         }
 
@@ -72,29 +73,26 @@ namespace APILayer.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<ApiResponse<DTOSettings>>> AddSetting([FromBody] DTOSettings Setting)
+        public async Task<ActionResult<ApiResponse<DTOSettings>>> AddSetting([FromBody] DTOSettingsCRequest Setting)
         {
             try
             {
-                if (Setting == null || Setting.ID < 0)
+                if (Setting == null)
                 {
-                    return CreateResponse<DTOSettings>(null!, 400, "Employee data is null.");
+                    return CreateResponse<DTOSettings>(null!, StatusCodes.Status400BadRequest, "Employee data is null.");
                 }
-                businessSettings.DTOSetting = Setting;
-                var success = await businessSettings.Save();
-                if (!success)
+                
+                _BusinessSettings.CreateRequest = Setting;
+                var success = await _BusinessSettings.AddSettingAsync(_BusinessSettings.CreateRequest);
+                if (success == null)
                 {
-                    return CreateResponse<DTOSettings>(null!, 500, "Failed to add Setting.");
+                    return CreateResponse<DTOSettings>(null!, StatusCodes.Status500InternalServerError, "Failed to add Setting.");
                 }
-                return CreatedAtRoute(
-                    "GetSetting",
-                    new { ID = this.businessSettings.DTOSetting!.ID },
-                    businessSettings.DTOSetting
-                );
+                return CreateResponse<DTOSettings>(success, StatusCodes.Status201Created, "Order Added successfully");
             }
             catch (Exception ex)
             {
-                return CreateResponse<DTOSettings>(null!, 500, "Internal server error: " + ex.Message);
+                return CreateResponse<DTOSettings>(null!, StatusCodes.Status500InternalServerError, "Internal server error: " + ex.Message);
             }
         }
 
@@ -103,26 +101,25 @@ namespace APILayer.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<ApiResponse<DTOSettings>>> UpdateSetting([FromBody] DTOSettings Setting)
+        public async Task<ActionResult<ApiResponse<DTOSettings>>> UpdateSetting([FromBody] DTOSettingsURequest Setting)
         {
             try
             {
                 if (Setting == null || Setting.ID <= 0)
                 {
-                    return CreateResponse<DTOSettings>(null!, 400, "Invalid Setting data.");
+                    return CreateResponse<DTOSettings>(null!, StatusCodes.Status400BadRequest, "Invalid Setting data.");
                 }
-                businessSettings.DTOSetting = await businessSettings.GetSettingAsync(Setting.ID);
-                businessSettings.DTOSetting = Setting;
-                var success = await businessSettings.Save();
-                if (!success)
+                _BusinessSettings.UpdateRequest = Setting;
+                var success = await _BusinessSettings.UpdateSettingAsync(Setting);
+                if (success == null)
                 {
-                    return CreateResponse<DTOSettings>(null!, 404, "Failed to update employee.");
+                    return CreateResponse<DTOSettings>(null!, StatusCodes.Status404NotFound, "Failed to update Setting.");
                 }
-                return CreateResponse<DTOSettings>(businessSettings.DTOSetting, 200, "Employee updated successfully.");
+                return CreateResponse<DTOSettings>(success, StatusCodes.Status200OK, "Setting updated successfully.");
             }
             catch (Exception ex)
             {
-                return CreateResponse<DTOSettings>(null!, 500, "Internal server error: " + ex.Message);
+                return CreateResponse<DTOSettings>(null!, StatusCodes.Status500InternalServerError, "Internal server error: " + ex.Message);
             }
         }
 
@@ -137,18 +134,18 @@ namespace APILayer.Controllers
             {
                 if (ID <= 0)
                 {
-                    return CreateResponse<bool>(false, 400, "ID <= 0.");
+                    return CreateResponse<bool>(false, StatusCodes.Status400BadRequest, "ID <= 0.");
                 }
-                var success = await businessSettings.Delete(ID);
+                var success = await _BusinessSettings.DeleteSettingAsync(ID);
                 if (!success)
                 {
-                    return CreateResponse<bool>(false, 404, "Failed to delete employee.");
+                    return CreateResponse<bool>(false, StatusCodes.Status404NotFound, "Failed to delete Setting.");
                 }
-                return CreateResponse<bool>(true, 200, "Employee deleted successfully.");
+                return CreateResponse<bool>(true, StatusCodes.Status200OK, "Setting deleted successfully.");
             }
             catch (Exception ex)
             {
-                return CreateResponse<bool>(false, 500, "Internal server error: " + ex.Message);
+                return CreateResponse<bool>(false, StatusCodes.Status500InternalServerError, "Internal server error: " + ex.Message);
             }
         }
     }

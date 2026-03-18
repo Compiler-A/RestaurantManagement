@@ -3,6 +3,7 @@ using DataLayerRestaurant;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
+
 namespace APILayer.Controllers
 {
     [Route("api/APIStatusOrders")]
@@ -10,8 +11,8 @@ namespace APILayer.Controllers
     public class APIStatusOrders : BaseController
     {
 
-        private readonly IBusinessStatusOrder _StatusOrder;
-        public APIStatusOrders(IBusinessStatusOrder statusOrder)
+        private readonly IBusinessStatusOrders _StatusOrder;
+        public APIStatusOrders(IBusinessStatusOrders statusOrder)
         {
             _StatusOrder = statusOrder;
         }
@@ -27,20 +28,20 @@ namespace APILayer.Controllers
             {
                 if (page <= 0)
                 {
-                    return CreateResponse<IEnumerable<DTOStatusOrders>>(null!, 400, "Page number must be greater than 0.");
+                    return CreateResponse<IEnumerable<DTOStatusOrders>>(null!, StatusCodes.Status400BadRequest, "Page number must be greater than 0.");
                 }
-                var list = await _StatusOrder.GetAllStatusOrders(page);
+                var list = await _StatusOrder.GetAllStatusOrdersAsync(page);
 
                 if (list == null || list.Count == 0)
                 {
-                    return CreateResponse<IEnumerable<DTOStatusOrders>>(null!, 404, "Not Found!");
+                    return CreateResponse<IEnumerable<DTOStatusOrders>>(null!, StatusCodes.Status404NotFound, "Not Found!");
                 }
 
-                return CreateResponse<IEnumerable<DTOStatusOrders>>(list, 200, $"Row: {list.Count}");
+                return CreateResponse<IEnumerable<DTOStatusOrders>>(list, StatusCodes.Status200OK, $"Row: {list.Count}");
             }
             catch (Exception ex)
             {
-                return CreateResponse<IEnumerable<DTOStatusOrders>>(null!, 500, "Internal server error: " + ex.Message);
+                return CreateResponse<IEnumerable<DTOStatusOrders>>(null!, StatusCodes.Status500InternalServerError, "Internal server error: " + ex.Message);
             }
         }
 
@@ -55,20 +56,20 @@ namespace APILayer.Controllers
             {
                 if (ID <= 0)
                 {
-                    return CreateResponse<DTOStatusOrders>(null!, 400, "ID <= 0.");
+                    return CreateResponse<DTOStatusOrders>(null!, StatusCodes.Status200OK, "ID <= 0.");
                 }
-                var DTO = await _StatusOrder.GetStatusOrdersByID(ID);
+                var DTO = await _StatusOrder.GetStatusOrdersAsync(ID);
 
                 if (DTO == null)
                 {
-                    return CreateResponse<DTOStatusOrders>(null!, 404, "Not Found!");
+                    return CreateResponse<DTOStatusOrders>(null!, StatusCodes.Status404NotFound, "Not Found!");
                 }
 
-                return CreateResponse<DTOStatusOrders>(DTO, 200, "Find Saccessfully!");
+                return CreateResponse<DTOStatusOrders>(DTO, StatusCodes.Status200OK, "Find Saccessfully!");
             }
             catch (Exception ex)
             {
-                return CreateResponse<DTOStatusOrders>(null!, 500, "Internal server error: " + ex.Message);
+                return CreateResponse<DTOStatusOrders>(null!, StatusCodes.Status500InternalServerError, "Internal server error: " + ex.Message);
             }
         }
 
@@ -76,32 +77,29 @@ namespace APILayer.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<ApiResponse<DTOStatusOrders>>> AddStatusOrder([FromBody] DTOStatusOrders StatusOrder)
+        public async Task<ActionResult<ApiResponse<DTOStatusOrders>>> AddStatusOrder([FromBody] DTOStatusOrdersCRequest Request)
         {
             try
             {
-                if (StatusOrder == null)
-                    return CreateResponse<DTOStatusOrders>(null!, 400, "Body is null.");
+                if (Request == null)
+                    return CreateResponse<DTOStatusOrders>(null!, StatusCodes.Status400BadRequest, "Body is null.");
 
-                if (string.IsNullOrWhiteSpace(StatusOrder.statusOrderName))
-                    return CreateResponse<DTOStatusOrders>(null!, 400, "Name is required.");
+                if (string.IsNullOrWhiteSpace(Request.Name))
+                    return CreateResponse<DTOStatusOrders>(null!, StatusCodes.Status400BadRequest, "Name is required.");
 
-                _StatusOrder.StatusOrders = StatusOrder;
+                _StatusOrder.CreateRequest = Request;
 
-                var result = await _StatusOrder.Save();
+                var result = await _StatusOrder.AddStatusOrdersAsync(_StatusOrder.CreateRequest);
 
-                if (!result)
-                    return CreateResponse<DTOStatusOrders>(null!, 500, "Insert failed.");
+                if (result == null)
+                    return CreateResponse<DTOStatusOrders>(null!, StatusCodes.Status500InternalServerError, "Insert failed.");
 
-                return CreatedAtRoute(
-                    "GetStatusOrder",
-                    new { ID = _StatusOrder.StatusOrders!.idStatusOrder },
-                    _StatusOrder.StatusOrders
-                );
+                return CreateResponse<DTOStatusOrders>(result, StatusCodes.Status200OK, "Find Saccessfully!");
+
             }
             catch (Exception ex)
             {
-                return CreateResponse<DTOStatusOrders>(null!, 500, ex.Message);
+                return CreateResponse<DTOStatusOrders>(null!, StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
 
@@ -110,33 +108,33 @@ namespace APILayer.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<ApiResponse<DTOStatusOrders>>> UpdateStatusOrder([FromBody] DTOStatusOrders Update)
+        public async Task<ActionResult<ApiResponse<DTOStatusOrders>>> UpdateStatusOrder([FromBody] DTOStatusOrdersURequest Request)
         {
             try
             {
-                if (Update == null || Update.idStatusOrder <= 0)
+                if (Request == null || Request.ID <= 0)
                 {
-                    return CreateResponse<DTOStatusOrders>(null!, 400, "Bad Ruquest");
+                    return CreateResponse<DTOStatusOrders>(null!, StatusCodes.Status400BadRequest, "Bad Ruquest");
                 }
                 
-                var existingStatusOrder = await _StatusOrder.GetStatusOrdersByID(Update.idStatusOrder);
+                var existingStatusOrder = await _StatusOrder.GetStatusOrdersAsync(Request.ID);
 
                 if (existingStatusOrder == null)
                 {
-                    return CreateResponse<DTOStatusOrders>(null!, 404, "StatusTable not found.");
+                    return CreateResponse<DTOStatusOrders>(null!, StatusCodes.Status404NotFound, "StatusTable not found.");
                 }   
 
-
-                var result = await _StatusOrder.Save();
-                return result ?
-                    CreateResponse<DTOStatusOrders>(_StatusOrder.StatusOrders!, 200, "StatusOrder updated successfully.")
+                _StatusOrder.UpdateRequest = Request;
+                var result = await _StatusOrder.UpdateStatusOrdersAsync(_StatusOrder.UpdateRequest);
+                return result != null ?
+                    CreateResponse<DTOStatusOrders>(result, StatusCodes.Status200OK, "StatusOrder updated successfully.")
                     :
-                    CreateResponse<DTOStatusOrders>(null!, 500, "Failed to update StatusOrders.");
+                    CreateResponse<DTOStatusOrders>(null!, StatusCodes.Status500InternalServerError, "Failed to update StatusOrders.");
 
             }
             catch (System.Exception ex)
             {
-                return CreateResponse<DTOStatusOrders>(null!, 500, "Internal server error: " + ex.Message);
+                return CreateResponse<DTOStatusOrders>(null!, StatusCodes.Status500InternalServerError, "Internal server error: " + ex.Message);
             }
         }
 
@@ -152,23 +150,23 @@ namespace APILayer.Controllers
             {
                 if (id <= 0)
                 {
-                    return CreateResponse<DTOStatusOrders>(null!, 400, "Bad Ruquest");
+                    return CreateResponse<DTOStatusOrders>(null!, StatusCodes.Status400BadRequest, "Bad Ruquest");
                 }
 
-                var result = await _StatusOrder.Delete(id);
+                var result = await _StatusOrder.DeleteStatusOrdersAsync(id);
 
                 if (result)
                 {
-                    return CreateResponse<DTOStatusOrders>(null!, 200, "StatusOrder deleted successfully.");
+                    return CreateResponse<DTOStatusOrders>(null!, StatusCodes.Status200OK, "StatusOrder deleted successfully.");
                 }
                 else
                 {
-                    return CreateResponse<DTOStatusOrders>(null!, 404, "StatusTable not found or failed to delete.");
+                    return CreateResponse<DTOStatusOrders>(null!, StatusCodes.Status404NotFound, "StatusTable not found or failed to delete.");
                 }
             }
             catch (System.Exception ex)
             {
-                return CreateResponse<DTOStatusOrders>(null!, 500, "Internal server error: " + ex.Message);
+                return CreateResponse<DTOStatusOrders>(null!, StatusCodes.Status500InternalServerError, "Internal server error: " + ex.Message);
             }
         }
     }

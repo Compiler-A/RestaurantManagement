@@ -26,18 +26,18 @@ namespace APILayer.Controllers
             {
                 if (page <= 0)
                 {
-                    return CreateResponse<IEnumerable<DTOEmployees>>(null!, 400, "Page number must be greater than 0.");
+                    return CreateResponse<IEnumerable<DTOEmployees>>(null!, StatusCodes.Status400BadRequest, "Page number must be greater than 0.");
                 }
                 var list = await employees.GetAllEmployeesAsync(page);
                 if (list == null || list.Count == 0)
                 {
-                    return CreateResponse<IEnumerable<DTOEmployees>>(null!, 404, "Not Found!");
+                    return CreateResponse<IEnumerable<DTOEmployees>>(null!, StatusCodes.Status404NotFound, "Not Found!");
                 }
-                return CreateResponse<IEnumerable<DTOEmployees>>(list, 200, $"Row: {list.Count}");
+                return CreateResponse<IEnumerable<DTOEmployees>>(list, StatusCodes.Status200OK, $"Row: {list.Count}");
             }
             catch (Exception ex)
             {
-                return CreateResponse<IEnumerable<DTOEmployees>>(null!, 500, "Internal server error: " + ex.Message);
+                return CreateResponse<IEnumerable<DTOEmployees>>(null!, StatusCodes.Status500InternalServerError, "Internal server error: " + ex.Message);
             }
         }
        
@@ -47,24 +47,24 @@ namespace APILayer.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<ActionResult<ApiResponse<DTOEmployees>>> LoginEmployee([FromBody] LoginRequest Login)
+        public async Task<ActionResult<ApiResponse<DTOEmployees>>> LoginEmployee([FromBody] DTOEmployeesLoginRequest Login)
         {
             try
             {
                 if (string.IsNullOrWhiteSpace(Login.UserName) || string.IsNullOrWhiteSpace(Login.Password))
                 {
-                    return CreateResponse<DTOEmployees>(null!, 400, "Name or Password is null or empty.");
+                    return CreateResponse<DTOEmployees>(null!, StatusCodes.Status400BadRequest, "Name or Password is null or empty.");
                 }
-                var DTO = await employees.LoginEmployeeAsync(Login.UserName, Login.Password);
+                var DTO = await employees.GetLoginEmployeeAsync(Login);
                 if (DTO == null)
                 {
-                    return CreateResponse<DTOEmployees>(null!, 401, "Not Found!");
+                    return CreateResponse<DTOEmployees>(null!, StatusCodes.Status404NotFound, "Not Found!");
                 }
-                return CreateResponse<DTOEmployees>(DTO, 200, "Success");
+                return CreateResponse<DTOEmployees>(DTO, StatusCodes.Status200OK, "Success");
             }
             catch (Exception ex)
             {
-                return CreateResponse<DTOEmployees>(null!, 500, "Internal server error: " + ex.Message);
+                return CreateResponse<DTOEmployees>(null!, StatusCodes.Status500InternalServerError, "Internal server error: " + ex.Message);
             }
         }
 
@@ -74,24 +74,24 @@ namespace APILayer.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<ActionResult<ApiResponse<bool>>> ChangeEmployeePassword([FromBody] ChangedPassword Changed)
+        public async Task<ActionResult<ApiResponse<bool>>> ChangeEmployeePassword([FromBody] DTOEmployeesChangedPassword Changed)
         {
             try
             {
                 if (Changed == null || Changed.ID <= 0 || string.IsNullOrWhiteSpace(Changed.NewPassword))
                 {
-                    return CreateResponse<bool>(false, 400, "Invalid password change request.");
+                    return CreateResponse<bool>(false, StatusCodes.Status400BadRequest, "Invalid password change request.");
                 }
                 var success = await employees.ChangePasswordAsync(Changed);
                 if (!success)
                 {
-                    return CreateResponse<bool>(false, 404, "Failed to change password.");
+                    return CreateResponse<bool>(false, StatusCodes.Status404NotFound, "Failed to change password.");
                 }
-                return CreateResponse<bool>(true, 200, "Password changed successfully.");
+                return CreateResponse<bool>(true, StatusCodes.Status200OK, "Password changed successfully.");
             }
             catch (Exception ex)
             {
-                return CreateResponse<bool>(false, 500, "Internal server error: " + ex.Message);
+                return CreateResponse<bool>(false, StatusCodes.Status500InternalServerError, "Internal server error: " + ex.Message);
             }
         }
 
@@ -106,18 +106,18 @@ namespace APILayer.Controllers
             {
                 if (ID <= 0)
                 {
-                    return CreateResponse<DTOEmployees>(null!, 400, "ID <= 0.");
+                    return CreateResponse<DTOEmployees>(null!, StatusCodes.Status400BadRequest, "ID <= 0.");
                 }
                 var DTO = await employees.GetEmployeeAsync(ID);
                 if (DTO == null)
                 {
-                    return CreateResponse<DTOEmployees>(null!, 404, "Not Found!");
+                    return CreateResponse<DTOEmployees>(null!, StatusCodes.Status404NotFound, "Not Found!");
                 }
-                return CreateResponse<DTOEmployees>(DTO, 200, "Success");
+                return CreateResponse<DTOEmployees>(DTO, StatusCodes.Status200OK, "Success");
             }
             catch (Exception ex)
             {
-                return CreateResponse<DTOEmployees>(null!, 500, "Internal server error: " + ex.Message);
+                return CreateResponse<DTOEmployees>(null!, StatusCodes.Status500InternalServerError, "Internal server error: " + ex.Message);
             }
         }
 
@@ -132,18 +132,18 @@ namespace APILayer.Controllers
             {
                 if (string.IsNullOrWhiteSpace(userName))
                 {
-                    return CreateResponse<DTOEmployees>(null!, 400, "Username is null or empty.");
+                    return CreateResponse<DTOEmployees>(null!, StatusCodes.Status400BadRequest, "Username is null or empty.");
                 }
                 var DTO = await employees.GetEmployeeAsync(userName);
                 if (DTO == null)
                 {
-                    return CreateResponse<DTOEmployees>(null!, 404, "Not Found!");
+                    return CreateResponse<DTOEmployees>(null!, StatusCodes.Status404NotFound, "Not Found!");
                 }
-                return CreateResponse<DTOEmployees>(DTO, 200, "Success");
+                return CreateResponse<DTOEmployees>(DTO, StatusCodes.Status200OK, "Success");
             }
             catch (Exception ex)
             {
-                return CreateResponse<DTOEmployees>(null!, 500, "Internal server error: " + ex.Message);
+                return CreateResponse<DTOEmployees>(null!, StatusCodes.Status500InternalServerError, "Internal server error: " + ex.Message);
             }
         }
 
@@ -151,29 +151,25 @@ namespace APILayer.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<ApiResponse<DTOEmployees>>> AddEmployee([FromBody] DTOEmployees employee)
+        public async Task<ActionResult<ApiResponse<DTOEmployees>>> AddEmployee([FromBody] DTOEmployeesCRequest employee)
         {
             try
             {
                 if (employee == null || employee.JobID < 0)
                 {
-                    return CreateResponse<DTOEmployees>(null!, 400, "Employee data is null.");
+                    return CreateResponse<DTOEmployees>(null!, StatusCodes.Status400BadRequest, "Employee data is null.");
                 }
-                employees.Employees = employee;
-                var success = await employees.Save();
-                if (!success)
+                var success = await this.employees.CreateEmployeeAsync(employee);
+                if (success == null)
                 {
-                    return CreateResponse<DTOEmployees>(null!, 500, "Failed to add employee.");
+                    return CreateResponse<DTOEmployees>(null!, StatusCodes.Status500InternalServerError, "Failed to add employee.");
                 }
-                return CreatedAtRoute(
-                    "GetEmployeeByID",
-                    new { ID = this.employees.Employees!.ID },
-                    employees.Employees
-                );
+                return CreateResponse<DTOEmployees>(success!, StatusCodes.Status200OK, "Failed to add employee.");
+
             }
             catch (Exception ex)
             {
-                return CreateResponse<DTOEmployees>(null!, 500, "Internal server error: " + ex.Message);
+                return CreateResponse<DTOEmployees>(null!, StatusCodes.Status500InternalServerError, "Internal server error: " + ex.Message);
             }
         }
 
@@ -182,26 +178,24 @@ namespace APILayer.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<ApiResponse<DTOEmployees>>> UpdateEmployee([FromBody] DTOEmployees employee)
+        public async Task<ActionResult<ApiResponse<DTOEmployees>>> UpdateEmployee([FromBody] DTOEmployeesURequest employee)
         {
             try
             {
                 if (employee == null || employee.ID <= 0 || employee.JobID < 0)
                 {
-                    return CreateResponse<DTOEmployees>(null!, 400, "Invalid employee data.");
+                    return CreateResponse<DTOEmployees>(null!, StatusCodes.Status400BadRequest, "Invalid employee data.");
                 }
-                employees.Employees = await employees.GetEmployeeAsync(employee.ID);
-                employees.Employees = employee;
-                var success = await employees.Save();
-                if (!success)
+                var dto = await this.employees.UpdateEmployeeAsync(employee);
+                if (!(dto != null))
                 {
-                    return CreateResponse<DTOEmployees>(null!, 404, "Failed to update employee.");
+                    return CreateResponse<DTOEmployees>(null!, StatusCodes.Status404NotFound, "Failed to update employee.");
                 }
-                return CreateResponse<DTOEmployees>(employees.Employees!, 200, "Employee updated successfully.");
+                return CreateResponse<DTOEmployees>(dto!, StatusCodes.Status200OK, "Employee updated successfully.");
             }
             catch (Exception ex)
             {
-                return CreateResponse<DTOEmployees>(null!, 500, "Internal server error: " + ex.Message);
+                return CreateResponse<DTOEmployees>(null!, StatusCodes.Status500InternalServerError, "Internal server error: " + ex.Message);
             }
         }
 
@@ -216,18 +210,18 @@ namespace APILayer.Controllers
             {
                 if (ID <= 0)
                 {
-                    return CreateResponse<bool>(false, 400, "ID <= 0.");
+                    return CreateResponse<bool>(false, StatusCodes.Status400BadRequest, "ID <= 0.");
                 }
-                var success = await employees.Delete(ID);
+                var success = await employees.DeleteEmployeeAsync(ID);
                 if (!success)
                 {
-                    return CreateResponse<bool>(false, 404, "Failed to delete employee.");
+                    return CreateResponse<bool>(false, StatusCodes.Status404NotFound, "Failed to delete employee.");
                 }
-                return CreateResponse<bool>(true, 200, "Employee deleted successfully.");
+                return CreateResponse<bool>(true, StatusCodes.Status200OK, "Employee deleted successfully.");
             }
             catch (Exception ex)
             {
-                return CreateResponse<bool>(false, 500, "Internal server error: " + ex.Message);
+                return CreateResponse<bool>(false, StatusCodes.Status500InternalServerError, "Internal server error: " + ex.Message);
             }
         }
     }

@@ -1476,11 +1476,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Lenovo\\Documents\\For My Programming\\.vscoomunity\\Projects\\RestaurantProjectv2\\BusinessLayerRestaurant\\BusinessLayerRestaurant.csproj",
+      "projectUniqueName": "D:\\Programming\\Projects\\RestaurantProjectv2\\BusinessLayerRestaurant\\BusinessLayerRestaurant.csproj",
       "projectName": "BusinessLayerRestaurant",
-      "projectPath": "C:\\Users\\Lenovo\\Documents\\For My Programming\\.vscoomunity\\Projects\\RestaurantProjectv2\\BusinessLayerRestaurant\\BusinessLayerRestaurant.csproj",
+      "projectPath": "D:\\Programming\\Projects\\RestaurantProjectv2\\BusinessLayerRestaurant\\BusinessLayerRestaurant.csproj",
       "packagesPath": "C:\\Users\\Lenovo\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Lenovo\\Documents\\For My Programming\\.vscoomunity\\Projects\\RestaurantProjectv2\\BusinessLayerRestaurant\\obj\\",
+      "outputPath": "D:\\Programming\\Projects\\RestaurantProjectv2\\BusinessLayerRestaurant\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -1501,8 +1501,8 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "C:\\Users\\Lenovo\\Documents\\For My Programming\\.vscoomunity\\Projects\\RestaurantProjectv2\\DataLayerRestaurant\\DataLayerRestaurant.csproj": {
-              "projectPath": "C:\\Users\\Lenovo\\Documents\\For My Programming\\.vscoomunity\\Projects\\RestaurantProjectv2\\DataLayerRestaurant\\DataLayerRestaurant.csproj"
+            "D:\\Programming\\Projects\\RestaurantProjectv2\\DataLayerRestaurant\\DataLayerRestaurant.csproj": {
+              "projectPath": "D:\\Programming\\Projects\\RestaurantProjectv2\\DataLayerRestaurant\\DataLayerRestaurant.csproj"
             }
           }
         }
@@ -1538,7 +1538,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.103/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.104/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

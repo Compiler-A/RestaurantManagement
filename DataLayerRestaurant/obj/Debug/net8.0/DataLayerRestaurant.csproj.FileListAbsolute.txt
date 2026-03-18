@@ -11,3 +11,16 @@ C:\Users\Lenovo\Documents\For My Programming\.vscoomunity\Projects\RestaurantPro
 C:\Users\Lenovo\Documents\For My Programming\.vscoomunity\Projects\RestaurantProjectv2\DataLayerRestaurant\obj\Debug\net8.0\DataLayerRestaurant.pdb
 C:\Users\Lenovo\Documents\For My Programming\.vscoomunity\Projects\RestaurantProjectv2\DataLayerRestaurant\obj\Debug\net8.0\ref\DataLayerRestaurant.dll
 C:\Users\Lenovo\Documents\For My Programming\.vscoomunity\Projects\RestaurantProjectv2\DataLayerRestaurant\obj\Debug\net8.0\DataLayerRestaurant.sourcelink.json
+D:\Programming\Projects\RestaurantProjectv2\DataLayerRestaurant\bin\Debug\net8.0\DataLayerRestaurant.deps.json
+D:\Programming\Projects\RestaurantProjectv2\DataLayerRestaurant\bin\Debug\net8.0\DataLayerRestaurant.dll
+D:\Programming\Projects\RestaurantProjectv2\DataLayerRestaurant\bin\Debug\net8.0\DataLayerRestaurant.pdb
+D:\Programming\Projects\RestaurantProjectv2\DataLayerRestaurant\obj\Debug\net8.0\DataLayerRestaurant.csproj.AssemblyReference.cache
+D:\Programming\Projects\RestaurantProjectv2\DataLayerRestaurant\obj\Debug\net8.0\DataLayerRestaurant.GeneratedMSBuildEditorConfig.editorconfig
+D:\Programming\Projects\RestaurantProjectv2\DataLayerRestaurant\obj\Debug\net8.0\DataLayerRestaurant.AssemblyInfoInputs.cache
+D:\Programming\Projects\RestaurantProjectv2\DataLayerRestaurant\obj\Debug\net8.0\DataLayerRestaurant.AssemblyInfo.cs
+D:\Programming\Projects\RestaurantProjectv2\DataLayerRestaurant\obj\Debug\net8.0\DataLayerRestaurant.csproj.CoreCompileInputs.cache
+D:\Programming\Projects\RestaurantProjectv2\DataLayerRestaurant\obj\Debug\net8.0\DataLayerRestaurant.sourcelink.json
+D:\Programming\Projects\RestaurantProjectv2\DataLayerRestaurant\obj\Debug\net8.0\DataLayerRestaurant.dll
+D:\Programming\Projects\RestaurantProjectv2\DataLayerRestaurant\obj\Debug\net8.0\refint\DataLayerRestaurant.dll
+D:\Programming\Projects\RestaurantProjectv2\DataLayerRestaurant\obj\Debug\net8.0\DataLayerRestaurant.pdb
+D:\Programming\Projects\RestaurantProjectv2\DataLayerRestaurant\obj\Debug\net8.0\ref\DataLayerRestaurant.dll

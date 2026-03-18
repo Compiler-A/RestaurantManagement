@@ -4,15 +4,16 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Runtime.InteropServices;
 
+
 namespace APILayer.Controllers
 {
     [Route("api/APITables")]
     [ApiController]
     public class APITables :  BaseController
     {
-        private readonly BusinessLayerRestaurant.IDataTablesBusiness dataTablesBusiness;
+        private readonly IBusinessTables dataTablesBusiness;
 
-        public APITables(IDataTablesBusiness TableBusiness) 
+        public APITables(IBusinessTables TableBusiness) 
         {
             dataTablesBusiness = TableBusiness;
         }
@@ -26,19 +27,19 @@ namespace APILayer.Controllers
         {
             try
             {
-                var data = await dataTablesBusiness.GetAll();
+                var data = await dataTablesBusiness.GetAllTablesAsync();
                 if (data.Count == 0)
                 {
-                    return CreateResponse<IEnumerable<DTOTables>>(null!, 404, "Not Found Data!");
+                    return CreateResponse<IEnumerable<DTOTables>>(null!, StatusCodes.Status404NotFound, "Not Found Data!");
                 }
                 else
                 {
-                    return CreateResponse<IEnumerable<DTOTables>>(data, 200, $"Find {data.Count} Data!");
+                    return CreateResponse<IEnumerable<DTOTables>>(data, StatusCodes.Status200OK, $"Find {data.Count} Data!");
                 }
             }
             catch (Exception ex)
             {
-                return CreateResponse<IEnumerable<DTOTables>>(null!, 500, "Internal server error: " + ex.Message);
+                return CreateResponse<IEnumerable<DTOTables>>(null!, StatusCodes.Status500InternalServerError, "Internal server error: " + ex.Message);
             }
         }
 
@@ -53,21 +54,21 @@ namespace APILayer.Controllers
             {
                 if (page <= 0)
                 {
-                    return CreateResponse<IEnumerable<DTOTables>>(null!, 400, "Bad Ruquest");
+                    return CreateResponse<IEnumerable<DTOTables>>(null!, StatusCodes.Status400BadRequest, "Bad Ruquest");
                 }
-                var data = await dataTablesBusiness.GetAll(page);
+                var data = await dataTablesBusiness.GetAllTablesAsync(page);
                 if (data.Count == 0)
                 {
-                    return CreateResponse<IEnumerable<DTOTables>>(null!, 404, "Not Found Data in this Page!");
+                    return CreateResponse<IEnumerable<DTOTables>>(null!, StatusCodes.Status404NotFound, "Not Found Data in this Page!");
                 }
                 else
                 {
-                    return CreateResponse<IEnumerable<DTOTables>>(data, 200, $"Find {data.Count} in this page!");
+                    return CreateResponse<IEnumerable<DTOTables>>(data, StatusCodes.Status200OK, $"Find {data.Count} in this page!");
                 }
             }
             catch (Exception ex)
             {
-                return CreateResponse<IEnumerable<DTOTables>>(null!, 500, "Internal server error: " + ex.Message);
+                return CreateResponse<IEnumerable<DTOTables>>(null!, StatusCodes.Status500InternalServerError, "Internal server error: " + ex.Message);
             }
         }
         
@@ -80,19 +81,19 @@ namespace APILayer.Controllers
         {
             try
             {
-                var data = await dataTablesBusiness.GetAllTablesAvailables();
+                var data = await dataTablesBusiness.GetAllTablesAvailablesAsync();
                 if (data.Count == 0)
                 {
-                    return CreateResponse<IEnumerable<DTOTables>>(null!, 404, "Not Found Data in this Page!");
+                    return CreateResponse<IEnumerable<DTOTables>>(null!, StatusCodes.Status404NotFound, "Not Found Data in this Page!");
                 }
                 else
                 {
-                    return CreateResponse<IEnumerable<DTOTables>>(data, 200, $"Find {data.Count} in this page!");
+                    return CreateResponse<IEnumerable<DTOTables>>(data, StatusCodes.Status200OK, $"Find {data.Count} in this page!");
                 }
             }
             catch (Exception ex)
             {
-                return CreateResponse<IEnumerable<DTOTables>>(null!, 500, "Internal server error: " + ex.Message);
+                return CreateResponse<IEnumerable<DTOTables>>(null!, StatusCodes.Status500InternalServerError, "Internal server error: " + ex.Message);
             }
         }
 
@@ -107,18 +108,18 @@ namespace APILayer.Controllers
             {
                 if (page <= 0 || Seats <= 0)
                 {
-                    return CreateResponse<IEnumerable<DTOTables>>(null!, 400, "Page or Seats number must be greater than 0.");
+                    return CreateResponse<IEnumerable<DTOTables>>(null!,StatusCodes.Status400BadRequest, "Page or Seats number must be greater than 0.");
                 }
-                var list = await dataTablesBusiness.GetFilterTables(page,Seats);
+                var list = await dataTablesBusiness.GetTablesFilter2Async(page,Seats);
                 if (list == null || list.Count == 0)
                 {
-                    return CreateResponse<IEnumerable<DTOTables>>(null!, 404, "Not Found!");
+                    return CreateResponse<IEnumerable<DTOTables>>(null!, StatusCodes.Status404NotFound, "Not Found!");
                 }
-                return CreateResponse<IEnumerable<DTOTables>>(list, 200, $"Row: {list.Count}");
+                return CreateResponse<IEnumerable<DTOTables>>(list, StatusCodes.Status200OK, $"Row: {list.Count}");
             }
             catch (Exception ex)
             {
-                return CreateResponse<IEnumerable<DTOTables>>(null!, 500, "Internal server error: " + ex.Message);
+                return CreateResponse<IEnumerable<DTOTables>>(null!, StatusCodes.Status500InternalServerError, "Internal server error: " + ex.Message);
             }
         }
         [HttpGet("GetAllFilterStatusTables", Name = "GetAllMenuTables")]
@@ -132,18 +133,18 @@ namespace APILayer.Controllers
             {
                 if (page <= 0 || StatusTable <= 0)
                 {
-                    return CreateResponse<IEnumerable<DTOTables>>(null!, 400, "Page or Status Table number must be greater than 0.");
+                    return CreateResponse<IEnumerable<DTOTables>>(null!, StatusCodes.Status400BadRequest, "Page or Status Table number must be greater than 0.");
                 }
-                var list = await dataTablesBusiness.GetMenuTables(page, StatusTable);
+                var list = await dataTablesBusiness.GetTablesFilter1Async(page, StatusTable);
                 if (list == null || list.Count == 0)
                 {
-                    return CreateResponse<IEnumerable<DTOTables>>(null!, 404, "Not Found!");
+                    return CreateResponse<IEnumerable<DTOTables>>(null!, StatusCodes.Status404NotFound, "Not Found!");
                 }
-                return CreateResponse<IEnumerable<DTOTables>>(list, 200, $"Row: {list.Count}");
+                return CreateResponse<IEnumerable<DTOTables>>(list, StatusCodes.Status200OK, $"Row: {list.Count}");
             }
             catch (Exception ex)
             {
-                return CreateResponse<IEnumerable<DTOTables>>(null!, 500, "Internal server error: " + ex.Message);
+                return CreateResponse<IEnumerable<DTOTables>>(null!, StatusCodes.Status200OK, "Internal server error: " + ex.Message);
             }
         }
         [HttpGet("GetAllFilterSeatsStatusTables", Name = "GetAllFilterSeatsStatusTables")]
@@ -157,18 +158,18 @@ namespace APILayer.Controllers
             {
                 if (page <= 0 || StatusTable < -1 || Seats < -1)
                 {
-                    return CreateResponse<IEnumerable<DTOTables>>(null!, 400, "Page or Status Table number or Seats number must be greater than 0.");
+                    return CreateResponse<IEnumerable<DTOTables>>(null!, StatusCodes.Status400BadRequest, "Page or Status Table number or Seats number must be greater than 0.");
                 }
-                var list = await dataTablesBusiness.GetTableWithFilteringData(page, StatusTable, Seats);
+                var list = await dataTablesBusiness.GetTablesFilter3Async(page, StatusTable, Seats);
                 if (list == null || list.Count == 0)
                 {
-                    return CreateResponse<IEnumerable<DTOTables>>(null!, 404, "Not Found!");
+                    return CreateResponse<IEnumerable<DTOTables>>(null!, StatusCodes.Status404NotFound, "Not Found!");
                 }
-                return CreateResponse<IEnumerable<DTOTables>>(list, 200, $"Row: {list.Count}");
+                return CreateResponse<IEnumerable<DTOTables>>(list, StatusCodes.Status200OK, $"Row: {list.Count}");
             }
             catch (Exception ex)
             {
-                return CreateResponse<IEnumerable<DTOTables>>(null!, 500, "Internal server error: " + ex.Message);
+                return CreateResponse<IEnumerable<DTOTables>>(null!, StatusCodes.Status500InternalServerError, "Internal server error: " + ex.Message);
             }
         }
 
@@ -181,16 +182,16 @@ namespace APILayer.Controllers
         {
             try
             {
-                var list = await dataTablesBusiness.LoadByTableNumber(tableNumber);
+                var list = await dataTablesBusiness.GetTableByNameAsync(tableNumber);
                 if (list == null)
                 {
-                    return CreateResponse<DTOTables>(null!, 404, "Not Found!");
+                    return CreateResponse<DTOTables>(null!, StatusCodes.Status404NotFound, "Not Found!");
                 }
-                return CreateResponse<DTOTables>(list, 200, $"Ramadan N word");
+                return CreateResponse<DTOTables>(list, StatusCodes.Status200OK, $"Ramadan N word");
             }
             catch (Exception ex)
             {
-                return CreateResponse<DTOTables>(null!, 500, "Internal server error: " + ex.Message);
+                return CreateResponse<DTOTables>(null!, StatusCodes.Status500InternalServerError, "Internal server error: " + ex.Message);
             }
         }
 
@@ -206,19 +207,19 @@ namespace APILayer.Controllers
             {
                 if (ID <= 0)
                 {
-                    return CreateResponse<DTOTables>(null!, 400, "Bad Value");
+                    return CreateResponse<DTOTables>(null!, StatusCodes.Status400BadRequest, "Bad Value");
                 }
-                var data = await dataTablesBusiness.LoadByID(ID);
+                var data = await dataTablesBusiness.GetTableAsync(ID);
                 if (data == null)
                 {
-                    return CreateResponse<DTOTables>(null!, 404, "Not Found Data!");
+                    return CreateResponse<DTOTables>(null!, StatusCodes.Status404NotFound, "Not Found Data!");
                 }
-                return CreateResponse<DTOTables>(data, 200, "Found Data!");
+                return CreateResponse<DTOTables>(data, StatusCodes.Status200OK, "Found Data!");
 
             }
             catch (Exception ex)
             {
-                return CreateResponse<DTOTables>(null!, 500, "Internal server error: " + ex.Message);
+                return CreateResponse<DTOTables>(null!, StatusCodes.Status500InternalServerError, "Internal server error: " + ex.Message);
             }
         }
 
@@ -227,30 +228,28 @@ namespace APILayer.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<ApiResponse<DTOTables>>> AddTables(DTOTables Table)
+        public async Task<ActionResult<ApiResponse<DTOTables>>> AddTables(DTOTablesCRequest Table)
         {
             try
             {
-                if (Table.ID <= 0 || Table.StatusTableID <= 0)
+                if (Table == null || Table.StatusTableID <= 0)
                 {
-                    return CreateResponse<DTOTables>(null!, 400, "Bad Value");
+                    return CreateResponse<DTOTables>(null!, StatusCodes.Status400BadRequest, "Bad Value");
                 }
-                if (!await dataTablesBusiness.IsFindStatus(Table.StatusTableID))
+
+                var dto = await dataTablesBusiness.AddTableAsync(Table);
+
+                if (dto != null)
                 {
-                    return CreateResponse<DTOTables>(null!, 404, "Not Found Status");
+                    return CreateResponse<DTOTables>(dto!, StatusCodes.Status200OK, "Added Saccessfully.");
                 }
-                clsBusinessTables table = new clsBusinessTables(Table);
-                if (await table.Save())
-                {
-                    return CreatedAtAction(nameof(GetTableByID), new { id = table.DTOTables!.ID }, table.DTOTables);
-                }
-                return CreateResponse<DTOTables>(null!, 500, "A problem happened while handling your request.");
+                return CreateResponse<DTOTables>(null!, StatusCodes.Status500InternalServerError, "A problem happened while handling your request.");
 
             }
 
             catch (Exception ex)
             {
-                return CreateResponse<DTOTables>(null!, 500, "Internal server error: " + ex.Message);
+                return CreateResponse<DTOTables>(null!, StatusCodes.Status500InternalServerError, "Internal server error: " + ex.Message);
             }
         }
 
@@ -259,30 +258,26 @@ namespace APILayer.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<ApiResponse<DTOTables>>> UpdateTable(DTOTables Table)
+        public async Task<ActionResult<ApiResponse<DTOTables>>> UpdateTable(DTOTablesURequest Table)
         {
             try
             {
                 if (Table.ID <= 0 || Table.StatusTableID <= 0)
                 {
-                    return CreateResponse<DTOTables>(null!, 400, "Bad Value");
+                    return CreateResponse<DTOTables>(null!, StatusCodes.Status400BadRequest, "Bad Value");
                 }
-                if (!await dataTablesBusiness.IsFindStatus(Table.StatusTableID))
-                { 
-                    return CreateResponse<DTOTables>(null!, 404, "Not Found Status");
-
-                }
-                clsBusinessTables t = new clsBusinessTables(Table, clsBusinessTables.enMode.Update);
-                if (await t.Save())
+                
+                var dto = await dataTablesBusiness.UpdateTableAsync(Table);
+                if (dto != null)
                 {
-                    return CreateResponse<DTOTables>(t.DTOTables!, 200, "Update Saccessfully!");
+                    return CreateResponse<DTOTables>(dto!, StatusCodes.Status200OK, "Update Saccessfully!");
 
                 }
-                return CreateResponse<DTOTables>(null!, 500,  "A problem happened while handling your request.");
+                return CreateResponse<DTOTables>(null!, StatusCodes.Status500InternalServerError,  "A problem happened while handling your request.");
             }
             catch (Exception ex)
             {
-                return CreateResponse<DTOTables>(null!, 500, "Internal server error: " + ex.Message);
+                return CreateResponse<DTOTables>(null!, StatusCodes.Status500InternalServerError, "Internal server error: " + ex.Message);
             }
         }
 
@@ -297,17 +292,17 @@ namespace APILayer.Controllers
             {
                 if (ID <=0)
                 {
-                    return CreateResponse<DTOTables>(null!, 400, "Bad Value");
+                    return CreateResponse<DTOTables>(null!, StatusCodes.Status400BadRequest, "Bad Value");
                 }
-                if (await dataTablesBusiness.Delete(ID))
+                if (await dataTablesBusiness.DeleteTableAsync(ID))
                 {
-                    return CreateResponse<DTOTables>(null!, 200, "Delete Saccessfully!");
+                    return CreateResponse<DTOTables>(null!, StatusCodes.Status200OK, "Delete Saccessfully!");
                 }
-                return CreateResponse<DTOTables>(null!, 404, "A problem happened while handling your request.");
+                return CreateResponse<DTOTables>(null!, StatusCodes.Status404NotFound, "A problem happened while handling your request.");
             }
             catch (Exception ex)
             {
-                return CreateResponse<DTOTables>(null!, 500, "Internal server error: " + ex.Message);
+                return CreateResponse<DTOTables>(null!, StatusCodes.Status500InternalServerError, "Internal server error: " + ex.Message);
             }
         }
     }

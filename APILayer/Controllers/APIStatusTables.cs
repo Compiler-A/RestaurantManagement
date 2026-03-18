@@ -8,6 +8,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
+
 namespace APILayer.Controllers
 {
     [Route("api/APIStatusTables")]
@@ -33,18 +34,18 @@ namespace APILayer.Controllers
             {
                 if (Page <= 0)
                 {
-                    return CreateResponse<IEnumerable<DTOStatusTables>>(null!, 400, "Page number must be greater than zero.");
+                    return CreateResponse<IEnumerable<DTOStatusTables>>(null!, StatusCodes.Status400BadRequest, "Page number must be greater than zero.");
                 }
 
-                var list = await _businessStatusTables.GetAll(Page);
+                var list = await _businessStatusTables.GetAllStatusTablesAsync(Page);
                 if (list == null || list.Count == 0)
-                    return CreateResponse<IEnumerable<DTOStatusTables>>(null!, 404, "No StatusTables found.");
+                    return CreateResponse<IEnumerable<DTOStatusTables>>(null!, StatusCodes.Status404NotFound, "No Status Tables found.");
 
-                return CreateResponse<IEnumerable<DTOStatusTables>>(list!, 200, "Completed!");
+                return CreateResponse<IEnumerable<DTOStatusTables>>(list!, StatusCodes.Status200OK, "Completed!");
             }
             catch (System.Exception ex)
             {
-                return CreateResponse<IEnumerable<DTOStatusTables>>(null!, 500, "Internal server error: " + ex.Message);
+                return CreateResponse<IEnumerable<DTOStatusTables>>(null!, StatusCodes.Status500InternalServerError, "Internal server error: " + ex.Message);
             }
         }
 
@@ -59,18 +60,18 @@ namespace APILayer.Controllers
             {
                 if (ID <= 0)
                 {
-                    return CreateResponse<DTOStatusTables>(null!, 400, "Bad Ruquest");
+                    return CreateResponse<DTOStatusTables>(null!, StatusCodes.Status400BadRequest, "Bad Ruquest");
                 }
-                var statusTable = await _businessStatusTables.LoadByID(ID);
+                var statusTable = await _businessStatusTables.GetStatusTableAsync(ID);
                 if (statusTable == null)
-                    return CreateResponse<DTOStatusTables>(null!, 404, "StatusTable not found.");
+                    return CreateResponse<DTOStatusTables>(null!, StatusCodes.Status404NotFound, "StatusTable not found.");
 
                 
-                return CreateResponse<DTOStatusTables>(statusTable!, 200, "Completed!");
+                return CreateResponse<DTOStatusTables>(statusTable!, StatusCodes.Status200OK, "Completed!");
             }
             catch (System.Exception ex)
             {
-                return CreateResponse<DTOStatusTables>(null!, 500, "Internal server error: " + ex.Message);
+                return CreateResponse<DTOStatusTables>(null!, StatusCodes.Status500InternalServerError, "Internal server error: " + ex.Message);
             }
         }
 
@@ -80,31 +81,30 @@ namespace APILayer.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<ApiResponse<DTOStatusTables>>> AddStatusTable([FromBody] DTOStatusTables newStatusTable)
+        public async Task<ActionResult<ApiResponse<DTOStatusTables>>> AddStatusTable([FromBody] DTOStatusTablesCRequest Request)
         {
             try
             {
-                if (newStatusTable == null)
+                if (Request == null)
                 {
 
-                    return CreateResponse<DTOStatusTables>(null!, 400, "Bad Ruquest");
+                    return CreateResponse<DTOStatusTables>(null!, StatusCodes.Status400BadRequest, "Bad Ruquest");
                 }
 
-                var business = new clsBusinessStatusTables(new clsDataStatusTables() ,newStatusTable, clsBusinessStatusTables.enMode.Add);
-
-                var result = await business.Save();
-                if (result)
-                { 
-                    return CreatedAtRoute("GetStatusTable", new { ID = business.StatusTable!.StatusTableID }, newStatusTable );
+                _businessStatusTables.CreateRequest = Request;
+                var result = await _businessStatusTables.AddStatusTableAsync(_businessStatusTables.CreateRequest);
+                if (result != null)
+                {
+                    return CreateResponse<DTOStatusTables>(result!, StatusCodes.Status200OK, "Add Saccessfully.");
                 }
                 else
                 {
-                    return CreateResponse<DTOStatusTables>(null!, 400, "Failed to add StatusTable.");
+                    return CreateResponse<DTOStatusTables>(null!, StatusCodes.Status404NotFound, "Failed to add StatusTable.");
                 }
             }
             catch (System.Exception ex)
             {
-                return CreateResponse<DTOStatusTables>(null!, 500, "Internal server error: " + ex.Message);
+                return CreateResponse<DTOStatusTables>(null!, StatusCodes.Status500InternalServerError, "Internal server error: " + ex.Message);
             }
         }
 
@@ -115,35 +115,34 @@ namespace APILayer.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<ApiResponse<DTOStatusTables>>> UpdateStatusTable([FromBody] DTOStatusTables updatedStatusTable)
+        public async Task<ActionResult<ApiResponse<DTOStatusTables>>> UpdateStatusTable([FromBody] DTOStatusTablesURequest Request)
         {
             try
             {
-                if (updatedStatusTable == null || updatedStatusTable.StatusTableID <= 0)
+                if (Request == null || Request.ID <= 0)
                 {
-                    return CreateResponse<DTOStatusTables>(null!, 400, "Bad Ruquest");
+                    return CreateResponse<DTOStatusTables>(null!, StatusCodes.Status400BadRequest, "Bad Ruquest");
                 }
 
-                var business = new clsBusinessStatusTables();
-                var existingStatusTable = await business.LoadByID(updatedStatusTable.StatusTableID);
+                
 
-                if (existingStatusTable == null)
+                if (await _businessStatusTables.isFindStatusTableAsync(Request.ID))
                 {
-                    return CreateResponse<DTOStatusTables>(null!, 404, "StatusTable not found.");
+                    return CreateResponse<DTOStatusTables>(null!, StatusCodes.Status404NotFound, "StatusTable not found.");
                 }
 
-                business.StatusTable = updatedStatusTable;
+                _businessStatusTables.UpdateRequest = Request;
 
-                var result = await business.Save();
-                return result ?
-                    CreateResponse<DTOStatusTables>(business.StatusTable, 200, "StatusTable updated successfully.")
+                var result = await _businessStatusTables.UpdateStatusTableAsync(_businessStatusTables.UpdateRequest);
+                return result == null ?
+                    CreateResponse<DTOStatusTables>(result!, StatusCodes.Status200OK, "StatusTable updated successfully.")
                     : 
-                    CreateResponse<DTOStatusTables>(null!, 500, "Failed to update StatusTable.");
+                    CreateResponse<DTOStatusTables>(null!, StatusCodes.Status500InternalServerError, "Failed to update StatusTable.");
 
             }
             catch (System.Exception ex)
             {
-                return CreateResponse<DTOStatusTables>(null!, 500, "Internal server error: " + ex.Message);
+                return CreateResponse<DTOStatusTables>(null!, StatusCodes.Status500InternalServerError, "Internal server error: " + ex.Message);
             }
         }
 
@@ -159,23 +158,23 @@ namespace APILayer.Controllers
             {
                 if (id <= 0)
                 {
-                    return CreateResponse<DTOStatusTables>(null!, 400, "Bad Ruquest");
+                    return CreateResponse<DTOStatusTables>(null!, StatusCodes.Status200OK, "Bad Ruquest");
                 }
 
-                var result = await _businessStatusTables.Delete(id);
+                var result = await _businessStatusTables.DeleteStatusTableAsync(id);
 
                 if (result)
                 {
-                    return CreateResponse<DTOStatusTables>(null!, 200, "StatusTable deleted successfully.");
+                    return CreateResponse<DTOStatusTables>(null!, StatusCodes.Status200OK, "StatusTable deleted successfully.");
                 }
                 else
                 {
-                    return CreateResponse<DTOStatusTables>(null!, 404, "StatusTable not found or failed to delete.");
+                    return CreateResponse<DTOStatusTables>(null!, StatusCodes.Status500InternalServerError, "StatusTable not found or failed to delete.");
                 }
             }
             catch (System.Exception ex)
             {
-                return CreateResponse<DTOStatusTables>(null!, 500, "Internal server error: " + ex.Message);
+                return CreateResponse<DTOStatusTables>(null!, StatusCodes.Status500InternalServerError, "Internal server error: " + ex.Message);
             }
         }
     }

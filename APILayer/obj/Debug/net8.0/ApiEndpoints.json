@@ -9,7 +9,7 @@
     "Parameters": [
       {
         "Name": "employee",
-        "Type": "DataLayerRestaurant.DTOEmployees",
+        "Type": "DataLayerRestaurant.DTOEmployeesCRequest",
         "IsRequired": true
       }
     ],
@@ -50,7 +50,7 @@
     "Parameters": [
       {
         "Name": "Changed",
-        "Type": "DataLayerRestaurant.ChangedPassword",
+        "Type": "DataLayerRestaurant.DTOEmployeesChangedPassword",
         "IsRequired": true
       }
     ],
@@ -309,7 +309,7 @@
     "Parameters": [
       {
         "Name": "Login",
-        "Type": "DataLayerRestaurant.LoginRequest",
+        "Type": "DataLayerRestaurant.DTOEmployeesLoginRequest",
         "IsRequired": true
       }
     ],
@@ -368,7 +368,7 @@
     "Parameters": [
       {
         "Name": "employee",
-        "Type": "DataLayerRestaurant.DTOEmployees",
+        "Type": "DataLayerRestaurant.DTOEmployeesURequest",
         "IsRequired": true
       }
     ],
@@ -418,7 +418,7 @@
     "Parameters": [
       {
         "Name": "JobRole",
-        "Type": "DataLayerRestaurant.DTOJobRoles",
+        "Type": "DataLayerRestaurant.DTOJobRolesCRequest",
         "IsRequired": true
       }
     ],
@@ -609,7 +609,7 @@
     "Parameters": [
       {
         "Name": "Update",
-        "Type": "DataLayerRestaurant.DTOJobRoles",
+        "Type": "DataLayerRestaurant.DTOJobRolesURequest",
         "IsRequired": true
       }
     ],
@@ -659,13 +659,13 @@
     "Parameters": [
       {
         "Name": "menuItem",
-        "Type": "DataLayerRestaurant.DTOMenuItem",
+        "Type": "DataLayerRestaurant.DTOMenuItemsCRequest",
         "IsRequired": true
       }
     ],
     "ReturnTypes": [
       {
-        "Type": "APILayer.ApiResponse\u00601[[DataLayerRestaurant.DTOMenuItem, DataLayerRestaurant, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "Type": "APILayer.ApiResponse\u00601[[DataLayerRestaurant.DTOMenuItems, DataLayerRestaurant, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -754,7 +754,7 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "APILayer.ApiResponse\u00601[[System.Collections.Generic.List\u00601[[DataLayerRestaurant.DTOMenuItem, DataLayerRestaurant, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "Type": "APILayer.ApiResponse\u00601[[System.Collections.Generic.List\u00601[[DataLayerRestaurant.DTOMenuItems, DataLayerRestaurant, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -797,7 +797,7 @@
     "Parameters": [],
     "ReturnTypes": [
       {
-        "Type": "APILayer.ApiResponse\u00601[[System.Collections.Generic.List\u00601[[DataLayerRestaurant.DTOMenuItem, DataLayerRestaurant, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "Type": "APILayer.ApiResponse\u00601[[System.Collections.Generic.List\u00601[[DataLayerRestaurant.DTOMenuItems, DataLayerRestaurant, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -856,7 +856,7 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "APILayer.ApiResponse\u00601[[System.Collections.Generic.List\u00601[[DataLayerRestaurant.DTOMenuItem, DataLayerRestaurant, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "Type": "APILayer.ApiResponse\u00601[[System.Collections.Generic.List\u00601[[DataLayerRestaurant.DTOMenuItems, DataLayerRestaurant, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -905,7 +905,7 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "APILayer.ApiResponse\u00601[[DataLayerRestaurant.DTOMenuItem, DataLayerRestaurant, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "Type": "APILayer.ApiResponse\u00601[[DataLayerRestaurant.DTOMenuItems, DataLayerRestaurant, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -948,13 +948,13 @@
     "Parameters": [
       {
         "Name": "menuItem",
-        "Type": "DataLayerRestaurant.DTOMenuItem",
+        "Type": "DataLayerRestaurant.DTOMenuItemsURequest",
         "IsRequired": true
       }
     ],
     "ReturnTypes": [
       {
-        "Type": "APILayer.ApiResponse\u00601[[DataLayerRestaurant.DTOMenuItem, DataLayerRestaurant, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "Type": "APILayer.ApiResponse\u00601[[DataLayerRestaurant.DTOMenuItems, DataLayerRestaurant, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -997,7 +997,7 @@
     "Parameters": [
       {
         "Name": "dto",
-        "Type": "DataLayerRestaurant.DTOOrderDetails",
+        "Type": "DataLayerRestaurant.DTOOrderDetailsCRequest",
         "IsRequired": true
       }
     ],
@@ -1245,7 +1245,7 @@
     "Parameters": [
       {
         "Name": "dto",
-        "Type": "DataLayerRestaurant.DTOOrderDetails",
+        "Type": "DataLayerRestaurant.DTOOrderDetailsURequest",
         "IsRequired": true
       }
     ],
@@ -1295,7 +1295,7 @@
     "Parameters": [
       {
         "Name": "dto",
-        "Type": "DataLayerRestaurant.DTOOrderCreateRequest",
+        "Type": "DataLayerRestaurant.DTOOrderCRequest",
         "IsRequired": true
       }
     ],
@@ -1558,7 +1558,7 @@
     "Parameters": [
       {
         "Name": "dto",
-        "Type": "DataLayerRestaurant.DTOOrderUpdateRequest",
+        "Type": "DataLayerRestaurant.DTOOrderURequest",
         "IsRequired": true
       }
     ],
@@ -1608,7 +1608,7 @@
     "Parameters": [
       {
         "Name": "Setting",
-        "Type": "DataLayerRestaurant.DTOSettings",
+        "Type": "DataLayerRestaurant.DTOSettingsCRequest",
         "IsRequired": true
       }
     ],
@@ -1799,7 +1799,7 @@
     "Parameters": [
       {
         "Name": "Setting",
-        "Type": "DataLayerRestaurant.DTOSettings",
+        "Type": "DataLayerRestaurant.DTOSettingsURequest",
         "IsRequired": true
       }
     ],
@@ -1849,7 +1849,7 @@
     "Parameters": [
       {
         "Name": "statusMenu",
-        "Type": "DataLayerRestaurant.DTOStatusMenus",
+        "Type": "DataLayerRestaurant.DTOStatusMenusCRequest",
         "IsRequired": true
       }
     ],
@@ -1895,7 +1895,7 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "APILayer.ApiResponse\u00601[[System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "Type": "APILayer.ApiResponse\u00601[[System.Boolean, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -2036,7 +2036,7 @@
     "Parameters": [
       {
         "Name": "statusMenu",
-        "Type": "DataLayerRestaurant.DTOStatusMenus",
+        "Type": "DataLayerRestaurant.DTOStatusMenusURequest",
         "IsRequired": true
       }
     ],
@@ -2084,8 +2084,8 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "StatusOrder",
-        "Type": "DataLayerRestaurant.DTOStatusOrders",
+        "Name": "Request",
+        "Type": "DataLayerRestaurant.DTOStatusOrdersCRequest",
         "IsRequired": true
       }
     ],
@@ -2275,8 +2275,8 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "Update",
-        "Type": "DataLayerRestaurant.DTOStatusOrders",
+        "Name": "Request",
+        "Type": "DataLayerRestaurant.DTOStatusOrdersURequest",
         "IsRequired": true
       }
     ],
@@ -2325,8 +2325,8 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "newStatusTable",
-        "Type": "DataLayerRestaurant.DTOStatusTables",
+        "Name": "Request",
+        "Type": "DataLayerRestaurant.DTOStatusTablesCRequest",
         "IsRequired": true
       }
     ],
@@ -2525,8 +2525,8 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "updatedStatusTable",
-        "Type": "DataLayerRestaurant.DTOStatusTables",
+        "Name": "Request",
+        "Type": "DataLayerRestaurant.DTOStatusTablesURequest",
         "IsRequired": true
       }
     ],
@@ -2576,7 +2576,7 @@
     "Parameters": [
       {
         "Name": "Table",
-        "Type": "DataLayerRestaurant.DTOTables",
+        "Type": "DataLayerRestaurant.DTOTablesCRequest",
         "IsRequired": true
       }
     ],
@@ -3082,7 +3082,7 @@
     "Parameters": [
       {
         "Name": "Table",
-        "Type": "DataLayerRestaurant.DTOTables",
+        "Type": "DataLayerRestaurant.DTOTablesURequest",
         "IsRequired": true
       }
     ],
@@ -3131,7 +3131,7 @@
     "Parameters": [
       {
         "Name": "typeItem",
-        "Type": "DataLayerRestaurant.DTOTypeItems",
+        "Type": "DataLayerRestaurant.DTOTypeItemsCRequest",
         "IsRequired": true
       }
     ],
@@ -3178,7 +3178,7 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "APILayer.ApiResponse\u00601[[DataLayerRestaurant.DTOTypeItems, DataLayerRestaurant, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "Type": "APILayer.ApiResponse\u00601[[System.Boolean, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -3322,7 +3322,7 @@
     "Parameters": [
       {
         "Name": "typeItem",
-        "Type": "DataLayerRestaurant.DTOTypeItems",
+        "Type": "DataLayerRestaurant.DTOTypeItemsURequest",
         "IsRequired": true
       }
     ],

@@ -1,0 +1,213 @@
+﻿using Microsoft.Data.SqlClient;
+using RestaurantDataLayer;
+
+namespace DataLayerRestaurant
+{
+    public class DTOTypeItemsCRequest
+    {
+        public string Name { get; set; }
+        public string? Description { get; set; }
+
+        public DTOTypeItemsCRequest(string name, string? description)
+        {
+            Name = name; 
+            Description = description; 
+        }
+    }
+
+    public class DTOTypeItemsURequest : DTOTypeItemsCRequest
+    {
+        public int ID { get; set; }
+
+        public DTOTypeItemsURequest(int id,  string name, string? description) 
+            : base(name, description)
+        {
+            ID = id;
+        }
+    }
+
+    public class DTOTypeItems
+    {
+        public int ID { get; set; }
+        public string Name { get; set; }
+        public string? Description { get; set; }
+
+        public DTOTypeItems()
+        {
+            ID = -1;
+            Name = string.Empty;
+            Description = null;
+        }
+
+        public DTOTypeItems(int typeItemID, string typeItemName, string? typeItemDescription)
+        {
+            ID = typeItemID;
+            Name = typeItemName;
+            Description = typeItemDescription;
+        }
+    }
+
+
+
+    public class clsCompositionDTypeItems : ICompositionDataBase<DTOTypeItems>
+    {
+        public DTOTypeItems GetDataFromDataBase(SqlDataReader reader)
+        {
+            return new DTOTypeItems
+            {
+                ID = reader.GetInt32(reader.GetOrdinal("TypeItemID")),
+                Name = reader.GetString(reader.GetOrdinal("Name")),
+                Description = reader.IsDBNull(reader.GetOrdinal("Description"))
+                    ? null
+                    : reader.GetString(reader.GetOrdinal("Description"))
+            };
+        }
+    }
+
+    public class clsReadableDTypeItems : clsCompositionDTypeItems, IReadableDTypeItems
+    {
+        public async Task<List<DTOTypeItems>> GetAllDataAsync(int page)
+        {
+            List<DTOTypeItems> list = new List<DTOTypeItems>();
+
+            using SqlConnection connection = new SqlConnection(clsDataAccessLayer.ConnectionString);
+            using SqlCommand command = new SqlCommand("TypeItems.SP_GetAllTypeItems", connection)
+            {
+                CommandType = System.Data.CommandType.StoredProcedure,
+                CommandTimeout = 15
+            };
+
+            command.Parameters.AddWithValue("@PageNumber", page);
+            command.Parameters.AddWithValue("@Rows", clsDataAccessLayer.Rows);
+
+            await connection.OpenAsync();
+            using SqlDataReader reader = await command.ExecuteReaderAsync();
+            while (await reader.ReadAsync())
+            {
+                list.Add(GetDataFromDataBase(reader));
+            }
+
+            return list;
+        }
+
+        public async Task<DTOTypeItems?> GetDataAsync(int id)
+        {
+            DTOTypeItems? typeItem = null;
+            using SqlConnection connection = new SqlConnection(clsDataAccessLayer.ConnectionString);
+            using SqlCommand command = new SqlCommand("TypeItems.SP_GetTypeItemById", connection)
+            {
+                CommandType = System.Data.CommandType.StoredProcedure,
+                CommandTimeout = 15
+            };
+            command.Parameters.AddWithValue("@TypeItemID", id);
+
+            await connection.OpenAsync();
+            using SqlDataReader reader = await command.ExecuteReaderAsync();
+            if (await reader.ReadAsync())
+            {
+                typeItem = GetDataFromDataBase(reader);
+            }
+            return typeItem;
+        }
+    }
+
+    public class clsWritableDTypeItems : clsCompositionDTypeItems , IWritableDTypeItems
+    {
+        public async Task<DTOTypeItems?> CreateDataAsync(DTOTypeItemsCRequest typeItem)
+        {
+            using SqlConnection connection = new SqlConnection(clsDataAccessLayer.ConnectionString);
+            using SqlCommand command = new SqlCommand("TypeItems.SP_AddTypeItem", connection)
+            {
+                CommandType = System.Data.CommandType.StoredProcedure,
+            };
+
+            command.Parameters.AddWithValue("@Name", typeItem.Name);
+            command.Parameters.AddWithValue("@Description", (object?)typeItem.Description ?? DBNull.Value);
+
+            await connection.OpenAsync();
+            using SqlDataReader reader = await command.ExecuteReaderAsync();
+            if (await reader.ReadAsync())
+            {
+                return GetDataFromDataBase(reader);
+            }
+            return null;
+        }
+
+        public async Task<DTOTypeItems?> UpdateDataAsync(DTOTypeItemsURequest typeItem)
+        {
+
+            using SqlConnection connection = new SqlConnection(clsDataAccessLayer.ConnectionString);
+            using SqlCommand command = new SqlCommand("TypeItems.SP_UpdateTypeItem", connection)
+            {
+                CommandType = System.Data.CommandType.StoredProcedure,
+            };
+
+            command.Parameters.AddWithValue("@TypeItemID", typeItem.ID);
+            command.Parameters.AddWithValue("@Name", typeItem.Name);
+            command.Parameters.AddWithValue("@Description", (object?)typeItem.Description ?? DBNull.Value);
+
+            await connection.OpenAsync();
+            using SqlDataReader reader = await command.ExecuteReaderAsync();
+            if (await reader.ReadAsync())
+            {
+                return GetDataFromDataBase(reader);
+            }
+            return null;
+        }
+
+        public async Task<bool> DeleteDataAsync(int typeItemID)
+        {
+            using SqlConnection connection = new SqlConnection(clsDataAccessLayer.ConnectionString);
+            using SqlCommand command = new SqlCommand("TypeItems.SP_DeleteTypeItem", connection)
+            {
+                CommandType = System.Data.CommandType.StoredProcedure,
+                CommandTimeout = 15
+            };
+            command.Parameters.AddWithValue("@TypeItemID", typeItemID);
+
+            await connection.OpenAsync();
+            int rowsAffected = await command.ExecuteNonQueryAsync();
+            return rowsAffected > 0;
+        }
+    }
+
+
+
+    public class clsDataTypeItems : IDataTypeItems
+    {
+        IReadableDTypeItems _IRead;
+        IWritableDTypeItems _IWrite;
+
+        public clsDataTypeItems(IReadableDTypeItems Read, IWritableDTypeItems Write)
+        {
+            _IRead = Read;
+            _IWrite = Write;
+        }
+
+        public async Task<DTOTypeItems?> GetTypeItemAsync(int ID)
+        {
+            return await _IRead.GetDataAsync(ID);
+        }
+        public async Task<List<DTOTypeItems>> GetAllTypeItemsAsync(int Page)
+        {
+            return await _IRead.GetAllDataAsync(Page);
+        }
+
+        public async Task<DTOTypeItems?> AddTypeItemAsync(DTOTypeItemsCRequest Request)
+        {
+            return await _IWrite.CreateDataAsync(Request);
+        }
+        public async Task<DTOTypeItems?> UpdateTypeItemAsync(DTOTypeItemsURequest Request)
+        {
+            return await _IWrite.UpdateDataAsync(Request);
+        }
+
+        public async Task<bool> DeleteTypeItemAsync(int ID)
+        {
+            return await _IWrite.DeleteDataAsync(ID);
+        }
+
+    }
+
+        
+}

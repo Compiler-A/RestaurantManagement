@@ -31,7 +31,7 @@ namespace APILayer.Controllers
                 if (page <= 0)
                     return CreateResponse<IEnumerable<DTOTypeItems>>(null!, StatusCodes.Status400BadRequest, "Page number must be greater than zero.");
 
-                var typeItems = await _dataLayer.GetAllTypeItems(page);
+                var typeItems = await _dataLayer.GetAllTypeItemsAsync(page);
                 if (typeItems == null || typeItems.Count == 0)
                     return CreateResponse<IEnumerable<DTOTypeItems>>(null!, StatusCodes.Status404NotFound, "No TypeItems found.");
 
@@ -56,7 +56,7 @@ namespace APILayer.Controllers
 
             try
             {
-                var typeItemDto = await _dataLayer.LoadByID(id);
+                var typeItemDto = await _dataLayer.GetTypeItemAsync(id);
                 if (typeItemDto == null)
                     return CreateResponse<DTOTypeItems>(null!, StatusCodes.Status404NotFound, "TypeItem not found.");
 
@@ -73,19 +73,18 @@ namespace APILayer.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<ApiResponse<DTOTypeItems>>> AddTypeItem([FromBody] DTOTypeItems typeItem)
+        public async Task<ActionResult<ApiResponse<DTOTypeItems>>> AddTypeItem([FromBody] DTOTypeItemsCRequest typeItem)
         {
             if (typeItem == null)
                 return CreateResponse<DTOTypeItems>(null!, StatusCodes.Status400BadRequest, "TypeItem data is null.");
 
             try
             {
-                var businessTypeItem = new clsBusinessTypeItems(typeItem, clsBusinessTypeItems.enMode.enAdd);
-                bool isSaved = await businessTypeItem.Save();
-                if (!isSaved)
+                var dto = await _dataLayer.AddTypeItemAsync(typeItem);
+                if (dto == null)
                     return CreateResponse<DTOTypeItems>(null!, StatusCodes.Status500InternalServerError, "A problem happened while handling your request.");
 
-                return CreateResponse(typeItem, StatusCodes.Status201Created, "Add Successfully");
+                return CreateResponse(dto, StatusCodes.Status201Created, "Add Successfully");
             }
             catch (System.Exception ex)
             {
@@ -99,20 +98,19 @@ namespace APILayer.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<ApiResponse<DTOTypeItems>>> UpdateTypeItem([FromBody] DTOTypeItems typeItem)
+        public async Task<ActionResult<ApiResponse<DTOTypeItems>>> UpdateTypeItem([FromBody] DTOTypeItemsURequest typeItem)
         {
-            if (typeItem == null || typeItem.TypeItemID <= 0)
+            if (typeItem == null || typeItem.ID <= 0)
                 return CreateResponse<DTOTypeItems>(null!, StatusCodes.Status400BadRequest, "Invalid TypeItem data.");
 
             try
             {
-                var businessTypeItem = new clsBusinessTypeItems(typeItem, clsBusinessTypeItems.enMode.enUpdate);
-                bool isSaved = await businessTypeItem.Save();
+                var dto = await _dataLayer.UpdateTypeItemAsync(typeItem);
 
-                if (!isSaved)
+                if (dto == null)
                     return CreateResponse<DTOTypeItems>(null!, StatusCodes.Status500InternalServerError, "A problem happened while handling your request.");
 
-                return CreateResponse(typeItem, StatusCodes.Status200OK, "Update successfully");
+                return CreateResponse(dto, StatusCodes.Status200OK, "Update successfully");
             }
             catch (System.Exception ex)
             {
@@ -126,27 +124,26 @@ namespace APILayer.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<ApiResponse<DTOTypeItems>>> DeleteTypeItem([FromRoute] int id)
+        public async Task<ActionResult<ApiResponse<bool>>> DeleteTypeItem([FromRoute] int id)
         {
             if (id <= 0)
-                return CreateResponse<DTOTypeItems>(null!, StatusCodes.Status400BadRequest, "Invalid TypeItem ID.");
+                return CreateResponse<bool>(false!, StatusCodes.Status400BadRequest, "Invalid TypeItem ID.");
 
             try
             {
-                var typeItem = await _dataLayer.LoadByID(id);
+                var typeItem = await _dataLayer.GetTypeItemAsync(id);
                 if (typeItem == null)
-                    return CreateResponse<DTOTypeItems>(null!, StatusCodes.Status404NotFound, "TypeItem not found.");
+                    return CreateResponse<bool>(false!, StatusCodes.Status404NotFound, "TypeItem not found.");
 
-                var businessTypeItem = new clsBusinessTypeItems( typeItem, clsBusinessTypeItems.enMode.enUpdate);
-                bool isDeleted = await businessTypeItem.Delete();
-                if (isDeleted)
-                    return CreateResponse(typeItem, StatusCodes.Status200OK, "Deleted successfully");
+                var isDelete = await _dataLayer.DeleteTypeItemAsync(id);
+                if (isDelete)
+                    return CreateResponse<bool>(true, StatusCodes.Status200OK, "Deleted successfully");
 
-                return CreateResponse<DTOTypeItems>(null!, StatusCodes.Status500InternalServerError, "A problem happened while handling your request.");
+                return CreateResponse<bool>(false!, StatusCodes.Status500InternalServerError, "A problem happened while handling your request.");
             }
             catch (System.Exception ex)
             {
-                return CreateResponse<DTOTypeItems>(null!, StatusCodes.Status500InternalServerError, "Internal server error: " + ex.Message);
+                return CreateResponse<bool>(false!, StatusCodes.Status500InternalServerError, "Internal server error: " + ex.Message);
             }
         }
     }

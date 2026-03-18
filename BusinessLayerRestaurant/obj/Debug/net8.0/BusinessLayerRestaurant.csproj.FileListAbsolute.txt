@@ -14,3 +14,19 @@ C:\Users\Lenovo\Documents\For My Programming\.vscoomunity\Projects\RestaurantPro
 C:\Users\Lenovo\Documents\For My Programming\.vscoomunity\Projects\RestaurantProjectv2\BusinessLayerRestaurant\obj\Debug\net8.0\BusinessLayerRestaurant.pdb
 C:\Users\Lenovo\Documents\For My Programming\.vscoomunity\Projects\RestaurantProjectv2\BusinessLayerRestaurant\obj\Debug\net8.0\ref\BusinessLayerRestaurant.dll
 C:\Users\Lenovo\Documents\For My Programming\.vscoomunity\Projects\RestaurantProjectv2\BusinessLayerRestaurant\obj\Debug\net8.0\BusinessLayerRestaurant.sourcelink.json
+D:\Programming\Projects\RestaurantProjectv2\BusinessLayerRestaurant\obj\Debug\net8.0\BusinessLayerRestaurant.csproj.AssemblyReference.cache
+D:\Programming\Projects\RestaurantProjectv2\BusinessLayerRestaurant\obj\Debug\net8.0\BusinessLayerRestaurant.GeneratedMSBuildEditorConfig.editorconfig
+D:\Programming\Projects\RestaurantProjectv2\BusinessLayerRestaurant\obj\Debug\net8.0\BusinessLayerRestaurant.AssemblyInfoInputs.cache
+D:\Programming\Projects\RestaurantProjectv2\BusinessLayerRestaurant\obj\Debug\net8.0\BusinessLayerRestaurant.AssemblyInfo.cs
+D:\Programming\Projects\RestaurantProjectv2\BusinessLayerRestaurant\obj\Debug\net8.0\BusinessLayerRestaurant.csproj.CoreCompileInputs.cache
+D:\Programming\Projects\RestaurantProjectv2\BusinessLayerRestaurant\obj\Debug\net8.0\BusinessLayerRestaurant.sourcelink.json
+D:\Programming\Projects\RestaurantProjectv2\BusinessLayerRestaurant\obj\Debug\net8.0\BusinessLayerRestaurant.dll
+D:\Programming\Projects\RestaurantProjectv2\BusinessLayerRestaurant\obj\Debug\net8.0\refint\BusinessLayerRestaurant.dll
+D:\Programming\Projects\RestaurantProjectv2\BusinessLayerRestaurant\obj\Debug\net8.0\BusinessLayerRestaurant.pdb
+D:\Programming\Projects\RestaurantProjectv2\BusinessLayerRestaurant\bin\Debug\net8.0\BusinessLayerRestaurant.deps.json
+D:\Programming\Projects\RestaurantProjectv2\BusinessLayerRestaurant\bin\Debug\net8.0\BusinessLayerRestaurant.dll
+D:\Programming\Projects\RestaurantProjectv2\BusinessLayerRestaurant\bin\Debug\net8.0\BusinessLayerRestaurant.pdb
+D:\Programming\Projects\RestaurantProjectv2\BusinessLayerRestaurant\bin\Debug\net8.0\DataLayerRestaurant.dll
+D:\Programming\Projects\RestaurantProjectv2\BusinessLayerRestaurant\bin\Debug\net8.0\DataLayerRestaurant.pdb
+D:\Programming\Projects\RestaurantProjectv2\BusinessLayerRestaurant\obj\Debug\net8.0\Business.B8DA3DA0.Up2Date
+D:\Programming\Projects\RestaurantProjectv2\BusinessLayerRestaurant\obj\Debug\net8.0\ref\BusinessLayerRestaurant.dll
