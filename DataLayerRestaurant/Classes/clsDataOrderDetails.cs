@@ -1,5 +1,5 @@
-﻿using Azure;
-using Microsoft.Data.SqlClient;
+﻿using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Options;
 using RestaurantDataLayer;
 using System;
 using System.Collections.Generic;
@@ -91,10 +91,18 @@ namespace DataLayerRestaurant
 
     public class clsReadableDOrderDetails : clsCompositionDOrderDetails ,IReadableDOrderDetails
     {
+
+        private readonly clsMySettings _Settings;
+
+        public clsReadableDOrderDetails(IOptions<clsMySettings> Settings)
+        {
+            _Settings = Settings.Value;
+        }
+
         public async Task<DTOOrderDetails?> GetDataAsync(int ID)
         {
             DTOOrderDetails? result = null;
-            using (SqlConnection Connection = new SqlConnection(clsDataAccessLayer.ConnectionString))
+            using (SqlConnection Connection = new SqlConnection(_Settings.ConnectionString))
             {
                 using (SqlCommand Command = new SqlCommand("OrderDetails.SP_GetOrderDetailByID", Connection))
                 {
@@ -116,13 +124,13 @@ namespace DataLayerRestaurant
         public async Task<List<DTOOrderDetails>> GetAllDataAsync(int page)
         {
             List<DTOOrderDetails> result = new List<DTOOrderDetails>();
-            using (SqlConnection Connection = new SqlConnection(clsDataAccessLayer.ConnectionString))
+            using (SqlConnection Connection = new SqlConnection(_Settings.ConnectionString))
             {
                 using (SqlCommand Command = new SqlCommand("OrderDetails.SP_GetAllOrderDetails", Connection))
                 {
                     Command.CommandType = System.Data.CommandType.StoredProcedure;
                     Command.Parameters.AddWithValue("@Page", page);
-                    Command.Parameters.AddWithValue("@Rows", clsDataAccessLayer.Rows);
+                    Command.Parameters.AddWithValue("@Rows", _Settings.RowsPerPage);
 
                     await Connection.OpenAsync();
                     using (SqlDataReader Reader = await Command.ExecuteReaderAsync())
@@ -139,7 +147,7 @@ namespace DataLayerRestaurant
         public async Task<List<DTOOrderDetails>> GetAllDataByOrderIDAsync(int orderID)
         {
             List<DTOOrderDetails> result = new List<DTOOrderDetails>();
-            using (SqlConnection Connection = new SqlConnection(clsDataAccessLayer.ConnectionString))
+            using (SqlConnection Connection = new SqlConnection(_Settings.ConnectionString))
             {
                 using (SqlCommand Command = new SqlCommand("OrderDetails.SP_GetItemByOrderID", Connection))
                 {
@@ -161,10 +169,16 @@ namespace DataLayerRestaurant
 
     public class clsWritableDOrderDetails : clsCompositionDOrderDetails,IWritableDOrderDetails
     {
+        private readonly clsMySettings _Settings;
+        public clsWritableDOrderDetails(IOptions<clsMySettings> settings)
+        {
+            _Settings = settings.Value; 
+        }
+
         public async Task<bool> DeleteDataAsync(int id)
         {
             bool Delete = false;
-            using (SqlConnection Connection = new SqlConnection(clsDataAccessLayer.ConnectionString))
+            using (SqlConnection Connection = new SqlConnection(_Settings.ConnectionString))
             {
                 using (SqlCommand Command = new SqlCommand("OrderDetails.SP_DeleteOrderDetail", Connection))
                 {
@@ -180,7 +194,7 @@ namespace DataLayerRestaurant
         }
         public async Task<DTOOrderDetails?> CreateDataAsync(DTOOrderDetailsCRequest dto)
         {
-            using (SqlConnection Connection = new SqlConnection(clsDataAccessLayer.ConnectionString))
+            using (SqlConnection Connection = new SqlConnection(_Settings.ConnectionString))
             {
                 using (SqlCommand Command = new SqlCommand("OrderDetails.SP_AddOrderDetail", Connection))
                 {
@@ -204,7 +218,7 @@ namespace DataLayerRestaurant
 
         public async Task<DTOOrderDetails?> UpdateDataAsync(DTOOrderDetailsURequest dto)
         {
-            using (SqlConnection Connection = new SqlConnection(clsDataAccessLayer.ConnectionString))
+            using (SqlConnection Connection = new SqlConnection(_Settings.ConnectionString))
             {
                 using (SqlCommand Command = new SqlCommand("OrderDetails.SP_UpdateOrderDetail", Connection))
                 {

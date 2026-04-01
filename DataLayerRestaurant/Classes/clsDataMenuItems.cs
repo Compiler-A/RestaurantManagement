@@ -1,9 +1,10 @@
-﻿using Azure;
-using Microsoft.Data.SqlClient;
+﻿using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Options;
 using RestaurantDataLayer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime;
 using System.Security.Cryptography.Pkcs;
 using System.Text;
 using System.Threading.Tasks;
@@ -98,10 +99,15 @@ namespace DataLayerRestaurant
 
     public class clsReadableDMenuItems : clsCompositionDMenuItems ,IReadableDMenuItems
     {
+        private readonly clsMySettings _Settings;
+        public clsReadableDMenuItems(IOptions<clsMySettings> settings)
+        {
+            _Settings = settings.Value;
+        }
         public async Task<DTOMenuItems?> GetDataAsync(int ID)
         {
             DTOMenuItems? menuItem = null;
-            using (SqlConnection conn = new SqlConnection(clsDataAccessLayer.ConnectionString))
+            using (SqlConnection conn = new SqlConnection(_Settings.ConnectionString))
             using (SqlCommand cmd = new SqlCommand("MenuItems.SP_GetMenuItemByID", conn))
             {
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
@@ -120,12 +126,12 @@ namespace DataLayerRestaurant
         public async Task<List<DTOMenuItems>> GetAllDataAsync(int Page)
         {
             List<DTOMenuItems> menuItems = new List<DTOMenuItems>();
-            using (SqlConnection conn = new SqlConnection(clsDataAccessLayer.ConnectionString))
+            using (SqlConnection conn = new SqlConnection(_Settings.ConnectionString))
             using (SqlCommand cmd = new SqlCommand("MenuItems.SP_GetAllMenuItems", conn))
             {
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@Page", Page);
-                cmd.Parameters.AddWithValue("@Rows", clsDataAccessLayer.Rows);
+                cmd.Parameters.AddWithValue("@Rows", _Settings.RowsPerPage);
 
                 await conn.OpenAsync();
                 using (SqlDataReader reader = await cmd.ExecuteReaderAsync())
@@ -142,7 +148,7 @@ namespace DataLayerRestaurant
         public async Task<List<DTOMenuItems>> GetAllDataAvailablesAsync()
         {
             List<DTOMenuItems> menuItems = new List<DTOMenuItems>();
-            using (SqlConnection conn = new SqlConnection(clsDataAccessLayer.ConnectionString))
+            using (SqlConnection conn = new SqlConnection(_Settings.ConnectionString))
             using (SqlCommand cmd = new SqlCommand("MenuItems.SP_GetAllMenuItemsAvailables", conn))
             {
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
@@ -162,12 +168,12 @@ namespace DataLayerRestaurant
         public async Task<List<DTOMenuItems>> GetAllDataFiltersAsync(int page, int StatusMenuID, int TypeItemID)
         {
             List<DTOMenuItems> menuItems = new List<DTOMenuItems>();
-            using (SqlConnection conn = new SqlConnection(clsDataAccessLayer.ConnectionString))
+            using (SqlConnection conn = new SqlConnection(_Settings.ConnectionString))
             using (SqlCommand cmd = new SqlCommand("MenuItems.SP_GetFilterTypeItemAndStatusMenuMenuItems", conn))
             {
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@Page", page);
-                cmd.Parameters.AddWithValue("@Rows", clsDataAccessLayer.Rows);
+                cmd.Parameters.AddWithValue("@Rows", _Settings.RowsPerPage);
                 cmd.Parameters.AddWithValue("@StatusMenu", StatusMenuID);
                 cmd.Parameters.AddWithValue("@TypeItem", TypeItemID);
                 await conn.OpenAsync();
@@ -186,10 +192,16 @@ namespace DataLayerRestaurant
 
     public class clsWritableDMenuItems : clsCompositionDMenuItems ,IWritableDMenuItems
     {
+        private readonly clsMySettings _Settings;
+        public clsWritableDMenuItems(IOptions<clsMySettings> settings)
+        {
+            _Settings = settings.Value;
+        }
+
         public async Task<DTOMenuItems?> CreateDataAsync(DTOMenuItemsCRequest menuItem)
         {
 
-            using (SqlConnection conn = new SqlConnection(clsDataAccessLayer.ConnectionString))
+            using (SqlConnection conn = new SqlConnection(_Settings.ConnectionString))
             using (SqlCommand cmd = new SqlCommand("MenuItems.SP_AddMenuItem", conn))
             {
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
@@ -213,7 +225,7 @@ namespace DataLayerRestaurant
         public async Task<DTOMenuItems?> UpdateDataAsync(DTOMenuItemsURequest menuItem)
         {
 
-            using (SqlConnection conn = new SqlConnection(clsDataAccessLayer.ConnectionString))
+            using (SqlConnection conn = new SqlConnection(_Settings.ConnectionString))
             using (SqlCommand cmd = new SqlCommand("MenuItems.SP_UpdateMenuItem", conn))
             {
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
@@ -237,7 +249,7 @@ namespace DataLayerRestaurant
 
         public async Task<bool> DeleteDataAsync(int id)
         {
-            using (SqlConnection conn = new SqlConnection(clsDataAccessLayer.ConnectionString))
+            using (SqlConnection conn = new SqlConnection(_Settings.ConnectionString))
             using (SqlCommand cmd = new SqlCommand("MenuItems.SP_DeleteMenuItem", conn))
             {
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;

@@ -1,8 +1,10 @@
 ﻿using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Options;
 using RestaurantDataLayer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -67,16 +69,24 @@ namespace DataLayerRestaurant
 
     public class clsReadableDSettings : clsCompositionDSettings , IReadableDSettings
     {
+
+        private readonly clsMySettings _Settings;
+
+        public clsReadableDSettings(IOptions<clsMySettings> settings)
+        {
+            _Settings = settings.Value;
+        }
+
         public async Task<List<DTOSettings>> GetAllDataAsync(int page)
         {
             List<DTOSettings> result = new List<DTOSettings>();
-            using (SqlConnection Connection = new SqlConnection(clsDataAccessLayer.ConnectionString))
+            using (SqlConnection Connection = new SqlConnection(_Settings.ConnectionString))
             {
                 using (SqlCommand Command = new SqlCommand("Settings.SP_GetAllSettings", Connection))
                 {
                     Command.CommandType = System.Data.CommandType.StoredProcedure;
                     Command.Parameters.AddWithValue("@Page", page);
-                    Command.Parameters.AddWithValue("@Rows", clsDataAccessLayer.Rows);
+                    Command.Parameters.AddWithValue("@Rows", _Settings.RowsPerPage);
 
                     await Connection.OpenAsync();
                     using (SqlDataReader reader = await Command.ExecuteReaderAsync())
@@ -94,7 +104,7 @@ namespace DataLayerRestaurant
         public async Task<DTOSettings?> GetDataAsync(int ID)
         {
             DTOSettings? result = null;
-            using (SqlConnection Connection = new SqlConnection(clsDataAccessLayer.ConnectionString))
+            using (SqlConnection Connection = new SqlConnection(_Settings.ConnectionString))
             {
                 using (SqlCommand Command = new SqlCommand("Settings.SP_GetSettingByID", Connection))
                 {
@@ -116,9 +126,16 @@ namespace DataLayerRestaurant
     }
     public class clsWritableDSettings : clsCompositionDSettings , IWritableDSettings
     {
+
+        private readonly clsMySettings _Settings;
+        public clsWritableDSettings(IOptions<clsMySettings> settings)
+        {
+            _Settings = settings.Value;
+        }
+
         public async Task<DTOSettings?> CreateDataAsync(DTOSettingsCRequest dto)
         {
-            using (SqlConnection Connection = new SqlConnection(clsDataAccessLayer.ConnectionString))
+            using (SqlConnection Connection = new SqlConnection(_Settings.ConnectionString))
             {
                 using (SqlCommand Command = new SqlCommand("Settings.SP_AddSetting", Connection))
                 {
@@ -140,7 +157,7 @@ namespace DataLayerRestaurant
         }
         public async Task<DTOSettings?> UpdateDataAsync(DTOSettingsURequest DTO)
         {
-            using (SqlConnection Connection = new SqlConnection(clsDataAccessLayer.ConnectionString))
+            using (SqlConnection Connection = new SqlConnection(_Settings.ConnectionString))
             {
                 using (SqlCommand Command = new SqlCommand("Settings.SP_UpdateSetting", Connection))
                 {
@@ -163,7 +180,7 @@ namespace DataLayerRestaurant
         public async Task<bool> DeleteDataAsync(int ID)
         {
             bool Deleted = false;
-            using (SqlConnection Connection = new SqlConnection(clsDataAccessLayer.ConnectionString))
+            using (SqlConnection Connection = new SqlConnection(_Settings.ConnectionString))
             {
                 using (SqlCommand Command = new SqlCommand("Settings.SP_DeleteSetting", Connection))
                 {

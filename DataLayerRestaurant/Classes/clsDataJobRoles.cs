@@ -1,10 +1,10 @@
-﻿using Azure;
-using Microsoft.Data.SqlClient;
-using Microsoft.Identity.Client;
+﻿using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Options;
 using RestaurantDataLayer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -70,16 +70,22 @@ namespace DataLayerRestaurant
 
     public class clsReadableDJobRoles: clsCompositionDJobRoles ,IReadableDJobRoles
     {
+        private readonly clsMySettings _Settings;
+        public clsReadableDJobRoles(IOptions<clsMySettings> mySettings)
+        {
+            _Settings = mySettings.Value;
+        }
+
         public async Task<List<DTOJobRoles>> GetAllDataAsync(int page)
         {
             List<DTOJobRoles> result = new List<DTOJobRoles>();
-            using (SqlConnection Connection = new SqlConnection(clsDataAccessLayer.ConnectionString))
+            using (SqlConnection Connection = new SqlConnection(_Settings.ConnectionString))
             {
                 using (SqlCommand Command = new SqlCommand("JobRoles.SP_GetAllJobRoles", Connection))
                 {
                     Command.CommandType = System.Data.CommandType.StoredProcedure;
                     Command.Parameters.AddWithValue("@Page", page);
-                    Command.Parameters.AddWithValue("@Rows", clsDataAccessLayer.Rows);
+                    Command.Parameters.AddWithValue("@Rows", _Settings.RowsPerPage);
 
                     await Connection.OpenAsync();
                     using (SqlDataReader reader = await Command.ExecuteReaderAsync())
@@ -97,7 +103,7 @@ namespace DataLayerRestaurant
         public async Task<DTOJobRoles?> GetDataAsync(int ID)
         {
             DTOJobRoles? result = null;
-            using (SqlConnection Connection = new SqlConnection(clsDataAccessLayer.ConnectionString))
+            using (SqlConnection Connection = new SqlConnection(_Settings.ConnectionString))
             {
                 using (SqlCommand Command = new SqlCommand("JobRoles.SP_GetJobRoleByID", Connection))
                 {
@@ -120,9 +126,15 @@ namespace DataLayerRestaurant
     
     public class clsWritableDJobRoles : clsCompositionDJobRoles , IWritableDJobRoles
     {
+        private readonly clsMySettings _Settings;
+        public clsWritableDJobRoles(IOptions<clsMySettings> mySettings)
+        {
+            _Settings = mySettings.Value;
+        }
+
         public async Task<DTOJobRoles?> CreateDataAsync(DTOJobRolesCRequest DTO)
         {
-            using (SqlConnection Connection = new SqlConnection(clsDataAccessLayer.ConnectionString))
+            using (SqlConnection Connection = new SqlConnection(_Settings.ConnectionString))
             {
                 using (SqlCommand Command = new SqlCommand("JobRoles.SP_AddJobRole", Connection))
                 {
@@ -145,7 +157,7 @@ namespace DataLayerRestaurant
 
         public async Task<DTOJobRoles?> UpdateDataAsync(DTOJobRolesURequest DTO)
         {
-            using (SqlConnection Connection = new SqlConnection(clsDataAccessLayer.ConnectionString))
+            using (SqlConnection Connection = new SqlConnection(_Settings.ConnectionString))
             {
                 using (SqlCommand Command = new SqlCommand("JobRoles.SP_UpdateJobRole", Connection))
                 {
@@ -170,7 +182,7 @@ namespace DataLayerRestaurant
         public async Task<bool> DeleteDataAsync(int ID)
         {
             bool Deleted = false;
-            using (SqlConnection Connection = new SqlConnection(clsDataAccessLayer.ConnectionString))
+            using (SqlConnection Connection = new SqlConnection(_Settings.ConnectionString))
             {
                 using (SqlCommand Command = new SqlCommand("JobRoles.SP_DeleteJobRole", Connection))
                 {

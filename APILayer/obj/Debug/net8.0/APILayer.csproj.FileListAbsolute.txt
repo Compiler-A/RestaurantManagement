@@ -103,16 +103,11 @@ D:\Programming\Projects\RestaurantProjectv2\APILayer\bin\Debug\net8.0\APILayer.d
 D:\Programming\Projects\RestaurantProjectv2\APILayer\bin\Debug\net8.0\APILayer.runtimeconfig.json
 D:\Programming\Projects\RestaurantProjectv2\APILayer\bin\Debug\net8.0\APILayer.dll
 D:\Programming\Projects\RestaurantProjectv2\APILayer\bin\Debug\net8.0\APILayer.pdb
-D:\Programming\Projects\RestaurantProjectv2\APILayer\bin\Debug\net8.0\Azure.Core.dll
-D:\Programming\Projects\RestaurantProjectv2\APILayer\bin\Debug\net8.0\Azure.Identity.dll
-D:\Programming\Projects\RestaurantProjectv2\APILayer\bin\Debug\net8.0\Microsoft.Bcl.AsyncInterfaces.dll
 D:\Programming\Projects\RestaurantProjectv2\APILayer\bin\Debug\net8.0\Microsoft.Data.SqlClient.dll
 D:\Programming\Projects\RestaurantProjectv2\APILayer\bin\Debug\net8.0\Microsoft.Extensions.Caching.Memory.dll
 D:\Programming\Projects\RestaurantProjectv2\APILayer\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
 D:\Programming\Projects\RestaurantProjectv2\APILayer\bin\Debug\net8.0\Microsoft.Extensions.Logging.Abstractions.dll
 D:\Programming\Projects\RestaurantProjectv2\APILayer\bin\Debug\net8.0\Microsoft.Extensions.Options.dll
-D:\Programming\Projects\RestaurantProjectv2\APILayer\bin\Debug\net8.0\Microsoft.Identity.Client.dll
-D:\Programming\Projects\RestaurantProjectv2\APILayer\bin\Debug\net8.0\Microsoft.Identity.Client.Extensions.Msal.dll
 D:\Programming\Projects\RestaurantProjectv2\APILayer\bin\Debug\net8.0\Microsoft.IdentityModel.Abstractions.dll
 D:\Programming\Projects\RestaurantProjectv2\APILayer\bin\Debug\net8.0\Microsoft.IdentityModel.JsonWebTokens.dll
 D:\Programming\Projects\RestaurantProjectv2\APILayer\bin\Debug\net8.0\Microsoft.IdentityModel.Logging.dll
@@ -124,11 +119,9 @@ D:\Programming\Projects\RestaurantProjectv2\APILayer\bin\Debug\net8.0\Microsoft.
 D:\Programming\Projects\RestaurantProjectv2\APILayer\bin\Debug\net8.0\Swashbuckle.AspNetCore.Swagger.dll
 D:\Programming\Projects\RestaurantProjectv2\APILayer\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerGen.dll
 D:\Programming\Projects\RestaurantProjectv2\APILayer\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerUI.dll
-D:\Programming\Projects\RestaurantProjectv2\APILayer\bin\Debug\net8.0\System.ClientModel.dll
 D:\Programming\Projects\RestaurantProjectv2\APILayer\bin\Debug\net8.0\System.Configuration.ConfigurationManager.dll
 D:\Programming\Projects\RestaurantProjectv2\APILayer\bin\Debug\net8.0\System.Diagnostics.EventLog.dll
 D:\Programming\Projects\RestaurantProjectv2\APILayer\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
-D:\Programming\Projects\RestaurantProjectv2\APILayer\bin\Debug\net8.0\System.Memory.Data.dll
 D:\Programming\Projects\RestaurantProjectv2\APILayer\bin\Debug\net8.0\System.Security.Cryptography.Pkcs.dll
 D:\Programming\Projects\RestaurantProjectv2\APILayer\bin\Debug\net8.0\System.Security.Cryptography.ProtectedData.dll
 D:\Programming\Projects\RestaurantProjectv2\APILayer\bin\Debug\net8.0\cs\Microsoft.Data.SqlClient.resources.dll
@@ -168,3 +161,6 @@ D:\Programming\Projects\RestaurantProjectv2\APILayer\obj\Debug\net8.0\staticweba
 D:\Programming\Projects\RestaurantProjectv2\APILayer\obj\Debug\net8.0\APILayer.csproj.Up2Date
 D:\Programming\Projects\RestaurantProjectv2\APILayer\obj\Debug\net8.0\APILayer.genruntimeconfig.cache
 D:\Programming\Projects\RestaurantProjectv2\APILayer\obj\Debug\net8.0\ref\APILayer.dll
+D:\Programming\Projects\RestaurantProjectv2\APILayer\bin\Debug\net8.0\Microsoft.Bcl.Cryptography.dll
+D:\Programming\Projects\RestaurantProjectv2\APILayer\bin\Debug\net8.0\Microsoft.Data.SqlClient.Extensions.Abstractions.dll
+D:\Programming\Projects\RestaurantProjectv2\APILayer\bin\Debug\net8.0\Microsoft.Data.SqlClient.Internal.Logging.dll

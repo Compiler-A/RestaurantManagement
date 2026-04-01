@@ -13,6 +13,10 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+
+builder.Services.Configure<clsMySettings>(
+    builder.Configuration.GetSection("MySettings"));
+
 builder.Services.AddScoped<IReadableDEmployees, clsReadableDEmployees>();
 builder.Services.AddScoped<IWritableDEmployees, clsWritableDEmployees>();
 builder.Services.AddScoped<IDataEmployees, clsDataEmployees>();

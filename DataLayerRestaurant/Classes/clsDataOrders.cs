@@ -1,4 +1,5 @@
 ﻿using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Options;
 using RestaurantDataLayer;
 using System;
 using System.Collections.Generic;
@@ -109,17 +110,23 @@ namespace DataLayerRestaurant
 
     public class clsReadableDOrders : clsCompositionDOrders, IReadableDOrders
     {
+        private readonly clsMySettings _Settings;
+        public clsReadableDOrders(IOptions<clsMySettings> settings)
+        {
+            _Settings = settings.Value;
+        }
+
         public async Task<List<DTOOrders>> GetAllDataAsync(int page)
         {
             List<DTOOrders> result = new List<DTOOrders>();
 
-            using (SqlConnection Connection = new SqlConnection(clsDataAccessLayer.ConnectionString))
+            using (SqlConnection Connection = new SqlConnection(_Settings.ConnectionString))
             {
                 using (SqlCommand Command = new SqlCommand("Orders.SP_GetAllOrders", Connection))
                 {
                     Command.CommandType = System.Data.CommandType.StoredProcedure;
                     Command.Parameters.AddWithValue("@Page", page);
-                    Command.Parameters.AddWithValue("@Rows", clsDataAccessLayer.Rows);
+                    Command.Parameters.AddWithValue("@Rows", _Settings.RowsPerPage);
 
                     await Connection.OpenAsync();
                     using (SqlDataReader Reader = await Command.ExecuteReaderAsync())
@@ -138,7 +145,7 @@ namespace DataLayerRestaurant
         {
             DTOOrders? result = null;
 
-            using (SqlConnection Connection = new SqlConnection(clsDataAccessLayer.ConnectionString))
+            using (SqlConnection Connection = new SqlConnection(_Settings.ConnectionString))
             {
                 using (SqlCommand Command = new SqlCommand("Orders.SP_GetOrderByID", Connection))
                 {
@@ -162,13 +169,13 @@ namespace DataLayerRestaurant
         {
             List<DTOOrders>? result = new List<DTOOrders>();
 
-            using (SqlConnection Connection = new SqlConnection(clsDataAccessLayer.ConnectionString))
+            using (SqlConnection Connection = new SqlConnection(_Settings.ConnectionString))
             {
                 using (SqlCommand Command = new SqlCommand("Orders.SP_GetFilterOrders", Connection))
                 {
                     Command.CommandType = System.Data.CommandType.StoredProcedure;
                     Command.Parameters.AddWithValue("@Page", Request.Page);
-                    Command.Parameters.AddWithValue("@Rows", clsDataAccessLayer.Rows);
+                    Command.Parameters.AddWithValue("@Rows", _Settings.RowsPerPage);
                     Command.Parameters.AddWithValue("@TableID", Request.TableID);
                     Command.Parameters.AddWithValue("@EmployeeID", Request.EmployeeID);
                     Command.Parameters.AddWithValue("@StatusOrderID", Request.StatusOrderID);
@@ -190,9 +197,16 @@ namespace DataLayerRestaurant
 
     public class clsWritableDOrders :clsCompositionDOrders, IWritableDOrders
     {
+
+        private readonly clsMySettings _Settings;
+        public clsWritableDOrders(IOptions<clsMySettings> settings)
+        {
+            _Settings = settings.Value;
+        }
+
         public async Task<DTOOrders?> CreateDataAsync(DTOOrderCRequest order)
         {
-            using (SqlConnection Connection = new SqlConnection(clsDataAccessLayer.ConnectionString))
+            using (SqlConnection Connection = new SqlConnection(_Settings.ConnectionString))
             {
                 using (SqlCommand Command = new SqlCommand("Orders.SP_AddOrder", Connection))
                 {
@@ -221,7 +235,7 @@ namespace DataLayerRestaurant
 
         public async Task<DTOOrders?> UpdateDataAsync(DTOOrderURequest order)
         {
-            using (SqlConnection Connection = new SqlConnection(clsDataAccessLayer.ConnectionString))
+            using (SqlConnection Connection = new SqlConnection(_Settings.ConnectionString))
             {
                 using (SqlCommand Command = new SqlCommand("Orders.SP_UpdateOrder", Connection))
                 {
@@ -249,7 +263,7 @@ namespace DataLayerRestaurant
         public async Task<bool> DeleteDataAsync(int ID)
         {
             bool Delete = false;
-            using (SqlConnection Connection = new SqlConnection(clsDataAccessLayer.ConnectionString))
+            using (SqlConnection Connection = new SqlConnection(_Settings.ConnectionString))
             {
                 using (SqlCommand Command = new SqlCommand("Orders.SP_DeleteOrder", Connection))
                 {

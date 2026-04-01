@@ -1,4 +1,5 @@
 ﻿using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Options;
 using RestaurantDataLayer;
 using System;
 using System.Collections.Generic;
@@ -58,9 +59,17 @@ namespace DataLayerRestaurant
 
     public class clsReadableDStatusTables : clsCompositionDStatusTables, IReadableDStatusTables
     {
+
+        private readonly clsMySettings _Settings;
+
+        public clsReadableDStatusTables(IOptions<clsMySettings> Settings)
+        {
+            _Settings = Settings.Value;
+        }
+
         public async Task<bool> isFindDataAsync(int id)
         {
-            using (SqlConnection Connection = new SqlConnection(clsDataAccessLayer.ConnectionString))
+            using (SqlConnection Connection = new SqlConnection(_Settings.ConnectionString))
             {
                 using (SqlCommand Command = new SqlCommand("StatusTables.SP_IsFind", Connection))
                 {
@@ -80,7 +89,7 @@ namespace DataLayerRestaurant
         }
         public async Task<DTOStatusTables?> GetDataAsync(int id)
         {
-            using (SqlConnection Connection = new SqlConnection(clsDataAccessLayer.ConnectionString))
+            using (SqlConnection Connection = new SqlConnection(_Settings.ConnectionString))
             {
                 using (SqlCommand Command = new SqlCommand("StatusTables.SP_GetStatusTableByID", Connection))
                 {
@@ -102,13 +111,13 @@ namespace DataLayerRestaurant
         public async Task<List<DTOStatusTables>> GetAllDataAsync(int page)
         {
             List<DTOStatusTables> L = new List<DTOStatusTables>();
-            using (SqlConnection Connection = new SqlConnection(clsDataAccessLayer.ConnectionString))
+            using (SqlConnection Connection = new SqlConnection(_Settings.ConnectionString))
             {
                 using (SqlCommand Command = new SqlCommand("StatusTables.SP_GetAllStatusTables", Connection))
                 {
                     Command.CommandType = System.Data.CommandType.StoredProcedure;
                     Command.Parameters.AddWithValue("@Page", page);
-                    Command.Parameters.AddWithValue("@Rows", clsDataAccessLayer.Rows);
+                    Command.Parameters.AddWithValue("@Rows", _Settings.RowsPerPage);
 
                     await Connection.OpenAsync();
                     using (SqlDataReader Reader = await Command.ExecuteReaderAsync())
@@ -129,9 +138,18 @@ namespace DataLayerRestaurant
 
     public class clsWritableDStatusTables : clsCompositionDStatusTables, IWritableDStatusTables
     {
+
+
+        readonly private clsMySettings _Settings;
+
+        public clsWritableDStatusTables(IOptions<clsMySettings> Settings)
+        {
+            _Settings = Settings.Value;
+        }
+
         public async Task<DTOStatusTables?> CreateDataAsync(DTOStatusTablesCRequest StatusTable)
         {
-            using (SqlConnection Connection = new SqlConnection(clsDataAccessLayer.ConnectionString))
+            using (SqlConnection Connection = new SqlConnection(_Settings.ConnectionString))
             {
                 using (SqlCommand Command = new SqlCommand("StatusTables.SP_AddStatusTable", Connection))
                 {
@@ -159,7 +177,7 @@ namespace DataLayerRestaurant
 
         public async Task<DTOStatusTables?> UpdateDataAsync(DTOStatusTablesURequest StatusTable)
         {
-            using (SqlConnection Connection = new SqlConnection(clsDataAccessLayer.ConnectionString))
+            using (SqlConnection Connection = new SqlConnection(_Settings.ConnectionString))
             {
                 using (SqlCommand Command = new SqlCommand("StatusTables.SP_UpdateStatusTable", Connection))
                 {
@@ -181,7 +199,7 @@ namespace DataLayerRestaurant
         }
         public async Task<bool> DeleteDataAsync(int id)
         {
-            using (SqlConnection Connection = new SqlConnection(clsDataAccessLayer.ConnectionString))
+            using (SqlConnection Connection = new SqlConnection(_Settings.ConnectionString))
             {
                 using (SqlCommand Command = new SqlCommand("StatusTables.SP_DeleteStatusTable", Connection))
                 {

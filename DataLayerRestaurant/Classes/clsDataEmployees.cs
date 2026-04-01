@@ -4,9 +4,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.PortableExecutable;
+using System.Runtime;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Options;
 
 namespace DataLayerRestaurant
 {
@@ -109,10 +111,16 @@ namespace DataLayerRestaurant
 
     public class clsReadableDEmployees :clsCompositionDEmployees ,IReadableDEmployees
     {
+        private readonly clsMySettings _Setting;
+        public clsReadableDEmployees(IOptions<clsMySettings> settings)
+        {
+            _Setting = settings.Value;
+        }
+
         public async Task<DTOEmployees?> GetDataAsync(string UserName)
         {
             DTOEmployees? employee = null;
-            using (SqlConnection Connection = new SqlConnection(clsDataAccessLayer.ConnectionString))
+            using (SqlConnection Connection = new SqlConnection(_Setting.ConnectionString))
             {
                 using (SqlCommand Command = new SqlCommand("[Employees].[SP_GetEmployeeByUserName]", Connection))
                 {
@@ -133,7 +141,7 @@ namespace DataLayerRestaurant
 
         public async Task<DTOEmployees?> GetDataLoginAsync(DTOEmployeesLoginRequest Request)
         {
-            using (SqlConnection Connection = new SqlConnection(clsDataAccessLayer.ConnectionString))
+            using (SqlConnection Connection = new SqlConnection(_Setting.ConnectionString))
             {
                 using (SqlCommand Command = new SqlCommand("Employees.SP_LoginEmployee", Connection))
                 {
@@ -159,13 +167,13 @@ namespace DataLayerRestaurant
         {
             List<DTOEmployees> employees = new List<DTOEmployees>();
 
-            using (SqlConnection Connection = new SqlConnection(clsDataAccessLayer.ConnectionString))
+            using (SqlConnection Connection = new SqlConnection(_Setting.ConnectionString))
             {
                 using (SqlCommand Command = new SqlCommand("Employees.SP_GetAllEmployees", Connection))
                 {
                     Command.CommandType = System.Data.CommandType.StoredProcedure;
                     Command.Parameters.AddWithValue("@Page", page);
-                    Command.Parameters.AddWithValue("@Rows", clsDataAccessLayer.Rows);
+                    Command.Parameters.AddWithValue("@Rows", _Setting.RowsPerPage);
 
                     await Connection.OpenAsync();
                     using (SqlDataReader reader = await Command.ExecuteReaderAsync())
@@ -184,7 +192,7 @@ namespace DataLayerRestaurant
         public async Task<DTOEmployees?> GetDataAsync(int ID)
         {
             DTOEmployees? employee = null;
-            using (SqlConnection Connection = new SqlConnection(clsDataAccessLayer.ConnectionString))
+            using (SqlConnection Connection = new SqlConnection(_Setting.ConnectionString))
             {
                 using (SqlCommand Command = new SqlCommand("[Employees].[SP_GetEmployeeByID]", Connection))
                 {
@@ -207,11 +215,17 @@ namespace DataLayerRestaurant
 
     public class clsWritableDEmployees: clsCompositionDEmployees , IWritableDEmployees
     {
+        private readonly clsMySettings _Setting;
+        public clsWritableDEmployees(IOptions<clsMySettings> settings)
+        {
+            _Setting = settings.Value;
+        }
+
         public async Task<bool> ChangedDataPasswordAsync(DTOEmployeesChangedPassword clsChanged)
         {
             bool Changed = false;
 
-            using (SqlConnection Connection = new SqlConnection(clsDataAccessLayer.ConnectionString))
+            using (SqlConnection Connection = new SqlConnection(_Setting.ConnectionString))
             {
                 using (SqlCommand Command = new SqlCommand("Employees.SP_ChangedPassword", Connection))
                 {
@@ -229,7 +243,7 @@ namespace DataLayerRestaurant
 
         public async Task<DTOEmployees?> CreateDataAsync(DTOEmployeesCRequest employee)
         {
-            using (SqlConnection Connection = new SqlConnection(clsDataAccessLayer.ConnectionString))
+            using (SqlConnection Connection = new SqlConnection(_Setting.ConnectionString))
             {
                 using (SqlCommand Command = new SqlCommand("Employees.SP_AddEmployee", Connection))
                 {
@@ -259,7 +273,7 @@ namespace DataLayerRestaurant
 
         public async Task<DTOEmployees?> UpdateDataAsync(DTOEmployeesURequest employee)
         {
-            using (SqlConnection Connection = new SqlConnection(clsDataAccessLayer.ConnectionString))
+            using (SqlConnection Connection = new SqlConnection(_Setting.ConnectionString))
             {
                 using (SqlCommand Command = new SqlCommand("Employees.SP_UpdateEmployee", Connection))
                 {
@@ -285,7 +299,7 @@ namespace DataLayerRestaurant
         public async Task<bool> DeleteDataAsync(int ID)
         {
             bool Deleted = false;
-            using (SqlConnection Connection = new SqlConnection(clsDataAccessLayer.ConnectionString))
+            using (SqlConnection Connection = new SqlConnection(_Setting.ConnectionString))
             {
                 using (SqlCommand Command = new SqlCommand("Employees.SP_DeleteEmployee", Connection))
                 {

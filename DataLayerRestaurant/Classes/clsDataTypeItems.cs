@@ -1,5 +1,7 @@
 ﻿using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Options;
 using RestaurantDataLayer;
+using System.Runtime;
 
 namespace DataLayerRestaurant
 {
@@ -66,11 +68,19 @@ namespace DataLayerRestaurant
 
     public class clsReadableDTypeItems : clsCompositionDTypeItems, IReadableDTypeItems
     {
+        private readonly clsMySettings _Settings;
+
+        public clsReadableDTypeItems(IOptions<clsMySettings> Settings)
+        {
+            _Settings = Settings.Value;
+        }
+
+
         public async Task<List<DTOTypeItems>> GetAllDataAsync(int page)
         {
             List<DTOTypeItems> list = new List<DTOTypeItems>();
 
-            using SqlConnection connection = new SqlConnection(clsDataAccessLayer.ConnectionString);
+            using SqlConnection connection = new SqlConnection(_Settings.ConnectionString);
             using SqlCommand command = new SqlCommand("TypeItems.SP_GetAllTypeItems", connection)
             {
                 CommandType = System.Data.CommandType.StoredProcedure,
@@ -78,7 +88,7 @@ namespace DataLayerRestaurant
             };
 
             command.Parameters.AddWithValue("@PageNumber", page);
-            command.Parameters.AddWithValue("@Rows", clsDataAccessLayer.Rows);
+            command.Parameters.AddWithValue("@Rows", _Settings.RowsPerPage);
 
             await connection.OpenAsync();
             using SqlDataReader reader = await command.ExecuteReaderAsync();
@@ -93,7 +103,7 @@ namespace DataLayerRestaurant
         public async Task<DTOTypeItems?> GetDataAsync(int id)
         {
             DTOTypeItems? typeItem = null;
-            using SqlConnection connection = new SqlConnection(clsDataAccessLayer.ConnectionString);
+            using SqlConnection connection = new SqlConnection(_Settings.ConnectionString);
             using SqlCommand command = new SqlCommand("TypeItems.SP_GetTypeItemById", connection)
             {
                 CommandType = System.Data.CommandType.StoredProcedure,
@@ -113,9 +123,16 @@ namespace DataLayerRestaurant
 
     public class clsWritableDTypeItems : clsCompositionDTypeItems , IWritableDTypeItems
     {
+        private readonly clsMySettings _Settings;
+
+        public clsWritableDTypeItems(IOptions<clsMySettings> Settings)
+        {
+            _Settings = Settings.Value;
+        }   
+
         public async Task<DTOTypeItems?> CreateDataAsync(DTOTypeItemsCRequest typeItem)
         {
-            using SqlConnection connection = new SqlConnection(clsDataAccessLayer.ConnectionString);
+            using SqlConnection connection = new SqlConnection(_Settings.ConnectionString);
             using SqlCommand command = new SqlCommand("TypeItems.SP_AddTypeItem", connection)
             {
                 CommandType = System.Data.CommandType.StoredProcedure,
@@ -136,7 +153,7 @@ namespace DataLayerRestaurant
         public async Task<DTOTypeItems?> UpdateDataAsync(DTOTypeItemsURequest typeItem)
         {
 
-            using SqlConnection connection = new SqlConnection(clsDataAccessLayer.ConnectionString);
+            using SqlConnection connection = new SqlConnection(_Settings.ConnectionString);
             using SqlCommand command = new SqlCommand("TypeItems.SP_UpdateTypeItem", connection)
             {
                 CommandType = System.Data.CommandType.StoredProcedure,
@@ -157,7 +174,7 @@ namespace DataLayerRestaurant
 
         public async Task<bool> DeleteDataAsync(int typeItemID)
         {
-            using SqlConnection connection = new SqlConnection(clsDataAccessLayer.ConnectionString);
+            using SqlConnection connection = new SqlConnection(_Settings.ConnectionString);
             using SqlCommand command = new SqlCommand("TypeItems.SP_DeleteTypeItem", connection)
             {
                 CommandType = System.Data.CommandType.StoredProcedure,

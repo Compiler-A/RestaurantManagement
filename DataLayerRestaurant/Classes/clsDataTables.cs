@@ -1,4 +1,5 @@
 ﻿using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Options;
 using RestaurantDataLayer;
 using System;
 using System.Collections.Generic;
@@ -78,10 +79,17 @@ namespace DataLayerRestaurant
 
     public class clsReadableDTables : clsCompositionDTables ,IReadableDTables
     {
+
+        private readonly clsMySettings _Settings;
+        public clsReadableDTables(IOptions<clsMySettings> settings)
+        {
+            _Settings = settings.Value;
+        }
+
         public async Task<List<DTOTables>> GetAllDataAvailablesAsync()
         {
             List<DTOTables> listTables = new List<DTOTables>();
-            using (SqlConnection Connection = new SqlConnection(clsDataAccessLayer.ConnectionString))
+            using (SqlConnection Connection = new SqlConnection(_Settings.ConnectionString))
             {
                 using (SqlCommand Command = new SqlCommand("Tables.SP_GetTablesAvailables", Connection))
                 {
@@ -101,7 +109,7 @@ namespace DataLayerRestaurant
         public async Task<List<DTOTables>> GetAllDataAsync()
         {
             List<DTOTables> listTables = new List<DTOTables>();
-            using (SqlConnection Connection = new SqlConnection(clsDataAccessLayer.ConnectionString))
+            using (SqlConnection Connection = new SqlConnection(_Settings.ConnectionString))
             {
                 using (SqlCommand Command = new SqlCommand("Tables.SP_GetAllTablesNoPagination", Connection))
                 {
@@ -121,7 +129,7 @@ namespace DataLayerRestaurant
         public async Task<DTOTables?> GetDataAsync(int ID)
         {
             DTOTables? table = new DTOTables();
-            using (SqlConnection Connection = new SqlConnection(clsDataAccessLayer.ConnectionString))
+            using (SqlConnection Connection = new SqlConnection(_Settings.ConnectionString))
             {
                 using (SqlCommand Command = new SqlCommand("Tables.SP_GetTableByID", Connection))
                 {
@@ -141,7 +149,7 @@ namespace DataLayerRestaurant
         public async Task<DTOTables?> GetDataByNameAsync(string TableNumber)
         {
             DTOTables? table = new DTOTables();
-            using (SqlConnection Connection = new SqlConnection(clsDataAccessLayer.ConnectionString))
+            using (SqlConnection Connection = new SqlConnection(_Settings.ConnectionString))
             {
                 using (SqlCommand Command = new SqlCommand("Tables.SP_GetTableByTableNumber", Connection))
                 {
@@ -161,13 +169,13 @@ namespace DataLayerRestaurant
         public async Task<List<DTOTables>> GetFilterStatusAndSeatDataAsync(int page, int StatusTable, int SeatNumber)
         {
             List<DTOTables> listTables = new List<DTOTables>();
-            using (SqlConnection Connection = new SqlConnection(clsDataAccessLayer.ConnectionString))
+            using (SqlConnection Connection = new SqlConnection(_Settings.ConnectionString))
             {
                 using (SqlCommand Command = new SqlCommand("Tables.SP_GetFilterStatusAndFilterSeatsTables", Connection))
                 {
                     Command.CommandType = System.Data.CommandType.StoredProcedure;
                     Command.Parameters.AddWithValue("@Page", page);
-                    Command.Parameters.AddWithValue("@Rows", clsDataAccessLayer.Rows);
+                    Command.Parameters.AddWithValue("@Rows", _Settings.RowsPerPage);
                     Command.Parameters.AddWithValue("@StatusID", StatusTable);
                     Command.Parameters.AddWithValue("@SeatsNumber", SeatNumber);
                     await Connection.OpenAsync();
@@ -185,13 +193,13 @@ namespace DataLayerRestaurant
         public async Task<List<DTOTables>> GetAllDataAsync(int page)
         {
             List<DTOTables> listTables = new List<DTOTables>();
-            using (SqlConnection Connection = new SqlConnection(clsDataAccessLayer.ConnectionString))
+            using (SqlConnection Connection = new SqlConnection(_Settings.ConnectionString))
             {
                 using (SqlCommand Command = new SqlCommand("Tables.SP_GetAllTables", Connection))
                 {
                     Command.CommandType = System.Data.CommandType.StoredProcedure;
                     Command.Parameters.AddWithValue("@Page", page);
-                    Command.Parameters.AddWithValue("@Rows", clsDataAccessLayer.Rows);
+                    Command.Parameters.AddWithValue("@Rows", _Settings.RowsPerPage);
                     await Connection.OpenAsync();
                     using (SqlDataReader Reader = await Command.ExecuteReaderAsync())
                     {
@@ -208,13 +216,13 @@ namespace DataLayerRestaurant
         public async Task<List<DTOTables>> GetFilterStatusDataAsync(int page, int StatusTable)
         {
             List<DTOTables> listTables = new List<DTOTables>();
-            using (SqlConnection Connection = new SqlConnection(clsDataAccessLayer.ConnectionString))
+            using (SqlConnection Connection = new SqlConnection(_Settings.ConnectionString))
             {
                 using (SqlCommand Command = new SqlCommand("[Tables].[SP_GetFilterStatusTables]", Connection))
                 {
                     Command.CommandType = System.Data.CommandType.StoredProcedure;
                     Command.Parameters.AddWithValue("@Page", page);
-                    Command.Parameters.AddWithValue("@Rows", clsDataAccessLayer.Rows);
+                    Command.Parameters.AddWithValue("@Rows", _Settings.RowsPerPage);
                     Command.Parameters.AddWithValue("@StatusID", StatusTable);
                     await Connection.OpenAsync();
                     using (SqlDataReader Reader = await Command.ExecuteReaderAsync())
@@ -233,13 +241,13 @@ namespace DataLayerRestaurant
         public async Task<List<DTOTables>> GetFilterSeatDataAsync(int page, int FilterSeats)
         {
             List<DTOTables> listTables = new List<DTOTables>();
-            using (SqlConnection Connection = new SqlConnection(clsDataAccessLayer.ConnectionString))
+            using (SqlConnection Connection = new SqlConnection(_Settings.ConnectionString))
             {
                 using (SqlCommand Command = new SqlCommand("Tables.SP_GetFilterTables", Connection))
                 {
                     Command.CommandType = System.Data.CommandType.StoredProcedure;
                     Command.Parameters.AddWithValue("@Page", page);
-                    Command.Parameters.AddWithValue("@Rows", clsDataAccessLayer.Rows);
+                    Command.Parameters.AddWithValue("@Rows", _Settings.RowsPerPage);
                     Command.Parameters.AddWithValue("@Seats", FilterSeats);
                     await Connection.OpenAsync();
                     using (SqlDataReader Reader = await Command.ExecuteReaderAsync())
@@ -258,9 +266,17 @@ namespace DataLayerRestaurant
 
     public class clsWritableDTables : clsCompositionDTables, IWritableDTables
     {
+
+        private readonly clsMySettings _Settings;
+
+        public clsWritableDTables(IOptions<clsMySettings> settings)
+        {
+            _Settings = settings.Value;
+        }
+
         public async Task<DTOTables?> CreateDataAsync(DTOTablesCRequest Tables)
         {
-            using (SqlConnection Connection = new SqlConnection(clsDataAccessLayer.ConnectionString))
+            using (SqlConnection Connection = new SqlConnection(_Settings.ConnectionString))
             {
                 using (SqlCommand Command = new SqlCommand("Tables.SP_AddTable", Connection))
                 {
@@ -282,7 +298,7 @@ namespace DataLayerRestaurant
         }
         public async Task<DTOTables?> UpdateDataAsync(DTOTablesURequest Table)
         {
-            using (SqlConnection Connection = new SqlConnection(clsDataAccessLayer.ConnectionString))
+            using (SqlConnection Connection = new SqlConnection(_Settings.ConnectionString))
             {
                 using (SqlCommand Command = new SqlCommand("Tables.SP_UpdateTable", Connection))
                 {
@@ -305,7 +321,7 @@ namespace DataLayerRestaurant
         }
         public async Task<bool> DeleteDataAsync(int ID)
         {
-            using (SqlConnection Connection = new SqlConnection(clsDataAccessLayer.ConnectionString))
+            using (SqlConnection Connection = new SqlConnection(_Settings.ConnectionString))
             {
                 using (SqlCommand Command = new SqlCommand("Tables.SP_DeleteTable", Connection))
                 {

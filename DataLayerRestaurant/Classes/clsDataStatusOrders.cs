@@ -1,4 +1,5 @@
 ﻿using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Options;
 using RestaurantDataLayer;
 using System;
 using System.Collections.Generic;
@@ -62,10 +63,17 @@ namespace DataLayerRestaurant
     }
     public class clsReadableDStatusOrders : clsCompositionDStatusOrders, IReadableDStatusOrders
     {
+        public readonly clsMySettings _Settings;
+
+        public clsReadableDStatusOrders(IOptions<clsMySettings> Settings)
+        {
+            _Settings = Settings.Value;
+        }
+
         public async Task<DTOStatusOrders?> GetDataAsync(int ID)
         {
             DTOStatusOrders? statusOrder = null;
-            using (SqlConnection Connection = new SqlConnection(clsDataAccessLayer.ConnectionString))
+            using (SqlConnection Connection = new SqlConnection(_Settings.ConnectionString))
             {
                 using (SqlCommand Command = new SqlCommand("StatusOrders.SP_GetStatusOrderByID", Connection))
                 {
@@ -88,13 +96,13 @@ namespace DataLayerRestaurant
         {
             List<DTOStatusOrders> List = new List<DTOStatusOrders>();
 
-            using (SqlConnection Connection = new SqlConnection(clsDataAccessLayer.ConnectionString))
+            using (SqlConnection Connection = new SqlConnection(_Settings.ConnectionString))
             {
                 using (SqlCommand Command = new SqlCommand("StatusOrders.SP_GetAllStatusOrders", Connection))
                 {
                     Command.CommandType = System.Data.CommandType.StoredProcedure;
                     Command.Parameters.AddWithValue("@Page", Page);
-                    Command.Parameters.AddWithValue("@Rows", clsDataAccessLayer.Rows);
+                    Command.Parameters.AddWithValue("@Rows", _Settings.RowsPerPage);
 
                     await Connection.OpenAsync();
                     using (SqlDataReader Reader = await Command.ExecuteReaderAsync())
@@ -111,10 +119,18 @@ namespace DataLayerRestaurant
     }
     public class clsWritableDStatusOrders : clsCompositionDStatusOrders, IWritableDStatusOrders
     {
+
+        private readonly clsMySettings _Settings;
+
+        public clsWritableDStatusOrders(IOptions<clsMySettings> Settings)
+        {
+            _Settings = Settings.Value;
+        }
+
         public async Task<DTOStatusOrders?> CreateDataAsync(DTOStatusOrdersCRequest Request)
         {
 
-            using (SqlConnection Connection = new SqlConnection(clsDataAccessLayer.ConnectionString))
+            using (SqlConnection Connection = new SqlConnection(_Settings.ConnectionString))
             {
                 using (SqlCommand Command = new SqlCommand("StatusOrders.SP_AddStatusOrder", Connection))
                 {
@@ -138,7 +154,7 @@ namespace DataLayerRestaurant
         }
         public async Task<DTOStatusOrders?> UpdateDataAsync(DTOStatusOrdersURequest Request)
         {
-            using (SqlConnection Connection = new SqlConnection(clsDataAccessLayer.ConnectionString))
+            using (SqlConnection Connection = new SqlConnection(_Settings.ConnectionString))
             {
                 using (SqlCommand Command = new SqlCommand("StatusOrders.SP_UpdateStatusOrder", Connection))
                 {
@@ -161,7 +177,7 @@ namespace DataLayerRestaurant
         public async Task<bool> DeleteDataAsync(int ID)
         {
             bool Deleted = false;
-            using (SqlConnection Connection = new SqlConnection(clsDataAccessLayer.ConnectionString))
+            using (SqlConnection Connection = new SqlConnection(_Settings.ConnectionString))
             {
                 using (SqlCommand Command = new SqlCommand("StatusOrders.SP_DeleteStatusOrder", Connection))
                 {

@@ -1,6 +1,8 @@
 ﻿using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Options;
 using RestaurantDataLayer;
 using System.Collections.Generic;
+using System.Runtime;
 using System.Threading.Tasks;
 
 namespace DataLayerRestaurant
@@ -66,9 +68,16 @@ namespace DataLayerRestaurant
 
     public class clsReadableDStatusMenus : clsCompositionDStatusMenus, IReadableDStatusMenus
     {
+        private readonly clsMySettings _Settings;
+
+        public clsReadableDStatusMenus(IOptions<clsMySettings> settings)
+        {
+            _Settings = settings.Value;
+        }
+
         public async Task<DTOStatusMenus?> GetDataAsync(int id)
         {
-            using SqlConnection connection = new SqlConnection(clsDataAccessLayer.ConnectionString);
+            using SqlConnection connection = new SqlConnection(_Settings.ConnectionString);
             using SqlCommand command = new SqlCommand("StatusMenus.SP_GetStatusMenusByID", connection)
             {
                 CommandType = System.Data.CommandType.StoredProcedure
@@ -87,13 +96,13 @@ namespace DataLayerRestaurant
         public async Task<List<DTOStatusMenus>> GetAllDataAsync(int page)
         {
             var list = new List<DTOStatusMenus>();
-            using var connection = new SqlConnection(clsDataAccessLayer.ConnectionString);
+            using var connection = new SqlConnection(_Settings.ConnectionString);
             using var command = new SqlCommand("StatusMenus.SP_GetAllStatusMenus", connection)
             {
                 CommandType = System.Data.CommandType.StoredProcedure
             };
             command.Parameters.AddWithValue("@PageNumber", page);
-            command.Parameters.AddWithValue("@Rows", clsDataAccessLayer.Rows);
+            command.Parameters.AddWithValue("@Rows", _Settings.RowsPerPage);
 
             await connection.OpenAsync();
             using var reader = await command.ExecuteReaderAsync();
@@ -107,9 +116,16 @@ namespace DataLayerRestaurant
     
     public class clsWritableDStatusMenus : clsCompositionDStatusMenus , IWritableDStatusMenus
     {
+        private readonly clsMySettings _Settings;
+
+        public clsWritableDStatusMenus(IOptions<clsMySettings> settings)
+        {
+            _Settings = settings.Value;
+        }
+
         public async Task<DTOStatusMenus?> CreateDataAsync(DTOStatusMenusCRequest statusMenu)
         {
-            using var connection = new SqlConnection(clsDataAccessLayer.ConnectionString);
+            using var connection = new SqlConnection(_Settings.ConnectionString);
             using var command = new SqlCommand("StatusMenus.SP_AddStatusMenus", connection)
             {
                 CommandType = System.Data.CommandType.StoredProcedure
@@ -130,7 +146,7 @@ namespace DataLayerRestaurant
 
         public async Task<DTOStatusMenus?> UpdateDataAsync(DTOStatusMenusURequest statusMenu)
         {
-            using var connection = new SqlConnection(clsDataAccessLayer.ConnectionString);
+            using var connection = new SqlConnection(_Settings.ConnectionString);
             using var command = new SqlCommand("StatusMenus.SP_UpdateStatusMenus", connection)
             {
                 CommandType = System.Data.CommandType.StoredProcedure
@@ -153,7 +169,7 @@ namespace DataLayerRestaurant
 
         public async Task<bool> DeleteDataAsync(int id)
         {
-            using var connection = new SqlConnection(clsDataAccessLayer.ConnectionString);
+            using var connection = new SqlConnection(_Settings.ConnectionString);
             using var command = new SqlCommand("StatusMenus.SP_DeleteStatusMenus", connection)
             {
                 CommandType = System.Data.CommandType.StoredProcedure

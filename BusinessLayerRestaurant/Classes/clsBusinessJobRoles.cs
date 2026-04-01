@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DataLayerRestaurant;
-using Microsoft.Identity.Client;
 
 namespace BusinessLayerRestaurant
 {

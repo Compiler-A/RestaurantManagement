@@ -3,7 +3,6 @@ using DataLayerRestaurant;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
-using Microsoft.Identity.Client;
 using System;
 using System.Collections;
 using System.Collections.Generic;

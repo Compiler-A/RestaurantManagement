@@ -40,11 +40,4 @@ namespace RestaurantDataLayer
     {
         DataInterface IData { get; set; }
     }
-
-    public class clsDataAccessLayer
-    {
-        public static readonly string ConnectionString = "Server=COMPILER;Database=RestaurantManager;User Id=sa;Password=sa123456;Encrypt=False;TrustServerCertificate=True;Connection Timeout=30;";
-
-        public static readonly int Rows = 12;
-    }
 }

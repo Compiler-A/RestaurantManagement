@@ -1,5 +1,4 @@
-﻿using Azure.Core;
-using DataLayerRestaurant;
+﻿using DataLayerRestaurant;
 using RestaurantDataLayer;
 using System;
 using System.Collections.Generic;
