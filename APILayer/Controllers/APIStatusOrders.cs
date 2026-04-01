@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace APILayer.Controllers
 {
-    [Route("api/APIStatusOrders")]
+    [Route("api/StatusOrders")]
     [ApiController]
     public class APIStatusOrders : BaseController
     {
@@ -17,12 +17,12 @@ namespace APILayer.Controllers
             _StatusOrder = statusOrder;
         }
 
-        [HttpGet("GetAllStatusOrders", Name = "GetAllStatusOrders")]
+        [HttpGet( Name = "GetAllStatusOrders")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<ApiResponse<IEnumerable<DTOStatusOrders>>>> GetAllStatusOrders([FromQuery] int page = 1)
+        public async Task<ActionResult<ApiResponse<IEnumerable<DTOStatusOrders>>>> GetAllAsync([FromQuery] int page = 1)
         {
             try
             {
@@ -45,12 +45,12 @@ namespace APILayer.Controllers
             }
         }
 
-        [HttpGet("GetStatusOrder/{ID}", Name = "GetStatusOrder")]
+        [HttpGet("{ID}", Name = "GetStatusOrderByID")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<ApiResponse<DTOStatusOrders>>> GetStatusOrderByID([FromRoute] int ID = 1)
+        public async Task<ActionResult<ApiResponse<DTOStatusOrders>>> GetByIDAsync([FromRoute] int ID = 1)
         {
             try
             {
@@ -73,11 +73,11 @@ namespace APILayer.Controllers
             }
         }
 
-        [HttpPost("AddStatusOrder", Name = "AddStatusOrder")]
+        [HttpPost(Name = "AddStatusOrder")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<ApiResponse<DTOStatusOrders>>> AddStatusOrder([FromBody] DTOStatusOrdersCRequest Request)
+        public async Task<ActionResult<ApiResponse<DTOStatusOrders>>> CreateAsync([FromBody] DTOStatusOrdersCRequest Request)
         {
             try
             {
@@ -94,7 +94,7 @@ namespace APILayer.Controllers
                 if (result == null)
                     return CreateResponse<DTOStatusOrders>(null!, StatusCodes.Status500InternalServerError, "Insert failed.");
 
-                return CreateResponse<DTOStatusOrders>(result, StatusCodes.Status200OK, "Find Saccessfully!");
+                return CreatedAtRoute("GetStatusOrderByID", new {ID = result.ID}, result);
 
             }
             catch (Exception ex)
@@ -103,12 +103,12 @@ namespace APILayer.Controllers
             }
         }
 
-        [HttpPut("UpdateStatusOrder", Name = "UpdateStatusOrder")]
+        [HttpPut(Name = "UpdateStatusOrder")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<ApiResponse<DTOStatusOrders>>> UpdateStatusOrder([FromBody] DTOStatusOrdersURequest Request)
+        public async Task<ActionResult<ApiResponse<DTOStatusOrders>>> UpdateAsync([FromBody] DTOStatusOrdersURequest Request)
         {
             try
             {
@@ -139,34 +139,34 @@ namespace APILayer.Controllers
         }
 
 
-        [HttpDelete("DeleteStatusOrder/{id}", Name = "DeleteStatusOrder")]
+        [HttpDelete("{ID}",Name = "DeleteStatusOrder")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<ApiResponse<DTOStatusOrders>>> DeleteStatusOrder([FromRoute] int id)
+        public async Task<ActionResult<ApiResponse<bool>>> DeleteAsync([FromRoute] int ID)
         {
             try
             {
-                if (id <= 0)
+                if (ID <= 0)
                 {
-                    return CreateResponse<DTOStatusOrders>(null!, StatusCodes.Status400BadRequest, "Bad Ruquest");
+                    return CreateResponse<bool>(false!, StatusCodes.Status400BadRequest, "Bad Ruquest");
                 }
 
-                var result = await _StatusOrder.DeleteStatusOrdersAsync(id);
+                var result = await _StatusOrder.DeleteStatusOrdersAsync(ID);
 
                 if (result)
                 {
-                    return CreateResponse<DTOStatusOrders>(null!, StatusCodes.Status200OK, "StatusOrder deleted successfully.");
+                    return CreateResponse<bool>(true!, StatusCodes.Status200OK, "StatusOrder deleted successfully.");
                 }
                 else
                 {
-                    return CreateResponse<DTOStatusOrders>(null!, StatusCodes.Status404NotFound, "StatusTable not found or failed to delete.");
+                    return CreateResponse<bool>(false!, StatusCodes.Status404NotFound, "StatusTable not found or failed to delete.");
                 }
             }
             catch (System.Exception ex)
             {
-                return CreateResponse<DTOStatusOrders>(null!, StatusCodes.Status500InternalServerError, "Internal server error: " + ex.Message);
+                return CreateResponse<bool>(false!, StatusCodes.Status500InternalServerError, "Internal server error: " + ex.Message);
             }
         }
     }

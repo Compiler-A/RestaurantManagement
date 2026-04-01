@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace APILayer.Controllers
 {
     [ApiController]
-    [Route("api/APIStatusMenus")]
+    [Route("api/StatusMenus")]
     public class APIStatusMenus : BaseController
     {
         private readonly IBusinessStatusMenus _dataStatusMenus;
@@ -21,12 +21,12 @@ namespace APILayer.Controllers
 
 
         // ===================== GET ALL =====================
-        [HttpGet("GetAllStatusMenus")]
+        [HttpGet(Name = "GetAllStatusMenus")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<ApiResponse<List<DTOStatusMenus>>>> GetAllStatusMenus([FromQuery] int page = 1)
+        public async Task<ActionResult<ApiResponse<List<DTOStatusMenus>>>> GetAllAsync([FromQuery] int page = 1)
         {
             try
             {
@@ -47,20 +47,19 @@ namespace APILayer.Controllers
             }
         }
 
-        // ===================== GET BY ID =====================
-        [HttpGet("GetStatusMenuByID/{id}")]
+        [HttpGet("{ID}", Name = "GetStatusMenuByID")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<ApiResponse<DTOStatusMenus>>> GetStatusMenuByID(int id)
+        public async Task<ActionResult<ApiResponse<DTOStatusMenus>>> GetByIDAsync(int ID)
         {
             try
             {
-                if (id <= 0)
+                if (ID <= 0)
                     return CreateResponse<DTOStatusMenus>(null!, StatusCodes.Status400BadRequest, "Invalid ID.");
 
-                var resource = await _dataStatusMenus.GetStatusMenuAsync(id);
+                var resource = await _dataStatusMenus.GetStatusMenuAsync(ID);
 
                 if (resource == null)
                     return CreateResponse<DTOStatusMenus>(null!, StatusCodes.Status404NotFound, "Status Menu not found.");
@@ -73,12 +72,11 @@ namespace APILayer.Controllers
             }
         }
 
-        // ===================== ADD =====================
-        [HttpPost("AddStatusMenu")]
+        [HttpPost(Name = "AddStatusMenu")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<ApiResponse<DTOStatusMenus>>> AddStatusMenu([FromBody] DTOStatusMenusCRequest statusMenu)
+        public async Task<ActionResult<ApiResponse<DTOStatusMenus>>> CreateAsync([FromBody] DTOStatusMenusCRequest statusMenu)
         {
             try
             {
@@ -90,7 +88,7 @@ namespace APILayer.Controllers
                 if (dto == null)
                     return CreateResponse<DTOStatusMenus>(null!, StatusCodes.Status500InternalServerError, "Failed to add Status Menu.");
 
-                return CreateResponse(dto!, StatusCodes.Status201Created, "Status Menu added successfully.");
+                return CreatedAtRoute("GetStatusMenuByID", new {ID = dto.ID}, dto);
             }
             catch (System.Exception ex)
             {
@@ -99,12 +97,12 @@ namespace APILayer.Controllers
         }
 
         // ===================== UPDATE =====================
-        [HttpPut("UpdateStatusMenu")]
+        [HttpPut(Name = "UpdateStatusMenu")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<ApiResponse<DTOStatusMenus>>> UpdateStatusMenu([FromBody] DTOStatusMenusURequest statusMenu)
+        public async Task<ActionResult<ApiResponse<DTOStatusMenus>>> UpdateAsync([FromBody] DTOStatusMenusURequest statusMenu)
         {
             try
             {
@@ -124,20 +122,19 @@ namespace APILayer.Controllers
             }
         }
 
-        // ===================== DELETE =====================
-        [HttpDelete("DeleteStatusMenu/{id}")]
+        [HttpDelete("{ID}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<ApiResponse<bool>>> DeleteStatusMenu(int id)
+        public async Task<ActionResult<ApiResponse<bool>>> DeleteStatusMenu(int ID)
         {
             try
             {
-                if (id <= 0)
+                if (ID <= 0)
                     return CreateResponse<bool>(false!, StatusCodes.Status400BadRequest, "Invalid ID.");
 
-                bool isDeleted = await _dataStatusMenus.DeleteStatusMenuAsync(id);
+                bool isDeleted = await _dataStatusMenus.DeleteStatusMenuAsync(ID);
 
                 if (!isDeleted)
                     return CreateResponse<bool>(false!, StatusCodes.Status404NotFound, "Status Menu not found or already deleted.");

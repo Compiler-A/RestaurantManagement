@@ -26,6 +26,21 @@ namespace DataLayerRestaurant
         }
     }
 
+    public class DTOOrderFilterRequest
+    {
+        public int Page { get; set; }
+        public int TableID { get; set; }
+        public int EmployeeID { get; set; }
+        public int StatusOrderID { get; set; }
+        public DTOOrderFilterRequest(int page, int tableID, int employeeID, int statusOrderID)
+        {
+            Page = page;
+            TableID = tableID;
+            EmployeeID = employeeID;
+            StatusOrderID = statusOrderID;
+        }
+    }
+
     public class DTOOrderURequest : DTOOrderCRequest
     {
         public int OrderID { get; set; }
@@ -143,7 +158,7 @@ namespace DataLayerRestaurant
             return result;
         }
 
-        public async Task<List<DTOOrders>?> GetFilterDataAsync(int Page, int TableID, int EmployeeID, int StatusOrderID)
+        public async Task<List<DTOOrders>?> GetFilterDataAsync(DTOOrderFilterRequest Request)
         {
             List<DTOOrders>? result = new List<DTOOrders>();
 
@@ -152,11 +167,11 @@ namespace DataLayerRestaurant
                 using (SqlCommand Command = new SqlCommand("Orders.SP_GetFilterOrders", Connection))
                 {
                     Command.CommandType = System.Data.CommandType.StoredProcedure;
-                    Command.Parameters.AddWithValue("@Page", Page);
+                    Command.Parameters.AddWithValue("@Page", Request.Page);
                     Command.Parameters.AddWithValue("@Rows", clsDataAccessLayer.Rows);
-                    Command.Parameters.AddWithValue("@TableID", TableID);
-                    Command.Parameters.AddWithValue("@EmployeeID", EmployeeID);
-                    Command.Parameters.AddWithValue("@StatusOrderID", StatusOrderID);
+                    Command.Parameters.AddWithValue("@TableID", Request.TableID);
+                    Command.Parameters.AddWithValue("@EmployeeID", Request.EmployeeID);
+                    Command.Parameters.AddWithValue("@StatusOrderID", Request.StatusOrderID);
 
 
                     await Connection.OpenAsync();
@@ -269,9 +284,9 @@ namespace DataLayerRestaurant
         {
             return await _Read.GetDataAsync(ID);
         }
-        public async Task<List<DTOOrders>?> GetFilterOrderAsync(int Page, int TableID, int EmployeeID, int StatusOrderID)
+        public async Task<List<DTOOrders>?> GetFilterOrderAsync(DTOOrderFilterRequest Request)
         {
-            return await _Read.GetFilterDataAsync(Page, TableID, EmployeeID, StatusOrderID);
+            return await _Read.GetFilterDataAsync(Request);
         }
 
         public async Task<DTOOrders?> AddOrderAsync(DTOOrderCRequest order)

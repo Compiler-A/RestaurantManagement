@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace APILayer.Controllers
 {
-    [Route("api/APIMenuItems")]
+    [Route("api/MenuItems")]
     [ApiController]
     public class APIMenuItems : BaseController
     {
@@ -21,13 +21,12 @@ namespace APILayer.Controllers
 
         
 
-        // ===================== GET ALL =====================
-        [HttpGet("GetAllMenuItems")]
+        [HttpGet(Name ="GetAllMenuItems")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<ApiResponse<List<DTOMenuItems>>>> GetAllMenuItems([FromQuery] int page = 1)
+        public async Task<ActionResult<ApiResponse<List<DTOMenuItems>>>> GetAllAsync([FromQuery] int page = 1)
         {
             try
             {
@@ -45,12 +44,12 @@ namespace APILayer.Controllers
                 return CreateResponse<List<DTOMenuItems>>(null!, StatusCodes.Status500InternalServerError, $"Internal server error: {ex.Message}");
             }
         }
-        [HttpGet("GetAllMenuItemsAvailables")]
+        [HttpGet("all-availables")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<ApiResponse<List<DTOMenuItems>>>> GetAllMenuItemsAvailables()
+        public async Task<ActionResult<ApiResponse<List<DTOMenuItems>>>> GetAllAvailablesAsync()
         {
             try
             {
@@ -67,12 +66,12 @@ namespace APILayer.Controllers
         }
 
 
-        [HttpGet("GetFilterAllMenuItems")]
+        [HttpGet("all-filters")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<ApiResponse<List<DTOMenuItems>>>> GetFilterAllMenuItems([FromQuery] int page = 1, [FromQuery] int StatusMenuID = -1, [FromQuery] int TypeItemID = -1)
+        public async Task<ActionResult<ApiResponse<List<DTOMenuItems>>>> GetAllFiltersAsync([FromQuery] int page = 1, [FromQuery] int StatusMenuID = -1, [FromQuery] int TypeItemID = -1)
         {
             try
             {
@@ -91,13 +90,12 @@ namespace APILayer.Controllers
             }
         }
 
-        // ===================== GET BY ID =====================
-        [HttpGet("GetMenuItemByID/{ID}")]
+        [HttpGet("{ID}", Name ="GetMenuItemByID")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<ApiResponse<DTOMenuItems>>> GetMenuItemByID([FromRoute] int ID)
+        public async Task<ActionResult<ApiResponse<DTOMenuItems>>> GetByIDAsync([FromRoute] int ID)
         {
             try
             {
@@ -117,11 +115,11 @@ namespace APILayer.Controllers
         }
 
         // ===================== ADD =====================
-        [HttpPost("AddMenuItem")]
+        [HttpPost(Name ="AddMenuItem")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<ApiResponse<DTOMenuItems>>> AddMenuItem([FromBody] DTOMenuItemsCRequest menuItem)
+        public async Task<ActionResult<ApiResponse<DTOMenuItems>>> CreateAsync([FromBody] DTOMenuItemsCRequest menuItem)
         {
             try
             {
@@ -134,7 +132,7 @@ namespace APILayer.Controllers
                 if (dto == null)
                     return CreateResponse<DTOMenuItems>(null!, StatusCodes.Status500InternalServerError, "Failed to add Menu Item.");
 
-                return CreateResponse(dto!, StatusCodes.Status201Created, "Menu Item added successfully.");
+                return CreatedAtRoute("GetMenuItemByID", new { ID = dto.ID}, dto);
             }
             catch (System.Exception ex)
             {
@@ -143,12 +141,12 @@ namespace APILayer.Controllers
         }
 
         // ===================== UPDATE =====================
-        [HttpPut("UpdateMenuItem")]
+        [HttpPut(Name ="UpdateMenuItem")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<ApiResponse<DTOMenuItems>>> UpdateMenuItem([FromBody] DTOMenuItemsURequest menuItem)
+        public async Task<ActionResult<ApiResponse<DTOMenuItems>>> UpdateAsync([FromBody] DTOMenuItemsURequest menuItem)
         {
             try
             {
@@ -175,12 +173,12 @@ namespace APILayer.Controllers
         }
 
         // ===================== DELETE =====================
-        [HttpDelete("DeleteMenuItem/{ID}")]
+        [HttpDelete("{ID}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<ApiResponse<string>>> DeleteMenuItem([FromRoute] int ID)
+        public async Task<ActionResult<ApiResponse<string>>> DeleteAsync([FromRoute] int ID)
         {
             try
             {

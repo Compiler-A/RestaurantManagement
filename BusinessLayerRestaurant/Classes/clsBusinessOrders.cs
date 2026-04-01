@@ -147,9 +147,9 @@ namespace BusinessLayerRestaurant
         }
 
         public async Task<List<DTOOrders>?> GetFilterAsync
-            (int Page, int TableID, int EmployeeID, int StatusOrderID)
+            (DTOOrderFilterRequest Request)
         {
-            var koko = await _Interfaces.IData.GetFilterOrderAsync(Page, TableID, EmployeeID, StatusOrderID);
+            var koko = await _Interfaces.IData.GetFilterOrderAsync(Request);
             if (koko == null)
             {
                 return null;
@@ -263,9 +263,9 @@ namespace BusinessLayerRestaurant
             return await _Read.GetAsync(ID);
         }
 
-        public async Task<List<DTOOrders>?> GetFilterOrdersAsync(int Page, int TableID, int EmployeeID, int StatusOrderID)
+        public async Task<List<DTOOrders>?> GetFilterOrdersAsync(DTOOrderFilterRequest Request)
         {
-            return await _Read.GetFilterAsync(Page, TableID, EmployeeID, StatusOrderID);
+            return await _Read.GetFilterAsync(Request);
         }
         public async Task<DTOOrders?> AddOrderAsync(DTOOrderCRequest Request)
         {

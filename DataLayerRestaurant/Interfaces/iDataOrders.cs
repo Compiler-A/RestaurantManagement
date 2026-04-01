@@ -9,7 +9,7 @@ namespace DataLayerRestaurant
 {
     public interface IReadableDOrders : IReadableDataBase<DTOOrders>
     {
-        Task<List<DTOOrders>?> GetFilterDataAsync(int Page, int TableID, int EmployeeID, int StatusOrderID);
+        Task<List<DTOOrders>?> GetFilterDataAsync(DTOOrderFilterRequest OrderFilterRequest);
 
     }
     public interface IWritableDOrders : IWritableDataBase<DTOOrders,DTOOrderCRequest, DTOOrderURequest>
@@ -18,7 +18,7 @@ namespace DataLayerRestaurant
     {
         Task<List<DTOOrders>> GetAllOrdersAsync(int page);
         Task<DTOOrders?> GetOrderAsync(int ID);
-        Task<List<DTOOrders>?> GetFilterOrderAsync(int Page, int TableID, int EmployeeID, int StatusOrderID);
+        Task<List<DTOOrders>?> GetFilterOrderAsync(DTOOrderFilterRequest OrderFilterRequest);
     }
     public interface IWritableDataOrders
     {

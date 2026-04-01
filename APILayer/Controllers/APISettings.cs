@@ -6,7 +6,7 @@ using BusinessLayerRestaurant;
 
 namespace APILayer.Controllers
 {
-    [Route("api/APISettings")]
+    [Route("api/Settings")]
     [ApiController]
     public class APISettings : BaseController
     {
@@ -17,12 +17,12 @@ namespace APILayer.Controllers
             _BusinessSettings = s;
         }
 
-        [HttpGet("GetAllSettings", Name = "GetAllSettings")]
+        [HttpGet(Name = "GetAllSettings")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<ApiResponse<IEnumerable<DTOSettings>>>> GetAllSettings([FromQuery] int page = 1)
+        public async Task<ActionResult<ApiResponse<IEnumerable<DTOSettings>>>> GetAllAsync([FromQuery] int page = 1)
         {
             try
             {
@@ -35,7 +35,7 @@ namespace APILayer.Controllers
                 {
                     return CreateResponse<IEnumerable<DTOSettings>>(null!, StatusCodes.Status404NotFound, "Not Found!");
                 }
-                return CreateResponse<IEnumerable<DTOSettings>>(list, 200, $"Row: {list.Count}");
+                return CreateResponse<IEnumerable<DTOSettings>>(list, StatusCodes.Status200OK, $"Row: {list.Count}");
             }
             catch (Exception ex)
             {
@@ -43,12 +43,12 @@ namespace APILayer.Controllers
             }
         }
 
-        [HttpGet("GetSetting/{ID}", Name = "GetSetting")]
+        [HttpGet("{ID}", Name = "GetSettingByID")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<ApiResponse<DTOSettings>>> GetSetting([FromRoute] int ID = 1)
+        public async Task<ActionResult<ApiResponse<DTOSettings>>> GetByIDAsync([FromRoute] int ID = 1)
         {
             try
             {
@@ -69,11 +69,11 @@ namespace APILayer.Controllers
             }
         }
 
-        [HttpPost("AddSetting", Name = "AddSetting")]
+        [HttpPost(Name = "AddSetting")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<ApiResponse<DTOSettings>>> AddSetting([FromBody] DTOSettingsCRequest Setting)
+        public async Task<ActionResult<ApiResponse<DTOSettings>>> CreateAsync([FromBody] DTOSettingsCRequest Setting)
         {
             try
             {
@@ -88,7 +88,7 @@ namespace APILayer.Controllers
                 {
                     return CreateResponse<DTOSettings>(null!, StatusCodes.Status500InternalServerError, "Failed to add Setting.");
                 }
-                return CreateResponse<DTOSettings>(success, StatusCodes.Status201Created, "Order Added successfully");
+                return CreatedAtRoute("GetSettingByID",new {ID = success.ID}, success);
             }
             catch (Exception ex)
             {
@@ -96,12 +96,12 @@ namespace APILayer.Controllers
             }
         }
 
-        [HttpPut("UpdateSetting", Name = "UpdateSetting")]
+        [HttpPut(Name = "UpdateSetting")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<ApiResponse<DTOSettings>>> UpdateSetting([FromBody] DTOSettingsURequest Setting)
+        public async Task<ActionResult<ApiResponse<DTOSettings>>> UpdateAsync([FromBody] DTOSettingsURequest Setting)
         {
             try
             {
@@ -123,12 +123,12 @@ namespace APILayer.Controllers
             }
         }
 
-        [HttpDelete("DeleteSetting/{ID}", Name = "DeleteSetting")]
+        [HttpDelete("{ID}", Name = "DeleteSetting")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<ApiResponse<bool>>> DeleteEmployee([FromRoute] int ID)
+        public async Task<ActionResult<ApiResponse<bool>>> DeleteAsync([FromRoute] int ID)
         {
             try
             {

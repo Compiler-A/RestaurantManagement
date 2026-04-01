@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace APILayer.Controllers
 {
-    [Route("api/APITypeItems")]
+    [Route("api/TypeItems")]
     [ApiController]
     public class APITypeItems : BaseController
     {
@@ -19,12 +19,12 @@ namespace APILayer.Controllers
         }
 
         // GET All
-        [HttpGet("GetAllTypeItems", Name = "GetAllTypeItems")]
+        [HttpGet(Name = "GetAllTypeItems")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<ApiResponse<IEnumerable<DTOTypeItems>>>> GetAllTypeItems([FromQuery] int page = 1)
+        public async Task<ActionResult<ApiResponse<IEnumerable<DTOTypeItems>>>> GetAllAsync([FromQuery] int page = 1)
         {
             try
             {
@@ -44,19 +44,19 @@ namespace APILayer.Controllers
         }
 
         // GET By ID
-        [HttpGet("GetTypeItemById/{id}", Name = "GetTypeItemById")]
+        [HttpGet("{ID}", Name = "GetTypeItemById")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<ApiResponse<DTOTypeItems>>> GetTypeItemById([FromRoute] int id)
+        public async Task<ActionResult<ApiResponse<DTOTypeItems>>> GetByIDAsync([FromRoute] int ID)
         {
-            if (id <= 0)
+            if (ID <= 0)
                 return CreateResponse<DTOTypeItems>(null!, StatusCodes.Status400BadRequest, "Invalid TypeItem ID.");
 
             try
             {
-                var typeItemDto = await _dataLayer.GetTypeItemAsync(id);
+                var typeItemDto = await _dataLayer.GetTypeItemAsync(ID);
                 if (typeItemDto == null)
                     return CreateResponse<DTOTypeItems>(null!, StatusCodes.Status404NotFound, "TypeItem not found.");
 
@@ -68,12 +68,11 @@ namespace APILayer.Controllers
             }
         }
 
-        // POST Add
-        [HttpPost("AddTypeItem", Name = "AddTypeItem")]
+        [HttpPost(Name = "AddTypeItem")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<ApiResponse<DTOTypeItems>>> AddTypeItem([FromBody] DTOTypeItemsCRequest typeItem)
+        public async Task<ActionResult<ApiResponse<DTOTypeItems>>> CreateAsync([FromBody] DTOTypeItemsCRequest typeItem)
         {
             if (typeItem == null)
                 return CreateResponse<DTOTypeItems>(null!, StatusCodes.Status400BadRequest, "TypeItem data is null.");
@@ -84,7 +83,7 @@ namespace APILayer.Controllers
                 if (dto == null)
                     return CreateResponse<DTOTypeItems>(null!, StatusCodes.Status500InternalServerError, "A problem happened while handling your request.");
 
-                return CreateResponse(dto, StatusCodes.Status201Created, "Add Successfully");
+                return CreatedAtRoute("GetTypeItemById", new {ID = dto.ID}, dto);
             }
             catch (System.Exception ex)
             {
@@ -93,12 +92,12 @@ namespace APILayer.Controllers
         }
 
         // PUT Update
-        [HttpPut("UpdateTypeItem", Name = "UpdateTypeItem")]
+        [HttpPut(Name = "UpdateTypeItem")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<ApiResponse<DTOTypeItems>>> UpdateTypeItem([FromBody] DTOTypeItemsURequest typeItem)
+        public async Task<ActionResult<ApiResponse<DTOTypeItems>>> UpdateAsync([FromBody] DTOTypeItemsURequest typeItem)
         {
             if (typeItem == null || typeItem.ID <= 0)
                 return CreateResponse<DTOTypeItems>(null!, StatusCodes.Status400BadRequest, "Invalid TypeItem data.");
@@ -119,23 +118,23 @@ namespace APILayer.Controllers
         }
 
         // DELETE
-        [HttpDelete("DeleteTypeItem/{id}", Name = "DeleteTypeItem")]
+        [HttpDelete("{ID}", Name = "DeleteTypeItem")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<ApiResponse<bool>>> DeleteTypeItem([FromRoute] int id)
+        public async Task<ActionResult<ApiResponse<bool>>> DeleteAsync([FromRoute] int ID)
         {
-            if (id <= 0)
+            if (ID <= 0)
                 return CreateResponse<bool>(false!, StatusCodes.Status400BadRequest, "Invalid TypeItem ID.");
 
             try
             {
-                var typeItem = await _dataLayer.GetTypeItemAsync(id);
+                var typeItem = await _dataLayer.GetTypeItemAsync(ID);
                 if (typeItem == null)
                     return CreateResponse<bool>(false!, StatusCodes.Status404NotFound, "TypeItem not found.");
 
-                var isDelete = await _dataLayer.DeleteTypeItemAsync(id);
+                var isDelete = await _dataLayer.DeleteTypeItemAsync(ID);
                 if (isDelete)
                     return CreateResponse<bool>(true, StatusCodes.Status200OK, "Deleted successfully");
 

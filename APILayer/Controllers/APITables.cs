@@ -2,12 +2,13 @@
 using DataLayerRestaurant;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.JSInterop.Infrastructure;
 using System.Runtime.InteropServices;
 
 
 namespace APILayer.Controllers
 {
-    [Route("api/APITables")]
+    [Route("api/Tables")]
     [ApiController]
     public class APITables :  BaseController
     {
@@ -18,12 +19,12 @@ namespace APILayer.Controllers
             dataTablesBusiness = TableBusiness;
         }
 
-        [HttpGet("GetAllTablesNoPagination", Name = "GetAllTablesNoPagination")]
+        [HttpGet("all-nopagination", Name = "GetAllTablesNoPagination")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<ApiResponse<IEnumerable<DTOTables>>>> GetAllTablesNoPagination()
+        public async Task<ActionResult<ApiResponse<IEnumerable<DTOTables>>>> GetAllNoPaginationAsync()
         {
             try
             {
@@ -43,12 +44,12 @@ namespace APILayer.Controllers
             }
         }
 
-        [HttpGet("GetAllTables", Name = "GetAllTables")]
+        [HttpGet(Name = "GetAllTables")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<ApiResponse<IEnumerable<DTOTables>>>> GetAllTables([FromQuery] int page = 1)
+        public async Task<ActionResult<ApiResponse<IEnumerable<DTOTables>>>> GetAllAsync([FromQuery] int page = 1)
         {
             try
             {
@@ -72,12 +73,12 @@ namespace APILayer.Controllers
             }
         }
         
-        [HttpGet("GetAllTablesAvailables", Name = "GetAllTablesAvailables")]
+        [HttpGet("all-availables", Name = "GetAllTablesAvailables")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<ApiResponse<IEnumerable<DTOTables>>>> GetAllTablesAvailables()
+        public async Task<ActionResult<ApiResponse<IEnumerable<DTOTables>>>> GetAllAvailablesAsync()
         {
             try
             {
@@ -97,12 +98,12 @@ namespace APILayer.Controllers
             }
         }
 
-        [HttpGet("GetAllFilterSeatsTable", Name = "GetAllFilterSeatsTables")]
+        [HttpGet("allfilter-seats", Name = "GetAllFilterSeats")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<ApiResponse<IEnumerable<DTOTables>>>> GetAllFilterSeatsTables([FromQuery] int page = 1, [FromQuery] int Seats = 2)
+        public async Task<ActionResult<ApiResponse<IEnumerable<DTOTables>>>> GetlAllFilterSeatsAsync([FromQuery] int page = 1, [FromQuery] int Seats = 2)
         {
             try
             {
@@ -122,12 +123,12 @@ namespace APILayer.Controllers
                 return CreateResponse<IEnumerable<DTOTables>>(null!, StatusCodes.Status500InternalServerError, "Internal server error: " + ex.Message);
             }
         }
-        [HttpGet("GetAllFilterStatusTables", Name = "GetAllMenuTables")]
+        [HttpGet("allfilter-statustables", Name = "GetAllMenuTables")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<ApiResponse<IEnumerable<DTOTables>>>> GetAllMenuTables([FromQuery] int page = 1, [FromQuery] int StatusTable = 1)
+        public async Task<ActionResult<ApiResponse<IEnumerable<DTOTables>>>> GetAllFilterStatustablesAsync([FromQuery] int page = 1, [FromQuery] int StatusTable = 1)
         {
             try
             {
@@ -147,12 +148,12 @@ namespace APILayer.Controllers
                 return CreateResponse<IEnumerable<DTOTables>>(null!, StatusCodes.Status200OK, "Internal server error: " + ex.Message);
             }
         }
-        [HttpGet("GetAllFilterSeatsStatusTables", Name = "GetAllFilterSeatsStatusTables")]
+        [HttpGet("allfilter-global", Name = "GetAllFilterSeatsStatusTables")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<ApiResponse<IEnumerable<DTOTables>>>> GetAllFilterSeatsStatusTables([FromQuery] int page = 1, [FromQuery] int StatusTable = 1, [FromQuery] int Seats = 2)
+        public async Task<ActionResult<ApiResponse<IEnumerable<DTOTables>>>> GetAllFilterSeatsStatusTablesAsync([FromQuery] int page = 1, [FromQuery] int StatusTable = 1, [FromQuery] int Seats = 2)
         {
             try
             {
@@ -173,12 +174,12 @@ namespace APILayer.Controllers
             }
         }
 
-        [HttpGet("GetTableByTableName", Name = "GetTableByTableName")]
+        [HttpGet("table-name", Name = "GetTableByTableName")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<ApiResponse<DTOTables>>> GetTableByTableName([FromQuery] string tableNumber = "")
+        public async Task<ActionResult<ApiResponse<DTOTables>>> GetByTableNameAsync([FromQuery] string tableNumber = "")
         {
             try
             {
@@ -196,12 +197,12 @@ namespace APILayer.Controllers
         }
 
 
-        [HttpGet("GetTableByID/{ID}", Name = "GetTableByID")]
+        [HttpGet("{ID}", Name = "GetTableByID")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<ApiResponse<DTOTables>>> GetTableByID([FromRoute] int ID = 1)
+        public async Task<ActionResult<ApiResponse<DTOTables>>> GetByIDAsync([FromRoute] int ID = 1)
         {
             try
             {
@@ -223,12 +224,12 @@ namespace APILayer.Controllers
             }
         }
 
-        [HttpPost("AddTable")]
+        [HttpPost(Name = "AddTable")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<ApiResponse<DTOTables>>> AddTables(DTOTablesCRequest Table)
+        public async Task<ActionResult<ApiResponse<DTOTables>>> CreateAsync(DTOTablesCRequest Table)
         {
             try
             {
@@ -241,7 +242,7 @@ namespace APILayer.Controllers
 
                 if (dto != null)
                 {
-                    return CreateResponse<DTOTables>(dto!, StatusCodes.Status200OK, "Added Saccessfully.");
+                    return CreatedAtRoute("GetTableByID", new {ID = dto.ID}, dto);
                 }
                 return CreateResponse<DTOTables>(null!, StatusCodes.Status500InternalServerError, "A problem happened while handling your request.");
 
@@ -253,12 +254,12 @@ namespace APILayer.Controllers
             }
         }
 
-        [HttpPut("UpdateTable")]
+        [HttpPut(Name = "UpdateTable")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<ApiResponse<DTOTables>>> UpdateTable(DTOTablesURequest Table)
+        public async Task<ActionResult<ApiResponse<DTOTables>>> UpdateAsync(DTOTablesURequest Table)
         {
             try
             {
@@ -281,28 +282,28 @@ namespace APILayer.Controllers
             }
         }
 
-        [HttpDelete("DeleteTable/{ID}")]
+        [HttpDelete("{ID}" , Name = "DeleteTable")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<ApiResponse<DTOTables>>> DeleteTable(int ID)
+        public async Task<ActionResult<ApiResponse<bool>>> DeleteAsync([FromRoute] int ID)
         {
             try
             {
                 if (ID <=0)
                 {
-                    return CreateResponse<DTOTables>(null!, StatusCodes.Status400BadRequest, "Bad Value");
+                    return CreateResponse<bool>(false!, StatusCodes.Status400BadRequest, "Bad Value");
                 }
                 if (await dataTablesBusiness.DeleteTableAsync(ID))
                 {
-                    return CreateResponse<DTOTables>(null!, StatusCodes.Status200OK, "Delete Saccessfully!");
+                    return CreateResponse<bool>(true!, StatusCodes.Status200OK, "Delete Saccessfully!");
                 }
-                return CreateResponse<DTOTables>(null!, StatusCodes.Status404NotFound, "A problem happened while handling your request.");
+                return CreateResponse<bool>(false!, StatusCodes.Status404NotFound, "A problem happened while handling your request.");
             }
             catch (Exception ex)
             {
-                return CreateResponse<DTOTables>(null!, StatusCodes.Status500InternalServerError, "Internal server error: " + ex.Message);
+                return CreateResponse<bool>(true!, StatusCodes.Status500InternalServerError, "Internal server error: " + ex.Message);
             }
         }
     }

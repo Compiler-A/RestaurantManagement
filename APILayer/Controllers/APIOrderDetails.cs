@@ -5,7 +5,7 @@ using DataLayerRestaurant;
 
 namespace APILayer.Controllers
 {
-    [Route("api/APIOrderDetails")]
+    [Route("api/OrderDetails")]
     [ApiController]
     public class APIOrderDetails : BaseController
     {
@@ -18,12 +18,12 @@ namespace APILayer.Controllers
 
         
 
-        [HttpGet("GetAllOrderDetails")]
+        [HttpGet(Name = "GetAllOrderDetails")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<ApiResponse<IEnumerable<DTOOrderDetails>>>> GetAll([FromQuery] int page = 1)
+        public async Task<ActionResult<ApiResponse<IEnumerable<DTOOrderDetails>>>> GetAllAsync([FromQuery] int page = 1)
         {
             try
             {
@@ -44,12 +44,12 @@ namespace APILayer.Controllers
                 return CreateResponse<IEnumerable<DTOOrderDetails>>(null!, StatusCodes.Status500InternalServerError, $"Internal server error: {ex.Message}");
             }
         }
-        [HttpGet("GetAllOrderDetailsByOrderID/{orderID}", Name = "GetAllOrderDetailsByOrderID")]
+        [HttpGet("all-orderid/{orderID}", Name = "GetAllOrderDetailsByOrderID")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<ApiResponse<IEnumerable<DTOOrderDetails>>>> GetAllOrderDetailsByOrderID(int orderID)
+        public async Task<ActionResult<ApiResponse<IEnumerable<DTOOrderDetails>>>> GetAllByOrderIDAsync(int orderID)
         {
             try
             {
@@ -70,20 +70,20 @@ namespace APILayer.Controllers
             }
         }
 
-        [HttpGet("GetOrderDetail/{id}", Name = "GetOrderDetail")]
+        [HttpGet("{ID}", Name = "GetOrderDetailByID")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<ApiResponse<DTOOrderDetails?>>> GetOrderDetailByID(int id)
+        public async Task<ActionResult<ApiResponse<DTOOrderDetails?>>> GetByIDAsync(int ID)
         {
             try
             {
-                if (id <= 0)
+                if (ID <= 0)
                 {
                     return CreateResponse<DTOOrderDetails?>(null, StatusCodes.Status400BadRequest, "ID <= 0.");
                 }
-                var order = await _businessOrderDetail.GetOrderDetailAsync(id);
+                var order = await _businessOrderDetail.GetOrderDetailAsync(ID);
                 if (order == null)
                     return CreateResponse<DTOOrderDetails?>(null, StatusCodes.Status404NotFound, "Order detail not found");
 
@@ -95,12 +95,12 @@ namespace APILayer.Controllers
             }
         }
 
-        [HttpPost("AddNewOrderDetail", Name = "AddNewOrderDetail")]
+        [HttpPost(Name = "AddNewOrderDetail")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<ApiResponse<DTOOrderDetails>>> AddNewOrderDetail([FromBody] DTOOrderDetailsCRequest dto)
+        public async Task<ActionResult<ApiResponse<DTOOrderDetails>>> CreateAsync([FromBody] DTOOrderDetailsCRequest dto)
         {
             try
             {
@@ -113,22 +113,21 @@ namespace APILayer.Controllers
                 if (result == null)
                     return CreateResponse<DTOOrderDetails>(null!, StatusCodes.Status500InternalServerError, "Failed to create order detail");
 
-                return CreateResponse<DTOOrderDetails>(result, StatusCodes.Status200OK, "Order Detail Added successfully");
+                return CreatedAtRoute("GetOrderDetailByID", new {ID = result.ID}, result);
 
             }
             catch (Exception ex)
             {
-                return CreateResponse<DTOOrderDetails>(null!, 500, $"Internal server error: {ex.Message}");
+                return CreateResponse<DTOOrderDetails>(null!, StatusCodes.Status500InternalServerError, $"Internal server error: {ex.Message}");
             }
         }
 
-        // PUT: api/orders/5
-        [HttpPut("UpdateOrderDetail", Name = "UpdateOrderDetail")]
+        [HttpPut(Name = "UpdateOrderDetail")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<ApiResponse<DTOOrderDetails>>> UpdateOrderDetail([FromBody] DTOOrderDetailsURequest dto)
+        public async Task<ActionResult<ApiResponse<DTOOrderDetails>>> UpdateAsync([FromBody] DTOOrderDetailsURequest dto)
         {
             try
             {
@@ -155,21 +154,20 @@ namespace APILayer.Controllers
             }
         }
 
-        // DELETE: api/orders/5
-        [HttpDelete("DeleteOrderDetail/{id}")]
+        [HttpDelete("{ID}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<ApiResponse<bool>>> DeleteOrderDetail(int id)
+        public async Task<ActionResult<ApiResponse<bool>>> DeleteAsync(int ID)
         {
             try
             {
-                if (id <= 0)
+                if (ID <= 0)
                 {
                     return CreateResponse<bool>(false, StatusCodes.Status400BadRequest, "ID <= 0.");
                 }
-                var result = await _businessOrderDetail.DeleteOrderDetailAsync(id);
+                var result = await _businessOrderDetail.DeleteOrderDetailAsync(ID);
                 if (!result)
                     return CreateResponse(false, StatusCodes.Status400BadRequest, "Failed to delete order");
 

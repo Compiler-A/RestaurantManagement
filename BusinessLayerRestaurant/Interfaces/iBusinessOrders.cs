@@ -10,7 +10,7 @@ namespace BusinessLayerRestaurant
 {
     public interface IReadableBOrders : IReadableBusinessBase<DTOOrders>
     {
-        Task<List<DTOOrders>?> GetFilterAsync(int Page, int TableID, int EmployeeID, int StatusOrderID);
+        Task<List<DTOOrders>?> GetFilterAsync(DTOOrderFilterRequest Request);
     }
     public interface IWritableBOrders : IWritableBusinessBase<DTOOrders, DTOOrderCRequest, DTOOrderURequest>
     { }
@@ -40,7 +40,7 @@ namespace BusinessLayerRestaurant
     {
         Task<List<DTOOrders>> GetAllOrdersAsync(int page);
         Task<DTOOrders?> GetOrderAsync(int ID);
-        Task<List<DTOOrders>?> GetFilterOrdersAsync(int Page, int TableID, int EmployeeID, int StatusOrderID);
+        Task<List<DTOOrders>?> GetFilterOrdersAsync(DTOOrderFilterRequest Request);
     }
     public interface IWritableBusinessOrders
     {

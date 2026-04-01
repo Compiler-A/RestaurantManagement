@@ -11,7 +11,7 @@ using System.Collections.Generic;
 
 namespace APILayer.Controllers
 {
-    [Route("api/APIStatusTables")]
+    [Route("api/StatusTables")]
     [ApiController]
     public class APIStatusTables : BaseController
     {
@@ -23,12 +23,12 @@ namespace APILayer.Controllers
             _businessStatusTables = businessStatusTables;
         }
 
-        [HttpGet("GetAllStatusTables/{Page}", Name = "GetAllStatusTables")]
+        [HttpGet(Name = "GetAllStatusTables")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<ApiResponse<IEnumerable<DTOStatusTables>>>> GetAllStatusTables([FromRoute] int Page)
+        public async Task<ActionResult<ApiResponse<IEnumerable<DTOStatusTables>>>> GetAllAsync([FromQuery] int Page)
         {
             try
             {
@@ -49,12 +49,12 @@ namespace APILayer.Controllers
             }
         }
 
-        [HttpGet("GetStatusTable/{ID}", Name = "GetStatusTable")]
+        [HttpGet("{ID}", Name = "GetStatusTableByID")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<ApiResponse<DTOStatusTables>>> GetStatusTable([FromRoute] int ID)
+        public async Task<ActionResult<ApiResponse<DTOStatusTables>>> GetByIDAsync([FromRoute] int ID)
         {
             try
             {
@@ -76,12 +76,12 @@ namespace APILayer.Controllers
         }
 
 
-        [HttpPost("AddStatusTable", Name = "AddStatusTable")]
+        [HttpPost(Name = "AddStatusTable")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<ApiResponse<DTOStatusTables>>> AddStatusTable([FromBody] DTOStatusTablesCRequest Request)
+        public async Task<ActionResult<ApiResponse<DTOStatusTables>>> CreateAsync([FromBody] DTOStatusTablesCRequest Request)
         {
             try
             {
@@ -95,7 +95,7 @@ namespace APILayer.Controllers
                 var result = await _businessStatusTables.AddStatusTableAsync(_businessStatusTables.CreateRequest);
                 if (result != null)
                 {
-                    return CreateResponse<DTOStatusTables>(result!, StatusCodes.Status200OK, "Add Saccessfully.");
+                    return CreatedAtRoute("GetStatusTableByID", new { ID = result.ID}, result);
                 }
                 else
                 {
@@ -110,12 +110,12 @@ namespace APILayer.Controllers
 
         
 
-        [HttpPut("UpdateStatusTable", Name = "UpdateStatusTable")]
+        [HttpPut(Name = "UpdateStatusTable")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<ApiResponse<DTOStatusTables>>> UpdateStatusTable([FromBody] DTOStatusTablesURequest Request)
+        public async Task<ActionResult<ApiResponse<DTOStatusTables>>> UpdateAsync([FromBody] DTOStatusTablesURequest Request)
         {
             try
             {
@@ -147,21 +147,21 @@ namespace APILayer.Controllers
         }
 
 
-        [HttpDelete("DeleteStatusTable/{id}", Name = "DeleteStatusTable")]
+        [HttpDelete("{ID}", Name = "DeleteStatusTable")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<ApiResponse<DTOStatusTables>>> DeleteStatusTable([FromRoute] int id)
+        public async Task<ActionResult<ApiResponse<DTOStatusTables>>> DeleteAsync([FromRoute] int ID)
         {
             try
             {
-                if (id <= 0)
+                if (ID <= 0)
                 {
                     return CreateResponse<DTOStatusTables>(null!, StatusCodes.Status200OK, "Bad Ruquest");
                 }
 
-                var result = await _businessStatusTables.DeleteStatusTableAsync(id);
+                var result = await _businessStatusTables.DeleteStatusTableAsync(ID);
 
                 if (result)
                 {

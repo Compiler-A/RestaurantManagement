@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace APILayer.Controllers
 {
-    [Route("api/APIJobRoles")]
+    [Route("api/JobRoles")]
     [ApiController]
     public class APIJobRoles : BaseController
     {
@@ -16,12 +16,12 @@ namespace APILayer.Controllers
             this.jobRoles = jobRoles;
         }
 
-        [HttpGet("GetAllJobRoles", Name = "GetAllJobRoles")]
+        [HttpGet(Name = "GetAllJobRoles")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<ApiResponse<IEnumerable<DTOJobRoles>>>> GetAllJobRoles([FromQuery] int page = 1)
+        public async Task<ActionResult<ApiResponse<IEnumerable<DTOJobRoles>>>> GetAllAsync([FromQuery] int page = 1)
         {
             try
             {
@@ -44,12 +44,12 @@ namespace APILayer.Controllers
             }
         }
 
-        [HttpGet("GetJobRole/{ID}", Name = "GetJobRole")]
+        [HttpGet("{ID}",Name = "GetJobRoleByID")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<ApiResponse<DTOJobRoles>>> GetJobRole([FromRoute] int ID = 1)
+        public async Task<ActionResult<ApiResponse<DTOJobRoles>>> GetByIDAsync([FromRoute] int ID = 1)
         {
             try
             {
@@ -72,11 +72,11 @@ namespace APILayer.Controllers
             }
         }
 
-        [HttpPost("AddJobRole", Name = "AddJobRole")]
+        [HttpPost(Name = "AddJobRole")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<ApiResponse<DTOJobRoles>>> AddJobRole([FromBody] DTOJobRolesCRequest JobRole)
+        public async Task<ActionResult<ApiResponse<DTOJobRoles>>> CreateAsync([FromBody] DTOJobRolesCRequest JobRole)
         {
             try
             {
@@ -90,7 +90,7 @@ namespace APILayer.Controllers
                 var result = await jobRoles.AddJobRoleAsync(JobRole);
 
                 if (result != null)
-                    return CreateResponse<DTOJobRoles>(result, StatusCodes.Status200OK, "Insert failed.");
+                    return CreatedAtRoute("GetJobRoleByID", new { ID = result.ID }, result);
 
                 return CreateResponse<DTOJobRoles>(null!, StatusCodes.Status500InternalServerError, "Insert failed.");
 
@@ -101,12 +101,12 @@ namespace APILayer.Controllers
             }
         }
 
-        [HttpPut("UpdateJobRole", Name = "UpdateJobRole")]
+        [HttpPut(Name = "UpdateJobRole")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<ApiResponse<DTOJobRoles>>> UpdateJobRole([FromBody] DTOJobRolesURequest Update)
+        public async Task<ActionResult<ApiResponse<DTOJobRoles>>> UpdateAsync([FromBody] DTOJobRolesURequest Update)
         {
             try
             {
@@ -136,34 +136,34 @@ namespace APILayer.Controllers
         }
 
 
-        [HttpDelete("DeleteJobRole/{id}", Name = "DeleteJobRole")]
+        [HttpDelete("{id}", Name = "DeleteJobRole")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<ApiResponse<DTOJobRoles>>> DeleteJobRole([FromRoute] int id)
+        public async Task<ActionResult<ApiResponse<bool>>> DeleteAsync([FromRoute] int id)
         {
             try
             {
                 if (id <= 0)
                 {
-                    return CreateResponse<DTOJobRoles>(null!, 400, "Bad Ruquest");
+                    return CreateResponse<bool>(false, StatusCodes.Status400BadRequest, "Bad Ruquest");
                 }
 
                 var result = await jobRoles.DeleteJobRoleAsync(id);
 
                 if (result)
                 {
-                    return CreateResponse<DTOJobRoles>(null!, 200, "jobRole deleted successfully.");
+                    return CreateResponse<bool>(true!, StatusCodes.Status200OK, "jobRole deleted successfully.");
                 }
                 else
                 {
-                    return CreateResponse<DTOJobRoles>(null!, 404, "JobRole not found or failed to delete.");
+                    return CreateResponse<bool>(false!, StatusCodes.Status404NotFound, "JobRole not found or failed to delete.");
                 }
             }
             catch (System.Exception ex)
             {
-                return CreateResponse<DTOJobRoles>(null!, 500, "Internal server error: " + ex.Message);
+                return CreateResponse<bool>(false!, StatusCodes.Status500InternalServerError, "Internal server error: " + ex.Message);
             }
         }
     }
