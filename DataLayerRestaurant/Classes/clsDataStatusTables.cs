@@ -57,12 +57,12 @@ namespace DataLayerRestaurant
         }
     }
 
-    public class clsReadableDStatusTables : clsCompositionDStatusTables, IReadableDStatusTables
+    public class clsStatusTablesReader : clsCompositionDStatusTables, IReadableDStatusTables
     {
 
         private readonly clsMySettings _Settings;
 
-        public clsReadableDStatusTables(IOptions<clsMySettings> Settings)
+        public clsStatusTablesReader(IOptions<clsMySettings> Settings)
         {
             _Settings = Settings.Value;
         }
@@ -136,13 +136,13 @@ namespace DataLayerRestaurant
     }
 
 
-    public class clsWritableDStatusTables : clsCompositionDStatusTables, IWritableDStatusTables
+    public class clsStatusTablesWriter : clsCompositionDStatusTables, IWritableDStatusTables
     {
 
 
         readonly private clsMySettings _Settings;
 
-        public clsWritableDStatusTables(IOptions<clsMySettings> Settings)
+        public clsStatusTablesWriter(IOptions<clsMySettings> Settings)
         {
             _Settings = Settings.Value;
         }

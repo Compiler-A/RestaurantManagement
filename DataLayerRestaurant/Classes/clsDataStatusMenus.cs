@@ -66,11 +66,11 @@ namespace DataLayerRestaurant
         }
     }
 
-    public class clsReadableDStatusMenus : clsCompositionDStatusMenus, IReadableDStatusMenus
+    public class clsStatusMenusReader : clsCompositionDStatusMenus, IReadableDStatusMenus
     {
         private readonly clsMySettings _Settings;
 
-        public clsReadableDStatusMenus(IOptions<clsMySettings> settings)
+        public clsStatusMenusReader(IOptions<clsMySettings> settings)
         {
             _Settings = settings.Value;
         }
@@ -114,11 +114,11 @@ namespace DataLayerRestaurant
         }
     }
     
-    public class clsWritableDStatusMenus : clsCompositionDStatusMenus , IWritableDStatusMenus
+    public class clsStatusMenusWriter : clsCompositionDStatusMenus , IWritableDStatusMenus
     {
         private readonly clsMySettings _Settings;
 
-        public clsWritableDStatusMenus(IOptions<clsMySettings> settings)
+        public clsStatusMenusWriter(IOptions<clsMySettings> settings)
         {
             _Settings = settings.Value;
         }

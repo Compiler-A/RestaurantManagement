@@ -10,7 +10,7 @@ using DataLayerRestaurant;
 namespace BusinessLayerRestaurant
 {
 
-    public class clsInterfaceBOrders : IInterfaceBOrders
+    public class clsOrdersRepositoryBridge : IInterfaceBOrders
     {
         private IDataOrders _Iorder;
         private IBusinessStatusOrders _IStatusOrder;
@@ -36,7 +36,7 @@ namespace BusinessLayerRestaurant
             get => _IBusinessTable;
             set => _IBusinessTable = value;
         }
-        public clsInterfaceBOrders
+        public clsOrdersRepositoryBridge
             (IDataOrders Order, IBusinessEmployees Business, IBusinessStatusOrders StatusOrder, IBusinessTables Table)
         {
             _IStatusOrder = StatusOrder;
@@ -45,7 +45,7 @@ namespace BusinessLayerRestaurant
             _Iorder = Order;
         }
     }
-    public class clsDTOBOrders : IDTOBOrders
+    public class clsOrdersDtoContainer : IDTOBOrders
     {
         private DTOOrderCRequest? _dtoOrderRequest { get; set; }
         public DTOOrderCRequest? CreateRequest
@@ -60,10 +60,10 @@ namespace BusinessLayerRestaurant
             set => _dtoOrderUpdateRequest = value;
         }
     }
-    public class  clsStatusOrderLoaderByOrder : ICompositionBOrders
+    public class  clsStatusOrderLoader : ICompositionBOrders
     {
         private IBusinessStatusOrders _Status;
-        public clsStatusOrderLoaderByOrder(IBusinessStatusOrders Status)
+        public clsStatusOrderLoader(IBusinessStatusOrders Status)
         {
             _Status = Status;
         }
@@ -73,10 +73,10 @@ namespace BusinessLayerRestaurant
             item.statusOrders = await _Status.GetStatusOrdersAsync(item.StatusOrderID);
         }
     }
-    public class clsEmployeeLoaderByOrder : ICompositionBOrders 
+    public class clsEmployeeLoader : ICompositionBOrders 
     {
         private IBusinessEmployees _Employee;
-        public clsEmployeeLoaderByOrder(IBusinessEmployees Employee)
+        public clsEmployeeLoader(IBusinessEmployees Employee)
         {
             _Employee = Employee;
         }
@@ -84,10 +84,10 @@ namespace BusinessLayerRestaurant
             item.employees = await _Employee.GetEmployeeAsync(item.EmployerID);
         }
     }
-    public class clsTableLoaderByOrder : ICompositionBOrders
+    public class clsTableLoader : ICompositionBOrders
     {
         private IBusinessTables _Table;
-        public clsTableLoaderByOrder(IBusinessTables Table)
+        public clsTableLoader(IBusinessTables Table)
         {
             _Table = Table;
         }
@@ -96,10 +96,10 @@ namespace BusinessLayerRestaurant
             item.tables = await _Table.GetTableAsync(item.TableID);
         }
     }
-    public class clsCompositionBOrders
+    public class clsCompositionOrdersLoader
     {
         private IEnumerable<ICompositionBOrders> _loaders;
-        public clsCompositionBOrders
+        public clsCompositionOrdersLoader
             (IEnumerable<ICompositionBOrders> loaders)
         {
             _loaders = loaders;
@@ -113,10 +113,10 @@ namespace BusinessLayerRestaurant
         }
 
     }
-    public class clsReadableBOrders : clsCompositionBOrders, IReadableBOrders
+    public class clsOrdersReader : clsCompositionOrdersLoader, IReadableBOrders
     {
         private IInterfaceBOrders _Interfaces;
-        public clsReadableBOrders
+        public clsOrdersReader
             (IInterfaceBOrders Interfaces, IEnumerable<ICompositionBOrders> loaders) : base(loaders)
         {
             _Interfaces = Interfaces;
@@ -162,11 +162,11 @@ namespace BusinessLayerRestaurant
             return koko;
         }
     }
-    public class clsWritableBOrders : clsCompositionBOrders, IWritableBOrders
+    public class clsOrdersWriter : clsCompositionOrdersLoader, IWritableBOrders
     {
         private IDTOBOrders _Dtos;
         private IInterfaceBOrders _Interfaces;
-        public clsWritableBOrders
+        public clsOrdersWriter
             (IDTOBOrders dto, IInterfaceBOrders Interfaces, IEnumerable<ICompositionBOrders> loaders) : base(loaders)
         {
             _Dtos = dto;

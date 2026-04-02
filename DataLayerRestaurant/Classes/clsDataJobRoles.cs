@@ -68,10 +68,10 @@ namespace DataLayerRestaurant
         }
     }
 
-    public class clsReadableDJobRoles: clsCompositionDJobRoles ,IReadableDJobRoles
+    public class clsJobRolesReader: clsCompositionDJobRoles ,IReadableDJobRoles
     {
         private readonly clsMySettings _Settings;
-        public clsReadableDJobRoles(IOptions<clsMySettings> mySettings)
+        public clsJobRolesReader(IOptions<clsMySettings> mySettings)
         {
             _Settings = mySettings.Value;
         }
@@ -124,10 +124,10 @@ namespace DataLayerRestaurant
         }
     }
     
-    public class clsWritableDJobRoles : clsCompositionDJobRoles , IWritableDJobRoles
+    public class clsJobRolesWriter : clsCompositionDJobRoles , IWritableDJobRoles
     {
         private readonly clsMySettings _Settings;
-        public clsWritableDJobRoles(IOptions<clsMySettings> mySettings)
+        public clsJobRolesWriter(IOptions<clsMySettings> mySettings)
         {
             _Settings = mySettings.Value;
         }

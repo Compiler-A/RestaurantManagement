@@ -11,7 +11,7 @@ using System.Xml.Linq;
 
 namespace BusinessLayerRestaurant
 {
-    public class clsDTOBEmployees : IDTOBEmployees
+    public class clsEmployeesDtoContainer : IDTOBEmployees
     {
         private DTOEmployeesCRequest? _CRequest;
         public DTOEmployeesCRequest? CreateRequest
@@ -27,7 +27,7 @@ namespace BusinessLayerRestaurant
         }
     }
 
-    public class clsInterfaceBEmployees : IInterfaceBEmployees
+    public class clsEmployeesRepositoryBridge : IInterfaceBEmployees
     {
         private IDataEmployees _IEmployees;
         public IDataEmployees IData
@@ -43,18 +43,18 @@ namespace BusinessLayerRestaurant
             set => _IJobRoles = value;
         }
 
-        public clsInterfaceBEmployees(IDataEmployees Employee, IBusinessJobRoles JobRoles)
+        public clsEmployeesRepositoryBridge(IDataEmployees Employee, IBusinessJobRoles JobRoles)
         {
             _IEmployees = Employee;
             _IJobRoles = JobRoles;
         }
     }
 
-    public class clsJobRoleLoaderByEmployees : ICompositionBEmployees
+    public class clsJobRoleLoader : ICompositionBEmployees
     {
         private IBusinessJobRoles _IData;
 
-        public clsJobRoleLoaderByEmployees(IBusinessJobRoles JobRole)
+        public clsJobRoleLoader(IBusinessJobRoles JobRole)
         {
             _IData = JobRole;
         }
@@ -66,10 +66,10 @@ namespace BusinessLayerRestaurant
 
     }
 
-    public class clsCompositionBEmployeees: ICompositionBEmployees
+    public class clsCompositionEmployeeesLoader: ICompositionBEmployees
     {
         private IEnumerable<ICompositionBEmployees> _loaders;
-        public clsCompositionBEmployeees
+        public clsCompositionEmployeeesLoader
             (IEnumerable<ICompositionBEmployees> loaders)
         {
             _loaders = loaders;
@@ -83,10 +83,10 @@ namespace BusinessLayerRestaurant
         }
     }
 
-    public class clsReadableBEmployees :  clsCompositionBEmployeees ,IReadableBEmployees
+    public class clsEmployeesReader :  clsCompositionEmployeeesLoader ,IReadableBEmployees
     {
         private IInterfaceBEmployees _Interface;
-        public clsReadableBEmployees(IInterfaceBEmployees Interface, IEnumerable<ICompositionBEmployees> Loaders) 
+        public clsEmployeesReader(IInterfaceBEmployees Interface, IEnumerable<ICompositionBEmployees> Loaders) 
             : base(Loaders)
         {
             _Interface = Interface;
@@ -136,10 +136,10 @@ namespace BusinessLayerRestaurant
 
     }
 
-    public class clsWritableBEmployees : clsCompositionBEmployeees , IWritableBEmployees
+    public class clsEmployeesWriter : clsCompositionEmployeeesLoader , IWritableBEmployees
     {
         private IInterfaceBEmployees _Interface;
-        public clsWritableBEmployees(IInterfaceBEmployees Interface, IEnumerable<ICompositionBEmployees> Loaders)
+        public clsEmployeesWriter(IInterfaceBEmployees Interface, IEnumerable<ICompositionBEmployees> Loaders)
             : base(Loaders)
         {
             _Interface = Interface;

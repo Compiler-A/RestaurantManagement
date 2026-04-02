@@ -89,12 +89,12 @@ namespace DataLayerRestaurant
         }
     }
 
-    public class clsReadableDOrderDetails : clsCompositionDOrderDetails ,IReadableDOrderDetails
+    public class clsOrderDetailsReader : clsCompositionDOrderDetails ,IReadableDOrderDetails
     {
 
         private readonly clsMySettings _Settings;
 
-        public clsReadableDOrderDetails(IOptions<clsMySettings> Settings)
+        public clsOrderDetailsReader(IOptions<clsMySettings> Settings)
         {
             _Settings = Settings.Value;
         }
@@ -167,10 +167,10 @@ namespace DataLayerRestaurant
         }
     }
 
-    public class clsWritableDOrderDetails : clsCompositionDOrderDetails,IWritableDOrderDetails
+    public class clsOrderDetailsWriter : clsCompositionDOrderDetails,IWritableDOrderDetails
     {
         private readonly clsMySettings _Settings;
-        public clsWritableDOrderDetails(IOptions<clsMySettings> settings)
+        public clsOrderDetailsWriter(IOptions<clsMySettings> settings)
         {
             _Settings = settings.Value; 
         }

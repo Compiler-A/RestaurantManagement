@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 namespace BusinessLayerRestaurant
 {
 
-    public class clsDTOBStatusMenus : IDTOBStatusMenus
+    public class clsStatusMenusDtoContainer : IDTOBStatusMenus
     {
         private DTOStatusMenusCRequest? _CRequest;
         public DTOStatusMenusCRequest? CreateRequest
@@ -22,7 +22,7 @@ namespace BusinessLayerRestaurant
         }
     }
 
-    public class clsInterfaceBStatusMenus : IInterfaceBStatusMenus
+    public class clsStatusMenusRepositoryBridge : IInterfaceBStatusMenus
     {
         private IDataStatusMenus _IData;
         public IDataStatusMenus IData
@@ -31,16 +31,16 @@ namespace BusinessLayerRestaurant
             set => _IData = value;
         }
 
-        public clsInterfaceBStatusMenus(IDataStatusMenus IData)
+        public clsStatusMenusRepositoryBridge(IDataStatusMenus IData)
         {
             _IData = IData;
         }
     }
 
-    public class clsReadableBStatusMenus : IReadableBStatusMenus
+    public class clsStatusMenusReader : IReadableBStatusMenus
     {
         private IInterfaceBStatusMenus _Interface;
-        public clsReadableBStatusMenus(IInterfaceBStatusMenus @interface)
+        public clsStatusMenusReader(IInterfaceBStatusMenus @interface)
         {
             _Interface = @interface;
         }
@@ -55,10 +55,10 @@ namespace BusinessLayerRestaurant
         }
     }
 
-    public class clsWritableBStatusMenus : IWritableBStatusMenus
+    public class clsStatusMenusWriter : IWritableBStatusMenus
     {
         private IInterfaceBStatusMenus _Interface;
-        public clsWritableBStatusMenus(IInterfaceBStatusMenus @interface)
+        public clsStatusMenusWriter(IInterfaceBStatusMenus @interface)
         {
             _Interface = @interface;
         }

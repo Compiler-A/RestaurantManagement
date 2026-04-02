@@ -10,7 +10,7 @@ using BusinessLayerRestaurant;
 namespace BusinessLayerRestaurant
 {
 
-    public class clsDTOBOrderDetails : IDTOBOrderDetails
+    public class clsOrderDetailsDtoContainer : IDTOBOrderDetails
     {
         private DTOOrderDetailsCRequest? _CreateRequest;
         public DTOOrderDetailsCRequest? CreateRequest
@@ -26,7 +26,7 @@ namespace BusinessLayerRestaurant
             set => _UpdateRequest = value;
         }
     }
-    public class clsInterfaceBOrderDetails : IInterfaceBOrderDetails
+    public class clsOrderDetailsRepositoryBridge : IInterfaceBOrderDetails
     {
         private IDataOrderDetails _IDataOrderDetail;
         public IDataOrderDetails IData
@@ -48,7 +48,7 @@ namespace BusinessLayerRestaurant
             set => _IBusinessMenuItem = value;
         }
 
-        public clsInterfaceBOrderDetails(IDataOrderDetails iData, IBusinessOrders iBusinessOrder, IBusinessMenuItems iBusinessMenuItem)
+        public clsOrderDetailsRepositoryBridge(IDataOrderDetails iData, IBusinessOrders iBusinessOrder, IBusinessMenuItems iBusinessMenuItem)
         {
             _IDataOrderDetail = iData;
             _IBusinessOrder = iBusinessOrder;
@@ -58,10 +58,10 @@ namespace BusinessLayerRestaurant
 
 
 
-    public class clsOrderLoaderByOrderDetails : ICompositionBOrderDetails
+    public class clsOrderLoader : ICompositionBOrderDetails
     {
         IBusinessOrders _Order;
-        public clsOrderLoaderByOrderDetails(IBusinessOrders order)
+        public clsOrderLoader(IBusinessOrders order)
         { 
             _Order = order;
         }
@@ -70,10 +70,10 @@ namespace BusinessLayerRestaurant
             item.Order = await _Order.GetOrderAsync(item.OrderID);
         }
     }
-    public class clsMenuItemLoaderOrderDetails : ICompositionBOrderDetails
+    public class clsMenuItemLoader : ICompositionBOrderDetails
     {
         IBusinessMenuItems _MenuItem;
-        public clsMenuItemLoaderOrderDetails(IBusinessMenuItems menuItem)
+        public clsMenuItemLoader(IBusinessMenuItems menuItem)
         {
             _MenuItem = menuItem;
         }
@@ -82,10 +82,10 @@ namespace BusinessLayerRestaurant
             item.Item = await _MenuItem.GetMenuItemAsync(item.ItemID);
         }
     }
-    public class clsCompositionBOrderDetails : ICompositionBOrderDetails
+    public class clsCompositionOrderDetailsLoader : ICompositionBOrderDetails
     {
         private IEnumerable<ICompositionBOrderDetails> _loaders;
-        public clsCompositionBOrderDetails
+        public clsCompositionOrderDetailsLoader
             (IEnumerable<ICompositionBOrderDetails> loaders)
         {
             _loaders = loaders;
@@ -100,10 +100,10 @@ namespace BusinessLayerRestaurant
     }
 
 
-    public class clsReadableBOrderDetails : clsCompositionBOrderDetails, IReadableBOrderDetails
+    public class clsOrderDetailsReader : clsCompositionOrderDetailsLoader, IReadableBOrderDetails
     {
         private IInterfaceBOrderDetails _Interfaces;
-        public clsReadableBOrderDetails
+        public clsOrderDetailsReader
             (IInterfaceBOrderDetails Interfaces, IEnumerable<ICompositionBOrderDetails> loaders) : base(loaders)
         {
             _Interfaces = Interfaces;
@@ -140,11 +140,11 @@ namespace BusinessLayerRestaurant
         }
     }
 
-    public class clsWritableBOrderDetails : clsCompositionBOrderDetails, IWritableBOrderDetails
+    public class clsOrderDetailsWriter : clsCompositionOrderDetailsLoader, IWritableBOrderDetails
     {
         private IDTOBOrderDetails _Dtos;
         private IInterfaceBOrderDetails _Interfaces;
-        public clsWritableBOrderDetails
+        public clsOrderDetailsWriter
             (IDTOBOrderDetails dto, IInterfaceBOrderDetails @interface, IEnumerable<ICompositionBOrderDetails> loader) : base(loader)
         {
             _Dtos = dto;

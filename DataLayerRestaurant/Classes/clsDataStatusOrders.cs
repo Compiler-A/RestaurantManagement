@@ -61,11 +61,11 @@ namespace DataLayerRestaurant
             };
         }
     }
-    public class clsReadableDStatusOrders : clsCompositionDStatusOrders, IReadableDStatusOrders
+    public class clsStatusOrdersReader : clsCompositionDStatusOrders, IReadableDStatusOrders
     {
         public readonly clsMySettings _Settings;
 
-        public clsReadableDStatusOrders(IOptions<clsMySettings> Settings)
+        public clsStatusOrdersReader(IOptions<clsMySettings> Settings)
         {
             _Settings = Settings.Value;
         }
@@ -117,12 +117,12 @@ namespace DataLayerRestaurant
             return List;
         }
     }
-    public class clsWritableDStatusOrders : clsCompositionDStatusOrders, IWritableDStatusOrders
+    public class clsStatusOrdersWriter : clsCompositionDStatusOrders, IWritableDStatusOrders
     {
 
         private readonly clsMySettings _Settings;
 
-        public clsWritableDStatusOrders(IOptions<clsMySettings> Settings)
+        public clsStatusOrdersWriter(IOptions<clsMySettings> Settings)
         {
             _Settings = Settings.Value;
         }

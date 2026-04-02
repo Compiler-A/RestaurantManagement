@@ -97,10 +97,10 @@ namespace DataLayerRestaurant
     }
 
 
-    public class clsReadableDMenuItems : clsCompositionDMenuItems ,IReadableDMenuItems
+    public class clsMenuItemsReader : clsCompositionDMenuItems ,IReadableDMenuItems
     {
         private readonly clsMySettings _Settings;
-        public clsReadableDMenuItems(IOptions<clsMySettings> settings)
+        public clsMenuItemsReader(IOptions<clsMySettings> settings)
         {
             _Settings = settings.Value;
         }
@@ -190,10 +190,10 @@ namespace DataLayerRestaurant
 
     }
 
-    public class clsWritableDMenuItems : clsCompositionDMenuItems ,IWritableDMenuItems
+    public class clsMenuItemsWriter : clsCompositionDMenuItems ,IWritableDMenuItems
     {
         private readonly clsMySettings _Settings;
-        public clsWritableDMenuItems(IOptions<clsMySettings> settings)
+        public clsMenuItemsWriter(IOptions<clsMySettings> settings)
         {
             _Settings = settings.Value;
         }

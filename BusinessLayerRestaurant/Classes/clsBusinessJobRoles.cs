@@ -7,7 +7,7 @@ using DataLayerRestaurant;
 
 namespace BusinessLayerRestaurant
 {
-    public class clsDTOBJobRoles : IDTOBJobRoles
+    public class clsJobRolesDtoContainer : IDTOBJobRoles
     {
         private DTOJobRolesCRequest? _CRequest;
         public DTOJobRolesCRequest? CreateRequest
@@ -24,7 +24,7 @@ namespace BusinessLayerRestaurant
         }
     }
 
-    public class clsInterfaceBJobRoles : IInterfaceBJobRoles
+    public class clsBJobRolesRepositoryBridge : IInterfaceBJobRoles
     {
         private IDataJobRoles _IJobRole;
         public IDataJobRoles IData
@@ -33,7 +33,7 @@ namespace BusinessLayerRestaurant
             set => _IJobRole = value;
         }
 
-        public clsInterfaceBJobRoles(IDataJobRoles IJobRole)
+        public clsBJobRolesRepositoryBridge(IDataJobRoles IJobRole)
         {
             _IJobRole = IJobRole;
         }
@@ -41,10 +41,10 @@ namespace BusinessLayerRestaurant
     }
 
 
-    public class clsReadableBJobRoles : IReadableBJobRoles
+    public class clsJobRolesReader : IReadableBJobRoles
     {
         private IInterfaceBJobRoles _Interface;
-        public clsReadableBJobRoles(IInterfaceBJobRoles setting)
+        public clsJobRolesReader(IInterfaceBJobRoles setting)
         {
             _Interface = setting;
         }
@@ -61,10 +61,10 @@ namespace BusinessLayerRestaurant
         }
     }
 
-    public class clsWritableBJobRoles :  IWritableBJobRoles
+    public class clsJobRolesWriter :  IWritableBJobRoles
     {
         private IInterfaceBJobRoles _Interface;
-        public clsWritableBJobRoles(IInterfaceBJobRoles jobrole)
+        public clsJobRolesWriter(IInterfaceBJobRoles jobrole)
         {
             _Interface = jobrole;
         }

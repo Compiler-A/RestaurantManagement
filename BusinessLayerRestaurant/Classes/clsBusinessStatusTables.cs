@@ -3,7 +3,7 @@
 
 namespace BusinessLayerRestaurant
 {
-    public class clsDTOBStatusTables : IDTOBStatusTables
+    public class clsStatusTablesDtoContainer : IDTOBStatusTables
     {
         private DTOStatusTablesCRequest? _CRequest;
 
@@ -21,7 +21,7 @@ namespace BusinessLayerRestaurant
         }
     }
 
-    public class clsInterfaceBStatusTables : IInterfaceBStatusTables
+    public class clsStatusTablesRepositoryBridge : IInterfaceBStatusTables
     {
         private IDataStatusTables _IStatusTable;
         public IDataStatusTables IData
@@ -29,16 +29,16 @@ namespace BusinessLayerRestaurant
             get => _IStatusTable;
             set => _IStatusTable = value;
         }
-        public clsInterfaceBStatusTables(IDataStatusTables iStatusTable)
+        public clsStatusTablesRepositoryBridge(IDataStatusTables iStatusTable)
         {
             _IStatusTable = iStatusTable;
         }
     }
 
-    public class clsReadableBStatusTables : IReadableBStatusTables
+    public class clsStatusTablesReader : IReadableBStatusTables
     {
         private IInterfaceBStatusTables _Interface;
-        public clsReadableBStatusTables(IInterfaceBStatusTables iInterface)
+        public clsStatusTablesReader(IInterfaceBStatusTables iInterface)
         {
             _Interface = iInterface;
         }
@@ -60,11 +60,11 @@ namespace BusinessLayerRestaurant
 
     }
 
-    public class clsWritableBStatusTables : IWritableBStatusTables
+    public class clsStatusTablesWriter : IWritableBStatusTables
     {
         private IDTOBStatusTables _dto;
         private IInterfaceBStatusTables _Interface;
-        public clsWritableBStatusTables(IInterfaceBStatusTables setting, IDTOBStatusTables dto)
+        public clsStatusTablesWriter(IInterfaceBStatusTables setting, IDTOBStatusTables dto)
         {
             _Interface = setting;
             _dto = dto;

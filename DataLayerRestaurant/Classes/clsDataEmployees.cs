@@ -80,7 +80,7 @@ namespace DataLayerRestaurant
     }
 
    
-    public class clsGlobal
+    public class clsHashing
     {
         public static string HashString(string input)
         {
@@ -93,7 +93,7 @@ namespace DataLayerRestaurant
         }
     }
 
-    public class clsCompositionDEmployees : clsGlobal ,ICompositionDataBase<DTOEmployees>
+    public class clsCompositionDEmployees : clsHashing ,ICompositionDataBase<DTOEmployees>
     {
         public DTOEmployees GetDataFromDataBase(SqlDataReader reader)
         {
@@ -109,10 +109,10 @@ namespace DataLayerRestaurant
     }
 
 
-    public class clsReadableDEmployees :clsCompositionDEmployees ,IReadableDEmployees
+    public class clsEmployeesReader :clsCompositionDEmployees ,IReadableDEmployees
     {
         private readonly clsMySettings _Setting;
-        public clsReadableDEmployees(IOptions<clsMySettings> settings)
+        public clsEmployeesReader(IOptions<clsMySettings> settings)
         {
             _Setting = settings.Value;
         }
@@ -147,7 +147,7 @@ namespace DataLayerRestaurant
                 {
                     Command.CommandType = System.Data.CommandType.StoredProcedure;
                     Command.Parameters.AddWithValue("@UserName", Request.UserName);
-                    Command.Parameters.AddWithValue("@Password", clsGlobal.HashString(Request.Password));
+                    Command.Parameters.AddWithValue("@Password", clsHashing.HashString(Request.Password));
 
 
                     await Connection.OpenAsync();
@@ -213,10 +213,10 @@ namespace DataLayerRestaurant
     }
 
 
-    public class clsWritableDEmployees: clsCompositionDEmployees , IWritableDEmployees
+    public class clsEmployeesWriter: clsCompositionDEmployees , IWritableDEmployees
     {
         private readonly clsMySettings _Setting;
-        public clsWritableDEmployees(IOptions<clsMySettings> settings)
+        public clsEmployeesWriter(IOptions<clsMySettings> settings)
         {
             _Setting = settings.Value;
         }
@@ -231,8 +231,8 @@ namespace DataLayerRestaurant
                 {
                     Command.CommandType = System.Data.CommandType.StoredProcedure;
                     Command.Parameters.AddWithValue("@ID", clsChanged.ID);
-                    Command.Parameters.AddWithValue("@NewPassword", clsGlobal.HashString(clsChanged.NewPassword));
-                    Command.Parameters.AddWithValue("@CurrentPassword", clsGlobal.HashString(clsChanged.CurrentPassword));
+                    Command.Parameters.AddWithValue("@NewPassword", clsHashing.HashString(clsChanged.NewPassword));
+                    Command.Parameters.AddWithValue("@CurrentPassword", clsHashing.HashString(clsChanged.CurrentPassword));
                     await Connection.OpenAsync();
                     int rowsAffected = await Command.ExecuteNonQueryAsync();
                     Changed = rowsAffected > 0;

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace BusinessLayerRestaurant
 {
-    public class clsDTOBTables : IDTOBTables
+    public class clsTablesDtoContainer : IDTOBTables
     {
         private DTOTablesCRequest? _CRequest;
         public DTOTablesCRequest? CreateRequest
@@ -25,7 +25,7 @@ namespace BusinessLayerRestaurant
         }
     }
 
-    public class clsInterfaceBTables : IInterfaceBTables
+    public class clsTablesRepositoryBridge : IInterfaceBTables
     {
         private IDataTables _IDataTable;
         public IDataTables IData
@@ -40,17 +40,17 @@ namespace BusinessLayerRestaurant
             set => _IBusinessStatusTable = value;
         }
 
-        public clsInterfaceBTables(IDataTables @Data, IBusinessStatusTables @IBusinessStatusTable)
+        public clsTablesRepositoryBridge(IDataTables @Data, IBusinessStatusTables @IBusinessStatusTable)
         {
             _IDataTable = @Data;
             _IBusinessStatusTable = @IBusinessStatusTable;
         }
     }
 
-    public class clsStatusTableLoaderByTables : ICompositionBTables
+    public class clsStatusTableLoader : ICompositionBTables
     {
         private IBusinessStatusTables _IData;
-        public clsStatusTableLoaderByTables(IBusinessStatusTables iData)
+        public clsStatusTableLoader(IBusinessStatusTables iData)
         {
             _IData = iData;
         }
@@ -61,10 +61,10 @@ namespace BusinessLayerRestaurant
         }
     }
 
-    public class clsCompositionBTables : ICompositionBTables
+    public class clsCompositionTablesLoader : ICompositionBTables
     {
         private IEnumerable<ICompositionBTables> _loaders;
-        public clsCompositionBTables
+        public clsCompositionTablesLoader
             (IEnumerable<ICompositionBTables> loaders)
         {
             _loaders = loaders;
@@ -78,10 +78,10 @@ namespace BusinessLayerRestaurant
         }
     }
 
-    public class clsReadableBTables : clsCompositionBTables, IReadableBTables
+    public class clsTablesReader : clsCompositionTablesLoader, IReadableBTables
     {
         private IInterfaceBTables _Interface;
-        public clsReadableBTables(IInterfaceBTables @interface, IEnumerable<ICompositionBTables> loaders)
+        public clsTablesReader(IInterfaceBTables @interface, IEnumerable<ICompositionBTables> loaders)
             : base(loaders)
         {
             _Interface = @interface;
@@ -152,11 +152,11 @@ namespace BusinessLayerRestaurant
         }
     }
 
-    public class clsWritableBTables : clsCompositionBTables , IWritableBTables
+    public class clsTablesWriter : clsCompositionTablesLoader , IWritableBTables
     {
         private IDTOBTables _Dtos;
         private IInterfaceBTables _Interfaces;
-        public clsWritableBTables
+        public clsTablesWriter
             (IDTOBTables dto, IInterfaceBTables @interface, IEnumerable<ICompositionBTables> loader) : base(loader)
         {
             _Dtos = dto;

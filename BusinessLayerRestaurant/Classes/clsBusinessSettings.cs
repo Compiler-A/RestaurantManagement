@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace BusinessLayerRestaurant
 {
 
-    public class clsDTOBSettings : IDTOBSettings
+    public class clsSettingsDtoContainer : IDTOBSettings
     {
         private DTOSettingsCRequest? _CreateRequest;
         public DTOSettingsCRequest? CreateRequest 
@@ -25,7 +25,7 @@ namespace BusinessLayerRestaurant
             set => _UpdateRequest = value;
         }
     }   
-    public class clsInterfaceBSettings : IInterfaceBSettings
+    public class clsSettingsRepositoryBridge : IInterfaceBSettings
     {
         private IDataSettings _IDataSetting;
         public IDataSettings IData 
@@ -34,7 +34,7 @@ namespace BusinessLayerRestaurant
             set => _IDataSetting = value; 
         }
 
-        public clsInterfaceBSettings(IDataSettings dataSetting)
+        public clsSettingsRepositoryBridge(IDataSettings dataSetting)
         {
             _IDataSetting = dataSetting;
         }
@@ -42,10 +42,10 @@ namespace BusinessLayerRestaurant
 
 
 
-    public class clsReadableBSettings : IReadableBSettings
+    public class clsSettingsReader : IReadableBSettings
     {
         private IInterfaceBSettings _Interface;
-        public clsReadableBSettings(IInterfaceBSettings setting)
+        public clsSettingsReader(IInterfaceBSettings setting)
         {
             _Interface = setting;
         }
@@ -61,11 +61,11 @@ namespace BusinessLayerRestaurant
             return dto;
         }
     }
-    public class clsWritableBSettings : IWritableBSettings
+    public class clsSettingsWriter : IWritableBSettings
     {
         private IDTOBSettings _dto;
         private IInterfaceBSettings _Interface;
-        public clsWritableBSettings(IInterfaceBSettings setting, IDTOBSettings dto)
+        public clsSettingsWriter(IInterfaceBSettings setting, IDTOBSettings dto)
         {
             _Interface = setting;
             _dto = dto;

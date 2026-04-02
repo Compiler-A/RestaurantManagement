@@ -108,10 +108,10 @@ namespace DataLayerRestaurant
         }
     }
 
-    public class clsReadableDOrders : clsCompositionDOrders, IReadableDOrders
+    public class clsOrdersReader : clsCompositionDOrders, IReadableDOrders
     {
         private readonly clsMySettings _Settings;
-        public clsReadableDOrders(IOptions<clsMySettings> settings)
+        public clsOrdersReader(IOptions<clsMySettings> settings)
         {
             _Settings = settings.Value;
         }
@@ -195,11 +195,11 @@ namespace DataLayerRestaurant
         }
     }
 
-    public class clsWritableDOrders :clsCompositionDOrders, IWritableDOrders
+    public class clsOrdersWriter :clsCompositionDOrders, IWritableDOrders
     {
 
         private readonly clsMySettings _Settings;
-        public clsWritableDOrders(IOptions<clsMySettings> settings)
+        public clsOrdersWriter(IOptions<clsMySettings> settings)
         {
             _Settings = settings.Value;
         }

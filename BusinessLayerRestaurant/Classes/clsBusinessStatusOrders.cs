@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace BusinessLayerRestaurant
 {
 
-    public class clsDTOBStatusOrders : IDTOBStatusOrders
+    public class clsStatusOrdersDtoContainer : IDTOBStatusOrders
     {
         private DTOStatusOrdersCRequest? _CRequest;
         private DTOStatusOrdersURequest? _URequest;
@@ -25,10 +25,10 @@ namespace BusinessLayerRestaurant
             set => _URequest = value;
         }
     }
-    public class clsInterfaceBStatusOrders : IInterfaceBStatusOrders
+    public class clsStatusOrdersRepositoryBridge : IInterfaceBStatusOrders
     {
         private IDataStatusOrders _IDataStatusOrder;
-        public clsInterfaceBStatusOrders(IDataStatusOrders IDataStatusOrder)
+        public clsStatusOrdersRepositoryBridge(IDataStatusOrders IDataStatusOrder)
         {
             this._IDataStatusOrder = IDataStatusOrder;
         }
@@ -39,10 +39,10 @@ namespace BusinessLayerRestaurant
         }
     }
 
-    public class clsReadableBStatusOrders : IReadableBStatusOrders
+    public class clsStatusOrdersReader : IReadableBStatusOrders
     {
         private IInterfaceBStatusOrders _Interface;
-        public clsReadableBStatusOrders(IInterfaceBStatusOrders Interface)
+        public clsStatusOrdersReader(IInterfaceBStatusOrders Interface)
         {
             _Interface = Interface;
         }
@@ -57,11 +57,11 @@ namespace BusinessLayerRestaurant
             return dto;
         }
     }
-    public class clsWritableBStatusOrders : IWritableBStatusOrders
+    public class clsStatusOrdersWriter : IWritableBStatusOrders
     {
         private IDTOBStatusOrders _dto;
         private IInterfaceBStatusOrders _Interface;
-        public clsWritableBStatusOrders(IInterfaceBStatusOrders setting, IDTOBStatusOrders dto)
+        public clsStatusOrdersWriter(IInterfaceBStatusOrders setting, IDTOBStatusOrders dto)
         {
             _Interface = setting;
             _dto = dto;

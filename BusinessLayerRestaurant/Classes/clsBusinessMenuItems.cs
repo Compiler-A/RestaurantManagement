@@ -7,7 +7,7 @@ using DataLayerRestaurant;
 namespace BusinessLayerRestaurant
 {
 
-    public class clsDTOBMenuItems : IDTOBMenuItems
+    public class clsMenuItemsDtoContainer : IDTOBMenuItems
     {
         private DTOMenuItemsCRequest? _CreateRequest;
         public DTOMenuItemsCRequest? CreateRequest
@@ -25,7 +25,7 @@ namespace BusinessLayerRestaurant
     }
 
 
-    public class clsInterfaceBMenuItems : IInterfaceBMenuItems
+    public class clsMenuItemsRepositoryBridge : IInterfaceBMenuItems
     {
         private IDataMenuItems _IData;
         public IDataMenuItems IData
@@ -47,7 +47,7 @@ namespace BusinessLayerRestaurant
             set => _IBusinessStatusMenu = value;
         }
 
-        public clsInterfaceBMenuItems(IDataMenuItems iData, IBusinessTypeItems iTypeItem, IBusinessStatusMenus iStatusMenu)
+        public clsMenuItemsRepositoryBridge(IDataMenuItems iData, IBusinessTypeItems iTypeItem, IBusinessStatusMenus iStatusMenu)
         {
             _IData = iData;
             _IBusinessTypeItem = iTypeItem;
@@ -55,10 +55,10 @@ namespace BusinessLayerRestaurant
         }
     }
 
-    public class clsTypeItemLoaderByMenuItems : ICompositionBMenuItems
+    public class clsTypeItemLoader : ICompositionBMenuItems
     {
         private IBusinessTypeItems _BusinessTypeItem;
-        public clsTypeItemLoaderByMenuItems(IBusinessTypeItems BusinessTypeItem)
+        public clsTypeItemLoader(IBusinessTypeItems BusinessTypeItem)
         {
             _BusinessTypeItem = BusinessTypeItem;
         }
@@ -69,10 +69,10 @@ namespace BusinessLayerRestaurant
         }
     }
 
-    public class clsStatusMenuLoaderByMenuItems : ICompositionBMenuItems
+    public class clsStatusMenuLoader : ICompositionBMenuItems
     {
         private IBusinessStatusMenus _Business;
-        public clsStatusMenuLoaderByMenuItems(IBusinessStatusMenus Business)
+        public clsStatusMenuLoader(IBusinessStatusMenus Business)
         {
             _Business = Business;
         }
@@ -83,11 +83,11 @@ namespace BusinessLayerRestaurant
         }
     }
 
-    public class clsCompositionBMenuItems : ICompositionBMenuItems
+    public class clsCompositionMenuItemsLoader : ICompositionBMenuItems
     {
         IEnumerable<ICompositionBMenuItems> _Interface;
 
-        public clsCompositionBMenuItems(IEnumerable<ICompositionBMenuItems> Interface)
+        public clsCompositionMenuItemsLoader(IEnumerable<ICompositionBMenuItems> Interface)
         {
             _Interface = Interface;
         }
@@ -102,11 +102,11 @@ namespace BusinessLayerRestaurant
 
     }
 
-    public class clsReadableBMenuItems : clsCompositionBMenuItems ,IReadableBMenuItems
+    public class clsMenuItemsReader : clsCompositionMenuItemsLoader ,IReadableBMenuItems
     {
         IInterfaceBMenuItems _Interface;
 
-        public clsReadableBMenuItems(IInterfaceBMenuItems Interface, IEnumerable<ICompositionBMenuItems> loader)
+        public clsMenuItemsReader(IInterfaceBMenuItems Interface, IEnumerable<ICompositionBMenuItems> loader)
             : base(loader)
         { 
             _Interface = Interface;
@@ -157,11 +157,11 @@ namespace BusinessLayerRestaurant
         }
     }
 
-    public class clsWritableBMenuItem : clsCompositionBMenuItems , IWritableBMenuItems
+    public class clsMenuItemsWriter : clsCompositionMenuItemsLoader , IWritableBMenuItems
     {
         IInterfaceBMenuItems _Interface;
 
-        public clsWritableBMenuItem(IInterfaceBMenuItems Interface, IEnumerable<ICompositionBMenuItems> loader)
+        public clsMenuItemsWriter(IInterfaceBMenuItems Interface, IEnumerable<ICompositionBMenuItems> loader)
             : base(loader)
         {
             _Interface = Interface;

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace BusinessLayerRestaurant
 {
 
-    public class clsDTOBTypeItems : IDTOBTypeItems
+    public class clsTypeItemsDtoContainer : IDTOBTypeItems
     {
         private DTOTypeItemsCRequest? _CRequest;
         private DTOTypeItemsURequest? _URequest;
@@ -25,7 +25,7 @@ namespace BusinessLayerRestaurant
         }
     }
 
-    public class clsInterfaceBTypeItems : IInterfaceBTypeItems
+    public class clsTypeItemsRepositoryBridge : IInterfaceBTypeItems
     {
         private IDataTypeItems _IDataTypeItem;
         public IDataTypeItems IData
@@ -34,17 +34,17 @@ namespace BusinessLayerRestaurant
             set => _IDataTypeItem = value;
         }
 
-        public clsInterfaceBTypeItems(IDataTypeItems Data)
+        public clsTypeItemsRepositoryBridge(IDataTypeItems Data)
         {
             _IDataTypeItem = Data;
         }
     }
 
-    public class clsReadableBTypeItems : IReadableBTypeItems
+    public class clsTypeItemsReader : IReadableBTypeItems
     {
         private IInterfaceBTypeItems _Interface;
 
-        public clsReadableBTypeItems(IInterfaceBTypeItems Interface)
+        public clsTypeItemsReader(IInterfaceBTypeItems Interface)
         {
             _Interface = Interface;
         }
@@ -58,10 +58,10 @@ namespace BusinessLayerRestaurant
         }
     }
 
-    public class clsWritableBTypeItems : IWritableBTypeItems
+    public class clsTypeItemsWriter : IWritableBTypeItems
     {
         private IInterfaceBTypeItems _Interface;
-        public clsWritableBTypeItems(IInterfaceBTypeItems @interface)
+        public clsTypeItemsWriter(IInterfaceBTypeItems @interface)
         {
             _Interface = @interface;
         }
