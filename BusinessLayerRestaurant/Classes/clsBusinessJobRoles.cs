@@ -51,12 +51,19 @@ namespace BusinessLayerRestaurant
         public async Task<List<DTOJobRoles>> GetAllAsync(int page)
         {
             var list = await _Interface.IData.GetAllJobRolesAsync(page);
+            if (list == null || list.Count == 0)
+            {
+                throw new KeyNotFoundException("Not Found!");
+            }
             return list;
         }
         public async Task<DTOJobRoles?> GetAsync(int ID)
         {
             var dto = await _Interface.IData.GetJobRoleAsync(ID);
-
+            if (dto == null)
+            {
+                throw new KeyNotFoundException("Not Found!");
+            }
             return dto;
         }
     }
@@ -73,30 +80,31 @@ namespace BusinessLayerRestaurant
 
         public async Task<DTOJobRoles?> CreateAsync(DTOJobRolesCRequest Request)
         {
-            if (Request == null)
-            { return null; }
+
             var dto = await _Interface.IData.AddJobRoleAsync(Request);
-            if (dto != null)
+            if (dto == null)
             {
-                return dto;
+                throw new InvalidOperationException("Not Created!");
             }
-            return null;
+            return dto;
         }
         public async Task<DTOJobRoles?> UpdateAsync(DTOJobRolesURequest Request)
         {
-            if (Request == null || Request.ID <= 0)
-            { return null; }
-
             var dto = await _Interface.IData.UpdateJobRoleAsync(Request);
-            if (dto != null)
+            if (dto == null)
             {
-                return dto;
+                throw new InvalidOperationException("Not Update!");
             }
             return null;
         }
 
         public async Task<bool> DeleteAsync(int ID)
         {
+            var result = await _Interface.IData.DeleteJobRoleAsync(ID);
+            if (!result)
+            {
+                throw new InvalidOperationException("Not Delete!");
+            }
             return await _Interface.IData.DeleteJobRoleAsync(ID);
         }
     }

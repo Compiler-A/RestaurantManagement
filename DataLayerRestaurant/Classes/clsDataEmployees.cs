@@ -9,15 +9,23 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
+using System.ComponentModel.DataAnnotations;
 
 namespace DataLayerRestaurant
 {
 
     public class DTOEmployeesCRequest
     {
+        [Required(ErrorMessage ="Name is required")]
         public string Name { get; set; } = string.Empty;
+
+        [Range(1, int.MaxValue, ErrorMessage = "JobID must be greater than 0")]
         public int JobID { get; set; }
+
+        [Required(ErrorMessage = "UserName is required")]
         public string UserName { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "Password is required")]
         public string Password { get; set; } = string.Empty;
 
         public DTOEmployeesCRequest(string name, int jobID, string userName, string password)
@@ -31,6 +39,7 @@ namespace DataLayerRestaurant
 
     public class DTOEmployeesURequest : DTOEmployeesCRequest
     {
+        [Range(1, int.MaxValue, ErrorMessage = "ID must be greater than 0")]
         public int ID { get; set; }
 
         public DTOEmployeesURequest(int ID, string Name, int JobID, string userName, string password) 
@@ -41,23 +50,40 @@ namespace DataLayerRestaurant
 
     public class DTOEmployeesLoginRequest
     {
+        [Required(ErrorMessage = "UserName is required")]
         public string UserName { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "Password is required")]
         public string Password { get; set; } = string.Empty;
     }
 
     public class DTOEmployeesChangedPassword
     {
+        [Range(1, int.MaxValue, ErrorMessage = "ID must be greater than 0")]
         public int ID { get; set; }
+
+        [Required(ErrorMessage = "CurrentPassword is required")]
         public string CurrentPassword { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "NewPassword is required")]
         public string NewPassword { get; set; } = string.Empty;
     }
 
     public class DTOEmployees 
     {
+        [Range(1, int.MaxValue, ErrorMessage = "ID must be greater than 0")]
         public int ID { get; set; }
+
+        [Required(ErrorMessage = "Name is required")]
         public string Name { get; set; } = string.Empty;
+
+        [Range(1, int.MaxValue, ErrorMessage = "JobID must be greater than 0")]
         public int JobID { get; set; }
+
+        [Required(ErrorMessage = "UserName is required")]
         public string UserName { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "Password is required")]
         public string Password { get; set; } = string.Empty;
         public DTOJobRoles? JobRoles { get; set; }
 
@@ -328,9 +354,9 @@ namespace DataLayerRestaurant
         }
 
 
-        public async Task<List<DTOEmployees>> GetAllEmployeesAsync(int ID)
+        public async Task<List<DTOEmployees>> GetAllEmployeesAsync(int Page)
         {
-            return await _IRead.GetAllDataAsync(ID);
+            return await _IRead.GetAllDataAsync(Page);
         }
         public async Task<DTOEmployees?> GetEmployeeAsync(int ID)
         {

@@ -2,6 +2,7 @@
 using DataLayerRestaurant;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 
 
 namespace APILayer.Controllers
@@ -23,25 +24,12 @@ namespace APILayer.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<ApiResponse<IEnumerable<DTOJobRoles>>>> GetAllAsync([FromQuery] int page = 1)
         {
-            try
+            if (page <= 0)
             {
-                if (page <= 0)
-                {
-                    return CreateResponse<IEnumerable<DTOJobRoles>>(null!, StatusCodes.Status400BadRequest, "Page number must be greater than 0.");
-                }
-                var list = await jobRoles.GetAllJobRolesAsync(page);
-
-                if (list == null || list.Count == 0)
-                {
-                    return CreateResponse<IEnumerable<DTOJobRoles>>(null!, StatusCodes.Status404NotFound, "Not Found!");
-                }
-
-                return CreateResponse<IEnumerable<DTOJobRoles>>(list, StatusCodes.Status200OK, $"Row: {list.Count}");
+                throw new ArgumentException("Page number must be greater than 0.");
             }
-            catch (Exception ex)
-            {
-                return CreateResponse<IEnumerable<DTOJobRoles>>(null!, StatusCodes.Status500InternalServerError, "Internal server error: " + ex.Message);
-            }
+            var list = await jobRoles.GetAllJobRolesAsync(page);
+            return CreateResponse<IEnumerable<DTOJobRoles>>(list, StatusCodes.Status200OK, $"Row: {list.Count}");
         }
 
         [HttpGet("{ID}",Name = "GetJobRoleByID")]
@@ -51,120 +39,81 @@ namespace APILayer.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<ApiResponse<DTOJobRoles>>> GetByIDAsync([FromRoute] int ID = 1)
         {
-            try
+            if (ID <= 0)
             {
-                if (ID <= 0)
-                {
-                    return CreateResponse<DTOJobRoles>(null!, StatusCodes.Status400BadRequest, "ID <= 0.");
-                }
-                var DTO = await jobRoles.GetJobRoleAsync(ID);
-
-                if (DTO == null)
-                {
-                    return CreateResponse<DTOJobRoles>(null!, StatusCodes.Status404NotFound, "Not Found!");
-                }
-
-                return CreateResponse<DTOJobRoles>(DTO, StatusCodes.Status200OK, "Find Saccessfully!");
+                throw new ArgumentException("ID number must be greater than 0.");
             }
-            catch (Exception ex)
-            {
-                return CreateResponse<DTOJobRoles>(null!, StatusCodes.Status500InternalServerError, "Internal server error: " + ex.Message);
-            }
+            var DTO = await jobRoles.GetJobRoleAsync(ID);
+            return CreateResponse<DTOJobRoles>(DTO!, StatusCodes.Status200OK, "Find Saccessfully!");
         }
 
         [HttpPost(Name = "AddJobRole")]
         [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<ApiResponse<DTOJobRoles>>> CreateAsync([FromBody] DTOJobRolesCRequest JobRole)
         {
-            try
+            if (JobRole == null)
             {
-                if (JobRole == null)
-                    return CreateResponse<DTOJobRoles>(null!, StatusCodes.Status400BadRequest, "Body is null.");
-
-                if (string.IsNullOrWhiteSpace(JobRole.Name))
-                    return CreateResponse<DTOJobRoles>(null!, StatusCodes.Status400BadRequest, "Name is required.");
-
-
-                var result = await jobRoles.AddJobRoleAsync(JobRole);
-
-                if (result != null)
-                    return CreatedAtRoute("GetJobRoleByID", new { ID = result.ID }, result);
-
-                return CreateResponse<DTOJobRoles>(null!, StatusCodes.Status500InternalServerError, "Insert failed.");
-
+                throw new ArgumentNullException("Request is null!");
             }
-            catch (Exception ex)
+
+            if (!ModelState.IsValid)
             {
-                return CreateResponse<DTOJobRoles>(null!, StatusCodes.Status500InternalServerError, ex.Message);
+                var errors = string.Join("; ", ModelState.Values
+                                                 .SelectMany(v => v.Errors)
+                                                 .Select(e => e.ErrorMessage));
+                throw new ArgumentException("Invalid model state: " + errors);
             }
+
+            var result = await jobRoles.AddJobRoleAsync(JobRole);
+            return CreatedAtRoute("GetJobRoleByID", new { ID = result!.ID }, result);
         }
 
         [HttpPut(Name = "UpdateJobRole")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<ApiResponse<DTOJobRoles>>> UpdateAsync([FromBody] DTOJobRolesURequest Update)
         {
-            try
+            if (Update == null)
             {
-                if (Update == null || Update.ID <= 0)
-                {
-                    return CreateResponse<DTOJobRoles>(null!, StatusCodes.Status400BadRequest, "Bad Ruquest");
-                }
-
-                var existingStatusOrder = await jobRoles.GetJobRoleAsync(Update.ID);
-
-                if (existingStatusOrder == null)
-                {
-                    return CreateResponse<DTOJobRoles>(null!, StatusCodes.Status404NotFound, "Job Role not found.");
-                }
-
-                var result = await jobRoles.UpdateJobRoleAsync(Update);
-                return result != null ?
-                    CreateResponse<DTOJobRoles>(result, StatusCodes.Status200OK, "Job Role updated successfully.")
-                    :
-                    CreateResponse<DTOJobRoles>(null!, StatusCodes.Status500InternalServerError, "Failed to update JobRole.");
-
+                throw new ArgumentNullException("Request is null!");
             }
-            catch (System.Exception ex)
+
+            if (!ModelState.IsValid)
             {
-                return CreateResponse<DTOJobRoles>(null!, StatusCodes.Status500InternalServerError, "Internal server error: " + ex.Message);
+                var errors = string.Join("; ", ModelState.Values
+                                                 .SelectMany(v => v.Errors)
+                                                 .Select(e => e.ErrorMessage));
+                throw new ArgumentException("Invalid model state: " + errors);
             }
+
+            var result = await jobRoles.UpdateJobRoleAsync(Update);
+            return CreateResponse<DTOJobRoles>(result!, StatusCodes.Status200OK, "Job Role updated successfully.");
+
+           
         }
 
 
         [HttpDelete("{id}", Name = "DeleteJobRole")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<ApiResponse<bool>>> DeleteAsync([FromRoute] int id)
         {
-            try
+            if (id <= 0)
             {
-                if (id <= 0)
-                {
-                    return CreateResponse<bool>(false, StatusCodes.Status400BadRequest, "Bad Ruquest");
-                }
-
-                var result = await jobRoles.DeleteJobRoleAsync(id);
-
-                if (result)
-                {
-                    return CreateResponse<bool>(true!, StatusCodes.Status200OK, "jobRole deleted successfully.");
-                }
-                else
-                {
-                    return CreateResponse<bool>(false!, StatusCodes.Status404NotFound, "JobRole not found or failed to delete.");
-                }
+                throw new ArgumentException("ID number must be greater than 0.");
             }
-            catch (System.Exception ex)
-            {
-                return CreateResponse<bool>(false!, StatusCodes.Status500InternalServerError, "Internal server error: " + ex.Message);
-            }
+            var result = await jobRoles.DeleteJobRoleAsync(id);
+            return CreateResponse<bool>(true!, StatusCodes.Status200OK, "jobRole deleted successfully.");
         }
     }
 }

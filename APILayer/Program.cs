@@ -1,6 +1,7 @@
-using System.Data;
 using BusinessLayerRestaurant;
 using DataLayerRestaurant;
+using Microsoft.AspNetCore.Mvc;
+using System.Data;
 
 
 
@@ -13,7 +14,10 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-
+builder.Services.Configure<ApiBehaviorOptions>(options =>
+{
+    options.SuppressModelStateInvalidFilter = true;
+});
 builder.Services.Configure<clsMySettings>(
     builder.Configuration.GetSection("MySettings"));
 
@@ -125,9 +129,8 @@ builder.Services.AddScoped<ICompositionBOrderDetails, clsOrderLoader>();
 builder.Services.AddScoped<ICompositionBOrderDetails, clsMenuItemLoader>();
 builder.Services.AddScoped<IBusinessOrderDetails, clsBusinessOrderDetails>();
 
-
 var app = builder.Build();
-
+app.UseMiddleware<APILayer.GlobalExceptionMiddleware>();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {

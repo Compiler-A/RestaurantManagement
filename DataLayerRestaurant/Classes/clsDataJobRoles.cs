@@ -7,11 +7,14 @@ using System.Linq;
 using System.Runtime;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
+
 
 namespace DataLayerRestaurant
 {
     public class DTOJobRolesCRequest
     {
+        [Required(ErrorMessage = "Name is required.")]
         public string Name { get; set; }
         public string? Description { get; set; }
 
@@ -24,6 +27,7 @@ namespace DataLayerRestaurant
 
     public class DTOJobRolesURequest : DTOJobRolesCRequest
     {
+        [Range(1, int.MaxValue, ErrorMessage = "ID must be greater than 0.")]
         public int ID { get; set; }
 
         public DTOJobRolesURequest(int ID , string Name, string Description) : base (Name, Description)
@@ -34,7 +38,10 @@ namespace DataLayerRestaurant
 
     public class DTOJobRoles
     {
+        [Range(1, int.MaxValue, ErrorMessage = "ID must be greater than 0.")]
         public int ID {  get; set; }
+
+        [Required(ErrorMessage = "Name is required.")]
         public string Name { get; set; }
         public string? Description { get; set; }
 

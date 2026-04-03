@@ -97,7 +97,7 @@ namespace BusinessLayerRestaurant
 
             if (dto == null)
             {
-                return null;
+                throw new InvalidOperationException("Not Login!");
             }
             await LoadDataAsync(dto);
             return dto;
@@ -105,13 +105,14 @@ namespace BusinessLayerRestaurant
 
         public async Task<DTOEmployees?> GetAsync(int ID)
         {
-            var dto  = await _Interface.IData.GetEmployeeAsync(ID);
-            if (dto == null)
+            var result = await _Interface.IData.GetEmployeeAsync(ID);
+            if (result == null)
             {
-                return null;
+                throw new KeyNotFoundException("Not Found!");
             }
-            await LoadDataAsync(dto);
-            return dto;
+            await LoadDataAsync(result);
+
+            return result;
         }
 
         public async Task<DTOEmployees?> GetAsync(string UserName)
@@ -119,19 +120,26 @@ namespace BusinessLayerRestaurant
             var dto = await _Interface.IData.GetEmployeeAsync(UserName);
             if (dto == null)
             {
-                return null;
+                throw new KeyNotFoundException("Not Found!");
             }
             await LoadDataAsync(dto);
             return dto;
         }
+
         public async Task<List<DTOEmployees>> GetAllAsync(int page)
         {
-            var dto = await _Interface.IData.GetAllEmployeesAsync(page);
-            foreach (var item in dto)
+            var result = await _Interface.IData.GetAllEmployeesAsync(page);
+
+            if (result == null || result.Count == 0)
+            {
+                throw new KeyNotFoundException("Not Found!");
+            }
+            foreach (var item in result)
             {
                 await LoadDataAsync(item);
             }
-            return dto;
+            return result;
+
         }
 
     }
@@ -147,37 +155,45 @@ namespace BusinessLayerRestaurant
 
         public async Task<bool> ChangePasswordAsync(DTOEmployeesChangedPassword Request)
         {
+            var result = await _Interface.IData.ChangedPasswordEmployeeAsync(Request);
+            if (!result)
+            {
+                throw new InvalidOperationException("Not Changed!");
+            }
             return await _Interface.IData.ChangedPasswordEmployeeAsync(Request);
         }
 
-        public async Task<DTOEmployees?> CreateAsync(DTOEmployeesCRequest Request)
+        public async Task<DTOEmployees?> CreateAsync(DTOEmployeesCRequest request)
         {
-            if (Request == null)
-            { return null; }
-            var dto = await _Interface.IData.AddEmployeeAsync(Request);
-            if (dto != null)
+            var result = await _Interface.IData.AddEmployeeAsync(request);
+            if (result == null)
             {
-                await LoadDataAsync(dto);
-                return dto;
+                throw new InvalidOperationException("Not Created!");
             }
-            return null;
+            await LoadDataAsync(result);
+            return result;
         }
 
-        public async Task<DTOEmployees?> UpdateAsync(DTOEmployeesURequest Request)
+        public async Task<DTOEmployees?> UpdateAsync(DTOEmployeesURequest request)
         {
-            if (Request == null)
-            { return null; }
-            var dto = await _Interface.IData.UpdateEmployeeAsync(Request);
-            if (dto != null)
+            
+
+            var result = await _Interface.IData.UpdateEmployeeAsync(request);
+            if (result == null)
             {
-                await LoadDataAsync(dto);
-                return dto;
+                throw new InvalidOperationException("Not Updated!");
             }
-            return null;
+            await LoadDataAsync(result);
+            return result;
         }
 
         public async Task<bool> DeleteAsync(int ID)
         {
+            var result = await _Interface.IData.DeleteEmployeeAsync(ID);
+            if (!result)
+            {
+                throw new InvalidOperationException("Not Deleted!");
+            }
             return await _Interface.IData.DeleteEmployeeAsync(ID);
         }
     }
@@ -240,7 +256,7 @@ namespace BusinessLayerRestaurant
 
         public async Task<List<DTOEmployees>> GetAllEmployeesAsync(int Page)
         {
-            return await _IRead.GetAllAsync(Page);
+           return await _IRead.GetAllAsync(Page);
         }
 
         public async Task<DTOEmployees?> CreateEmployeeAsync(DTOEmployeesCRequest request)
