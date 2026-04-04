@@ -8,6 +8,7 @@ namespace APILayer.Controllers
 {
     [Route("api/Settings")]
     [ApiController]
+    [ValidateModel]
     public class APISettings : BaseController
     {
         private readonly IBusinessSettings _BusinessSettings;
@@ -61,13 +62,7 @@ namespace APILayer.Controllers
                 throw new ArgumentNullException("Request is null!");
             }
 
-            if (!ModelState.IsValid)
-            {
-                var errors = string.Join("; ", ModelState.Values
-                                                 .SelectMany(v => v.Errors)
-                                                 .Select(e => e.ErrorMessage));
-                throw new ArgumentException("Invalid model state: " + errors);
-            }
+
             var success = await _BusinessSettings.AddSettingAsync(Setting);
             return CreatedAtRoute("GetSettingByID", new { ID = success!.ID }, success);
 
@@ -86,13 +81,7 @@ namespace APILayer.Controllers
                 throw new ArgumentNullException("Request is null!");
             }
 
-            if (!ModelState.IsValid)
-            {
-                var errors = string.Join("; ", ModelState.Values
-                                                 .SelectMany(v => v.Errors)
-                                                 .Select(e => e.ErrorMessage));
-                throw new ArgumentException("Invalid model state: " + errors);
-            }
+
             var success = await _BusinessSettings.UpdateSettingAsync(Setting);
             return CreateResponse<DTOSettings>(success!, StatusCodes.Status200OK, "Setting updated successfully.");
 
@@ -106,23 +95,13 @@ namespace APILayer.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<ApiResponse<bool>>> DeleteAsync([FromRoute] int ID)
         {
-            try
+            if (ID <= 0)
             {
-                if (ID <= 0)
-                {
-                    return CreateResponse<bool>(false, StatusCodes.Status400BadRequest, "ID <= 0.");
-                }
-                var success = await _BusinessSettings.DeleteSettingAsync(ID);
-                if (!success)
-                {
-                    return CreateResponse<bool>(false, StatusCodes.Status404NotFound, "Failed to delete Setting.");
-                }
-                return CreateResponse<bool>(true, StatusCodes.Status200OK, "Setting deleted successfully.");
+                throw new ArgumentOutOfRangeException("ID must be greater than 0.");
             }
-            catch (Exception ex)
-            {
-                return CreateResponse<bool>(false, StatusCodes.Status500InternalServerError, "Internal server error: " + ex.Message);
-            }
+            var success = await _BusinessSettings.DeleteSettingAsync(ID);
+            return CreateResponse<bool>(success, StatusCodes.Status200OK, "Setting deleted successfully.");
+
         }
     }
 }

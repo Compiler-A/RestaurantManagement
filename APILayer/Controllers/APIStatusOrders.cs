@@ -9,6 +9,7 @@ namespace APILayer.Controllers
 {
     [Route("api/StatusOrders")]
     [ApiController]
+    [ValidateModel]
     public class APIStatusOrders : BaseController
     {
 
@@ -46,8 +47,7 @@ namespace APILayer.Controllers
             {
                 throw new ArgumentOutOfRangeException("ID must be greater than 0.");
             }
-            float x = 0;
-            float d = 3 / x;
+
             var DTO = await _StatusOrder.GetStatusOrdersAsync(ID);
             return CreateResponse<DTOStatusOrders>(DTO!, StatusCodes.Status200OK, "Find Saccessfully!");
         }
@@ -64,15 +64,6 @@ namespace APILayer.Controllers
             {
                 throw new ArgumentNullException("Request is null!");
             }
-
-            if (!ModelState.IsValid)
-            {
-                var errors = string.Join("; ", ModelState.Values
-                                                 .SelectMany(v => v.Errors)
-                                                 .Select(e => e.ErrorMessage));
-                throw new ArgumentException("Invalid model state: " + errors);
-            }
-
 
             var result = await _StatusOrder.AddStatusOrdersAsync(Request);
             return CreatedAtRoute("GetStatusOrderByID", new { ID = result!.ID }, result);
@@ -92,13 +83,7 @@ namespace APILayer.Controllers
                 throw new ArgumentNullException("Request is null!");
             }
 
-            if (!ModelState.IsValid)
-            {
-                var errors = string.Join("; ", ModelState.Values
-                                                 .SelectMany(v => v.Errors)
-                                                 .Select(e => e.ErrorMessage));
-                throw new ArgumentException("Invalid model state: " + errors);
-            }
+
             var result = await _StatusOrder.UpdateStatusOrdersAsync(Request);
             return CreateResponse<DTOStatusOrders>(result!, StatusCodes.Status200OK, "StatusOrder updated successfully.");
 

@@ -10,6 +10,7 @@ namespace APILayer.Controllers
 {
     [Route("api/Tables")]
     [ApiController]
+    [ValidateModel]
     public class APITables :  BaseController
     {
         private readonly IBusinessTables dataTablesBusiness;
@@ -69,13 +70,7 @@ namespace APILayer.Controllers
             if (Request == null)
                 throw new ArgumentNullException("Request is null!");
 
-            if (!ModelState.IsValid)
-            {
-                var errors = string.Join("; ", ModelState.Values
-                                                 .SelectMany(v => v.Errors)
-                                                 .Select(e => e.ErrorMessage));
-                throw new ArgumentException("Invalid model state: " + errors);
-            }
+            
             var list = await dataTablesBusiness.GetTablesFilter2Async(Request);
             return CreateResponse<IEnumerable<DTOTables>>(list, StatusCodes.Status200OK, $"Row: {list.Count}");
 
@@ -92,13 +87,7 @@ namespace APILayer.Controllers
             if (Request == null)
                 throw new ArgumentNullException("Request is null!");
 
-            if (!ModelState.IsValid)
-            {
-                var errors = string.Join("; ", ModelState.Values
-                                                 .SelectMany(v => v.Errors)
-                                                 .Select(e => e.ErrorMessage));
-                throw new ArgumentException("Invalid model state: " + errors);
-            }
+
             var list = await dataTablesBusiness.GetTablesFilter1Async(Request);
             return CreateResponse<IEnumerable<DTOTables>>(list, StatusCodes.Status200OK, $"Row: {list.Count}");
 
@@ -114,13 +103,7 @@ namespace APILayer.Controllers
             if (Request == null)
                 throw new ArgumentNullException("Request is null!");
 
-            if (!ModelState.IsValid)
-            {
-                var errors = string.Join("; ", ModelState.Values
-                                                 .SelectMany(v => v.Errors)
-                                                 .Select(e => e.ErrorMessage));
-                throw new ArgumentException("Invalid model state: " + errors);
-            }
+
             var list = await dataTablesBusiness.GetTablesFilter3Async(Request);
             return CreateResponse<IEnumerable<DTOTables>>(list, StatusCodes.Status200OK, $"Row: {list.Count}");
 
@@ -171,13 +154,7 @@ namespace APILayer.Controllers
             if (Table == null)
                 throw new ArgumentNullException("Request is null!");
 
-            if (!ModelState.IsValid)
-            {
-                var errors = string.Join("; ", ModelState.Values
-                                                 .SelectMany(v => v.Errors)
-                                                 .Select(e => e.ErrorMessage));
-                throw new ArgumentException("Invalid model state: " + errors);
-            }
+
             var dto = await dataTablesBusiness.AddTableAsync(Table);
             return CreatedAtRoute("GetTableByID", new { ID = dto!.ID }, dto);
 
@@ -195,13 +172,7 @@ namespace APILayer.Controllers
             if (Table == null)
                 throw new ArgumentNullException("Request is null!");
 
-            if (!ModelState.IsValid)
-            {
-                var errors = string.Join("; ", ModelState.Values
-                                                 .SelectMany(v => v.Errors)
-                                                 .Select(e => e.ErrorMessage));
-                throw new ArgumentException("Invalid model state: " + errors);
-            }
+
             var dto = await dataTablesBusiness.UpdateTableAsync(Table);
             return CreateResponse<DTOTables>(dto!, StatusCodes.Status200OK, "Update Saccessfully!");
 

@@ -63,13 +63,7 @@ namespace APILayer.Controllers
             if (typeItem == null)
                 throw new ArgumentNullException("Request is null!");
 
-            if (!ModelState.IsValid)
-            {
-                var errors = string.Join("; ", ModelState.Values
-                                                 .SelectMany(v => v.Errors)
-                                                 .Select(e => e.ErrorMessage));
-                throw new ArgumentException("Invalid model state: " + errors);
-            }
+
 
             var dto = await _dataLayer.AddTypeItemAsync(typeItem);
             return CreatedAtRoute("GetTypeItemById", new { ID = dto!.ID }, dto);
@@ -87,13 +81,7 @@ namespace APILayer.Controllers
             if (typeItem == null)
                 throw new ArgumentNullException("Request is null!");
 
-            if (!ModelState.IsValid)
-            {
-                var errors = string.Join("; ", ModelState.Values
-                                                 .SelectMany(v => v.Errors)
-                                                 .Select(e => e.ErrorMessage));
-                throw new ArgumentException("Invalid model state: " + errors);
-            }
+
 
             var dto = await _dataLayer.UpdateTypeItemAsync(typeItem);
             return CreateResponse(dto!, StatusCodes.Status200OK, "Update successfully");

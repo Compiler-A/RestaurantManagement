@@ -10,6 +10,7 @@ namespace APILayer.Controllers
 {
     [ApiController]
     [Route("api/StatusMenus")]
+    [ValidateModel]
     public class APIStatusMenus : BaseController
     {
         private readonly IBusinessStatusMenus _dataStatusMenus;
@@ -66,13 +67,6 @@ namespace APILayer.Controllers
                 throw new ArgumentNullException("Request is null!");
             }
 
-            if (!ModelState.IsValid)
-            {
-                var errors = string.Join("; ", ModelState.Values
-                                                 .SelectMany(v => v.Errors)
-                                                 .Select(e => e.ErrorMessage));
-                throw new ArgumentException("Invalid model state: " + errors);
-            }
 
             var dto = await _dataStatusMenus.AddStatusMenuAsync(statusMenu);
             return CreatedAtRoute("GetStatusMenuByID", new { ID = dto!.ID }, dto);
@@ -92,13 +86,6 @@ namespace APILayer.Controllers
                 throw new ArgumentNullException("Request is null!");
             }
 
-            if (!ModelState.IsValid)
-            {
-                var errors = string.Join("; ", ModelState.Values
-                                                 .SelectMany(v => v.Errors)
-                                                 .Select(e => e.ErrorMessage));
-                throw new ArgumentException("Invalid model state: " + errors);
-            }
 
             var dto = await _dataStatusMenus.UpdateStatusMenuAsync(statusMenu);
             return CreateResponse<DTOStatusMenus>(dto!, StatusCodes.Status200OK, "Status Menu updated successfully.");

@@ -9,6 +9,7 @@ namespace APILayer.Controllers
 {
     [Route("api/JobRoles")]
     [ApiController]
+    [ValidateModel]
     public class APIJobRoles : BaseController
     {
         private readonly IBusinessJobRoles jobRoles;
@@ -60,14 +61,6 @@ namespace APILayer.Controllers
                 throw new ArgumentNullException("Request is null!");
             }
 
-            if (!ModelState.IsValid)
-            {
-                var errors = string.Join("; ", ModelState.Values
-                                                 .SelectMany(v => v.Errors)
-                                                 .Select(e => e.ErrorMessage));
-                throw new ArgumentException("Invalid model state: " + errors);
-            }
-
             var result = await jobRoles.AddJobRoleAsync(JobRole);
             return CreatedAtRoute("GetJobRoleByID", new { ID = result!.ID }, result);
         }
@@ -85,13 +78,6 @@ namespace APILayer.Controllers
                 throw new ArgumentNullException("Request is null!");
             }
 
-            if (!ModelState.IsValid)
-            {
-                var errors = string.Join("; ", ModelState.Values
-                                                 .SelectMany(v => v.Errors)
-                                                 .Select(e => e.ErrorMessage));
-                throw new ArgumentException("Invalid model state: " + errors);
-            }
 
             var result = await jobRoles.UpdateJobRoleAsync(Update);
             return CreateResponse<DTOJobRoles>(result!, StatusCodes.Status200OK, "Job Role updated successfully.");

@@ -8,6 +8,7 @@ namespace APILayer.Controllers
 {
     [Route("api/Orders")]
     [ApiController]
+    [ValidateModel]
     public class APIOrders : BaseController
     {
         public APIOrders(IBusinessOrders b)
@@ -63,13 +64,7 @@ namespace APILayer.Controllers
             {
                 throw new ArgumentNullException("Request is null!");
             }
-            if (!ModelState.IsValid)
-            {
-                var errors = string.Join("; ", ModelState.Values
-                                                 .SelectMany(v => v.Errors)
-                                                 .Select(e => e.ErrorMessage));
-                throw new ArgumentException("Invalid model state: " + errors);
-            }
+
 
             var order = await _businessOrders.GetFilterOrdersAsync(Request);
             return CreateResponse<List<DTOOrders>?>(order, StatusCodes.Status200OK, "Find Saccessfully");
@@ -85,13 +80,6 @@ namespace APILayer.Controllers
             if (dto == null)
             {
                 throw new ArgumentNullException("Request is null!");
-            }
-            if (!ModelState.IsValid)
-            {
-                var errors = string.Join("; ", ModelState.Values
-                                                 .SelectMany(v => v.Errors)
-                                                 .Select(e => e.ErrorMessage));
-                throw new ArgumentException("Invalid model state: " + errors);
             }
 
             var result = await _businessOrders.AddOrderAsync(dto);
@@ -110,13 +98,7 @@ namespace APILayer.Controllers
             {
                 throw new ArgumentNullException("Request is null!");
             }
-            if (!ModelState.IsValid)
-            {
-                var errors = string.Join("; ", ModelState.Values
-                                                 .SelectMany(v => v.Errors)
-                                                 .Select(e => e.ErrorMessage));
-                throw new ArgumentException("Invalid model state: " + errors);
-            }
+
 
             var result = await _businessOrders.UpdateOrderAsync(dto);
             return CreateResponse<DTOOrders>(result!, StatusCodes.Status200OK, "Order updated successfully");

@@ -13,6 +13,7 @@ namespace APILayer.Controllers
 {
     [Route("api/StatusTables")]
     [ApiController]
+    [ValidateModel]
     public class APIStatusTables : BaseController
     {
 
@@ -69,13 +70,7 @@ namespace APILayer.Controllers
             {
                 throw new ArgumentNullException("Request is null!");
             }
-            if (!ModelState.IsValid)
-            {
-                var errors = string.Join("; ", ModelState.Values
-                                                 .SelectMany(v => v.Errors)
-                                                 .Select(e => e.ErrorMessage));
-                throw new ArgumentException("Invalid model state: " + errors);
-            }
+
             var result = await _businessStatusTables.AddStatusTableAsync(Request);
             return CreatedAtRoute("GetStatusTableByID", new { ID = result!.ID }, result);
 
@@ -95,13 +90,7 @@ namespace APILayer.Controllers
             {
                 throw new ArgumentNullException("Request is null!");
             }
-            if (!ModelState.IsValid)
-            {
-                var errors = string.Join("; ", ModelState.Values
-                                                 .SelectMany(v => v.Errors)
-                                                 .Select(e => e.ErrorMessage));
-                throw new ArgumentException("Invalid model state: " + errors);
-            }
+
 
             var result = await _businessStatusTables.UpdateStatusTableAsync(Request);
             return CreateResponse<DTOStatusTables>(result!, StatusCodes.Status200OK, "StatusTable updated successfully.");

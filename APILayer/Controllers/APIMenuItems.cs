@@ -10,6 +10,7 @@ namespace APILayer.Controllers
 {
     [Route("api/MenuItems")]
     [ApiController]
+    [ValidateModel]
     public class APIMenuItems : BaseController
     {
         
@@ -63,13 +64,6 @@ namespace APILayer.Controllers
                 throw new ArgumentNullException("Request is null!");
             }
 
-            if (!ModelState.IsValid)
-            {
-                var errors = string.Join("; ", ModelState.Values
-                                                 .SelectMany(v => v.Errors)
-                                                 .Select(e => e.ErrorMessage));
-                throw new ArgumentException("Invalid model state: " + errors);
-            }
             var menuItems = await _BusinessMenuItem.GetAllMenuItemsFiltersAsync(Request);
             return CreateResponse<List<DTOMenuItems>>(menuItems!, StatusCodes.Status200OK, "Filtered Menu Items retrieved successfully.");
 
@@ -104,13 +98,6 @@ namespace APILayer.Controllers
                 throw new ArgumentNullException("Request is null!");
             }
 
-            if (!ModelState.IsValid)
-            {
-                var errors = string.Join("; ", ModelState.Values
-                                                 .SelectMany(v => v.Errors)
-                                                 .Select(e => e.ErrorMessage));
-                throw new ArgumentException("Invalid model state: " + errors);
-            }
 
             var dto = await _BusinessMenuItem.AddMenuItemAsync(menuItem);
             return CreatedAtRoute("GetMenuItemByID", new { ID = dto!.ID }, dto);
@@ -131,13 +118,6 @@ namespace APILayer.Controllers
                 throw new ArgumentNullException("Request is null!");
             }
 
-            if (!ModelState.IsValid)
-            {
-                var errors = string.Join("; ", ModelState.Values
-                                                 .SelectMany(v => v.Errors)
-                                                 .Select(e => e.ErrorMessage));
-                throw new ArgumentException("Invalid model state: " + errors);
-            }
 
             var dto = await _BusinessMenuItem.UpdateMenuItemAsync(menuItem);
             return CreateResponse<DTOMenuItems>(dto!, StatusCodes.Status200OK, "Menu Item updated successfully.");

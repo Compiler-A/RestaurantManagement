@@ -7,6 +7,7 @@ namespace APILayer.Controllers
 {
     [Route("api/Employees")]
     [ApiController]
+    [ValidateModel]
     public class APIEmployees : BaseController
     {
         private readonly IBusinessEmployees employees;
@@ -58,13 +59,7 @@ namespace APILayer.Controllers
             {
                 throw new ArgumentNullException("Request is null!");
             }
-            if (!ModelState.IsValid)
-            {
-                var errors = string.Join("; ", ModelState.Values
-                                                 .SelectMany(v => v.Errors)
-                                                 .Select(e => e.ErrorMessage));
-                throw new ArgumentException("Invalid model state: " + errors);
-            }
+            
 
             var success = await this.employees.CreateEmployeeAsync(employee);
             return CreatedAtRoute("GetEmployeeByID", new { ID = success!.ID }, success);
@@ -82,13 +77,7 @@ namespace APILayer.Controllers
             {
                 throw new ArgumentNullException("Request is null!");
             }
-            if (!ModelState.IsValid)
-            {
-                var errors = string.Join("; ", ModelState.Values
-                                                 .SelectMany(v => v.Errors)
-                                                 .Select(e => e.ErrorMessage));
-                throw new ArgumentException("Invalid model state: " + errors);
-            }
+            
 
             var dto = await this.employees.UpdateEmployeeAsync(employee);
             return CreateResponse<DTOEmployees>(dto!, StatusCodes.Status200OK, "Employee updated successfully.");
@@ -124,13 +113,8 @@ namespace APILayer.Controllers
             {
                 throw new ArgumentNullException("Request is null!");
             }
-            if (!ModelState.IsValid)
-            {
-                var errors = string.Join("; ", ModelState.Values
-                                                 .SelectMany(v => v.Errors)
-                                                 .Select(e => e.ErrorMessage));
-                throw new ArgumentException("Invalid model state: " + errors);
-            }
+            
+
             var DTO = await employees.GetLoginEmployeeAsync(Login);
             return CreateResponse<DTOEmployees>(DTO!, StatusCodes.Status200OK, "Success");
         }

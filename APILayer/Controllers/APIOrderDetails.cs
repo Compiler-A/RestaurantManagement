@@ -7,6 +7,7 @@ namespace APILayer.Controllers
 {
     [Route("api/OrderDetails")]
     [ApiController]
+    [ValidateModel]
     public class APIOrderDetails : BaseController
     {
         public APIOrderDetails(IBusinessOrderDetails b)
@@ -81,14 +82,6 @@ namespace APILayer.Controllers
             }
 
 
-            if (!ModelState.IsValid)
-            {
-                var errors = string.Join("; ", ModelState.Values
-                                                 .SelectMany(v => v.Errors)
-                                                 .Select(e => e.ErrorMessage));
-                throw new ArgumentException("Invalid model state: " + errors);
-            }
-
             var result = await _businessOrderDetail.AddOrderDetailAsync(dto);
             return CreatedAtRoute("GetOrderDetailByID", new { ID = result!.ID }, result);
 
@@ -106,13 +99,7 @@ namespace APILayer.Controllers
             {
                 throw new ArgumentNullException("Request is null!");
             }
-            if (!ModelState.IsValid)
-            {
-                var errors = string.Join("; ", ModelState.Values
-                                                 .SelectMany(v => v.Errors)
-                                                 .Select(e => e.ErrorMessage));
-                throw new ArgumentException("Invalid model state: " + errors);
-            }
+
 
             var result = await _businessOrderDetail.UpdateOrderDetailAsync(dto);
             return CreateResponse<DTOOrderDetails>(result!, StatusCodes.Status200OK, "Order Detail updated successfully");
