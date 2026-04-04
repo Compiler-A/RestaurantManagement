@@ -2,11 +2,13 @@
 using Microsoft.Extensions.Options;
 using RestaurantDataLayer;
 using System.Runtime;
+using System.ComponentModel.DataAnnotations;
 
 namespace DataLayerRestaurant
 {
     public class DTOTypeItemsCRequest
     {
+        [Required(ErrorMessage ="Name is Required.")]
         public string Name { get; set; }
         public string? Description { get; set; }
 
@@ -19,6 +21,7 @@ namespace DataLayerRestaurant
 
     public class DTOTypeItemsURequest : DTOTypeItemsCRequest
     {
+        [Range(1, int.MaxValue, ErrorMessage = "ID must be a positive integer.")]
         public int ID { get; set; }
 
         public DTOTypeItemsURequest(int id,  string name, string? description) 
@@ -30,7 +33,10 @@ namespace DataLayerRestaurant
 
     public class DTOTypeItems
     {
+        [Range(1, int.MaxValue, ErrorMessage = "ID must be a positive integer.")]
         public int ID { get; set; }
+
+        [Required(ErrorMessage = "Name is Required.")]
         public string Name { get; set; }
         public string? Description { get; set; }
 

@@ -48,6 +48,7 @@ namespace BusinessLayerRestaurant
         {
             _Interface = setting;
         }
+
         public async Task<List<DTOJobRoles>> GetAllAsync(int page)
         {
             var list = await _Interface.IData.GetAllJobRolesAsync(page);
@@ -95,7 +96,7 @@ namespace BusinessLayerRestaurant
             {
                 throw new InvalidOperationException("Not Update!");
             }
-            return null;
+            return dto;
         }
 
         public async Task<bool> DeleteAsync(int ID)
@@ -105,7 +106,7 @@ namespace BusinessLayerRestaurant
             {
                 throw new InvalidOperationException("Not Delete!");
             }
-            return await _Interface.IData.DeleteJobRoleAsync(ID);
+            return result;
         }
     }
 

@@ -72,9 +72,7 @@ namespace APILayer
 
                 default:
                     statusCode = StatusCodes.Status500InternalServerError;
-                    message = _env.IsDevelopment()
-                        ? exception.Message
-                        : "Internal server error.";
+                    message = exception.Message;
                     break;
             }
 

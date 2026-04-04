@@ -1,7 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using BusinessLayerRestaurant;
+﻿using BusinessLayerRestaurant;
 using DataLayerRestaurant;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace APILayer.Controllers
 {
@@ -25,24 +26,13 @@ namespace APILayer.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<ApiResponse<IEnumerable<DTOOrders>>>> GetAllAsync([FromQuery] int page = 1)
         {
-            try
+            if (page <= 0)
             {
+                throw new ArgumentOutOfRangeException("Page number must be greater than 0.");
+            }
+            var orders = await _businessOrders.GetAllOrdersAsync(page);
+            return CreateResponse<IEnumerable<DTOOrders>>(orders, StatusCodes.Status200OK, $"Count: {orders.Count}");
 
-                if (page <= 0)
-                {
-                    return CreateResponse<IEnumerable<DTOOrders>>(null!, StatusCodes.Status400BadRequest, "Page number must be greater than 0.");
-                }
-                var orders = await _businessOrders.GetAllOrdersAsync(page);
-                if (orders.Count == 0 || orders == null)
-                {
-                    return CreateResponse<IEnumerable<DTOOrders>>(null!, StatusCodes.Status404NotFound, "not found");
-                }
-                return CreateResponse<IEnumerable<DTOOrders>>(orders, StatusCodes.Status200OK, $"Count: {orders.Count}");
-            }
-            catch (Exception ex)
-            {
-                return CreateResponse<IEnumerable<DTOOrders>>(null!, StatusCodes.Status500InternalServerError, $"Internal server error: {ex.Message}");
-            }
         }
 
         [HttpGet("{ID}", Name ="GetOrderByID")]
@@ -52,23 +42,14 @@ namespace APILayer.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<ApiResponse<DTOOrders?>>> GetByIDAsync([FromRoute] int ID)
         {
-            try
+            if (ID <= 0)
             {
-                if (ID <= 0)
-                {
-                    return CreateResponse<DTOOrders?>(null, StatusCodes.Status400BadRequest, "ID <= 0.");
-                }
-                var order = await _businessOrders.GetOrderAsync(ID);
-                if (order == null)
-                    return CreateResponse<DTOOrders?>(null, StatusCodes.Status404NotFound, "Order not found");
-
-                return CreateResponse<DTOOrders?>(order, StatusCodes.Status200OK, "Find Saccessfully");
+                throw new ArgumentOutOfRangeException("ID number must be greater than 0.");
             }
-            catch (Exception ex)
-            {
-                return CreateResponse<DTOOrders?>(null, StatusCodes.Status500InternalServerError, $"Internal server error: {ex.Message}");
-            }
+            var order = await _businessOrders.GetOrderAsync(ID);
+            return CreateResponse<DTOOrders?>(order, StatusCodes.Status200OK, "Find Saccessfully");
         }
+
 
         [HttpGet("filter", Name = "GetFilterOrder")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -78,22 +59,20 @@ namespace APILayer.Controllers
         public async Task<ActionResult<ApiResponse<List<DTOOrders>?>>> GetFilterAsync
             ([FromQuery] DTOOrderFilterRequest Request)
         {
-            try
+            if (Request == null)
             {
-                if (Request.Page <= 0)
-                {
-                    return CreateResponse<List<DTOOrders>?>(null, StatusCodes.Status400BadRequest, "Page <= 0.");
-                }
-                var order = await _businessOrders.GetFilterOrdersAsync(Request);
-                if (order == null || order.Count == 0)
-                    return CreateResponse<List<DTOOrders>?>(null, StatusCodes.Status404NotFound, "Order not found");
+                throw new ArgumentNullException("Request is null!");
+            }
+            if (!ModelState.IsValid)
+            {
+                var errors = string.Join("; ", ModelState.Values
+                                                 .SelectMany(v => v.Errors)
+                                                 .Select(e => e.ErrorMessage));
+                throw new ArgumentException("Invalid model state: " + errors);
+            }
 
-                return CreateResponse<List<DTOOrders>?>(order, StatusCodes.Status200OK, "Find Saccessfully");
-            }
-            catch (Exception ex)
-            {
-                return CreateResponse<List<DTOOrders>?>(null, StatusCodes.Status500InternalServerError, $"Internal server error: {ex.Message}");
-            }
+            var order = await _businessOrders.GetFilterOrdersAsync(Request);
+            return CreateResponse<List<DTOOrders>?>(order, StatusCodes.Status200OK, "Find Saccessfully");
         }
 
         [HttpPost(Name = "AddNewOrder")]
@@ -103,24 +82,21 @@ namespace APILayer.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<ApiResponse<DTOOrders>>> CreateAsync([FromBody] DTOOrderCRequest dto)
         {
-            try
+            if (dto == null)
             {
-                if (dto == null || dto.StatusOrderID <= 0 || dto.TableID <= 0 || dto.EmployerID <= 0)
-                {
-                    return CreateResponse<DTOOrders>(null!, StatusCodes.Status400BadRequest, "Bad Ruquest.");
-                }
-                _businessOrders.CreateRequest = dto;
-                var result = await _businessOrders.AddOrderAsync(_businessOrders.CreateRequest);
-                if (result == null)
-                    return CreateResponse<DTOOrders>(null!, StatusCodes.Status500InternalServerError, "Failed to create order");
-
-                return CreatedAtRoute("GetOrderByID", new {ID = result.ID}, result);
-
+                throw new ArgumentNullException("Request is null!");
             }
-            catch (Exception ex)
+            if (!ModelState.IsValid)
             {
-                return CreateResponse<DTOOrders>(null!, StatusCodes.Status500InternalServerError, $"Internal server error: {ex.Message}");
+                var errors = string.Join("; ", ModelState.Values
+                                                 .SelectMany(v => v.Errors)
+                                                 .Select(e => e.ErrorMessage));
+                throw new ArgumentException("Invalid model state: " + errors);
             }
+
+            var result = await _businessOrders.AddOrderAsync(dto);
+            return CreatedAtRoute("GetOrderByID", new { ID = result!.ID }, result);
+
         }
 
         [HttpPut(Name = "UpdateOrder")]
@@ -130,29 +106,21 @@ namespace APILayer.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<ApiResponse<DTOOrders>>> UpdateAsync([FromBody] DTOOrderURequest dto)
         {
-            try
+            if (dto == null)
             {
-                if (dto == null || dto.StatusOrderID <= 0 || dto.TableID <= 0 || dto.EmployerID <= 0 )
-                {
-                    return CreateResponse<DTOOrders>(null!, StatusCodes.Status400BadRequest, "Bad Ruquest.");
-                }
-
-                var DTO = await _businessOrders.GetOrderAsync(dto.OrderID);
-                if (DTO == null)
-                {
-                    return CreateResponse<DTOOrders>(null!, StatusCodes.Status404NotFound, "Failed, Not Found");
-                }
-                _businessOrders.UpdateRequest = dto;
-                var result = await _businessOrders.UpdateOrderAsync(_businessOrders.UpdateRequest);
-                if (result == null)
-                    return CreateResponse<DTOOrders>(null!, StatusCodes.Status500InternalServerError, "Failed to update order");
-
-                return CreateResponse<DTOOrders>(result, StatusCodes.Status200OK, "Order updated successfully");
+                throw new ArgumentNullException("Request is null!");
             }
-            catch (Exception ex)
+            if (!ModelState.IsValid)
             {
-                return CreateResponse<DTOOrders>(null!, StatusCodes.Status500InternalServerError, $"Internal server error: {ex.Message}");
+                var errors = string.Join("; ", ModelState.Values
+                                                 .SelectMany(v => v.Errors)
+                                                 .Select(e => e.ErrorMessage));
+                throw new ArgumentException("Invalid model state: " + errors);
             }
+
+            var result = await _businessOrders.UpdateOrderAsync(dto);
+            return CreateResponse<DTOOrders>(result!, StatusCodes.Status200OK, "Order updated successfully");
+
         }
 
         [HttpDelete("{ID}")]
@@ -162,22 +130,13 @@ namespace APILayer.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<ApiResponse<bool>>> DeleteAsync(int ID)
         {
-            try
+            if (ID <= 0)
             {
-                if (ID <= 0)
-                {
-                    return CreateResponse<bool>(false, StatusCodes.Status400BadRequest, "ID <= 0.");
-                }
-                var result = await _businessOrders.DeleteOrderAsync(ID);
-                if (!result)
-                    return CreateResponse(false, StatusCodes.Status404NotFound, "Failed to delete order");
+                throw new ArgumentOutOfRangeException("ID number must be greater than 0.");
+            }
+            var result = await _businessOrders.DeleteOrderAsync(ID);
+            return CreateResponse(true, StatusCodes.Status200OK, "Order deleted successfully");
 
-                return CreateResponse(true, StatusCodes.Status200OK, "Order deleted successfully");
-            }
-            catch (Exception ex)
-            {
-                return CreateResponse(false, StatusCodes.Status500InternalServerError, $"Internal server error: {ex.Message}");
-            }
         }
     }
 }

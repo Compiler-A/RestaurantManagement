@@ -8,16 +8,26 @@ using System.Runtime;
 using System.Security.Cryptography.Pkcs;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
+
 
 namespace DataLayerRestaurant
 {
 
     public class DTOMenuItemsCRequest
     {
+        [Required(ErrorMessage = "Name is required.")]
         public string Name { get; set; }
+
         public string? Description { get; set; }
+
+        [Range(0, double.MaxValue, ErrorMessage = "Price must be greater than 0.")]
         public decimal Price { get; set; }
+
+        [Range(1, int.MaxValue, ErrorMessage = "TypeItemID must be greater than 0.")]
         public int TypeItemID { get; set; }
+
+        [Range(1, int.MaxValue, ErrorMessage = "StatusMenuID must be greater than 0.")]
         public int StatusMenuID { get; set; }
         public string? Image { get; set; }
 
@@ -34,6 +44,7 @@ namespace DataLayerRestaurant
 
     public class DTOMenuItemsURequest : DTOMenuItemsCRequest
     {
+        [Range(1, int.MaxValue, ErrorMessage = "ID must be greater than 0.")]
         public int ID { get; set; }
 
         public DTOMenuItemsURequest(int ID, string Name, string? Description, decimal Price, int TypeItemID, int StatusMenuID, string? Image)
@@ -43,14 +54,38 @@ namespace DataLayerRestaurant
         }
     }
 
+    public class DTOMenuItemsFilterRequest
+    {
+        [Range(1, int.MaxValue, ErrorMessage = "Page must be greater than 0.")]
+        public int Page { get; set; }
+
+        [Range(0, int.MaxValue, ErrorMessage = "StatusMenuID must be greater than 0.")]
+        public int StatusMenuID { get; set; }
+
+        [Range(0, int.MaxValue, ErrorMessage = "TypeItemID must be greater than 0.")]
+        public int TypeItemID { get; set; }
+        
+
+    }
+
     public class DTOMenuItems
     {
+        [Range(1, int.MaxValue, ErrorMessage = "ID must be greater than 0.")]
         public int ID { get; set; }
+
+        [Required(ErrorMessage = "Name is required.")]
         public string Name { get; set; }
         public string? Description { get; set; }
+
+        [Range(0, double.MaxValue, ErrorMessage = "Price must be greater than 0.")]
         public decimal Price { get; set; }
+
+        [Range(1, int.MaxValue, ErrorMessage = "TypeItemID must be greater than 0.")]
         public int TypeItemID { get; set; }
+
+        [Range(1, int.MaxValue, ErrorMessage = "StatusMenuID must be greater than 0.")]
         public int StatusMenuID { get; set; }
+
         public string? Image { get; set; }
         public DTOTypeItems? TypeItems { get; set; }
         public DTOStatusMenus? StatusMenus { get; set; }
@@ -65,6 +100,7 @@ namespace DataLayerRestaurant
             StatusMenuID = statusMenuID;
             Image = image;
         }
+
         public DTOMenuItems()
         {
             ID = -1;
@@ -165,17 +201,17 @@ namespace DataLayerRestaurant
             return menuItems;
         }
 
-        public async Task<List<DTOMenuItems>> GetAllDataFiltersAsync(int page, int StatusMenuID, int TypeItemID)
+        public async Task<List<DTOMenuItems>> GetAllDataFiltersAsync(DTOMenuItemsFilterRequest Request)
         {
             List<DTOMenuItems> menuItems = new List<DTOMenuItems>();
             using (SqlConnection conn = new SqlConnection(_Settings.ConnectionString))
             using (SqlCommand cmd = new SqlCommand("MenuItems.SP_GetFilterTypeItemAndStatusMenuMenuItems", conn))
             {
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@Page", page);
+                cmd.Parameters.AddWithValue("@Page", Request.Page);
                 cmd.Parameters.AddWithValue("@Rows", _Settings.RowsPerPage);
-                cmd.Parameters.AddWithValue("@StatusMenu", StatusMenuID);
-                cmd.Parameters.AddWithValue("@TypeItem", TypeItemID);
+                cmd.Parameters.AddWithValue("@StatusMenu", Request.StatusMenuID);
+                cmd.Parameters.AddWithValue("@TypeItem", Request.TypeItemID);
                 await conn.OpenAsync();
                 using (SqlDataReader reader = await cmd.ExecuteReaderAsync())
                 {
@@ -285,9 +321,9 @@ namespace DataLayerRestaurant
         }
         
         
-        public async Task<List<DTOMenuItems>> GetAllMenuItemsFiltersAsync(int page, int StatusMenuID, int TypeItemID)
+        public async Task<List<DTOMenuItems>> GetAllMenuItemsFiltersAsync(DTOMenuItemsFilterRequest Request)
         {
-           return await _IRead.GetAllDataFiltersAsync(page, StatusMenuID, TypeItemID);
+           return await _IRead.GetAllDataFiltersAsync(Request);
         }
 
 

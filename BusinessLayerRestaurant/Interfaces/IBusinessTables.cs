@@ -29,10 +29,10 @@ namespace BusinessLayerRestaurant
     public interface IReadableBTables : IReadableBusinessBase<DTOTables>
     {
         Task<List<DTOTables>> GetAllAsync();
-        Task<List<DTOTables>> GetFilter1Async(int Page, int StatusTable);
-        Task<List<DTOTables>> GetFilter2Async(int Page, int Seats);
+        Task<List<DTOTables>> GetFilter1Async(DTOTablesFilterStatusTableRequest Request);
+        Task<List<DTOTables>> GetFilter2Async(DTOTablesFilterSeatTableRequest Request);
         Task<DTOTables?> GetByNameAsync(string tableNumber);
-        Task<List<DTOTables>> GetFilter3Async(int page, int StatusTable, int SeatNumber);
+        Task<List<DTOTables>> GetFilter3Async(DTOTablesFilterStatusAndSeatTableRequest Request);
         Task<List<DTOTables>> GetAllAvailablesAsync();
     }
 
@@ -46,10 +46,10 @@ namespace BusinessLayerRestaurant
         Task<List<DTOTables>> GetAllTablesAsync(int page);
         Task<DTOTables?> GetTableAsync(int id);
         Task<List<DTOTables>> GetAllTablesAsync();
-        Task<List<DTOTables>> GetTablesFilter1Async(int Page, int StatusTable);
-        Task<List<DTOTables>> GetTablesFilter2Async(int Page, int Seats);
+        Task<List<DTOTables>> GetTablesFilter1Async(DTOTablesFilterStatusTableRequest Request);
+        Task<List<DTOTables>> GetTablesFilter2Async(DTOTablesFilterSeatTableRequest Request);
         Task<DTOTables?> GetTableByNameAsync(string tableNumber);
-        Task<List<DTOTables>> GetTablesFilter3Async(int page, int StatusTable, int SeatNumber);
+        Task<List<DTOTables>> GetTablesFilter3Async(DTOTablesFilterStatusAndSeatTableRequest Request);
         Task<List<DTOTables>> GetAllTablesAvailablesAsync();
     }
     public interface IWritableBusinessTables

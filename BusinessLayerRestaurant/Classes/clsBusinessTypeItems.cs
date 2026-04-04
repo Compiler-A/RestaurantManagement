@@ -50,11 +50,22 @@ namespace BusinessLayerRestaurant
         }
         public async Task<DTOTypeItems?> GetAsync(int ID)
         {
-            return await _Interface.IData.GetTypeItemAsync(ID);
+            var result  = await _Interface.IData.GetTypeItemAsync(ID);
+            if (result == null)
+            {
+                throw new KeyNotFoundException("Not Found!");
+            }
+            return result;
         }
         public async Task<List<DTOTypeItems>> GetAllAsync(int page)
         {
-            return await _Interface.IData.GetAllTypeItemsAsync(page);
+            var result = await _Interface.IData.GetAllTypeItemsAsync(page);
+            if (result == null || result.Count == 0)
+            {
+                throw new KeyNotFoundException("Not Found!");
+            }
+
+            return result;
         }
     }
 
@@ -68,15 +79,31 @@ namespace BusinessLayerRestaurant
 
         public async Task<bool> DeleteAsync(int ID)
         {
-            return await _Interface.IData.DeleteTypeItemAsync(ID);
+            var isDeleted = await _Interface.IData.DeleteTypeItemAsync(ID);
+            if (!isDeleted)
+            {
+                throw new InvalidOperationException("Not Deleted");
+            }
+            return isDeleted;
         }
         public async Task<DTOTypeItems?> UpdateAsync(DTOTypeItemsURequest Request)
         { 
-            return await _Interface.IData.UpdateTypeItemAsync(Request);
+            var result = await _Interface.IData.UpdateTypeItemAsync(Request);
+            if (result == null)
+            {
+                throw new InvalidOperationException("Not Updated!");
+            }
+            return result;
         }
+
         public async Task<DTOTypeItems?> CreateAsync(DTOTypeItemsCRequest Request)
         {
-            return await _Interface.IData.AddTypeItemAsync(Request);
+            var result = await _Interface.IData.AddTypeItemAsync(Request);
+            if (result == null)
+            {
+                throw new InvalidOperationException("Not Created!");
+            }
+            return result;
         }
     }
 

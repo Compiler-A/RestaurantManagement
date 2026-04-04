@@ -44,8 +44,10 @@ namespace DataLayerRestaurant
 
         public DTOEmployeesURequest(int ID, string Name, int JobID, string userName, string password) 
             : base(Name, JobID, userName, password)
-        { 
+        {
+            this.ID = ID;
         }
+
     }
 
     public class DTOEmployeesLoginRequest
@@ -55,6 +57,12 @@ namespace DataLayerRestaurant
 
         [Required(ErrorMessage = "Password is required")]
         public string Password { get; set; } = string.Empty;
+
+        public DTOEmployeesLoginRequest(string UserName , string Password)
+        {
+            this.UserName = UserName;
+            this.Password = Password;
+        }
     }
 
     public class DTOEmployeesChangedPassword
@@ -67,6 +75,13 @@ namespace DataLayerRestaurant
 
         [Required(ErrorMessage = "NewPassword is required")]
         public string NewPassword { get; set; } = string.Empty;
+
+        public DTOEmployeesChangedPassword(int ID, string CurrentPassword, string NewPassword)
+        {
+            this.ID = ID;
+            this.CurrentPassword = CurrentPassword;
+            this.NewPassword = NewPassword;
+        }
     }
 
     public class DTOEmployees 

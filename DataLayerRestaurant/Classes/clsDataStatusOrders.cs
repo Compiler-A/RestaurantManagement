@@ -7,12 +7,15 @@ using System.Linq;
 using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
+
 
 namespace DataLayerRestaurant
 {
 
     public class DTOStatusOrdersCRequest
     {
+        [Required(ErrorMessage = "Name is required.")]
         public string Name { get; set; }
 
         public DTOStatusOrdersCRequest(string statusName) 
@@ -23,6 +26,8 @@ namespace DataLayerRestaurant
 
     public class DTOStatusOrdersURequest : DTOStatusOrdersCRequest
     {
+
+        [Range(1,int.MaxValue,ErrorMessage = "ID must be greater than 0.")]
         public int ID { get; set; }
 
         public DTOStatusOrdersURequest(int ID, string statusOrderName) : base(statusOrderName)
@@ -33,7 +38,10 @@ namespace DataLayerRestaurant
 
     public class DTOStatusOrders
     {
+        [Range(1, int.MaxValue, ErrorMessage = "ID must be greater than 0.")]
         public int ID { get; set; }
+
+        [Required(ErrorMessage = "Name is required.")]
         public string Name { get; set; }
 
         public DTOStatusOrders()

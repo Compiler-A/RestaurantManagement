@@ -1,4 +1,5 @@
 ﻿using DataLayerRestaurant;
+using System.Globalization;
 
 
 namespace BusinessLayerRestaurant
@@ -45,59 +46,73 @@ namespace BusinessLayerRestaurant
 
         public async Task<DTOStatusTables?> GetAsync(int ID)
         {
-            return await _Interface.IData.GetStatuTableAsync(ID);
+            var result = await _Interface.IData.GetStatuTableAsync(ID);
+            if (result == null)
+            {
+                throw new KeyNotFoundException("Not Found!");
+            }
+            return result;
         }
 
         public async Task<List<DTOStatusTables>> GetAllAsync(int page)
         {
-            return await _Interface.IData.GetAllStatustablesAsync(page);
+            var result = await _Interface.IData.GetAllStatustablesAsync(page);
+            if (result == null || result.Count == 0)
+                throw new KeyNotFoundException("Not Found!");
+
+            return result;
         }
 
         public async Task<bool> isFindAsync(int ID)
         {
-            return await _Interface.IData.isFindAsync(ID);
+            var result = await _Interface.IData.isFindAsync(ID);
+            if (!result)
+            {
+                throw new KeyNotFoundException("Not Found!");
+            }
+            return result;
         }
 
     }
 
     public class clsStatusTablesWriter : IWritableBStatusTables
     {
-        private IDTOBStatusTables _dto;
         private IInterfaceBStatusTables _Interface;
-        public clsStatusTablesWriter(IInterfaceBStatusTables setting, IDTOBStatusTables dto)
+        public clsStatusTablesWriter(IInterfaceBStatusTables setting)
         {
             _Interface = setting;
-            _dto = dto;
         }
 
 
 
         public async Task<DTOStatusTables?> CreateAsync(DTOStatusTablesCRequest Request)
         {
-            if (Request == null)
-            { return null; }
+
             var dto = await _Interface.IData.AddStatusTableAsync(Request);
             if (dto != null)
             {
                 return dto;
             }
-            return null;
+            throw new InvalidOperationException("Not Created!");
         }
         public async Task<DTOStatusTables?> UpdateAsync(DTOStatusTablesURequest Request)
         {
-            if (Request == null || Request.ID <= 0)
-            { return null; }
 
             var dto = await _Interface.IData.UpdateStatusTableAsync(Request);
             if (dto != null)
             {
                 return dto;
             }
-            return null;
+            throw new InvalidOperationException("Not Updated!");
         }
 
         public async Task<bool> DeleteAsync(int ID)
         {
+            var result = await _Interface.IData.DeleteStatusTableAsync(ID);
+            if (!result)
+            {
+                throw new InvalidOperationException("Not Deleted!");
+            }
             return await _Interface.IData.DeleteStatusTableAsync(ID);
         }
     }

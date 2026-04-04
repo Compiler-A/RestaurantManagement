@@ -19,7 +19,7 @@ namespace BusinessLayerRestaurant
 
     public interface IReadableBMenuItems : IReadableBusinessBase<DTOMenuItems>
     {
-        Task<List<DTOMenuItems>> GetAllFiltersAsync(int page, int StatusMenuID, int TypeItemID);
+        Task<List<DTOMenuItems>> GetAllFiltersAsync(DTOMenuItemsFilterRequest Request);
         Task<List<DTOMenuItems>> GetAllAvailablesAsync();
     }
 
@@ -42,7 +42,7 @@ namespace BusinessLayerRestaurant
     {
         Task<List<DTOMenuItems>> GetAllMenuItemsAsync(int page);
         Task<DTOMenuItems?> GetMenuItemAsync(int id);
-        Task<List<DTOMenuItems>> GetAllMenuItemsFiltersAsync(int page, int StatusMenuID, int TypeItemID);
+        Task<List<DTOMenuItems>> GetAllMenuItemsFiltersAsync(DTOMenuItemsFilterRequest Request);
         Task<List<DTOMenuItems>> GetAllMenuItemsAvailablesAsync();
     }
 

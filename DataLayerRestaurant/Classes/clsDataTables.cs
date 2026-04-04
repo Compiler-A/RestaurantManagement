@@ -9,13 +9,17 @@ using System.Reflection.PortableExecutable;
 using System.Text;
 using System.Threading.Tasks;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
 namespace DataLayerRestaurant
 {
 
     public class DTOTablesCRequest
     {
+        [Range(1, int.MaxValue, ErrorMessage = "Seats must be a positive integer.")]
         public int Seats { get; set; }
+
+        [Range(1, int.MaxValue, ErrorMessage = "StatusTableID must be a positive integer.")]
         public int StatusTableID { get; set; }
 
         public DTOTablesCRequest( int Seats, int StatusTableID)
@@ -27,22 +31,57 @@ namespace DataLayerRestaurant
 
     public class DTOTablesURequest : DTOTablesCRequest
     {
+        [Range(1, int.MaxValue, ErrorMessage = "ID must be a positive integer.")]
         public int ID { get; set; }
-        public string Name { get; set; }
-        public DTOTablesURequest(int ID, string Name,  int Seats, int StatusTableID) 
+        public DTOTablesURequest(int ID,  int Seats, int StatusTableID) 
             : base( Seats, StatusTableID)
         {
-            this.Name = Name;
             this.ID = ID;
         }
     }
 
+    public class DTOTablesFilterStatusTableRequest
+    {
+        [Range(1, int.MaxValue, ErrorMessage = "Page must be a positive integer.")]
+        public int Page { get; set; }
+
+        [Range(1, int.MaxValue, ErrorMessage = "StatusTableID must be a positive integer.")]
+        public int StatusTableID { get; set; }
+    }
+
+    public class DTOTablesFilterSeatTableRequest
+    {
+        [Range(1, int.MaxValue, ErrorMessage = "Page must be a positive integer.")]
+        public int Page { get; set; }
+        [Range(1, int.MaxValue, ErrorMessage = "Seats must be a positive integer.")]
+        public int Seats { get; set; }
+    }
+    public class DTOTablesFilterStatusAndSeatTableRequest
+    {
+        [Range(1, int.MaxValue, ErrorMessage = "Page must be a positive integer.")]
+        public int Page { get; set; }
+        [Range(0, int.MaxValue, ErrorMessage = "StatusTableID must be a positive integer.")]
+        public int StatusTableID { get; set; }
+        [Range(0, int.MaxValue, ErrorMessage = "Seats must be a positive integer.")]
+        public int Seats { get; set; }
+    }
+
+
     public class DTOTables
     {
+        [Range(1, int.MaxValue, ErrorMessage = "ID must be a positive integer.")]
+         
         public int ID {  get; set; }
+
+        [Required(ErrorMessage = "Name is required.")]
         public string Name { get; set; }
+
+        [Range(1, int.MaxValue, ErrorMessage = "Seats must be a positive integer.")]
         public int Seats { get; set; }
+
+        [Range(1, int.MaxValue, ErrorMessage = "StatusTableID must be a positive integer.")]
         public int StatusTableID { get; set; }
+
         public DTOStatusTables? StatusTable { get; set; }
 
         public DTOTables()
@@ -166,7 +205,7 @@ namespace DataLayerRestaurant
             return table;
         }
 
-        public async Task<List<DTOTables>> GetFilterStatusAndSeatDataAsync(int page, int StatusTable, int SeatNumber)
+        public async Task<List<DTOTables>> GetFilterStatusAndSeatDataAsync(DTOTablesFilterStatusAndSeatTableRequest Request)
         {
             List<DTOTables> listTables = new List<DTOTables>();
             using (SqlConnection Connection = new SqlConnection(_Settings.ConnectionString))
@@ -174,10 +213,10 @@ namespace DataLayerRestaurant
                 using (SqlCommand Command = new SqlCommand("Tables.SP_GetFilterStatusAndFilterSeatsTables", Connection))
                 {
                     Command.CommandType = System.Data.CommandType.StoredProcedure;
-                    Command.Parameters.AddWithValue("@Page", page);
+                    Command.Parameters.AddWithValue("@Page", Request.Page);
                     Command.Parameters.AddWithValue("@Rows", _Settings.RowsPerPage);
-                    Command.Parameters.AddWithValue("@StatusID", StatusTable);
-                    Command.Parameters.AddWithValue("@SeatsNumber", SeatNumber);
+                    Command.Parameters.AddWithValue("@StatusID", Request.StatusTableID);
+                    Command.Parameters.AddWithValue("@SeatsNumber", Request.Seats);
                     await Connection.OpenAsync();
                     using (SqlDataReader Reader = await Command.ExecuteReaderAsync())
                     {
@@ -213,7 +252,7 @@ namespace DataLayerRestaurant
             return listTables;
         }
 
-        public async Task<List<DTOTables>> GetFilterStatusDataAsync(int page, int StatusTable)
+        public async Task<List<DTOTables>> GetFilterStatusDataAsync(DTOTablesFilterStatusTableRequest Request)
         {
             List<DTOTables> listTables = new List<DTOTables>();
             using (SqlConnection Connection = new SqlConnection(_Settings.ConnectionString))
@@ -221,9 +260,9 @@ namespace DataLayerRestaurant
                 using (SqlCommand Command = new SqlCommand("[Tables].[SP_GetFilterStatusTables]", Connection))
                 {
                     Command.CommandType = System.Data.CommandType.StoredProcedure;
-                    Command.Parameters.AddWithValue("@Page", page);
+                    Command.Parameters.AddWithValue("@Page", Request.Page);
                     Command.Parameters.AddWithValue("@Rows", _Settings.RowsPerPage);
-                    Command.Parameters.AddWithValue("@StatusID", StatusTable);
+                    Command.Parameters.AddWithValue("@StatusID", Request.StatusTableID);
                     await Connection.OpenAsync();
                     using (SqlDataReader Reader = await Command.ExecuteReaderAsync())
                     {
@@ -238,17 +277,17 @@ namespace DataLayerRestaurant
             return listTables;
         }
 
-        public async Task<List<DTOTables>> GetFilterSeatDataAsync(int page, int FilterSeats)
+        public async Task<List<DTOTables>> GetFilterSeatDataAsync(DTOTablesFilterSeatTableRequest Request)
         {
             List<DTOTables> listTables = new List<DTOTables>();
             using (SqlConnection Connection = new SqlConnection(_Settings.ConnectionString))
             {
-                using (SqlCommand Command = new SqlCommand("Tables.SP_GetFilterTables", Connection))
+                using (SqlCommand Command = new SqlCommand("Tables.SP_GetFilterSeatsTables", Connection))
                 {
                     Command.CommandType = System.Data.CommandType.StoredProcedure;
-                    Command.Parameters.AddWithValue("@Page", page);
+                    Command.Parameters.AddWithValue("@Page", Request.Page);
                     Command.Parameters.AddWithValue("@Rows", _Settings.RowsPerPage);
-                    Command.Parameters.AddWithValue("@Seats", FilterSeats);
+                    Command.Parameters.AddWithValue("@Seats", Request.Seats);
                     await Connection.OpenAsync();
                     using (SqlDataReader Reader = await Command.ExecuteReaderAsync())
                     {
@@ -366,23 +405,23 @@ namespace DataLayerRestaurant
             return await _IRead.GetDataByNameAsync(TableNumber);
         }
 
-        public async Task<List<DTOTables>> GetFilterStatusAndSeatTablesAsync(int page, int StatusTable, int SeatNumber)
+        public async Task<List<DTOTables>> GetFilterStatusAndSeatTablesAsync(DTOTablesFilterStatusAndSeatTableRequest Request)
         {
-            return await _IRead.GetFilterStatusAndSeatDataAsync(page, StatusTable, SeatNumber);
+            return await _IRead.GetFilterStatusAndSeatDataAsync(Request);
         }
         public async Task<List<DTOTables>> GetAlltablesAsync(int page)
         {
             return await _IRead.GetAllDataAsync(page);
         }
 
-        public async Task<List<DTOTables>> GetFilterStatusTablesAsync(int page, int StatusTable)
+        public async Task<List<DTOTables>> GetFilterStatusTablesAsync(DTOTablesFilterStatusTableRequest Request)
         {
-            return await _IRead.GetFilterStatusDataAsync(page, StatusTable);
+            return await _IRead.GetFilterStatusDataAsync(Request);
         }
 
-        public async Task<List<DTOTables>> GetFilterSeatTablesAsync(int page, int FilterSeats)
+        public async Task<List<DTOTables>> GetFilterSeatTablesAsync(DTOTablesFilterSeatTableRequest Request)
         {
-            return await _IRead.GetFilterSeatDataAsync(page, FilterSeats);
+            return await _IRead.GetFilterSeatDataAsync(Request);
         }
 
         public async Task<DTOTables?> AddTableAsync(DTOTablesCRequest Tables)

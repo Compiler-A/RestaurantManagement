@@ -9,9 +9,9 @@ namespace DataLayerRestaurant
 {
     public interface IReadableDTables : IReadableDataBase<DTOTables>
     {
-        Task<List<DTOTables>> GetFilterStatusDataAsync(int page, int StatusTable);
-        Task<List<DTOTables>> GetFilterSeatDataAsync(int page, int FilterSeats);
-        Task<List<DTOTables>> GetFilterStatusAndSeatDataAsync(int page, int StatusTable, int SeatNumber);
+        Task<List<DTOTables>> GetFilterStatusDataAsync(DTOTablesFilterStatusTableRequest Request);
+        Task<List<DTOTables>> GetFilterSeatDataAsync(DTOTablesFilterSeatTableRequest Request);
+        Task<List<DTOTables>> GetFilterStatusAndSeatDataAsync(DTOTablesFilterStatusAndSeatTableRequest Request);
         Task<DTOTables?> GetDataByNameAsync(string TableNumber);
         Task<List<DTOTables>> GetAllDataAsync();
         Task<List<DTOTables>> GetAllDataAvailablesAsync();
@@ -26,9 +26,9 @@ namespace DataLayerRestaurant
     {
         Task<DTOTables?> GetTableAsync(int id);
         Task<List<DTOTables>> GetAlltablesAsync(int page);
-        Task<List<DTOTables>> GetFilterStatusTablesAsync(int page, int StatusTable);
-        Task<List<DTOTables>> GetFilterSeatTablesAsync(int page, int FilterSeats);
-        Task<List<DTOTables>> GetFilterStatusAndSeatTablesAsync(int page, int StatusTable, int SeatNumber);
+        Task<List<DTOTables>> GetFilterStatusTablesAsync(DTOTablesFilterStatusTableRequest Request);
+        Task<List<DTOTables>> GetFilterSeatTablesAsync(DTOTablesFilterSeatTableRequest Request);
+        Task<List<DTOTables>> GetFilterStatusAndSeatTablesAsync(DTOTablesFilterStatusAndSeatTableRequest Request);
         Task<DTOTables?> GetTableByNameAsync(string TableNumber);
         Task<List<DTOTables>> GetAlltablesAsync();
         Task<List<DTOTables>> GetAllTablesAvailablesAsync();

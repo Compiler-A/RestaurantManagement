@@ -26,7 +26,7 @@ namespace APILayer.Controllers
         {
             if (page <= 0)
             {
-                throw new ArgumentException("Page number must be greater than 0.");
+                throw new ArgumentOutOfRangeException("Page number must be greater than 0.");
             }
             var list = await jobRoles.GetAllJobRolesAsync(page);
             return CreateResponse<IEnumerable<DTOJobRoles>>(list, StatusCodes.Status200OK, $"Row: {list.Count}");
@@ -41,7 +41,7 @@ namespace APILayer.Controllers
         {
             if (ID <= 0)
             {
-                throw new ArgumentException("ID number must be greater than 0.");
+                throw new ArgumentOutOfRangeException("ID number must be greater than 0.");
             }
             var DTO = await jobRoles.GetJobRoleAsync(ID);
             return CreateResponse<DTOJobRoles>(DTO!, StatusCodes.Status200OK, "Find Saccessfully!");
@@ -110,7 +110,7 @@ namespace APILayer.Controllers
         {
             if (id <= 0)
             {
-                throw new ArgumentException("ID number must be greater than 0.");
+                throw new ArgumentOutOfRangeException("ID number must be greater than 0.");
             }
             var result = await jobRoles.DeleteJobRoleAsync(id);
             return CreateResponse<bool>(true!, StatusCodes.Status200OK, "jobRole deleted successfully.");

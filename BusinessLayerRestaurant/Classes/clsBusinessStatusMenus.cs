@@ -47,11 +47,22 @@ namespace BusinessLayerRestaurant
 
         public async Task<DTOStatusMenus?> GetAsync(int ID)
         {
-            return await _Interface.IData.GetStatusMenuAsync(ID);
+            var result = await _Interface.IData.GetStatusMenuAsync(ID);
+            if (result == null)
+            {
+                throw new KeyNotFoundException("Not Found!");
+            }
+            return result;
         }
+
         public async Task<List<DTOStatusMenus>> GetAllAsync(int page)
         {
-            return await _Interface.IData.GetAllStatusMenusAsync(page);
+            var list = await _Interface.IData.GetAllStatusMenusAsync(page);
+            if (list == null || list.Count == 0)
+            {
+                throw new KeyNotFoundException("Not Found!");
+            }
+            return list;
         }
     }
 
@@ -65,15 +76,33 @@ namespace BusinessLayerRestaurant
 
         public async Task<bool> DeleteAsync(int ID)
         {
-            return await _Interface.IData.DeleteStatusMenuAsync(ID);
+            var result = await _Interface.IData.DeleteStatusMenuAsync(ID);
+            if (!result)
+            {
+                throw new InvalidOperationException("Not Deleted!");
+            }
+
+            return result;
         }
+
         public async Task<DTOStatusMenus?> UpdateAsync(DTOStatusMenusURequest Request)
         {
-            return await _Interface.IData.UpdateStatusMenuAsync(Request);
+            var result = await _Interface.IData.UpdateStatusMenuAsync(Request);
+            if (result == null)
+            {
+                throw new InvalidOperationException("Not Updated!");
+            }
+            return result;
         }
+
         public async Task<DTOStatusMenus?> CreateAsync(DTOStatusMenusCRequest Request)
         {
-            return await _Interface.IData.AddStatusMenuAsync(Request);
+            var result = await _Interface.IData.AddStatusMenuAsync(Request);  
+            if (result == null)
+            {
+                throw new InvalidOperationException("Not Created!");
+            }
+            return result;
         }
     }
 

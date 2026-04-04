@@ -24,23 +24,13 @@ namespace APILayer.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<ApiResponse<IEnumerable<DTOSettings>>>> GetAllAsync([FromQuery] int page = 1)
         {
-            try
+
+            if (page <= 0)
             {
-                if (page <= 0)
-                {
-                    return CreateResponse<IEnumerable<DTOSettings>>(null!, StatusCodes.Status400BadRequest, "Page number must be greater than 0.");
-                }
-                var list = await _BusinessSettings.GetAllSettingsAsync(page);
-                if (list == null || list.Count == 0)
-                {
-                    return CreateResponse<IEnumerable<DTOSettings>>(null!, StatusCodes.Status404NotFound, "Not Found!");
-                }
-                return CreateResponse<IEnumerable<DTOSettings>>(list, StatusCodes.Status200OK, $"Row: {list.Count}");
+                throw new ArgumentOutOfRangeException("Page number must be greater than 0.");
             }
-            catch (Exception ex)
-            {
-                return CreateResponse<IEnumerable<DTOSettings>>(null!, StatusCodes.Status500InternalServerError, "Internal server error: " + ex.Message);
-            }
+            var list = await _BusinessSettings.GetAllSettingsAsync(page);
+            return CreateResponse<IEnumerable<DTOSettings>>(list, StatusCodes.Status200OK, $"Row: {list.Count}");
         }
 
         [HttpGet("{ID}", Name = "GetSettingByID")]
@@ -50,81 +40,67 @@ namespace APILayer.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<ApiResponse<DTOSettings>>> GetByIDAsync([FromRoute] int ID = 1)
         {
-            try
+            if (ID <= 0)
             {
-                if (ID <= 0)
-                {
-                    return CreateResponse<DTOSettings>(null!, StatusCodes.Status400BadRequest, "ID <= 0.");
-                }
-                var DTO = await _BusinessSettings.GetSettingAsync(ID);
-                if (DTO == null)
-                {
-                    return CreateResponse<DTOSettings>(null!, StatusCodes.Status404NotFound, "Not Found!");
-                }
-                return CreateResponse<DTOSettings>(DTO, StatusCodes.Status200OK, "Success");
+                throw new ArgumentOutOfRangeException("ID must be greater than 0.");
             }
-            catch (Exception ex)
-            {
-                return CreateResponse<DTOSettings>(null!, StatusCodes.Status500InternalServerError, "Internal server error: " + ex.Message);
-            }
+            var DTO = await _BusinessSettings.GetSettingAsync(ID);
+            return CreateResponse<DTOSettings>(DTO!, StatusCodes.Status200OK, "Success");
         }
 
         [HttpPost(Name = "AddSetting")]
         [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<ApiResponse<DTOSettings>>> CreateAsync([FromBody] DTOSettingsCRequest Setting)
         {
-            try
+            if (Setting == null)
             {
-                if (Setting == null)
-                {
-                    return CreateResponse<DTOSettings>(null!, StatusCodes.Status400BadRequest, "Employee data is null.");
-                }
-                
-                _BusinessSettings.CreateRequest = Setting;
-                var success = await _BusinessSettings.AddSettingAsync(_BusinessSettings.CreateRequest);
-                if (success == null)
-                {
-                    return CreateResponse<DTOSettings>(null!, StatusCodes.Status500InternalServerError, "Failed to add Setting.");
-                }
-                return CreatedAtRoute("GetSettingByID",new {ID = success.ID}, success);
+                throw new ArgumentNullException("Request is null!");
             }
-            catch (Exception ex)
+
+            if (!ModelState.IsValid)
             {
-                return CreateResponse<DTOSettings>(null!, StatusCodes.Status500InternalServerError, "Internal server error: " + ex.Message);
+                var errors = string.Join("; ", ModelState.Values
+                                                 .SelectMany(v => v.Errors)
+                                                 .Select(e => e.ErrorMessage));
+                throw new ArgumentException("Invalid model state: " + errors);
             }
+            var success = await _BusinessSettings.AddSettingAsync(Setting);
+            return CreatedAtRoute("GetSettingByID", new { ID = success!.ID }, success);
+
         }
 
         [HttpPut(Name = "UpdateSetting")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<ApiResponse<DTOSettings>>> UpdateAsync([FromBody] DTOSettingsURequest Setting)
         {
-            try
+            if (Setting == null)
             {
-                if (Setting == null || Setting.ID <= 0)
-                {
-                    return CreateResponse<DTOSettings>(null!, StatusCodes.Status400BadRequest, "Invalid Setting data.");
-                }
-                _BusinessSettings.UpdateRequest = Setting;
-                var success = await _BusinessSettings.UpdateSettingAsync(Setting);
-                if (success == null)
-                {
-                    return CreateResponse<DTOSettings>(null!, StatusCodes.Status404NotFound, "Failed to update Setting.");
-                }
-                return CreateResponse<DTOSettings>(success, StatusCodes.Status200OK, "Setting updated successfully.");
+                throw new ArgumentNullException("Request is null!");
             }
-            catch (Exception ex)
+
+            if (!ModelState.IsValid)
             {
-                return CreateResponse<DTOSettings>(null!, StatusCodes.Status500InternalServerError, "Internal server error: " + ex.Message);
+                var errors = string.Join("; ", ModelState.Values
+                                                 .SelectMany(v => v.Errors)
+                                                 .Select(e => e.ErrorMessage));
+                throw new ArgumentException("Invalid model state: " + errors);
             }
+            var success = await _BusinessSettings.UpdateSettingAsync(Setting);
+            return CreateResponse<DTOSettings>(success!, StatusCodes.Status200OK, "Setting updated successfully.");
+
         }
 
         [HttpDelete("{ID}", Name = "DeleteSetting")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]

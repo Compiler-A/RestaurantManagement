@@ -11,7 +11,7 @@ using System.ComponentModel.DataAnnotations;
 
 
 namespace DataLayerRestaurant
-{
+{ 
     public class DTOJobRolesCRequest
     {
         [Required(ErrorMessage = "Name is required.")]

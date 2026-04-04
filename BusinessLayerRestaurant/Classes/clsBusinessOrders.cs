@@ -125,6 +125,10 @@ namespace BusinessLayerRestaurant
         public async Task<List<DTOOrders>> GetAllAsync(int page)
         {
             var ldto = await _Interfaces.IData.GetAllOrdersAsync(page);
+            if (ldto == null || ldto.Count == 0)
+            {
+                throw new KeyNotFoundException("Not Found!");
+            }
 
             foreach (var item in ldto)
             {
@@ -139,7 +143,7 @@ namespace BusinessLayerRestaurant
             var dto = await _Interfaces.IData.GetOrderAsync(ID);
             if (dto == null)
             {
-                return null;
+                throw new KeyNotFoundException("Not Found!");
             }
 
             await LoadDataAsync(dto);
@@ -150,9 +154,9 @@ namespace BusinessLayerRestaurant
             (DTOOrderFilterRequest Request)
         {
             var koko = await _Interfaces.IData.GetFilterOrderAsync(Request);
-            if (koko == null)
+            if (koko == null || koko.Count == 0)
             {
-                return null;
+                throw new KeyNotFoundException("Not Found!");
             }
 
             foreach (var item in koko)
@@ -175,38 +179,40 @@ namespace BusinessLayerRestaurant
 
         public async Task<DTOOrders?> CreateAsync(DTOOrderCRequest Request)
         {
-            if (Request == null)
-            { return null; }
+
             var dto = await _Interfaces.IData.AddOrderAsync(Request);
             if (dto != null)
             {
                 await LoadDataAsync(dto);
                 return dto;
             }
-            return null;
+            throw new InvalidOperationException("Not Created!");
         }
 
         public async Task<DTOOrders?> UpdateAsync(DTOOrderURequest Request)
         {
-            if (Request == null)
-            {
-                return null;
-            }
             var dto = await _Interfaces.IData.UpdateOrderAsync(Request);
             if (dto != null)
             {
                 await LoadDataAsync(dto);
                 return dto;
             }
-            return null;
+            throw new InvalidOperationException("Not Updated!");
         }
 
 
         public async Task<bool> DeleteAsync(int ID)
         {
-            return await _Interfaces.IData.DeleteOrderAsync(ID);
+            var isDeleted = await _Interfaces.IData.DeleteOrderAsync(ID);
+            if (!isDeleted)
+            {
+                throw new InvalidOperationException("Not Deleted!");
+            }
+            return isDeleted;
         }
     }
+
+
     public class clsBusinessOrders : IBusinessOrders
     {
         private IDTOBOrders _IProperties;

@@ -11,14 +11,14 @@ namespace DataLayerRestaurant
     public interface IReadableDMenuItems : IReadableDataBase<DTOMenuItems>
     {
         Task<List<DTOMenuItems>> GetAllDataAvailablesAsync();
-        Task<List<DTOMenuItems>> GetAllDataFiltersAsync(int Page, int StatusMenuID, int TypeItemID);
+        Task<List<DTOMenuItems>> GetAllDataFiltersAsync(DTOMenuItemsFilterRequest Request);
     }
 
     public interface IReadableDataMenuItems
     {
         Task<DTOMenuItems?> GetMenuItemAsync(int id);
         Task<List<DTOMenuItems>> GetAllMenuItemsAsync(int page);
-        Task<List<DTOMenuItems>> GetAllMenuItemsFiltersAsync(int page, int StatusMenuID, int TypeItemID);
+        Task<List<DTOMenuItems>> GetAllMenuItemsFiltersAsync(DTOMenuItemsFilterRequest Request);
         Task<List<DTOMenuItems>> GetAllMenuItemsAvailablesAsync();
     }
 

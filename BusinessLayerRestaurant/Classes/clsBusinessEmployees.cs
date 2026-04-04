@@ -160,7 +160,7 @@ namespace BusinessLayerRestaurant
             {
                 throw new InvalidOperationException("Not Changed!");
             }
-            return await _Interface.IData.ChangedPasswordEmployeeAsync(Request);
+            return result;
         }
 
         public async Task<DTOEmployees?> CreateAsync(DTOEmployeesCRequest request)
@@ -194,7 +194,7 @@ namespace BusinessLayerRestaurant
             {
                 throw new InvalidOperationException("Not Deleted!");
             }
-            return await _Interface.IData.DeleteEmployeeAsync(ID);
+            return result;
         }
     }
 

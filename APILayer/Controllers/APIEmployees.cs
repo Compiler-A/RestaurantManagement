@@ -24,7 +24,7 @@ namespace APILayer.Controllers
         {
             if (page <= 0)
             {
-                throw new ArgumentException("Page number must be greater than 0.");
+                throw new ArgumentOutOfRangeException("Page number must be greater than 0.");
             }
 
             var list = await employees.GetAllEmployeesAsync(page);
@@ -41,7 +41,7 @@ namespace APILayer.Controllers
         {
             if (ID <= 0)
             {
-                throw new ArgumentException("ID must be greater than 0.");
+                throw new ArgumentOutOfRangeException("ID must be greater than 0.");
             }
             var DTO = await employees.GetEmployeeAsync(ID);
             return CreateResponse<DTOEmployees>(DTO!, StatusCodes.Status200OK, "Success");
@@ -104,7 +104,7 @@ namespace APILayer.Controllers
         {
             if (ID <= 0)
             {
-                throw new ArgumentException("ID must be greater than 0.");
+                throw new ArgumentOutOfRangeException("ID must be greater than 0.");
             }
 
             var success = await employees.DeleteEmployeeAsync(ID);
@@ -114,6 +114,7 @@ namespace APILayer.Controllers
         [HttpPost("login", Name = "LoginEmployeeAsync")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -138,8 +139,8 @@ namespace APILayer.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<ActionResult<ApiResponse<bool>>> ChangePasswordAsync([FromBody] DTOEmployeesChangedPassword Changed)
         {
             if (Changed == null)

@@ -7,12 +7,17 @@ using System.Linq;
 using System.Runtime;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
 namespace DataLayerRestaurant
 {
     public class DTOSettingsCRequest
     {
+
+        [Required(ErrorMessage = "Name is required.")]
         public string Name { get; set; } = string.Empty;
+
+        [Range(0, double.MaxValue, ErrorMessage = "Value must be greater than 0.")]
         public decimal Value { get; set; }
 
         public DTOSettingsCRequest(string name, decimal value)
@@ -23,19 +28,23 @@ namespace DataLayerRestaurant
     }
     public class DTOSettingsURequest : DTOSettingsCRequest
     {
+        [Range(1, int.MaxValue, ErrorMessage = "ID must be greater than 0.")]
         public int ID { get; set; }
         public DTOSettingsURequest(int id,string name, decimal value) : base(name, value)
         {
             ID = id;
-            Name = name;
-            Value = value;
         }
     }
 
     public class DTOSettings
     {
+        [Range(1, int.MaxValue, ErrorMessage = "ID must be greater than 0.")]
         public int ID { get; set; }
+
+        [Required(ErrorMessage = "Name is required.")]
         public string Name { get; set; } = string.Empty;
+
+        [Range(0, double.MaxValue, ErrorMessage = "Value must be greater than 0.")]
         public decimal Value { get; set; }
 
         public DTOSettings()

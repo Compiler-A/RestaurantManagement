@@ -4,11 +4,14 @@ using RestaurantDataLayer;
 using System.Collections.Generic;
 using System.Runtime;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
 namespace DataLayerRestaurant
 {
     public class DTOStatusMenusCRequest
     {
+
+        [Required(ErrorMessage = "Name is required.")]
         public string Name { get; set; }
         public string? Description { get; set; }
 
@@ -21,6 +24,7 @@ namespace DataLayerRestaurant
 
     public class DTOStatusMenusURequest : DTOStatusMenusCRequest
     {
+        [Range(1, int.MaxValue, ErrorMessage = "ID must be greater than 0.")]
         public int ID { get; set; }
         public DTOStatusMenusURequest(int ID, string Name,  string? Description) : base(Name, Description)
         {
@@ -30,7 +34,10 @@ namespace DataLayerRestaurant
 
     public class DTOStatusMenus
     {
+        [Range(1, int.MaxValue, ErrorMessage = "ID must be greater than 0.")]
         public int ID { get; set; }
+
+        [Required(ErrorMessage = "Name is required.")]
         public string Name { get; set; }
         public string? Description { get; set; }
 

@@ -51,13 +51,22 @@ namespace BusinessLayerRestaurant
         }
         public async Task<List<DTOSettings>> GetAllAsync(int page)
         {
+
             var list = await _Interface.IData.GetAllSettingsAsync(page);
+            if (list == null || list.Count == 0)
+            {
+                throw new KeyNotFoundException("Not Found!");
+            }
+
             return list;
         }
         public async Task<DTOSettings?> GetAsync(int ID)
         {
             var dto = await _Interface.IData.GetSettingAsync(ID);
-            
+            if (dto == null)
+            {
+                throw new KeyNotFoundException("Not Found!");   
+            }
             return dto;
         }
     }
@@ -75,31 +84,34 @@ namespace BusinessLayerRestaurant
 
         public async Task<DTOSettings?> CreateAsync(DTOSettingsCRequest setting)
         {
-            if (setting == null)
-            { return null; }
+
             var dto = await _Interface.IData.AddSettingAsync(setting);
-            if (dto != null)
+            if (dto == null)
             {
-                return dto;
+                throw new InvalidOperationException("Not Created!");
             }
-            return null;
+            return dto;
         }
         public async Task<DTOSettings?> UpdateAsync(DTOSettingsURequest setting)
         {
-            if (setting == null || setting.ID <= 0)
-            { return null; }
+           
             
             var dto = await _Interface.IData.UpdateSettingAsync(setting);
-            if (dto != null)
+            if (dto == null)
             {
-                return dto;
+                throw new InvalidOperationException("Not Updated!");
             }
-            return null;
+            return dto;
         }
 
         public async Task<bool> DeleteAsync(int ID)
         {
-            return await _Interface.IData.DeleteSettingAsync(ID);
+            var result = await _Interface.IData.DeleteSettingAsync(ID);
+            if (!result)
+            {
+                throw new InvalidOperationException("Not Deleted!");
+            }
+            return result;
         }
     }
 

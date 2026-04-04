@@ -20,7 +20,6 @@ namespace APILayer.Controllers
         }
 
 
-        // ===================== GET ALL =====================
         [HttpGet(Name = "GetAllStatusMenus")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -28,23 +27,14 @@ namespace APILayer.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<ApiResponse<List<DTOStatusMenus>>>> GetAllAsync([FromQuery] int page = 1)
         {
-            try
+            if (page <= 0)
             {
-                if (page < 1)
-                    return CreateResponse<List<DTOStatusMenus>>(null!, StatusCodes.Status400BadRequest, "Page number must be greater than 0.");
-
-                
-                var list = await _dataStatusMenus.GetAllStatusMenusAsync(page);
-
-                if (list == null || list.Count == 0)
-                    return CreateResponse<List<DTOStatusMenus>>(null!, StatusCodes.Status404NotFound, "No Status Menus found.");
-
-                return CreateResponse(list, StatusCodes.Status200OK, "Status Menus retrieved successfully.");
+                throw new ArgumentOutOfRangeException("Page number must be greater than 0.");
             }
-            catch (System.Exception ex)
-            {
-                return CreateResponse<List<DTOStatusMenus>>(null!, StatusCodes.Status500InternalServerError, ex.Message);
-            }
+
+            var list = await _dataStatusMenus.GetAllStatusMenusAsync(page);
+            return CreateResponse(list, StatusCodes.Status200OK, "Status Menus retrieved successfully.");
+
         }
 
         [HttpGet("{ID}", Name = "GetStatusMenuByID")]
@@ -54,97 +44,84 @@ namespace APILayer.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<ApiResponse<DTOStatusMenus>>> GetByIDAsync(int ID)
         {
-            try
+            if (ID <= 0)
             {
-                if (ID <= 0)
-                    return CreateResponse<DTOStatusMenus>(null!, StatusCodes.Status400BadRequest, "Invalid ID.");
-
-                var resource = await _dataStatusMenus.GetStatusMenuAsync(ID);
-
-                if (resource == null)
-                    return CreateResponse<DTOStatusMenus>(null!, StatusCodes.Status404NotFound, "Status Menu not found.");
-
-                return CreateResponse(resource, StatusCodes.Status200OK, "Status Menu retrieved successfully.");
+                throw new ArgumentOutOfRangeException("ID number must be greater than 0.");
             }
-            catch (System.Exception ex)
-            {
-                return CreateResponse<DTOStatusMenus>(null!, StatusCodes.Status500InternalServerError, ex.Message);
-            }
+
+            var resource = await _dataStatusMenus.GetStatusMenuAsync(ID);
+            return CreateResponse<DTOStatusMenus>(resource!, StatusCodes.Status200OK, "Status Menu retrieved successfully.");
         }
 
         [HttpPost(Name = "AddStatusMenu")]
         [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<ApiResponse<DTOStatusMenus>>> CreateAsync([FromBody] DTOStatusMenusCRequest statusMenu)
         {
-            try
+            if (statusMenu == null)
             {
-                if (statusMenu == null)
-                    return CreateResponse<DTOStatusMenus>(null!, StatusCodes.Status400BadRequest, "Status Menu data is null.");
-
-
-                var dto = await _dataStatusMenus.AddStatusMenuAsync(statusMenu);
-                if (dto == null)
-                    return CreateResponse<DTOStatusMenus>(null!, StatusCodes.Status500InternalServerError, "Failed to add Status Menu.");
-
-                return CreatedAtRoute("GetStatusMenuByID", new {ID = dto.ID}, dto);
+                throw new ArgumentNullException("Request is null!");
             }
-            catch (System.Exception ex)
+
+            if (!ModelState.IsValid)
             {
-                return CreateResponse<DTOStatusMenus>(null!, StatusCodes.Status500InternalServerError, ex.Message);
+                var errors = string.Join("; ", ModelState.Values
+                                                 .SelectMany(v => v.Errors)
+                                                 .Select(e => e.ErrorMessage));
+                throw new ArgumentException("Invalid model state: " + errors);
             }
+
+            var dto = await _dataStatusMenus.AddStatusMenuAsync(statusMenu);
+            return CreatedAtRoute("GetStatusMenuByID", new { ID = dto!.ID }, dto);
+
         }
 
-        // ===================== UPDATE =====================
         [HttpPut(Name = "UpdateStatusMenu")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<ApiResponse<DTOStatusMenus>>> UpdateAsync([FromBody] DTOStatusMenusURequest statusMenu)
         {
-            try
+            if (statusMenu == null)
             {
-                if (statusMenu == null || statusMenu.ID <= 0)
-                    return CreateResponse<DTOStatusMenus>(null!, StatusCodes.Status400BadRequest, "Invalid Status Menu data.");
-
-
-                var dto = await _dataStatusMenus.UpdateStatusMenuAsync(statusMenu);
-                if (dto == null)
-                    return CreateResponse<DTOStatusMenus>(null!, StatusCodes.Status500InternalServerError, "Failed to update Status Menu.");
-
-                return CreateResponse(dto!, StatusCodes.Status200OK, "Status Menu updated successfully.");
+                throw new ArgumentNullException("Request is null!");
             }
-            catch (System.Exception ex)
+
+            if (!ModelState.IsValid)
             {
-                return CreateResponse<DTOStatusMenus>(null!, StatusCodes.Status500InternalServerError, ex.Message);
+                var errors = string.Join("; ", ModelState.Values
+                                                 .SelectMany(v => v.Errors)
+                                                 .Select(e => e.ErrorMessage));
+                throw new ArgumentException("Invalid model state: " + errors);
             }
+
+            var dto = await _dataStatusMenus.UpdateStatusMenuAsync(statusMenu);
+            return CreateResponse<DTOStatusMenus>(dto!, StatusCodes.Status200OK, "Status Menu updated successfully.");
+
         }
 
         [HttpDelete("{ID}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<ApiResponse<bool>>> DeleteStatusMenu(int ID)
         {
-            try
+            if (ID <= 0)
             {
-                if (ID <= 0)
-                    return CreateResponse<bool>(false!, StatusCodes.Status400BadRequest, "Invalid ID.");
-
-                bool isDeleted = await _dataStatusMenus.DeleteStatusMenuAsync(ID);
-
-                if (!isDeleted)
-                    return CreateResponse<bool>(false!, StatusCodes.Status404NotFound, "Status Menu not found or already deleted.");
-
-                return CreateResponse<bool>(true, StatusCodes.Status200OK, "Status Menu Deleted Saccessfully!");
+                throw new ArgumentOutOfRangeException("ID number must be greater than 0.");
             }
-            catch (System.Exception ex)
-            {
-                return CreateResponse<bool>(false!, StatusCodes.Status500InternalServerError, ex.Message);
-            }
+
+            bool isDeleted = await _dataStatusMenus.DeleteStatusMenuAsync(ID);
+            return CreateResponse<bool>(isDeleted, StatusCodes.Status200OK, "Status Menu Deleted Saccessfully!");
+
+
         }
     }
 }

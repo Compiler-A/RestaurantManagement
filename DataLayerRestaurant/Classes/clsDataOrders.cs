@@ -6,16 +6,24 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.ComponentModel.DataAnnotations;
 
 namespace DataLayerRestaurant
 {
     public class DTOOrderCRequest
     {
+        [Range(1, int.MaxValue, ErrorMessage = "TableID must be greater than 0.")]
         public int TableID { get; set; }
+
+        [Range(1, int.MaxValue, ErrorMessage = "EmployerID must be greater than 0.")]
         public int EmployerID { get; set; }
+
+        [Range(1, int.MaxValue, ErrorMessage = "StatusOrderID must be greater than 0.")]
         public int StatusOrderID { get; set; }
-        public DateTime OrderDate { get; set; }
+
+        public DateTime OrderDate { get; set; } = DateTime.Now;
+
+        [Range(0, double.MaxValue, ErrorMessage = "TotalAmount must be non-negative.")]
         public decimal? TotalAmount { get; set; }
         public DTOOrderCRequest(int tableID, int employerID, int statusOrderID, DateTime orderDate, decimal? totalAmount)
         {
@@ -29,21 +37,22 @@ namespace DataLayerRestaurant
 
     public class DTOOrderFilterRequest
     {
+        [Range(1, int.MaxValue, ErrorMessage = "Page must be greater than 0.")]
         public int Page { get; set; }
+
+        [Range(0, int.MaxValue, ErrorMessage = "TableID must be non-negative.")]
         public int TableID { get; set; }
+
+        [Range(0, int.MaxValue, ErrorMessage = "EmployeeID must be non-negative.")]
         public int EmployeeID { get; set; }
+
+        [Range(0, int.MaxValue, ErrorMessage = "StatusOrderID must be non-negative.")]
         public int StatusOrderID { get; set; }
-        public DTOOrderFilterRequest(int page, int tableID, int employeeID, int statusOrderID)
-        {
-            Page = page;
-            TableID = tableID;
-            EmployeeID = employeeID;
-            StatusOrderID = statusOrderID;
-        }
     }
 
     public class DTOOrderURequest : DTOOrderCRequest
     {
+        [Range(1, int.MaxValue, ErrorMessage = "OrderID must be greater than 0.")]
         public int OrderID { get; set; }
 
         public DTOOrderURequest(int orderID, int tableID, int employerID, int statusOrderID, DateTime orderDate, decimal? totalAmount)
@@ -55,11 +64,21 @@ namespace DataLayerRestaurant
 
     public class DTOOrders
     {
+        [Range(1, int.MaxValue, ErrorMessage = "ID must be greater than 0.")]
         public int ID { get; set; }
+
+        [Range(1, int.MaxValue, ErrorMessage = "TableID must be greater than 0.")]
         public int TableID { get; set; }
+
+        [Range(1, int.MaxValue, ErrorMessage = "EmployerID must be greater than 0.")]
         public int EmployerID { get; set; }
+
+        [Range(1, int.MaxValue, ErrorMessage = "StatusOrderID must be greater than 0.")]
         public int StatusOrderID { get; set; }
+
         public DateTime OrderDate { get; set; }
+
+        [Range(0, double.MaxValue, ErrorMessage = "TotalAmount must be non-negative.")]
         public decimal? TotalAmount { get; set; }
 
 

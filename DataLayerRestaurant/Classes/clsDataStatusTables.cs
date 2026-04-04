@@ -6,11 +6,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
 namespace DataLayerRestaurant
 {
     public class DTOStatusTablesCRequest
     {
+        [Required(ErrorMessage = "Name is required.")]
         public string Name { get; set; }
         public DTOStatusTablesCRequest(string Name)
         {
@@ -20,6 +22,7 @@ namespace DataLayerRestaurant
 
     public class DTOStatusTablesURequest : DTOStatusTablesCRequest
     {
+        [Range(1, int.MaxValue, ErrorMessage = "ID must be a positive integer.")]
         public int ID { get; set; }
 
         public DTOStatusTablesURequest(int ID,  string Name) : base(Name)
@@ -30,7 +33,10 @@ namespace DataLayerRestaurant
 
     public class DTOStatusTables
     {
+        [Range(1, int.MaxValue, ErrorMessage = "ID must be a positive integer.")]
         public int ID { get; set; }
+
+        [Required(ErrorMessage ="Name is Required.")]
         public string Name { get; set; }
 
         public DTOStatusTables()

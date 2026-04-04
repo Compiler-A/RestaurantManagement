@@ -2,8 +2,10 @@
 using DataLayerRestaurant;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace APILayer.Controllers
 {
@@ -18,7 +20,6 @@ namespace APILayer.Controllers
             _dataLayer = DataItem;
         }
 
-        // GET All
         [HttpGet(Name = "GetAllTypeItems")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -26,24 +27,15 @@ namespace APILayer.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<ApiResponse<IEnumerable<DTOTypeItems>>>> GetAllAsync([FromQuery] int page = 1)
         {
-            try
+            if (page <= 0)
             {
-                if (page <= 0)
-                    return CreateResponse<IEnumerable<DTOTypeItems>>(null!, StatusCodes.Status400BadRequest, "Page number must be greater than zero.");
-
-                var typeItems = await _dataLayer.GetAllTypeItemsAsync(page);
-                if (typeItems == null || typeItems.Count == 0)
-                    return CreateResponse<IEnumerable<DTOTypeItems>>(null!, StatusCodes.Status404NotFound, "No TypeItems found.");
-
-                return CreateResponse<IEnumerable<DTOTypeItems>>(typeItems, StatusCodes.Status200OK, "Completed!");
+                throw new ArgumentOutOfRangeException("Page number must be greater than 0.");
             }
-            catch (System.Exception ex)
-            {
-                return CreateResponse<IEnumerable<DTOTypeItems>>(null!, StatusCodes.Status500InternalServerError, "Internal server error: " + ex.Message);
-            }
+            var typeItems = await _dataLayer.GetAllTypeItemsAsync(page);
+            return CreateResponse<IEnumerable<DTOTypeItems>>(typeItems, StatusCodes.Status200OK, "Completed!");
+
         }
 
-        // GET By ID
         [HttpGet("{ID}", Name = "GetTypeItemById")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -52,98 +44,75 @@ namespace APILayer.Controllers
         public async Task<ActionResult<ApiResponse<DTOTypeItems>>> GetByIDAsync([FromRoute] int ID)
         {
             if (ID <= 0)
-                return CreateResponse<DTOTypeItems>(null!, StatusCodes.Status400BadRequest, "Invalid TypeItem ID.");
-
-            try
             {
-                var typeItemDto = await _dataLayer.GetTypeItemAsync(ID);
-                if (typeItemDto == null)
-                    return CreateResponse<DTOTypeItems>(null!, StatusCodes.Status404NotFound, "TypeItem not found.");
+                throw new ArgumentOutOfRangeException("ID number must be greater than 0.");
+            }
+            var typeItemDto = await _dataLayer.GetTypeItemAsync(ID);
+            return CreateResponse(typeItemDto!, StatusCodes.Status200OK, "Completed");
 
-                return CreateResponse(typeItemDto, StatusCodes.Status200OK, "Completed");
-            }
-            catch (System.Exception ex)
-            {
-                return CreateResponse<DTOTypeItems>(null!, StatusCodes.Status500InternalServerError, "Internal server error: " + ex.Message);
-            }
         }
 
         [HttpPost(Name = "AddTypeItem")]
         [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<ApiResponse<DTOTypeItems>>> CreateAsync([FromBody] DTOTypeItemsCRequest typeItem)
         {
             if (typeItem == null)
-                return CreateResponse<DTOTypeItems>(null!, StatusCodes.Status400BadRequest, "TypeItem data is null.");
+                throw new ArgumentNullException("Request is null!");
 
-            try
+            if (!ModelState.IsValid)
             {
-                var dto = await _dataLayer.AddTypeItemAsync(typeItem);
-                if (dto == null)
-                    return CreateResponse<DTOTypeItems>(null!, StatusCodes.Status500InternalServerError, "A problem happened while handling your request.");
+                var errors = string.Join("; ", ModelState.Values
+                                                 .SelectMany(v => v.Errors)
+                                                 .Select(e => e.ErrorMessage));
+                throw new ArgumentException("Invalid model state: " + errors);
+            }
 
-                return CreatedAtRoute("GetTypeItemById", new {ID = dto.ID}, dto);
-            }
-            catch (System.Exception ex)
-            {
-                return CreateResponse<DTOTypeItems>(null!, StatusCodes.Status500InternalServerError, "Internal server error: " + ex.Message);
-            }
+            var dto = await _dataLayer.AddTypeItemAsync(typeItem);
+            return CreatedAtRoute("GetTypeItemById", new { ID = dto!.ID }, dto);
+
         }
 
-        // PUT Update
         [HttpPut(Name = "UpdateTypeItem")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<ApiResponse<DTOTypeItems>>> UpdateAsync([FromBody] DTOTypeItemsURequest typeItem)
         {
-            if (typeItem == null || typeItem.ID <= 0)
-                return CreateResponse<DTOTypeItems>(null!, StatusCodes.Status400BadRequest, "Invalid TypeItem data.");
+            if (typeItem == null)
+                throw new ArgumentNullException("Request is null!");
 
-            try
+            if (!ModelState.IsValid)
             {
-                var dto = await _dataLayer.UpdateTypeItemAsync(typeItem);
-
-                if (dto == null)
-                    return CreateResponse<DTOTypeItems>(null!, StatusCodes.Status500InternalServerError, "A problem happened while handling your request.");
-
-                return CreateResponse(dto, StatusCodes.Status200OK, "Update successfully");
+                var errors = string.Join("; ", ModelState.Values
+                                                 .SelectMany(v => v.Errors)
+                                                 .Select(e => e.ErrorMessage));
+                throw new ArgumentException("Invalid model state: " + errors);
             }
-            catch (System.Exception ex)
-            {
-                return CreateResponse<DTOTypeItems>(null!, StatusCodes.Status500InternalServerError, "Internal server error: " + ex.Message);
-            }
+
+            var dto = await _dataLayer.UpdateTypeItemAsync(typeItem);
+            return CreateResponse(dto!, StatusCodes.Status200OK, "Update successfully");
+
         }
 
-        // DELETE
         [HttpDelete("{ID}", Name = "DeleteTypeItem")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<ApiResponse<bool>>> DeleteAsync([FromRoute] int ID)
         {
             if (ID <= 0)
-                return CreateResponse<bool>(false!, StatusCodes.Status400BadRequest, "Invalid TypeItem ID.");
+                throw new ArgumentOutOfRangeException("ID number must be greater than 0.");
 
-            try
-            {
-                var typeItem = await _dataLayer.GetTypeItemAsync(ID);
-                if (typeItem == null)
-                    return CreateResponse<bool>(false!, StatusCodes.Status404NotFound, "TypeItem not found.");
-
-                var isDelete = await _dataLayer.DeleteTypeItemAsync(ID);
-                if (isDelete)
-                    return CreateResponse<bool>(true, StatusCodes.Status200OK, "Deleted successfully");
-
-                return CreateResponse<bool>(false!, StatusCodes.Status500InternalServerError, "A problem happened while handling your request.");
-            }
-            catch (System.Exception ex)
-            {
-                return CreateResponse<bool>(false!, StatusCodes.Status500InternalServerError, "Internal server error: " + ex.Message);
-            }
+            var typeItem = await _dataLayer.GetTypeItemAsync(ID);
+            return CreateResponse<bool>(true, StatusCodes.Status200OK, "Deleted successfully");
         }
     }
 }

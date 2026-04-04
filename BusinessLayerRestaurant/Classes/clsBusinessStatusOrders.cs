@@ -48,12 +48,22 @@ namespace BusinessLayerRestaurant
         }
         public async Task<List<DTOStatusOrders>> GetAllAsync(int page)
         {
-            return await _Interface.IData.GetAllStatusOrdersAsync(page);
+            var list = await _Interface.IData.GetAllStatusOrdersAsync(page);
+            if (list == null || list.Count == 0)
+            {
+                throw new KeyNotFoundException("Not Found!");
+            }
+
+            return list;
         }
 
         public async Task<DTOStatusOrders?> GetAsync(int ID)
         {
-           var dto = await _Interface.IData.GetStatusOrderAsync(ID);
+            var dto = await _Interface.IData.GetStatusOrderAsync(ID);
+            if (dto == null)
+            {
+                throw new KeyNotFoundException("Not Found!");
+            }
             return dto;
         }
     }
@@ -71,31 +81,32 @@ namespace BusinessLayerRestaurant
 
         public async Task<DTOStatusOrders?> CreateAsync(DTOStatusOrdersCRequest Request)
         {
-            if (Request == null)
-            { return null; }
+
             var dto = await _Interface.IData.AddStatusOrderAsync(Request);
-            if (dto != null)
+            if (dto == null)
             {
-                return dto;
+                throw new InvalidOperationException("Not Created!");
             }
-            return null;
+            return dto;
         }
         public async Task<DTOStatusOrders?> UpdateAsync(DTOStatusOrdersURequest Request)
-        {
-            if (Request == null || Request.ID <= 0)
-            { return null; }
-           
+        {  
             var dto = await _Interface.IData.UpdateStatusOrderAsync(Request);
-            if (dto != null)
+            if (dto == null)
             {
-                return dto;
+                throw new InvalidOperationException("Not Updated!");
             }
-            return null;
+            return dto;
         }
 
         public async Task<bool> DeleteAsync(int ID)
         {
-            return await _Interface.IData.DeleteStatusOrderAsync(ID);
+            var isDeleted = await _Interface.IData.DeleteStatusOrderAsync(ID);
+            if (!isDeleted)
+            {
+                throw new InvalidOperationException("Not Deleted!");
+            }
+            return isDeleted;
         }
     }
 
