@@ -5,7 +5,7 @@ using System.Text.Json;
 using BusinessLayerRestaurant;
 using System.Diagnostics;
 
-namespace APILayer
+namespace APILayer.Middleware
 {
     public class GlobalExceptionMiddleware
     {

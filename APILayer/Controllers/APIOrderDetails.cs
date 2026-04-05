@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using DataLayerRestaurant;
+using APILayer.Filters;
 
 namespace APILayer.Controllers
 {

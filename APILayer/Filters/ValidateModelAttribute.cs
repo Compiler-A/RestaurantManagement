@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using BusinessLayerRestaurant;
 using System.Diagnostics;
 
-namespace APILayer
+namespace APILayer.Filters
 {
     public class ValidateModelAttribute : ActionFilterAttribute
     {

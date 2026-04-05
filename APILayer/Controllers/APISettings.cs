@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using DataLayerRestaurant;
 using BusinessLayerRestaurant;
+using APILayer.Filters;
 
 namespace APILayer.Controllers
 {
