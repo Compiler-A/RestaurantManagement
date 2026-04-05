@@ -2,18 +2,21 @@
 using DataLayerRestaurant;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Diagnostics;
 
 namespace APILayer.Controllers
 {
     [Route("api/Employees")]
     [ApiController]
-    [ValidateModel]
+    [TypeFilter(typeof(ValidateModelAttribute))]
     public class APIEmployees : BaseController
     {
         private readonly IBusinessEmployees employees;
-        public APIEmployees(IBusinessEmployees employees)
+        private readonly IMyLogger _Logger;
+        public APIEmployees(IBusinessEmployees employees, IMyLogger logger)
         {
             this.employees = employees;
+            _Logger = logger;
         }
 
         [HttpGet(Name = "GetAllEmployeesAsync")]

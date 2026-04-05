@@ -10,7 +10,7 @@ namespace APILayer.Controllers
 {
     [ApiController]
     [Route("api/StatusMenus")]
-    [ValidateModel]
+    [TypeFilter(typeof(ValidateModelAttribute))]
     public class APIStatusMenus : BaseController
     {
         private readonly IBusinessStatusMenus _dataStatusMenus;

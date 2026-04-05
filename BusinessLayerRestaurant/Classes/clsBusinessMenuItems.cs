@@ -1,7 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿#pragma warning disable CA1416 // Validate platform compatibility
 using DataLayerRestaurant;
+using RestaurantDataLayer;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Text;
+using System.Threading.Tasks;
+using System.Xml.Linq;
 
 
 namespace BusinessLayerRestaurant
@@ -105,11 +113,12 @@ namespace BusinessLayerRestaurant
     public class clsMenuItemsReader : clsCompositionMenuItemsLoader ,IReadableBMenuItems
     {
         IInterfaceBMenuItems _Interface;
-
-        public clsMenuItemsReader(IInterfaceBMenuItems Interface, IEnumerable<ICompositionBMenuItems> loader)
+        private IMyLogger _Logger;
+        public clsMenuItemsReader(IInterfaceBMenuItems Interface,IMyLogger Logger, IEnumerable<ICompositionBMenuItems> loader)
             : base(loader)
         { 
             _Interface = Interface;
+            _Logger = Logger;
         }
 
         public async Task<DTOMenuItems?> GetAsync(int ID)
@@ -120,6 +129,7 @@ namespace BusinessLayerRestaurant
                 throw new KeyNotFoundException("Not Found!");
             }
 
+            _Logger.EventLogs($"MenuItem Found, Name: {dto.Name}", EventLogEntryType.Information);
             await LoadDataAsync(dto);
             return dto;
         }
@@ -136,6 +146,7 @@ namespace BusinessLayerRestaurant
             {
                 await LoadDataAsync(item);
             }
+            _Logger.EventLogs($"MenuItems Found, Count: {list.Count}", EventLogEntryType.Information);
             return list;
         }
 
@@ -151,7 +162,7 @@ namespace BusinessLayerRestaurant
             {
                 await LoadDataAsync(item);
             }
-
+            _Logger.EventLogs($"MenuItems Found, Count: {list.Count}", EventLogEntryType.Information);
             return list;
         }
 
@@ -167,7 +178,7 @@ namespace BusinessLayerRestaurant
             {
                 await LoadDataAsync(item);
             }
-
+            _Logger.EventLogs($"MenuItems Found, Count: {list.Count}", EventLogEntryType.Information);
             return list;
         }
     }
@@ -175,11 +186,12 @@ namespace BusinessLayerRestaurant
     public class clsMenuItemsWriter : clsCompositionMenuItemsLoader , IWritableBMenuItems
     {
         IInterfaceBMenuItems _Interface;
-
-        public clsMenuItemsWriter(IInterfaceBMenuItems Interface, IEnumerable<ICompositionBMenuItems> loader)
+        private IMyLogger _Logger;
+        public clsMenuItemsWriter(IInterfaceBMenuItems Interface,IMyLogger Logger, IEnumerable<ICompositionBMenuItems> loader)
             : base(loader)
         {
             _Interface = Interface;
+            _Logger = Logger;
         }
 
         public async Task<DTOMenuItems?> CreateAsync(DTOMenuItemsCRequest Request)
@@ -190,10 +202,11 @@ namespace BusinessLayerRestaurant
                 throw new InvalidOperationException("Not Created!");
             }
             await LoadDataAsync(dto);
+            _Logger.EventLogs($"MenuItem Created, Name: {dto.Name}", EventLogEntryType.Information);
 
             return dto;
         }
-
+        
         public async Task<DTOMenuItems?> UpdateAsync(DTOMenuItemsURequest Request)
         {
             var dto = await _Interface.IData.UpdateMenuItemAsync(Request);
@@ -202,7 +215,7 @@ namespace BusinessLayerRestaurant
                 throw new InvalidOperationException("Not Updated!");
             }
             await LoadDataAsync(dto);
-
+            _Logger.EventLogs($"MenuItem Updated, Name: {dto.Name}", EventLogEntryType.Information);
             return dto;
         }
 
@@ -213,6 +226,7 @@ namespace BusinessLayerRestaurant
             {
                     throw new InvalidOperationException("Not Deleted!");
             }
+            _Logger.EventLogs($"MenuItem Deleted, ID: {ID}", EventLogEntryType.Information);
 
             return isDeleted;
         }

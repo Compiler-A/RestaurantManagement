@@ -9,7 +9,7 @@ namespace APILayer.Controllers
 {
     [Route("api/StatusOrders")]
     [ApiController]
-    [ValidateModel]
+    [TypeFilter(typeof(ValidateModelAttribute))]
     public class APIStatusOrders : BaseController
     {
 

@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
 using System.Text.Json;
+using BusinessLayerRestaurant;
+using System.Diagnostics;
 
 namespace APILayer
 {
@@ -10,10 +12,13 @@ namespace APILayer
         private readonly RequestDelegate _next;
         private readonly IWebHostEnvironment _env;
 
-        public GlobalExceptionMiddleware(RequestDelegate next, IWebHostEnvironment env)
+        private readonly IMyLogger _logger;
+
+        public GlobalExceptionMiddleware(IMyLogger Logger,RequestDelegate next, IWebHostEnvironment env)
         {
             _next = next;
             _env = env;
+            _logger = Logger;
         }
 
         public async Task InvokeAsync(HttpContext context)
@@ -86,6 +91,8 @@ namespace APILayer
                 message = message,
                 data = (object?)null
             };
+
+            _logger.EventLogs($"Exception: {message}\nStatus Code: {statusCode}", EventLogEntryType.Error);
 
             var json = JsonSerializer.Serialize(response);
             return context.Response.WriteAsync(json);

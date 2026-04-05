@@ -1,9 +1,14 @@
-﻿using DataLayerRestaurant;
+﻿#pragma warning disable CA1416 // Validate platform compatibility
+using DataLayerRestaurant;
+using RestaurantDataLayer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
+using System.Diagnostics;
 
 
 namespace BusinessLayerRestaurant
@@ -81,10 +86,12 @@ namespace BusinessLayerRestaurant
     public class clsTablesReader : clsCompositionTablesLoader, IReadableBTables
     {
         private IInterfaceBTables _Interface;
-        public clsTablesReader(IInterfaceBTables @interface, IEnumerable<ICompositionBTables> loaders)
+        private IMyLogger _Logger;
+        public clsTablesReader(IInterfaceBTables @interface,IMyLogger Logger ,IEnumerable<ICompositionBTables> loaders)
             : base(loaders)
         {
             _Interface = @interface;
+            _Logger = Logger;
         }
 
         private async Task<List<DTOTables>> _LoadAsync(List<DTOTables> list)
@@ -93,6 +100,7 @@ namespace BusinessLayerRestaurant
             {
                 await LoadDataAsync(item);
             }
+            _Logger.EventLogs($"Tables Found, Count: {list.Count}", EventLogEntryType.Information);
             return list;
         }
 
@@ -113,6 +121,7 @@ namespace BusinessLayerRestaurant
             {
                 throw new KeyNotFoundException("Not Found!");
             }
+            _Logger.EventLogs($"Table Found, Name: {dto.Name}", EventLogEntryType.Information);
 
             await LoadDataAsync(dto);
             return dto;
@@ -153,6 +162,8 @@ namespace BusinessLayerRestaurant
             {
                 throw new KeyNotFoundException("Not Found!");
             }
+            _Logger.EventLogs($"Table Found, Name: ${dto.Name}", EventLogEntryType.Information);
+
             await LoadDataAsync(dto);
             return dto;
         }
@@ -178,12 +189,12 @@ namespace BusinessLayerRestaurant
 
     public class clsTablesWriter : clsCompositionTablesLoader , IWritableBTables
     {
-        private IDTOBTables _Dtos;
         private IInterfaceBTables _Interfaces;
+        private IMyLogger _Logger;
         public clsTablesWriter
-            (IDTOBTables dto, IInterfaceBTables @interface, IEnumerable<ICompositionBTables> loader) : base(loader)
+            (IMyLogger Logger, IInterfaceBTables @interface, IEnumerable<ICompositionBTables> loader) : base(loader)
         {
-            _Dtos = dto;
+            _Logger = Logger;
             _Interfaces = @interface;
         }
         public async Task<DTOTables?> CreateAsync(DTOTablesCRequest Request)
@@ -193,6 +204,8 @@ namespace BusinessLayerRestaurant
             if (dto != null)
             {
                 await LoadDataAsync(dto);
+                _Logger.EventLogs($"Table Created, Name: {dto.Name}", EventLogEntryType.Information);
+
                 return dto;
             }
             throw new InvalidOperationException("Not Created!");
@@ -205,6 +218,8 @@ namespace BusinessLayerRestaurant
             if (dto != null)
             {
                 await LoadDataAsync(dto);
+                _Logger.EventLogs($"Table Updated, Name: {dto.Name}", EventLogEntryType.Information);
+
                 return dto;
             }
             throw new InvalidOperationException("Not Updated!");
@@ -218,6 +233,8 @@ namespace BusinessLayerRestaurant
             {
                 throw new InvalidOperationException("Not Deleted!");
             }
+            _Logger.EventLogs($"Table Deleted, ID: {ID}", EventLogEntryType.Information);
+
             return isDeleted;
         }
 

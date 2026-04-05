@@ -8,7 +8,7 @@ namespace APILayer.Controllers
 {
     [Route("api/Settings")]
     [ApiController]
-    [ValidateModel]
+    [TypeFilter(typeof(ValidateModelAttribute))]
     public class APISettings : BaseController
     {
         private readonly IBusinessSettings _BusinessSettings;

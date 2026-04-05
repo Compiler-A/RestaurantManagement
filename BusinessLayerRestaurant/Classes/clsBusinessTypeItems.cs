@@ -1,7 +1,14 @@
-﻿using DataLayerRestaurant;
+﻿#pragma warning disable CA1416 // Validate platform compatibility
+using DataLayerRestaurant;
+using RestaurantDataLayer;
+using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
+using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
+using System.Diagnostics;
 
 
 namespace BusinessLayerRestaurant
@@ -43,10 +50,11 @@ namespace BusinessLayerRestaurant
     public class clsTypeItemsReader : IReadableBTypeItems
     {
         private IInterfaceBTypeItems _Interface;
-
-        public clsTypeItemsReader(IInterfaceBTypeItems Interface)
+        private IMyLogger _Logger;
+        public clsTypeItemsReader(IInterfaceBTypeItems Interface, IMyLogger logger)
         {
             _Interface = Interface;
+            _Logger = logger;
         }
         public async Task<DTOTypeItems?> GetAsync(int ID)
         {
@@ -55,6 +63,8 @@ namespace BusinessLayerRestaurant
             {
                 throw new KeyNotFoundException("Not Found!");
             }
+            _Logger.EventLogs($"TypeItem Found, Name: {result.Name}", EventLogEntryType.Information);
+
             return result;
         }
         public async Task<List<DTOTypeItems>> GetAllAsync(int page)
@@ -64,6 +74,7 @@ namespace BusinessLayerRestaurant
             {
                 throw new KeyNotFoundException("Not Found!");
             }
+            _Logger.EventLogs($"TypeItems Found, Count: {result.Count}", EventLogEntryType.Information);
 
             return result;
         }
@@ -72,9 +83,11 @@ namespace BusinessLayerRestaurant
     public class clsTypeItemsWriter : IWritableBTypeItems
     {
         private IInterfaceBTypeItems _Interface;
-        public clsTypeItemsWriter(IInterfaceBTypeItems @interface)
+        private IMyLogger _Logger;
+        public clsTypeItemsWriter(IInterfaceBTypeItems @interface, IMyLogger logger)
         {
             _Interface = @interface;
+            _Logger = logger;
         }
 
         public async Task<bool> DeleteAsync(int ID)
@@ -84,6 +97,8 @@ namespace BusinessLayerRestaurant
             {
                 throw new InvalidOperationException("Not Deleted");
             }
+            _Logger.EventLogs($"TypeItem Deleted, ID: {ID}", EventLogEntryType.Information);
+
             return isDeleted;
         }
         public async Task<DTOTypeItems?> UpdateAsync(DTOTypeItemsURequest Request)
@@ -93,6 +108,8 @@ namespace BusinessLayerRestaurant
             {
                 throw new InvalidOperationException("Not Updated!");
             }
+            _Logger.EventLogs($"TypeItem Updated, Name: {result.Name}", EventLogEntryType.Information);
+
             return result;
         }
 
@@ -103,6 +120,8 @@ namespace BusinessLayerRestaurant
             {
                 throw new InvalidOperationException("Not Created!");
             }
+            _Logger.EventLogs($"TypeItem Created, Name: {result.Name}", EventLogEntryType.Information);
+
             return result;
         }
     }

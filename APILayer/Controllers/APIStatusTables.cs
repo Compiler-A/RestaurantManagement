@@ -13,7 +13,7 @@ namespace APILayer.Controllers
 {
     [Route("api/StatusTables")]
     [ApiController]
-    [ValidateModel]
+    [TypeFilter(typeof(ValidateModelAttribute))]
     public class APIStatusTables : BaseController
     {
 

@@ -1,11 +1,16 @@
-﻿using RestaurantDataLayer;
+﻿#pragma warning disable CA1416 // Validate platform compatibility
+using DataLayerRestaurant;
+using RestaurantDataLayer;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
-using DataLayerRestaurant;
-using BusinessLayerRestaurant;
+using System.Xml.Linq;
+
 
 namespace BusinessLayerRestaurant
 {
@@ -103,10 +108,12 @@ namespace BusinessLayerRestaurant
     public class clsOrderDetailsReader : clsCompositionOrderDetailsLoader, IReadableBOrderDetails
     {
         private IInterfaceBOrderDetails _Interfaces;
+        private IMyLogger _Logger;
         public clsOrderDetailsReader
-            (IInterfaceBOrderDetails Interfaces, IEnumerable<ICompositionBOrderDetails> loaders) : base(loaders)
+            (IInterfaceBOrderDetails Interfaces, IEnumerable<ICompositionBOrderDetails> loaders, IMyLogger logger) : base(loaders)
         {
             _Interfaces = Interfaces;
+            _Logger = logger;
         }
         public async Task<List<DTOOrderDetails>> GetAllAsync(int page)
         {
@@ -119,6 +126,7 @@ namespace BusinessLayerRestaurant
             {
                 await LoadDataAsync(item);
             }
+            _Logger.EventLogs($"OrderDetails Found, Count: {ldto.Count}", EventLogEntryType.Information);
             return ldto;
         }
         public async Task<List<DTOOrderDetails>> GetAllByOrderIDAsync(int orderID)
@@ -132,6 +140,8 @@ namespace BusinessLayerRestaurant
             {
                 await LoadDataAsync(item);
             }
+            _Logger.EventLogs($"OrderDetails By OrderID Found, Count: {ldto.Count}", EventLogEntryType.Information);
+
             return ldto;
         }
 
@@ -142,6 +152,7 @@ namespace BusinessLayerRestaurant
             {
                 throw new KeyNotFoundException("Not Found!");
             }
+            _Logger.EventLogs($"OrderDetail Found, ID: {dto.ID}", EventLogEntryType.Information);
 
             await LoadDataAsync(dto);
             return dto;
@@ -150,13 +161,13 @@ namespace BusinessLayerRestaurant
 
     public class clsOrderDetailsWriter : clsCompositionOrderDetailsLoader, IWritableBOrderDetails
     {
-        private IDTOBOrderDetails _Dtos;
         private IInterfaceBOrderDetails _Interfaces;
+        private IMyLogger _Logger;
         public clsOrderDetailsWriter
-            (IDTOBOrderDetails dto, IInterfaceBOrderDetails @interface, IEnumerable<ICompositionBOrderDetails> loader) : base(loader)
+            (IMyLogger Logger ,IInterfaceBOrderDetails @interface, IEnumerable<ICompositionBOrderDetails> loader) : base(loader)
         {
-            _Dtos = dto;
             _Interfaces = @interface;
+            _Logger = Logger;
         }
         public async Task<DTOOrderDetails?> CreateAsync(DTOOrderDetailsCRequest Request)
         {
@@ -165,8 +176,10 @@ namespace BusinessLayerRestaurant
             if (dto != null)
             {
                 await LoadDataAsync(dto);
+                _Logger.EventLogs($"OrderDetail Created, ID: {dto.ID}", EventLogEntryType.Information);
                 return dto;
             }
+
             throw new InvalidOperationException("Not Created!");
         }
 
@@ -177,8 +190,10 @@ namespace BusinessLayerRestaurant
             if (dto != null)
             {
                 await LoadDataAsync(dto);
+                _Logger.EventLogs($"OrderDetail Updated, ID: {dto.ID}", EventLogEntryType.Information);
                 return dto;
             }
+
             throw new InvalidOperationException("Not Updated!");
         }
 
@@ -191,6 +206,8 @@ namespace BusinessLayerRestaurant
                 throw new InvalidOperationException("Not Deleted!");
 
             }
+            _Logger.EventLogs($"OrderDetail Deleted, ID: {ID}", EventLogEntryType.Information);
+
             return isDeleted;
         }
 

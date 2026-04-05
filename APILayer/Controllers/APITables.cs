@@ -10,7 +10,7 @@ namespace APILayer.Controllers
 {
     [Route("api/Tables")]
     [ApiController]
-    [ValidateModel]
+    [TypeFilter(typeof(ValidateModelAttribute))]
     public class APITables :  BaseController
     {
         private readonly IBusinessTables dataTablesBusiness;

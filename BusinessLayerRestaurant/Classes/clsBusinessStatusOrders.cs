@@ -1,10 +1,16 @@
-﻿using DataLayerRestaurant;
+﻿#pragma warning disable CA1416 // Validate platform compatibility
+using DataLayerRestaurant;
 using RestaurantDataLayer;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
+
 
 namespace BusinessLayerRestaurant
 {
@@ -42,9 +48,11 @@ namespace BusinessLayerRestaurant
     public class clsStatusOrdersReader : IReadableBStatusOrders
     {
         private IInterfaceBStatusOrders _Interface;
-        public clsStatusOrdersReader(IInterfaceBStatusOrders Interface)
+        private IMyLogger _Logger;
+        public clsStatusOrdersReader(IInterfaceBStatusOrders Interface, IMyLogger logger)
         {
             _Interface = Interface;
+            _Logger = logger;
         }
         public async Task<List<DTOStatusOrders>> GetAllAsync(int page)
         {
@@ -53,6 +61,7 @@ namespace BusinessLayerRestaurant
             {
                 throw new KeyNotFoundException("Not Found!");
             }
+            _Logger.EventLogs($"StatusOrders Found, Count: {list.Count}", EventLogEntryType.Information);
 
             return list;
         }
@@ -64,17 +73,19 @@ namespace BusinessLayerRestaurant
             {
                 throw new KeyNotFoundException("Not Found!");
             }
+            _Logger.EventLogs($"StatusOrder Found, Name: {dto.Name}", EventLogEntryType.Information);
+
             return dto;
         }
     }
     public class clsStatusOrdersWriter : IWritableBStatusOrders
     {
-        private IDTOBStatusOrders _dto;
         private IInterfaceBStatusOrders _Interface;
-        public clsStatusOrdersWriter(IInterfaceBStatusOrders setting, IDTOBStatusOrders dto)
+        private IMyLogger _Logger;
+        public clsStatusOrdersWriter(IInterfaceBStatusOrders setting, IMyLogger Logger)
         {
             _Interface = setting;
-            _dto = dto;
+            _Logger = Logger;
         }
 
 
@@ -87,6 +98,7 @@ namespace BusinessLayerRestaurant
             {
                 throw new InvalidOperationException("Not Created!");
             }
+            _Logger.EventLogs($"StatusOrder Created, Name: {dto.Name}", EventLogEntryType.Information);
             return dto;
         }
         public async Task<DTOStatusOrders?> UpdateAsync(DTOStatusOrdersURequest Request)
@@ -96,6 +108,8 @@ namespace BusinessLayerRestaurant
             {
                 throw new InvalidOperationException("Not Updated!");
             }
+            _Logger.EventLogs($"StatusOrder Updated, Name: {dto.Name}", EventLogEntryType.Information);
+
             return dto;
         }
 
@@ -106,6 +120,8 @@ namespace BusinessLayerRestaurant
             {
                 throw new InvalidOperationException("Not Deleted!");
             }
+            _Logger.EventLogs($"StatusOrder Deleted, ID: {ID}", EventLogEntryType.Information);
+
             return isDeleted;
         }
     }

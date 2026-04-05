@@ -10,7 +10,7 @@ namespace APILayer.Controllers
 {
     [Route("api/MenuItems")]
     [ApiController]
-    [ValidateModel]
+    [TypeFilter(typeof(ValidateModelAttribute))]
     public class APIMenuItems : BaseController
     {
         

@@ -1,9 +1,15 @@
-﻿using System;
+﻿#pragma warning disable CA1416 // Validate platform compatibility
+using DataLayerRestaurant;
+using RestaurantDataLayer;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
-using DataLayerRestaurant;
+using System.Xml.Linq;
+using System.Diagnostics;
+
 
 namespace BusinessLayerRestaurant
 {
@@ -44,9 +50,11 @@ namespace BusinessLayerRestaurant
     public class clsJobRolesReader : IReadableBJobRoles
     {
         private IInterfaceBJobRoles _Interface;
-        public clsJobRolesReader(IInterfaceBJobRoles setting)
+        private IMyLogger _Logger;
+        public clsJobRolesReader(IInterfaceBJobRoles setting, IMyLogger myLogger)
         {
             _Interface = setting;
+            _Logger = myLogger;
         }
 
         public async Task<List<DTOJobRoles>> GetAllAsync(int page)
@@ -56,6 +64,7 @@ namespace BusinessLayerRestaurant
             {
                 throw new KeyNotFoundException("Not Found!");
             }
+            _Logger.EventLogs($"Jobs Found, Count: {list.Count}", EventLogEntryType.Information);
             return list;
         }
         public async Task<DTOJobRoles?> GetAsync(int ID)
@@ -65,6 +74,7 @@ namespace BusinessLayerRestaurant
             {
                 throw new KeyNotFoundException("Not Found!");
             }
+            _Logger.EventLogs($"Job Found, Name: {dto.Name}", EventLogEntryType.Information);
             return dto;
         }
     }
@@ -72,9 +82,11 @@ namespace BusinessLayerRestaurant
     public class clsJobRolesWriter :  IWritableBJobRoles
     {
         private IInterfaceBJobRoles _Interface;
-        public clsJobRolesWriter(IInterfaceBJobRoles jobrole)
+        private IMyLogger _Logger;
+        public clsJobRolesWriter(IInterfaceBJobRoles jobrole, IMyLogger logger)
         {
             _Interface = jobrole;
+            _Logger = logger;
         }
 
 
@@ -87,6 +99,7 @@ namespace BusinessLayerRestaurant
             {
                 throw new InvalidOperationException("Not Created!");
             }
+            _Logger.EventLogs($"Job Created, Name: {dto.Name}", EventLogEntryType.Information);
             return dto;
         }
         public async Task<DTOJobRoles?> UpdateAsync(DTOJobRolesURequest Request)
@@ -96,6 +109,7 @@ namespace BusinessLayerRestaurant
             {
                 throw new InvalidOperationException("Not Update!");
             }
+            _Logger.EventLogs($"Job Updated, Name: {dto.Name}", EventLogEntryType.Information);
             return dto;
         }
 
@@ -106,6 +120,7 @@ namespace BusinessLayerRestaurant
             {
                 throw new InvalidOperationException("Not Delete!");
             }
+            _Logger.EventLogs($"Job Deleted, ID: {ID}", EventLogEntryType.Information);
             return result;
         }
     }

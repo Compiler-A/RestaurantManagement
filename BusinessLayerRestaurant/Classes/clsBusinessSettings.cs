@@ -1,11 +1,16 @@
-﻿using DataLayerRestaurant;
+﻿#pragma warning disable CA1416 // Validate platform compatibility
+using DataLayerRestaurant;
 using RestaurantDataLayer;
 using System;
+using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
+
 
 namespace BusinessLayerRestaurant
 {
@@ -44,11 +49,14 @@ namespace BusinessLayerRestaurant
 
     public class clsSettingsReader : IReadableBSettings
     {
+        private IMyLogger _Logger;
         private IInterfaceBSettings _Interface;
-        public clsSettingsReader(IInterfaceBSettings setting)
+        public clsSettingsReader(IInterfaceBSettings setting, IMyLogger logger)
         {
             _Interface = setting;
+            _Logger = logger;
         }
+
         public async Task<List<DTOSettings>> GetAllAsync(int page)
         {
 
@@ -57,7 +65,7 @@ namespace BusinessLayerRestaurant
             {
                 throw new KeyNotFoundException("Not Found!");
             }
-
+            _Logger.EventLogs($"Settings Found, Count: {list.Count}", EventLogEntryType.Information);
             return list;
         }
         public async Task<DTOSettings?> GetAsync(int ID)
@@ -67,17 +75,18 @@ namespace BusinessLayerRestaurant
             {
                 throw new KeyNotFoundException("Not Found!");   
             }
+            _Logger.EventLogs($"Setting Found, Name: {dto.Name}", EventLogEntryType.Information);
             return dto;
         }
     }
     public class clsSettingsWriter : IWritableBSettings
     {
-        private IDTOBSettings _dto;
+        private IMyLogger _Logger;
         private IInterfaceBSettings _Interface;
-        public clsSettingsWriter(IInterfaceBSettings setting, IDTOBSettings dto)
+        public clsSettingsWriter(IInterfaceBSettings setting, IMyLogger Logger)
         {
             _Interface = setting;
-            _dto = dto;
+            _Logger = Logger;
         }
 
 
@@ -90,6 +99,7 @@ namespace BusinessLayerRestaurant
             {
                 throw new InvalidOperationException("Not Created!");
             }
+            _Logger.EventLogs($"Setting Created, Name: {dto.Name}", EventLogEntryType.Information);
             return dto;
         }
         public async Task<DTOSettings?> UpdateAsync(DTOSettingsURequest setting)
@@ -101,6 +111,8 @@ namespace BusinessLayerRestaurant
             {
                 throw new InvalidOperationException("Not Updated!");
             }
+            _Logger.EventLogs($"Setting Updated, Name: {dto.Name}", EventLogEntryType.Information);
+
             return dto;
         }
 
@@ -111,6 +123,7 @@ namespace BusinessLayerRestaurant
             {
                 throw new InvalidOperationException("Not Deleted!");
             }
+            _Logger.EventLogs($"Setting Deleted, ID: {ID}", EventLogEntryType.Information);
             return result;
         }
     }

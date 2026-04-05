@@ -1,10 +1,18 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using BusinessLayerRestaurant;
+using System.Diagnostics;
 
 namespace APILayer
 {
     public class ValidateModelAttribute : ActionFilterAttribute
     {
+        private readonly IMyLogger _logger;
+        public ValidateModelAttribute(IMyLogger Logger) 
+        {
+            _logger = Logger;
+        }
+
         public override void OnActionExecuting(ActionExecutingContext context)
         {
             if (!context.ModelState.IsValid)
@@ -12,6 +20,8 @@ namespace APILayer
                 var errors = string.Join("; ", context.ModelState.Values
                                           .SelectMany(v => v.Errors)
                                           .Select(e => e.ErrorMessage));
+
+                _logger.EventLogs($"Model validation failed: {errors}", EventLogEntryType.Warning);
 
                 context.Result = new ObjectResult(new
                 {

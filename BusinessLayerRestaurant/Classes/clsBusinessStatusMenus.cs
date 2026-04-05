@@ -1,7 +1,15 @@
-﻿using DataLayerRestaurant;
+﻿#pragma warning disable CA1416 // Validate platform compatibility
+using DataLayerRestaurant;
+using RestaurantDataLayer;
+using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
+using System.Diagnostics;
+
 
 namespace BusinessLayerRestaurant
 {
@@ -40,9 +48,11 @@ namespace BusinessLayerRestaurant
     public class clsStatusMenusReader : IReadableBStatusMenus
     {
         private IInterfaceBStatusMenus _Interface;
-        public clsStatusMenusReader(IInterfaceBStatusMenus @interface)
+        private IMyLogger _Logger;
+        public clsStatusMenusReader(IInterfaceBStatusMenus @interface, IMyLogger logger)
         {
             _Interface = @interface;
+            _Logger = logger;
         }
 
         public async Task<DTOStatusMenus?> GetAsync(int ID)
@@ -52,6 +62,8 @@ namespace BusinessLayerRestaurant
             {
                 throw new KeyNotFoundException("Not Found!");
             }
+            _Logger.EventLogs($"StatusMenu Found, Name: {result.Name}", EventLogEntryType.Information);
+
             return result;
         }
 
@@ -62,6 +74,8 @@ namespace BusinessLayerRestaurant
             {
                 throw new KeyNotFoundException("Not Found!");
             }
+            _Logger.EventLogs($"StatusMenus Found, Count: {list.Count}", EventLogEntryType.Information);
+
             return list;
         }
     }
@@ -69,9 +83,11 @@ namespace BusinessLayerRestaurant
     public class clsStatusMenusWriter : IWritableBStatusMenus
     {
         private IInterfaceBStatusMenus _Interface;
-        public clsStatusMenusWriter(IInterfaceBStatusMenus @interface)
+        private IMyLogger _Logger;
+        public clsStatusMenusWriter(IInterfaceBStatusMenus @interface, IMyLogger logger)
         {
             _Interface = @interface;
+            _Logger = logger;
         }
 
         public async Task<bool> DeleteAsync(int ID)
@@ -81,6 +97,7 @@ namespace BusinessLayerRestaurant
             {
                 throw new InvalidOperationException("Not Deleted!");
             }
+            _Logger.EventLogs($"StatusMenu Deleted, ID: {ID}", EventLogEntryType.Information);
 
             return result;
         }
@@ -92,6 +109,8 @@ namespace BusinessLayerRestaurant
             {
                 throw new InvalidOperationException("Not Updated!");
             }
+            _Logger.EventLogs($"StatusMenu Updated, Name: {result.Name}", EventLogEntryType.Information);
+
             return result;
         }
 
@@ -102,6 +121,8 @@ namespace BusinessLayerRestaurant
             {
                 throw new InvalidOperationException("Not Created!");
             }
+            _Logger.EventLogs($"StatusMenu Created, Name: {result.Name}", EventLogEntryType.Information);
+
             return result;
         }
     }

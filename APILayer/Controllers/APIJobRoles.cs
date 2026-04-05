@@ -9,7 +9,7 @@ namespace APILayer.Controllers
 {
     [Route("api/JobRoles")]
     [ApiController]
-    [ValidateModel]
+    [TypeFilter(typeof(ValidateModelAttribute))]
     public class APIJobRoles : BaseController
     {
         private readonly IBusinessJobRoles jobRoles;

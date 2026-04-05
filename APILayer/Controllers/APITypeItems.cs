@@ -10,7 +10,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 namespace APILayer.Controllers
 {
     [Route("api/TypeItems")]
-    [ApiController]
+    [TypeFilter(typeof(ValidateModelAttribute))]
     public class APITypeItems : BaseController
     {
         private readonly IBusinessTypeItems _dataLayer;

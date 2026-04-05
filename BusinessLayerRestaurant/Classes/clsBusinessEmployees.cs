@@ -1,4 +1,5 @@
-﻿using DataLayerRestaurant;
+﻿#pragma warning disable CA1416 // Validate platform compatibility
+using DataLayerRestaurant;
 using RestaurantDataLayer;
 using System;
 using System.Collections.Generic;
@@ -7,6 +8,8 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using System.Diagnostics;
+
 
 
 namespace BusinessLayerRestaurant
@@ -86,10 +89,13 @@ namespace BusinessLayerRestaurant
     public class clsEmployeesReader :  clsCompositionEmployeeesLoader ,IReadableBEmployees
     {
         private IInterfaceBEmployees _Interface;
-        public clsEmployeesReader(IInterfaceBEmployees Interface, IEnumerable<ICompositionBEmployees> Loaders) 
+        private readonly IMyLogger _Logger;
+
+        public clsEmployeesReader(IInterfaceBEmployees Interface, IEnumerable<ICompositionBEmployees> Loaders, IMyLogger Logger) 
             : base(Loaders)
         {
             _Interface = Interface;
+            _Logger = Logger;
         }
         public async Task<DTOEmployees?> LoginAsync(DTOEmployeesLoginRequest Request)
         {
@@ -100,6 +106,7 @@ namespace BusinessLayerRestaurant
                 throw new InvalidOperationException("Not Login!");
             }
             await LoadDataAsync(dto);
+            _Logger.EventLogs($"Employee Login, UserName: {dto.UserName}", EventLogEntryType.Information);
             return dto;
         }
 
@@ -111,6 +118,7 @@ namespace BusinessLayerRestaurant
                 throw new KeyNotFoundException("Not Found!");
             }
             await LoadDataAsync(result);
+            _Logger.EventLogs($"Employee Found, UserName: {result.UserName}", EventLogEntryType.Information);
 
             return result;
         }
@@ -123,6 +131,7 @@ namespace BusinessLayerRestaurant
                 throw new KeyNotFoundException("Not Found!");
             }
             await LoadDataAsync(dto);
+            _Logger.EventLogs($"Employee Found, UserName: {dto.UserName}", EventLogEntryType.Information);
             return dto;
         }
 
@@ -138,6 +147,7 @@ namespace BusinessLayerRestaurant
             {
                 await LoadDataAsync(item);
             }
+            _Logger.EventLogs($"Employees Found, Count: {result.Count}", EventLogEntryType.Information);
             return result;
 
         }
@@ -147,10 +157,12 @@ namespace BusinessLayerRestaurant
     public class clsEmployeesWriter : clsCompositionEmployeeesLoader , IWritableBEmployees
     {
         private IInterfaceBEmployees _Interface;
-        public clsEmployeesWriter(IInterfaceBEmployees Interface, IEnumerable<ICompositionBEmployees> Loaders)
+        private readonly IMyLogger _Logger;
+        public clsEmployeesWriter(IInterfaceBEmployees Interface, IMyLogger Logger, IEnumerable<ICompositionBEmployees> Loaders)
             : base(Loaders)
         {
             _Interface = Interface;
+            _Logger = Logger;
         }
 
         public async Task<bool> ChangePasswordAsync(DTOEmployeesChangedPassword Request)
@@ -160,6 +172,7 @@ namespace BusinessLayerRestaurant
             {
                 throw new InvalidOperationException("Not Changed!");
             }
+            _Logger.EventLogs($"Changed Password Saccessfully.", EventLogEntryType.Information);
             return result;
         }
 
@@ -171,6 +184,7 @@ namespace BusinessLayerRestaurant
                 throw new InvalidOperationException("Not Created!");
             }
             await LoadDataAsync(result);
+            _Logger.EventLogs($"Employee Created, UserName: {result.UserName}", EventLogEntryType.Information);
             return result;
         }
 
@@ -183,6 +197,8 @@ namespace BusinessLayerRestaurant
             {
                 throw new InvalidOperationException("Not Updated!");
             }
+            _Logger.EventLogs($"Employees Updated, UserName: {result.UserName}", EventLogEntryType.Information);
+
             await LoadDataAsync(result);
             return result;
         }
@@ -194,6 +210,7 @@ namespace BusinessLayerRestaurant
             {
                 throw new InvalidOperationException("Not Deleted!");
             }
+            _Logger.EventLogs($"Employees Deleted, ID: {ID}", EventLogEntryType.Information);
             return result;
         }
     }

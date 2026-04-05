@@ -1,5 +1,15 @@
-﻿using DataLayerRestaurant;
-using System.Globalization;
+﻿#pragma warning disable CA1416 // Validate platform compatibility
+using DataLayerRestaurant;
+using RestaurantDataLayer;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Text;
+using System.Threading.Tasks;
+using System.Xml.Linq;
+using System.Diagnostics;
+
 
 
 namespace BusinessLayerRestaurant
@@ -39,9 +49,11 @@ namespace BusinessLayerRestaurant
     public class clsStatusTablesReader : IReadableBStatusTables
     {
         private IInterfaceBStatusTables _Interface;
-        public clsStatusTablesReader(IInterfaceBStatusTables iInterface)
+        private IMyLogger _Logger;
+        public clsStatusTablesReader(IInterfaceBStatusTables iInterface, IMyLogger logger)
         {
             _Interface = iInterface;
+            _Logger = logger;
         }
 
         public async Task<DTOStatusTables?> GetAsync(int ID)
@@ -51,6 +63,8 @@ namespace BusinessLayerRestaurant
             {
                 throw new KeyNotFoundException("Not Found!");
             }
+            _Logger.EventLogs($"StatusTable Found, Name: {result.Name}", EventLogEntryType.Information);
+
             return result;
         }
 
@@ -60,6 +74,7 @@ namespace BusinessLayerRestaurant
             if (result == null || result.Count == 0)
                 throw new KeyNotFoundException("Not Found!");
 
+            _Logger.EventLogs($"StatusTables Found, Count: {result.Count}", EventLogEntryType.Information);
             return result;
         }
 
@@ -70,6 +85,8 @@ namespace BusinessLayerRestaurant
             {
                 throw new KeyNotFoundException("Not Found!");
             }
+            _Logger.EventLogs($"StatusTable Found.", EventLogEntryType.Information);
+
             return result;
         }
 
@@ -78,12 +95,12 @@ namespace BusinessLayerRestaurant
     public class clsStatusTablesWriter : IWritableBStatusTables
     {
         private IInterfaceBStatusTables _Interface;
-        public clsStatusTablesWriter(IInterfaceBStatusTables setting)
+        private IMyLogger _Logger;
+        public clsStatusTablesWriter(IInterfaceBStatusTables setting, IMyLogger logger)
         {
             _Interface = setting;
+            _Logger = logger;
         }
-
-
 
         public async Task<DTOStatusTables?> CreateAsync(DTOStatusTablesCRequest Request)
         {
@@ -91,6 +108,7 @@ namespace BusinessLayerRestaurant
             var dto = await _Interface.IData.AddStatusTableAsync(Request);
             if (dto != null)
             {
+                _Logger.EventLogs($"StatusTable Created, Name: {dto.Name}", EventLogEntryType.Information);
                 return dto;
             }
             throw new InvalidOperationException("Not Created!");
@@ -101,6 +119,7 @@ namespace BusinessLayerRestaurant
             var dto = await _Interface.IData.UpdateStatusTableAsync(Request);
             if (dto != null)
             {
+                _Logger.EventLogs($"StatusTable Updated, Name: {dto.Name}", EventLogEntryType.Information);
                 return dto;
             }
             throw new InvalidOperationException("Not Updated!");
@@ -111,6 +130,7 @@ namespace BusinessLayerRestaurant
             var result = await _Interface.IData.DeleteStatusTableAsync(ID);
             if (!result)
             {
+                _Logger.EventLogs($"StatusTable Deleted, ID: {ID}", EventLogEntryType.Information);
                 throw new InvalidOperationException("Not Deleted!");
             }
             return await _Interface.IData.DeleteStatusTableAsync(ID);

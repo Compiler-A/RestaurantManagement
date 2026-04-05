@@ -27,6 +27,7 @@ builder.Services.AddControllers(options =>
 builder.Services.Configure<clsMySettings>(
     builder.Configuration.GetSection("MySettings"));
 
+
 builder.Services.AddScoped<IReadableDEmployees, DataLayerRestaurant.clsEmployeesReader>();
 builder.Services.AddScoped<IWritableDEmployees, DataLayerRestaurant.clsEmployeesWriter>();
 builder.Services.AddScoped<IDataEmployees, clsDataEmployees>();
@@ -134,6 +135,9 @@ builder.Services.AddScoped<IInterfaceBOrderDetails, clsOrderDetailsRepositoryBri
 builder.Services.AddScoped<ICompositionBOrderDetails, clsOrderLoader>();
 builder.Services.AddScoped<ICompositionBOrderDetails, clsMenuItemLoader>();
 builder.Services.AddScoped<IBusinessOrderDetails, clsBusinessOrderDetails>();
+
+builder.Services.AddSingleton<IMyLogger, clsLogger>();
+
 
 var app = builder.Build();
 app.UseMiddleware<APILayer.GlobalExceptionMiddleware>();

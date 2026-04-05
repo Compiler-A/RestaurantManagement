@@ -8,7 +8,7 @@ namespace APILayer.Controllers
 {
     [Route("api/Orders")]
     [ApiController]
-    [ValidateModel]
+    [TypeFilter(typeof(ValidateModelAttribute))]
     public class APIOrders : BaseController
     {
         public APIOrders(IBusinessOrders b)
