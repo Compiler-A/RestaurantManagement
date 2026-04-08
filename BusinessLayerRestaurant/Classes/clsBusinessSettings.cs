@@ -15,21 +15,6 @@ using System.Xml.Linq;
 namespace BusinessLayerRestaurant
 {
 
-    public class clsSettingsDtoContainer : IDTOBSettings
-    {
-        private DTOSettingsCRequest? _CreateRequest;
-        public DTOSettingsCRequest? CreateRequest 
-        { 
-            get => _CreateRequest; 
-            set => _CreateRequest = value;
-        }
-        private DTOSettingsURequest? _UpdateRequest;
-        public DTOSettingsURequest? UpdateRequest 
-        {
-            get => _UpdateRequest;
-            set => _UpdateRequest = value;
-        }
-    }   
     public class clsSettingsRepositoryBridge : IInterfaceBSettings
     {
         private IDataSettings _IDataSetting;
@@ -131,31 +116,17 @@ namespace BusinessLayerRestaurant
 
     public class clsBusinessSettings : IBusinessSettings
     {
-        private IDTOBSettings _IProperties;
         private IWritableBSettings _IWrite;
         private IReadableBSettings _IRead;
 
         public clsBusinessSettings(
-            IDTOBSettings Properties,
             IWritableBSettings Write,
             IReadableBSettings read)
         {
-            _IProperties = Properties;
             _IWrite = Write;
             _IRead = read;
         }
 
-        public DTOSettingsCRequest? CreateRequest
-        {
-            get => _IProperties.CreateRequest;
-            set => _IProperties.CreateRequest = value;
-        }
-
-        public DTOSettingsURequest? UpdateRequest
-        {
-            get => _IProperties.UpdateRequest;
-            set => _IProperties.UpdateRequest = value;
-        }
 
         public async Task<List<DTOSettings>> GetAllSettingsAsync(int page)
         {

@@ -14,22 +14,6 @@ using System.Diagnostics;
 namespace BusinessLayerRestaurant
 {
 
-    public class clsStatusMenusDtoContainer : IDTOBStatusMenus
-    {
-        private DTOStatusMenusCRequest? _CRequest;
-        public DTOStatusMenusCRequest? CreateRequest
-        {
-            get => _CRequest;
-            set => _CRequest = value;
-        }
-        private DTOStatusMenusURequest? _URequest;
-        public DTOStatusMenusURequest? UpdateRequest
-        {
-            get => _URequest;
-            set => _URequest = value;
-        }
-    }
-
     public class clsStatusMenusRepositoryBridge : IInterfaceBStatusMenus
     {
         private IDataStatusMenus _IData;
@@ -130,28 +114,15 @@ namespace BusinessLayerRestaurant
     
     public class clsBusinessStatusMenus : IBusinessStatusMenus
     {
-        IDTOBStatusMenus _IDTO;
         IReadableBStatusMenus _IRead;
         IWritableBStatusMenus _IWrite;
 
-        public clsBusinessStatusMenus(IDTOBStatusMenus DTO, IWritableBStatusMenus Write, IReadableBStatusMenus Read)
+        public clsBusinessStatusMenus( IWritableBStatusMenus Write, IReadableBStatusMenus Read)
         {
-            _IDTO = DTO;
             _IRead = Read;
             _IWrite = Write;
         }
 
-        public DTOStatusMenusCRequest? CreateRequest
-        {
-            get => _IDTO.CreateRequest;
-            set => _IDTO.CreateRequest = value;
-        }
-
-        public DTOStatusMenusURequest? UpdateRequest
-        {
-            get => _IDTO.UpdateRequest;
-            set => _IDTO.UpdateRequest = value;
-        }
 
         public async Task<List<DTOStatusMenus>> GetAllStatusMenusAsync(int Page)
         {

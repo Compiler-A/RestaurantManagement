@@ -15,8 +15,6 @@ namespace BusinessLayerRestaurant
     public interface IWritableBOrders : IWritableBusinessBase<DTOOrders, DTOOrderCRequest, DTOOrderURequest>
     { }
 
-    public interface IDTOBOrders : IDTOBase<DTOOrderCRequest, DTOOrderURequest>
-    { }
     public interface IInterfaceBOrders : IInterfaceBase<IDataOrders>
     {
         IBusinessStatusOrders IBusinessStatusOrder { get; set; }
@@ -48,11 +46,10 @@ namespace BusinessLayerRestaurant
         Task<DTOOrders?> UpdateOrderAsync(DTOOrderURequest Request);
         Task<bool> DeleteOrderAsync(int ID);
     }
-    public interface IPropertiesBusinessOrders : IInterfaceBusinessOrders, IDTOBOrders
-    { }
+
     public interface ICRUDBusinessOrders : IWritableBusinessOrders, IReadableBusinessOrders
     { }
-    public interface IBusinessOrders : ICRUDBusinessOrders, IPropertiesBusinessOrders
+    public interface IBusinessOrders : ICRUDBusinessOrders, IInterfaceBusinessOrders
     { }
 
 }

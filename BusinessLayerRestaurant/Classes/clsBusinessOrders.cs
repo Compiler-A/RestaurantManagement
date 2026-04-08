@@ -49,21 +49,7 @@ namespace BusinessLayerRestaurant
             _Iorder = Order;
         }
     }
-    public class clsOrdersDtoContainer : IDTOBOrders
-    {
-        private DTOOrderCRequest? _dtoOrderRequest { get; set; }
-        public DTOOrderCRequest? CreateRequest
-        {
-            get => _dtoOrderRequest;
-            set => _dtoOrderRequest = value;
-        }
-        private DTOOrderURequest? _dtoOrderUpdateRequest { get; set; }
-        public DTOOrderURequest? UpdateRequest
-        {
-            get => _dtoOrderUpdateRequest;
-            set => _dtoOrderUpdateRequest = value;
-        }
-    }
+
     public class  clsStatusOrderLoader : ICompositionBOrders
     {
         private IBusinessStatusOrders _Status;
@@ -230,34 +216,21 @@ namespace BusinessLayerRestaurant
 
     public class clsBusinessOrders : IBusinessOrders
     {
-        private IDTOBOrders _IProperties;
         private IInterfaceBOrders _Interface;
         private IWritableBOrders _IWrite;
         private IReadableBOrders _Read;
 
         public clsBusinessOrders(
-            IDTOBOrders Properties,
             IWritableBOrders Write,             
             IReadableBOrders read,
             IInterfaceBOrders Interface)
         {
-            _IProperties = Properties;
             _IWrite = Write;
             _Read = read;
             _Interface = Interface;
         }
 
-        public DTOOrderCRequest? CreateRequest
-        {
-            get => _IProperties.CreateRequest;
-            set => _IProperties.CreateRequest = value;
-        }
 
-        public DTOOrderURequest? UpdateRequest
-        {
-            get => _IProperties.UpdateRequest;
-            set => _IProperties.UpdateRequest = value;
-        }
         public IBusinessStatusOrders IStatusOrder
         {
             get => _Interface.IBusinessStatusOrder;

@@ -8,8 +8,6 @@ using System.Threading.Tasks;
 
 namespace BusinessLayerRestaurant
 {
-    public interface IDTOBTables : IDTOBase<DTOTablesCRequest, DTOTablesURequest>
-    { }
 
     public interface IInterfaceBTables : IInterfaceBase<IDataTables>
     {
@@ -60,9 +58,8 @@ namespace BusinessLayerRestaurant
     }
     public interface ICRUDBusinessTables : IReadableBusinessTables, IWritableBusinessTables
     { }
-    public interface IPropertiesBusinessTables : IDTOBTables, IInterfaceBusinessTables
-    { }
-    public interface IBusinessTables : ICRUDBusinessTables, IPropertiesBusinessTables
+
+    public interface IBusinessTables : ICRUDBusinessTables, IInterfaceBusinessTables
     {
     }
 }

@@ -9,8 +9,7 @@ using System.Threading.Tasks;
 namespace BusinessLayerRestaurant
 {
 
-    public interface IDTOBEmployees : IDTOBase<DTOEmployeesCRequest, DTOEmployeesURequest>
-    { }
+
 
     public interface IInterfaceBEmployees : IInterfaceBase<IDataEmployees>
     {
@@ -60,10 +59,7 @@ namespace BusinessLayerRestaurant
     public interface ICRUDBusinessEmployees : IWritableBusinessEmployees, IReadableBusinessEmployees
     { }
 
-    public interface IPropertiesBusinessEmployees : IDTOBEmployees, IInterfaceBusinessEmployee
-    { }
-
-    public interface IBusinessEmployees : ICRUDBusinessEmployees, IPropertiesBusinessEmployees
+    public interface IBusinessEmployees : ICRUDBusinessEmployees, IInterfaceBusinessEmployee
     {
     }
 

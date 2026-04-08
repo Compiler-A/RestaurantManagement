@@ -15,22 +15,6 @@ using System.Xml.Linq;
 namespace BusinessLayerRestaurant
 {
 
-    public class clsOrderDetailsDtoContainer : IDTOBOrderDetails
-    {
-        private DTOOrderDetailsCRequest? _CreateRequest;
-        public DTOOrderDetailsCRequest? CreateRequest
-        {
-            get => _CreateRequest;
-            set => _CreateRequest = value;
-        }
-
-        private DTOOrderDetailsURequest? _UpdateRequest;
-        public DTOOrderDetailsURequest? UpdateRequest
-        {
-            get => _UpdateRequest;
-            set => _UpdateRequest = value;
-        }
-    }
     public class clsOrderDetailsRepositoryBridge : IInterfaceBOrderDetails
     {
         private IDataOrderDetails _IDataOrderDetail;
@@ -60,7 +44,6 @@ namespace BusinessLayerRestaurant
             _IBusinessMenuItem = iBusinessMenuItem;
         }
     }
-
 
 
     public class clsOrderLoader : ICompositionBOrderDetails
@@ -218,33 +201,18 @@ namespace BusinessLayerRestaurant
 
     public class clsBusinessOrderDetails : IBusinessOrderDetails
     {
-        private IDTOBOrderDetails _IProperties;
         private IInterfaceBOrderDetails _Interface;
         private IWritableBOrderDetails _IWrite;
         private IReadableBOrderDetails _Read;
 
         public clsBusinessOrderDetails(
-            IDTOBOrderDetails Properties,
             IWritableBOrderDetails Write,
             IReadableBOrderDetails read,
             IInterfaceBOrderDetails interfaces)
         {
-            _IProperties = Properties;
             _IWrite = Write;
             _Read = read;
             _Interface = interfaces;
-        }
-
-        public DTOOrderDetailsCRequest? CreateRequest
-        {
-            get => _IProperties.CreateRequest;
-            set => _IProperties.CreateRequest = value;
-        }
-
-        public DTOOrderDetailsURequest? UpdateRequest
-        {
-            get => _IProperties.UpdateRequest;
-            set => _IProperties.UpdateRequest = value;
         }
 
         public IBusinessMenuItems IMenuItem

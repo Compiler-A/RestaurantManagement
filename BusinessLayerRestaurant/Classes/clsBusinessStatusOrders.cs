@@ -15,22 +15,6 @@ using System.Xml.Linq;
 namespace BusinessLayerRestaurant
 {
 
-    public class clsStatusOrdersDtoContainer : IDTOBStatusOrders
-    {
-        private DTOStatusOrdersCRequest? _CRequest;
-        private DTOStatusOrdersURequest? _URequest;
-
-        public DTOStatusOrdersCRequest? CreateRequest
-        {
-            get => _CRequest;
-            set => _CRequest = value;
-        }
-        public DTOStatusOrdersURequest? UpdateRequest
-        {
-            get => _URequest;
-            set => _URequest = value;
-        }
-    }
     public class clsStatusOrdersRepositoryBridge : IInterfaceBStatusOrders
     {
         private IDataStatusOrders _IDataStatusOrder;
@@ -131,25 +115,13 @@ namespace BusinessLayerRestaurant
     {
         private IReadableBStatusOrders _IRead;
         private IWritableBStatusOrders _IWrite;
-        private IDTOBStatusOrders _DTO;
 
-        public clsBusinessStatusOrders(IReadableBStatusOrders read, IWritableBStatusOrders write, IDTOBStatusOrders @DTO)
+        public clsBusinessStatusOrders(IReadableBStatusOrders read, IWritableBStatusOrders write)
         {
             _IRead = read;
             _IWrite = write;
-            _DTO = @DTO;
         }
 
-        public DTOStatusOrdersCRequest? CreateRequest
-        {
-            get => _DTO.CreateRequest;
-            set => _DTO.CreateRequest = value;
-        }
-        public DTOStatusOrdersURequest? UpdateRequest
-        {
-            get => _DTO.UpdateRequest;
-            set => _DTO.UpdateRequest = value;
-        }
 
         public async Task<List<DTOStatusOrders>> GetAllStatusOrdersAsync(int page)
         {

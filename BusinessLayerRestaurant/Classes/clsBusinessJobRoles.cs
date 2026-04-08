@@ -13,22 +13,7 @@ using System.Diagnostics;
 
 namespace BusinessLayerRestaurant
 {
-    public class clsJobRolesDtoContainer : IDTOBJobRoles
-    {
-        private DTOJobRolesCRequest? _CRequest;
-        public DTOJobRolesCRequest? CreateRequest
-        {
-            get => _CRequest;
-            set => _CRequest = value;
-        }
-
-        private DTOJobRolesURequest? _URequest;
-        public DTOJobRolesURequest? UpdateRequest
-        {
-            get => _URequest;
-            set => _URequest = value;
-        }
-    }
+    
 
     public class clsBJobRolesRepositoryBridge : IInterfaceBJobRoles
     {
@@ -130,26 +115,12 @@ namespace BusinessLayerRestaurant
     public class clsBusinessJobRoles : IBusinessJobRoles
     {
 
-        IDTOBJobRoles _IProperties;
         IReadableBJobRoles _IRead;
         IWritableBJobRoles _IWrite;
-        public clsBusinessJobRoles(IDTOBJobRoles dto, IReadableBJobRoles iRead, IWritableBJobRoles iWrite)
+        public clsBusinessJobRoles( IReadableBJobRoles iRead, IWritableBJobRoles iWrite)
         {
-            _IProperties = dto;
             _IRead = iRead;
             _IWrite = iWrite;
-        }
-
-        public DTOJobRolesCRequest? CreateRequest
-        {
-            get => _IProperties.CreateRequest;
-            set => _IProperties.CreateRequest = value;
-        }
-
-        public DTOJobRolesURequest? UpdateRequest
-        {
-            get => _IProperties.UpdateRequest;
-            set => _IProperties.UpdateRequest = value;
         }
 
         public async Task<List<DTOJobRoles>> GetAllJobRolesAsync(int page)

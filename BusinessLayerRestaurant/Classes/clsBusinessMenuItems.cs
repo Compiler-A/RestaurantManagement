@@ -15,24 +15,6 @@ using System.Xml.Linq;
 namespace BusinessLayerRestaurant
 {
 
-    public class clsMenuItemsDtoContainer : IDTOBMenuItems
-    {
-        private DTOMenuItemsCRequest? _CreateRequest;
-        public DTOMenuItemsCRequest? CreateRequest
-        {
-            get => _CreateRequest;
-            set => _CreateRequest = value;
-        }
-
-        private DTOMenuItemsURequest? _UpdateRequest;
-        public DTOMenuItemsURequest? UpdateRequest
-        {
-            get => _UpdateRequest;
-            set => _UpdateRequest = value;
-        }
-    }
-
-
     public class clsMenuItemsRepositoryBridge : IInterfaceBMenuItems
     {
         private IDataMenuItems _IData;
@@ -235,29 +217,15 @@ namespace BusinessLayerRestaurant
 
     public class clsBusinessMenuItem : IBusinessMenuItems
     {
-        IDTOBMenuItems _IDTO;
         IInterfaceBMenuItems _Interface;
         IReadableBMenuItems _IRead;
         IWritableBMenuItems _IWrite;
 
-        public clsBusinessMenuItem(IDTOBMenuItems DTO, IInterfaceBMenuItems Interface, IReadableBMenuItems IRead, IWritableBMenuItems IWrite)
+        public clsBusinessMenuItem( IInterfaceBMenuItems Interface, IReadableBMenuItems IRead, IWritableBMenuItems IWrite)
         {
-            _IDTO = DTO;
             _Interface = Interface;
             _IRead = IRead;
             _IWrite = IWrite;
-        }
-
-        public DTOMenuItemsCRequest? CreateRequest
-        {
-            get => _IDTO.CreateRequest;
-            set => _IDTO.CreateRequest = value;
-        }
-
-        public DTOMenuItemsURequest? UpdateRequest
-        {
-            get => _IDTO.UpdateRequest;
-            set => _IDTO.UpdateRequest = value;
         }
 
         public IBusinessStatusMenus IStatusMenu

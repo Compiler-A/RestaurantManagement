@@ -14,23 +14,6 @@ using System.Diagnostics;
 namespace BusinessLayerRestaurant
 {
 
-    public class clsTypeItemsDtoContainer : IDTOBTypeItems
-    {
-        private DTOTypeItemsCRequest? _CRequest;
-        private DTOTypeItemsURequest? _URequest;
-
-        public DTOTypeItemsCRequest? CreateRequest
-        {
-            get => _CRequest;
-            set => _CRequest = value;
-        }
-
-        public DTOTypeItemsURequest? UpdateRequest
-        {
-            get => _URequest;
-            set => _URequest = value;
-        }
-    }
 
     public class clsTypeItemsRepositoryBridge : IInterfaceBTypeItems
     {
@@ -130,26 +113,13 @@ namespace BusinessLayerRestaurant
 
     public class clsBusinessTypeItems : IBusinessTypeItems
     {
-        IDTOBTypeItems _IDTO;
         IWritableBTypeItems _IWrite;
         IReadableBTypeItems _IRead;
 
-        public clsBusinessTypeItems(IDTOBTypeItems dto, IWritableBTypeItems write,  IReadableBTypeItems read)
+        public clsBusinessTypeItems( IWritableBTypeItems write,  IReadableBTypeItems read)
         {
-            _IDTO = dto;
             _IWrite = write;
             _IRead = read;
-        }
-
-        public DTOTypeItemsCRequest? CreateRequest
-        {
-            get => _IDTO.CreateRequest;
-            set => _IDTO.CreateRequest = value;
-        }
-        public DTOTypeItemsURequest? UpdateRequest
-        {
-            get => _IDTO.UpdateRequest;
-            set => _IDTO.UpdateRequest = value;
         }
 
         public async Task<DTOTypeItems?> GetTypeItemAsync(int ID)

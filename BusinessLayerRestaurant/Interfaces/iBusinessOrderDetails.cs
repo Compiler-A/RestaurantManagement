@@ -10,10 +10,6 @@ using System.Threading.Tasks;
 namespace BusinessLayerRestaurant
 {
     
-
-    public interface IDTOBOrderDetails : IDTOBase<DTOOrderDetailsCRequest, DTOOrderDetailsURequest>
-    { }
-
     public interface IInterfaceBOrderDetails : IInterfaceBase<IDataOrderDetails>
     {
         IBusinessOrders IBusinessOrder { get; set; }
@@ -54,9 +50,8 @@ namespace BusinessLayerRestaurant
     }
     public interface ICRUDBusinessOrderDetails : IWritableBusinessOrderDetails, IReadableBusinessOrderDetails
     { }
-    public interface IPropertiesBusinessOrderDetails : IDTOBOrderDetails, IInterfaceBusinessOrderDetails
-    { }
-    public interface IBusinessOrderDetails : ICRUDBusinessOrderDetails, IPropertiesBusinessOrderDetails
+
+    public interface IBusinessOrderDetails : ICRUDBusinessOrderDetails, IInterfaceBusinessOrderDetails
     {
     }
 

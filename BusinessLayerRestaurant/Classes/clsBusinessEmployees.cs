@@ -14,21 +14,7 @@ using System.Diagnostics;
 
 namespace BusinessLayerRestaurant
 {
-    public class clsEmployeesDtoContainer : IDTOBEmployees
-    {
-        private DTOEmployeesCRequest? _CRequest;
-        public DTOEmployeesCRequest? CreateRequest
-        {
-            get => _CRequest;
-            set => _CRequest = value;
-        }
-        private DTOEmployeesURequest? _URequest;
-        public DTOEmployeesURequest? UpdateRequest
-        {
-            get => _URequest;
-            set => _URequest = value;
-        }
-    }
+    
 
     public class clsEmployeesRepositoryBridge : IInterfaceBEmployees
     {
@@ -219,13 +205,11 @@ namespace BusinessLayerRestaurant
     {
         IReadableBEmployees _IRead;
         IWritableBEmployees _IWrite;
-        IDTOBEmployees _IDTO;
         IInterfaceBEmployees _Interface;
 
         public clsBusinessEmployees
-            (IReadableBEmployees Read, IWritableBEmployees Write, IDTOBEmployees DTO, IInterfaceBEmployees Interface)
+            (IReadableBEmployees Read, IWritableBEmployees Write, IInterfaceBEmployees Interface)
         {
-            _IDTO = DTO;
             _IRead = Read;
             _IWrite = Write;
             _Interface = Interface;
@@ -237,17 +221,6 @@ namespace BusinessLayerRestaurant
             set => _Interface.IBusinessJobRole = value;
         }
 
-        public DTOEmployeesCRequest? CreateRequest
-        {
-            get => _IDTO.CreateRequest;
-            set => _IDTO.CreateRequest = value;
-        }
-
-        public DTOEmployeesURequest? UpdateRequest
-        {
-            get => _IDTO.UpdateRequest;
-            set => _IDTO.UpdateRequest = value;
-        }
 
 
         public async Task<DTOEmployees?> GetLoginEmployeeAsync(DTOEmployeesLoginRequest request)

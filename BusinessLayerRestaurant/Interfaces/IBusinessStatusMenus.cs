@@ -9,9 +9,6 @@ using System.Threading.Tasks;
 namespace BusinessLayerRestaurant
 {
 
-    public interface IDTOBStatusMenus : IDTOBase<DTOStatusMenusCRequest, DTOStatusMenusURequest>
-    { }
-
     public interface IInterfaceBStatusMenus : IInterfaceBase<IDataStatusMenus>
     { }
 
@@ -37,7 +34,7 @@ namespace BusinessLayerRestaurant
     public interface ICRUDBusinessStatusMenus : IReadableBusinessStatusMenus , IWritableBusinessStatusMenus
     { }
 
-    public interface IBusinessStatusMenus : ICRUDBusinessStatusMenus, IDTOBStatusMenus
+    public interface IBusinessStatusMenus : ICRUDBusinessStatusMenus
     { }
 
 }

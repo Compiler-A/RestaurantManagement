@@ -8,9 +8,7 @@ using System.Threading.Tasks;
 
 namespace BusinessLayerRestaurant
 {
-    public interface IDTOBJobRoles : IDTOBase<DTOJobRolesCRequest, DTOJobRolesURequest>
-    {
-    }
+
 
     public interface IInterfaceBJobRoles : IInterfaceBase<IDataJobRoles>
     { }
@@ -36,7 +34,7 @@ namespace BusinessLayerRestaurant
     public interface ICRUDBusinessJobRoles : IReadableBusinessJobRoles, IWritableBusinessJobRoles
     { }
 
-    public interface IBusinessJobRoles : ICRUDBusinessJobRoles, IDTOBJobRoles
+    public interface IBusinessJobRoles : ICRUDBusinessJobRoles
     {
     }
 }

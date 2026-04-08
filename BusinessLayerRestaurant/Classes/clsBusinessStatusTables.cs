@@ -14,23 +14,7 @@ using System.Diagnostics;
 
 namespace BusinessLayerRestaurant
 {
-    public class clsStatusTablesDtoContainer : IDTOBStatusTables
-    {
-        private DTOStatusTablesCRequest? _CRequest;
 
-        public DTOStatusTablesCRequest? CreateRequest
-        {
-            get => _CRequest;
-            set => _CRequest = value;
-        }
-
-        private DTOStatusTablesURequest? _URequest;
-        public DTOStatusTablesURequest? UpdateRequest
-        {
-            get => _URequest;
-            set => _URequest = value;
-        }
-    }
 
     public class clsStatusTablesRepositoryBridge : IInterfaceBStatusTables
     {
@@ -143,24 +127,11 @@ namespace BusinessLayerRestaurant
     {
         private IReadableBStatusTables _IRead;
         private IWritableBStatusTables _IWrite;
-        private IDTOBStatusTables _DTO;
 
-        public clsBusinessStatusTables(IReadableBStatusTables read, IWritableBStatusTables write, IDTOBStatusTables @DTO)
+        public clsBusinessStatusTables(IReadableBStatusTables read, IWritableBStatusTables write)
         {
             _IRead = read;
             _IWrite = write;
-            _DTO = @DTO;
-        }
-
-        public DTOStatusTablesCRequest? CreateRequest
-        {
-            get => _DTO.CreateRequest;
-            set => _DTO.CreateRequest = value;
-        }
-        public DTOStatusTablesURequest? UpdateRequest
-        {
-            get => _DTO.UpdateRequest;
-            set => _DTO.UpdateRequest = value;
         }
 
         public async Task<List<DTOStatusTables>> GetAllStatusTablesAsync(int page)

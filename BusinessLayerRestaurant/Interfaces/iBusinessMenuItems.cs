@@ -8,8 +8,6 @@ using System.Threading.Tasks;
 
 namespace BusinessLayerRestaurant
 {
-    public interface IDTOBMenuItems : IDTOBase<DTOMenuItemsCRequest, DTOMenuItemsURequest>
-    { }
 
     public interface IInterfaceBMenuItems : IInterfaceBase<IDataMenuItems>
     {
@@ -56,9 +54,6 @@ namespace BusinessLayerRestaurant
     public interface ICRUDBusinessMenuItems : IReadableBusinessMenuItems , IWritableBusinessMenuItems
     { }
 
-    public interface IPropertiesBusinessMenuItems : IDTOBMenuItems, IInterfaceBusinessMenuItems
-    { }
-
-    public interface IBusinessMenuItems : ICRUDBusinessMenuItems, IPropertiesBusinessMenuItems { }
+    public interface IBusinessMenuItems : ICRUDBusinessMenuItems, IInterfaceBusinessMenuItems { }
 
 }

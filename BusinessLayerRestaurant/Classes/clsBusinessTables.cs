@@ -13,22 +13,7 @@ using System.Diagnostics;
 
 namespace BusinessLayerRestaurant
 {
-    public class clsTablesDtoContainer : IDTOBTables
-    {
-        private DTOTablesCRequest? _CRequest;
-        public DTOTablesCRequest? CreateRequest
-        {
-            get => _CRequest;
-            set => _CRequest = value;
-        }
 
-        private DTOTablesURequest? _URequest;
-        public DTOTablesURequest? UpdateRequest
-        {
-            get => _URequest;
-            set => _URequest = value;
-        }
-    }
 
     public class clsTablesRepositoryBridge : IInterfaceBTables
     {
@@ -243,31 +228,18 @@ namespace BusinessLayerRestaurant
 
     public class clsBusinessTables : IBusinessTables
     {
-        private IDTOBTables _Dtos;
         private IInterfaceBTables _Interfaces;
         private IWritableBTables _IWrite;
         private IReadableBTables _IRead;
 
-        public clsBusinessTables(IDTOBTables dto, IInterfaceBTables table, IWritableBTables write, 
+        public clsBusinessTables( IInterfaceBTables table, IWritableBTables write, 
             IReadableBTables read)
         {
-            _Dtos = dto;
             _Interfaces = table;
             _IWrite = write;
             _IRead = read;
         }
 
-        public DTOTablesCRequest? CreateRequest
-        {
-            get => _Dtos.CreateRequest;
-            set => _Dtos.CreateRequest = value;
-        }
-
-        public DTOTablesURequest? UpdateRequest
-        {
-            get => _Dtos.UpdateRequest;
-            set => _Dtos.UpdateRequest = value;
-        }
 
         public IBusinessStatusTables IStatusTable
         {

@@ -16,8 +16,6 @@ namespace BusinessLayerRestaurant
     public interface IWritableBStatusTables : IWritableBusinessBase<DTOStatusTables, DTOStatusTablesCRequest, DTOStatusTablesURequest>
     { }
 
-    public interface IDTOBStatusTables : IDTOBase<DTOStatusTablesCRequest , DTOStatusTablesURequest>
-    { }
 
     public interface IInterfaceBStatusTables : IInterfaceBase<IDataStatusTables>
     { }
@@ -40,7 +38,7 @@ namespace BusinessLayerRestaurant
     public interface ICRUDBusinessStatusTables : IWritableBusinessStatusTables, IReadableBusinessStatusTables
     { }
 
-    public interface IBusinessStatusTables : ICRUDBusinessStatusTables, IDTOBStatusTables
+    public interface IBusinessStatusTables : ICRUDBusinessStatusTables
     { }
 
 }

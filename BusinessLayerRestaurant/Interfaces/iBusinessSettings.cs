@@ -8,8 +8,6 @@ using System.Threading.Tasks;
 
 namespace BusinessLayerRestaurant
 {
-    public interface IDTOBSettings : IDTOBase<DTOSettingsCRequest, DTOSettingsURequest>
-    { }
 
     public interface IInterfaceBSettings : IInterfaceBase<IDataSettings>
     { }
@@ -32,7 +30,7 @@ namespace BusinessLayerRestaurant
     }
     public interface ICRUDBusinessSettings : IWritableBusinessSettings, IReadableBusinessSettings
     { }
-    public interface IBusinessSettings : ICRUDBusinessSettings, IDTOBSettings
+    public interface IBusinessSettings : ICRUDBusinessSettings
     {
     }
 }
