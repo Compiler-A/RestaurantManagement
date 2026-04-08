@@ -38,13 +38,8 @@ namespace DataLayerRestaurant
 
     public class DTOSettings
     {
-        [Range(1, int.MaxValue, ErrorMessage = "ID must be greater than 0.")]
         public int ID { get; set; }
-
-        [Required(ErrorMessage = "Name is required.")]
         public string Name { get; set; } = string.Empty;
-
-        [Range(0, double.MaxValue, ErrorMessage = "Value must be greater than 0.")]
         public decimal Value { get; set; }
 
         public DTOSettings()

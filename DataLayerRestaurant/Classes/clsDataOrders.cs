@@ -64,21 +64,11 @@ namespace DataLayerRestaurant
 
     public class DTOOrders
     {
-        [Range(1, int.MaxValue, ErrorMessage = "ID must be greater than 0.")]
         public int ID { get; set; }
-
-        [Range(1, int.MaxValue, ErrorMessage = "TableID must be greater than 0.")]
         public int TableID { get; set; }
-
-        [Range(1, int.MaxValue, ErrorMessage = "EmployerID must be greater than 0.")]
         public int EmployerID { get; set; }
-
-        [Range(1, int.MaxValue, ErrorMessage = "StatusOrderID must be greater than 0.")]
         public int StatusOrderID { get; set; }
-
         public DateTime OrderDate { get; set; }
-
-        [Range(0, double.MaxValue, ErrorMessage = "TotalAmount must be non-negative.")]
         public decimal? TotalAmount { get; set; }
 
 

@@ -70,20 +70,11 @@ namespace DataLayerRestaurant
 
     public class DTOMenuItems
     {
-        [Range(1, int.MaxValue, ErrorMessage = "ID must be greater than 0.")]
         public int ID { get; set; }
-
-        [Required(ErrorMessage = "Name is required.")]
         public string Name { get; set; }
         public string? Description { get; set; }
-
-        [Range(0, double.MaxValue, ErrorMessage = "Price must be greater than 0.")]
         public decimal Price { get; set; }
-
-        [Range(1, int.MaxValue, ErrorMessage = "TypeItemID must be greater than 0.")]
         public int TypeItemID { get; set; }
-
-        [Range(1, int.MaxValue, ErrorMessage = "StatusMenuID must be greater than 0.")]
         public int StatusMenuID { get; set; }
 
         public string? Image { get; set; }

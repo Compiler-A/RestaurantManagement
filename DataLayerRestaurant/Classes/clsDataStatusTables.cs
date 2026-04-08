@@ -33,10 +33,7 @@ namespace DataLayerRestaurant
 
     public class DTOStatusTables
     {
-        [Range(1, int.MaxValue, ErrorMessage = "ID must be a positive integer.")]
         public int ID { get; set; }
-
-        [Required(ErrorMessage ="Name is Required.")]
         public string Name { get; set; }
 
         public DTOStatusTables()

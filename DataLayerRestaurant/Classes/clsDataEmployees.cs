@@ -86,19 +86,10 @@ namespace DataLayerRestaurant
 
     public class DTOEmployees 
     {
-        [Range(1, int.MaxValue, ErrorMessage = "ID must be greater than 0")]
         public int ID { get; set; }
-
-        [Required(ErrorMessage = "Name is required")]
         public string Name { get; set; } = string.Empty;
-
-        [Range(1, int.MaxValue, ErrorMessage = "JobID must be greater than 0")]
         public int JobID { get; set; }
-
-        [Required(ErrorMessage = "UserName is required")]
         public string UserName { get; set; } = string.Empty;
-
-        [Required(ErrorMessage = "Password is required")]
         public string Password { get; set; } = string.Empty;
         public DTOJobRoles? JobRoles { get; set; }
 

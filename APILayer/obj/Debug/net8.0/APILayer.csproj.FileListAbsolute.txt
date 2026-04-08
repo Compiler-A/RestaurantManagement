@@ -73,7 +73,6 @@ D:\Programming\Projects\RestaurantProjectv2\APILayer\obj\Debug\net8.0\staticweba
 D:\Programming\Projects\RestaurantProjectv2\APILayer\obj\Debug\net8.0\staticwebassets.development.json
 D:\Programming\Projects\RestaurantProjectv2\APILayer\obj\Debug\net8.0\staticwebassets.build.endpoints.json
 D:\Programming\Projects\RestaurantProjectv2\APILayer\obj\Debug\net8.0\swae.build.ex.cache
-D:\Programming\Projects\RestaurantProjectv2\APILayer\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
 D:\Programming\Projects\RestaurantProjectv2\APILayer\obj\Debug\net8.0\APILayer.csproj.Up2Date
 D:\Programming\Projects\RestaurantProjectv2\APILayer\obj\Debug\net8.0\APILayer.dll
 D:\Programming\Projects\RestaurantProjectv2\APILayer\obj\Debug\net8.0\refint\APILayer.dll
