@@ -4,49 +4,11 @@ using RestaurantDataLayer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.ComponentModel.DataAnnotations;
+using ContractsLayerRestaurant.DTOs.StatusTables;
+using DataLayerRestaurant.Interfaces;
 
-namespace DataLayerRestaurant
+namespace DataLayerRestaurant.Classes
 {
-    public class DTOStatusTablesCRequest
-    {
-        [Required(ErrorMessage = "Name is required.")]
-        public string Name { get; set; }
-        public DTOStatusTablesCRequest(string Name)
-        {
-            this.Name = Name; 
-        }
-    }
-
-    public class DTOStatusTablesURequest : DTOStatusTablesCRequest
-    {
-        [Range(1, int.MaxValue, ErrorMessage = "ID must be a positive integer.")]
-        public int ID { get; set; }
-
-        public DTOStatusTablesURequest(int ID,  string Name) : base(Name)
-        {
-            this.ID = ID;
-        }
-    }
-
-    public class DTOStatusTables
-    {
-        public int ID { get; set; }
-        public string Name { get; set; }
-
-        public DTOStatusTables()
-        {
-            ID = -1;
-            Name = string.Empty;
-        }
-        public DTOStatusTables(int statusTableID, string statusTableName)
-        {
-            ID = statusTableID;
-            Name = statusTableName;
-        }
-    }
 
     public class clsCompositionDStatusTables : ICompositionDataBase<DTOStatusTables>
     {

@@ -1,11 +1,7 @@
 ﻿using RestaurantDataLayer;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using ContractsLayerRestaurant.DTOs.StatusMenus;
 
-namespace DataLayerRestaurant
+namespace DataLayerRestaurant.Interfaces
 {
 
     public interface IReadableDStatusMenus : IReadableDataBase<DTOStatusMenus>

@@ -1,60 +1,11 @@
 ﻿using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Options;
 using RestaurantDataLayer;
-using System.Collections.Generic;
-using System.Runtime;
-using System.Threading.Tasks;
-using System.ComponentModel.DataAnnotations;
+using DataLayerRestaurant.Interfaces;
+using ContractsLayerRestaurant.DTOs.StatusMenus;
 
-namespace DataLayerRestaurant
-{
-    public class DTOStatusMenusCRequest
-    {
-
-        [Required(ErrorMessage = "Name is required.")]
-        public string Name { get; set; }
-        public string? Description { get; set; }
-
-        public DTOStatusMenusCRequest(string Name, string? Description) 
-        {
-            this.Name = Name;
-            this.Description = Description;
-        }
-    }
-
-    public class DTOStatusMenusURequest : DTOStatusMenusCRequest
-    {
-        [Range(1, int.MaxValue, ErrorMessage = "ID must be greater than 0.")]
-        public int ID { get; set; }
-        public DTOStatusMenusURequest(int ID, string Name,  string? Description) : base(Name, Description)
-        {
-            this.ID = ID;
-        }
-    }
-
-    public class DTOStatusMenus
-    {
-        public int ID { get; set; }
-        public string Name { get; set; }
-        public string? Description { get; set; }
-
-        public DTOStatusMenus()
-        {
-            ID = -1;
-            Name = string.Empty;
-            Description = null;
-        }
-
-        public DTOStatusMenus(int statusMenuID, string statusMenuName, string? statusMenuDescription)
-        {
-            ID = statusMenuID;
-            Name = statusMenuName;
-            Description = statusMenuDescription;
-        }
-    }
-
-
-
+namespace DataLayerRestaurant.Classes
+{ 
     public class clsCompositionDStatusMenus : ICompositionDataBase<DTOStatusMenus>
     {
         public DTOStatusMenus GetDataFromDataBase(SqlDataReader reader)

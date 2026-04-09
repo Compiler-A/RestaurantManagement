@@ -1,109 +1,12 @@
 ﻿using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Options;
 using RestaurantDataLayer;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime;
-using System.Security.Cryptography.Pkcs;
-using System.Text;
-using System.Threading.Tasks;
-using System.ComponentModel.DataAnnotations;
+using DataLayerRestaurant.Interfaces;
+using ContractsLayerRestaurant.DTOs.MenuItems;
 
 
-namespace DataLayerRestaurant
+namespace DataLayerRestaurant.Classes
 {
-
-    public class DTOMenuItemsCRequest
-    {
-        [Required(ErrorMessage = "Name is required.")]
-        public string Name { get; set; }
-
-        public string? Description { get; set; }
-
-        [Range(0, double.MaxValue, ErrorMessage = "Price must be greater than 0.")]
-        public decimal Price { get; set; }
-
-        [Range(1, int.MaxValue, ErrorMessage = "TypeItemID must be greater than 0.")]
-        public int TypeItemID { get; set; }
-
-        [Range(1, int.MaxValue, ErrorMessage = "StatusMenuID must be greater than 0.")]
-        public int StatusMenuID { get; set; }
-        public string? Image { get; set; }
-
-        public DTOMenuItemsCRequest(string Name, string? Description, decimal Price, int TypeItemID, int StatusMenuID, string? Image)
-        {
-            this.Name = Name;
-            this.Description = Description;
-            this.Price = Price;
-            this.TypeItemID = TypeItemID;
-            this.StatusMenuID = StatusMenuID;
-            this.Image = Image;
-        }
-    }
-
-    public class DTOMenuItemsURequest : DTOMenuItemsCRequest
-    {
-        [Range(1, int.MaxValue, ErrorMessage = "ID must be greater than 0.")]
-        public int ID { get; set; }
-
-        public DTOMenuItemsURequest(int ID, string Name, string? Description, decimal Price, int TypeItemID, int StatusMenuID, string? Image)
-            : base(Name, Description, Price, TypeItemID, StatusMenuID, Image)
-        {
-            this.ID = ID;
-        }
-    }
-
-    public class DTOMenuItemsFilterRequest
-    {
-        [Range(1, int.MaxValue, ErrorMessage = "Page must be greater than 0.")]
-        public int Page { get; set; }
-
-        [Range(0, int.MaxValue, ErrorMessage = "StatusMenuID must be greater than 0.")]
-        public int StatusMenuID { get; set; }
-
-        [Range(0, int.MaxValue, ErrorMessage = "TypeItemID must be greater than 0.")]
-        public int TypeItemID { get; set; }
-        
-
-    }
-
-    public class DTOMenuItems
-    {
-        public int ID { get; set; }
-        public string Name { get; set; }
-        public string? Description { get; set; }
-        public decimal Price { get; set; }
-        public int TypeItemID { get; set; }
-        public int StatusMenuID { get; set; }
-
-        public string? Image { get; set; }
-        public DTOTypeItems? TypeItems { get; set; }
-        public DTOStatusMenus? StatusMenus { get; set; }
-
-        public DTOMenuItems(int menuItemID, string menuItemName, string? menuItemDescription, decimal menuItemPrice, int typeItemID, int statusMenuID, string? image)
-        {
-            ID = menuItemID;
-            Name = menuItemName;
-            Description = menuItemDescription;
-            Price = menuItemPrice;
-            TypeItemID = typeItemID;
-            StatusMenuID = statusMenuID;
-            Image = image;
-        }
-
-        public DTOMenuItems()
-        {
-            ID = -1;
-            Name = string.Empty;
-            Description = null;
-            Price = -1;
-            TypeItemID = -1;
-            StatusMenuID = -1;
-            Image = null;
-        }
-    }
-
 
     public class clsCompositionDMenuItems : ICompositionDataBase<DTOMenuItems>
     {

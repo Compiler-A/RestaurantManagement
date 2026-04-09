@@ -1,58 +1,11 @@
 ﻿using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Options;
 using RestaurantDataLayer;
-using System.Runtime;
-using System.ComponentModel.DataAnnotations;
+using ContractsLayerRestaurant.DTOs.TypeItems;
+using DataLayerRestaurant.Interfaces;
 
-namespace DataLayerRestaurant
+namespace DataLayerRestaurant.Classes
 {
-    public class DTOTypeItemsCRequest
-    {
-        [Required(ErrorMessage ="Name is Required.")]
-        public string Name { get; set; }
-        public string? Description { get; set; }
-
-        public DTOTypeItemsCRequest(string name, string? description)
-        {
-            Name = name; 
-            Description = description; 
-        }
-    }
-
-    public class DTOTypeItemsURequest : DTOTypeItemsCRequest
-    {
-        [Range(1, int.MaxValue, ErrorMessage = "ID must be a positive integer.")]
-        public int ID { get; set; }
-
-        public DTOTypeItemsURequest(int id,  string name, string? description) 
-            : base(name, description)
-        {
-            ID = id;
-        }
-    }
-
-    public class DTOTypeItems
-    {
-        public int ID { get; set; }
-        public string Name { get; set; }
-        public string? Description { get; set; }
-
-        public DTOTypeItems()
-        {
-            ID = -1;
-            Name = string.Empty;
-            Description = null;
-        }
-
-        public DTOTypeItems(int typeItemID, string typeItemName, string? typeItemDescription)
-        {
-            ID = typeItemID;
-            Name = typeItemName;
-            Description = typeItemDescription;
-        }
-    }
-
-
 
     public class clsCompositionDTypeItems : ICompositionDataBase<DTOTypeItems>
     {

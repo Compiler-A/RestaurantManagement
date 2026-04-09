@@ -1,104 +1,12 @@
 ﻿using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Options;
 using RestaurantDataLayer;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.ComponentModel.DataAnnotations;
+using DataLayerRestaurant.Interfaces;
+using ContractsLayerRestaurant.DTOs.Orders;
 
-namespace DataLayerRestaurant
+namespace DataLayerRestaurant.Classes
 {
-    public class DTOOrderCRequest
-    {
-        [Range(1, int.MaxValue, ErrorMessage = "TableID must be greater than 0.")]
-        public int TableID { get; set; }
-
-        [Range(1, int.MaxValue, ErrorMessage = "EmployerID must be greater than 0.")]
-        public int EmployerID { get; set; }
-
-        [Range(1, int.MaxValue, ErrorMessage = "StatusOrderID must be greater than 0.")]
-        public int StatusOrderID { get; set; }
-
-        public DateTime OrderDate { get; set; } = DateTime.Now;
-
-        [Range(0, double.MaxValue, ErrorMessage = "TotalAmount must be non-negative.")]
-        public decimal? TotalAmount { get; set; }
-        public DTOOrderCRequest(int tableID, int employerID, int statusOrderID, DateTime orderDate, decimal? totalAmount)
-        {
-            TableID = tableID;
-            EmployerID = employerID;
-            StatusOrderID = statusOrderID;
-            OrderDate = orderDate;
-            TotalAmount = totalAmount;
-        }
-    }
-
-    public class DTOOrderFilterRequest
-    {
-        [Range(1, int.MaxValue, ErrorMessage = "Page must be greater than 0.")]
-        public int Page { get; set; }
-
-        [Range(0, int.MaxValue, ErrorMessage = "TableID must be non-negative.")]
-        public int TableID { get; set; }
-
-        [Range(0, int.MaxValue, ErrorMessage = "EmployeeID must be non-negative.")]
-        public int EmployeeID { get; set; }
-
-        [Range(0, int.MaxValue, ErrorMessage = "StatusOrderID must be non-negative.")]
-        public int StatusOrderID { get; set; }
-    }
-
-    public class DTOOrderURequest : DTOOrderCRequest
-    {
-        [Range(1, int.MaxValue, ErrorMessage = "OrderID must be greater than 0.")]
-        public int OrderID { get; set; }
-
-        public DTOOrderURequest(int orderID, int tableID, int employerID, int statusOrderID, DateTime orderDate, decimal? totalAmount)
-            : base(tableID, employerID, statusOrderID, orderDate, totalAmount)
-        {
-            OrderID = orderID;
-        }
-    }
-
-    public class DTOOrders
-    {
-        public int ID { get; set; }
-        public int TableID { get; set; }
-        public int EmployerID { get; set; }
-        public int StatusOrderID { get; set; }
-        public DateTime OrderDate { get; set; }
-        public decimal? TotalAmount { get; set; }
-
-
-        public DTOTables? tables { get; set; }
-        public DTOEmployees? employees { get; set; }
-        public DTOStatusOrders? statusOrders { get; set; }
-
-
-        public DTOOrders(int iD, int tableID, int employerID, int statusOrderID, DateTime orderDate, decimal? totalAmount)
-        {
-            ID = iD;
-            TableID = tableID;
-            EmployerID = employerID;
-            StatusOrderID = statusOrderID;
-            OrderDate = orderDate;
-            TotalAmount = totalAmount;
-        }
-        public DTOOrders()
-        {
-            ID = -1;
-            TableID = -1;
-            EmployerID = -1;
-            StatusOrderID = -1;
-            OrderDate = DateTime.MinValue;
-            TotalAmount = null;
-        }
-    }
-
     
-
     public class clsCompositionDOrders : ICompositionDataBase<DTOOrders> 
     {
         public DTOOrders GetDataFromDataBase(SqlDataReader reader)

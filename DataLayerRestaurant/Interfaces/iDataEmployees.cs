@@ -1,11 +1,8 @@
 ﻿using RestaurantDataLayer;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using ContractsLayerRestaurant.DTOs.Employees;
 
-namespace DataLayerRestaurant
+
+namespace DataLayerRestaurant.Interfaces
 {
     public interface IReadableDEmployees : IReadableDataBase<DTOEmployees>
     {

@@ -5,85 +5,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http.Headers;
-using System.Text;
-using System.Threading.Tasks;
-using System.ComponentModel.DataAnnotations;
+using DataLayerRestaurant.Interfaces;
+using ContractsLayerRestaurant.DTOs.OrderDetails;
 
-
-namespace DataLayerRestaurant
+namespace DataLayerRestaurant.Classes
 {
-
-    public class DTOOrderDetailsCRequest
-    {
-        [Range(1, int.MaxValue, ErrorMessage = "OrderID must be greater than 0.")]
-        public int OrderID { get; set; }
-
-        [Range(1, int.MaxValue, ErrorMessage = "ItemID must be greater than 0.")]
-        public int ItemID { get; set; }
-
-        [Range(0, int.MaxValue, ErrorMessage = "Quantity must be greater than 0.")]
-        public int Quantity { get; set; }
-
-        [Range(0, double.MaxValue, ErrorMessage = "SubTotal must be greater than 0.")]
-        public decimal SubTotal { get; set; }
-        public DTOOrderDetailsCRequest(int orderID, int itemID, int quantity, decimal subTotal)
-        {
-            OrderID = orderID;
-            ItemID = itemID;
-            Quantity = quantity;
-            SubTotal = subTotal;
-        }
-    }
-
-    public class DTOOrderDetailsURequest : DTOOrderDetailsCRequest
-    {
-        [Range(1, int.MaxValue, ErrorMessage = "ID must be greater than 0.")]
-        public int ID { get; set; }
-
-        public DTOOrderDetailsURequest
-            (int iD, int orderID, int itemID, int quantity, decimal subTotal) 
-            : base(orderID, itemID, quantity, subTotal)
-        {
-            ID = iD;
-            OrderID = orderID;
-            ItemID = itemID;
-            Quantity = quantity;
-            SubTotal = subTotal;
-        }
-    }
-
-
-    public class DTOOrderDetails
-    {
-        public int ID { get; set; }
-        public int OrderID { get; set; }
-        public int ItemID { get; set; }
-        public int Quantity { get; set; }
-        public decimal SubTotal { get; set; }
-
-        public DTOOrders? Order { get; set; }
-        public DTOMenuItems? Item { get; set; }
-
-        public DTOOrderDetails() 
-        {
-            ID = -1;
-            OrderID = -1;
-            ItemID = -1;
-            Quantity = -1;
-            SubTotal = -1;
-        }
-        public DTOOrderDetails(int iD, int orderID, int itemID, int quantity, decimal subTotal)
-        {
-            ID = iD;
-            OrderID = orderID;
-            ItemID = itemID;
-            Quantity = quantity;
-            SubTotal = subTotal;
-        }
-    }
-
-    
-
     public class clsCompositionDOrderDetails : ICompositionDataBase<DTOOrderDetails>
     {
         public DTOOrderDetails GetDataFromDataBase(SqlDataReader reader)

@@ -1,117 +1,14 @@
 ﻿using Microsoft.Data.SqlClient;
 using RestaurantDataLayer;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.PortableExecutable;
-using System.Runtime;
+using ContractsLayerRestaurant.DTOs.Employees;
+using DataLayerRestaurant.Interfaces;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
-using System.ComponentModel.DataAnnotations;
 
-namespace DataLayerRestaurant
+namespace DataLayerRestaurant.Classes
 {
 
-    public class DTOEmployeesCRequest
-    {
-        [Required(ErrorMessage ="Name is required")]
-        public string Name { get; set; } = string.Empty;
-
-        [Range(1, int.MaxValue, ErrorMessage = "JobID must be greater than 0")]
-        public int JobID { get; set; }
-
-        [Required(ErrorMessage = "UserName is required")]
-        public string UserName { get; set; } = string.Empty;
-
-        [Required(ErrorMessage = "Password is required")]
-        public string Password { get; set; } = string.Empty;
-
-        public DTOEmployeesCRequest(string name, int jobID, string userName, string password)
-        {
-            Name = name;
-            JobID = jobID;
-            UserName = userName;
-            Password = password;
-        }
-    }
-
-    public class DTOEmployeesURequest : DTOEmployeesCRequest
-    {
-        [Range(1, int.MaxValue, ErrorMessage = "ID must be greater than 0")]
-        public int ID { get; set; }
-
-        public DTOEmployeesURequest(int ID, string Name, int JobID, string userName, string password) 
-            : base(Name, JobID, userName, password)
-        {
-            this.ID = ID;
-        }
-
-    }
-
-    public class DTOEmployeesLoginRequest
-    {
-        [Required(ErrorMessage = "UserName is required")]
-        public string UserName { get; set; } = string.Empty;
-
-        [Required(ErrorMessage = "Password is required")]
-        public string Password { get; set; } = string.Empty;
-
-        public DTOEmployeesLoginRequest(string UserName , string Password)
-        {
-            this.UserName = UserName;
-            this.Password = Password;
-        }
-    }
-
-    public class DTOEmployeesChangedPassword
-    {
-        [Range(1, int.MaxValue, ErrorMessage = "ID must be greater than 0")]
-        public int ID { get; set; }
-
-        [Required(ErrorMessage = "CurrentPassword is required")]
-        public string CurrentPassword { get; set; } = string.Empty;
-
-        [Required(ErrorMessage = "NewPassword is required")]
-        public string NewPassword { get; set; } = string.Empty;
-
-        public DTOEmployeesChangedPassword(int ID, string CurrentPassword, string NewPassword)
-        {
-            this.ID = ID;
-            this.CurrentPassword = CurrentPassword;
-            this.NewPassword = NewPassword;
-        }
-    }
-
-    public class DTOEmployees 
-    {
-        public int ID { get; set; }
-        public string Name { get; set; } = string.Empty;
-        public int JobID { get; set; }
-        public string UserName { get; set; } = string.Empty;
-        public string Password { get; set; } = string.Empty;
-        public DTOJobRoles? JobRoles { get; set; }
-
-        public DTOEmployees()
-        {
-            ID = -1;
-            Name = string.Empty;
-            JobID = -1;
-            UserName = string.Empty;
-            Password = string.Empty;
-        }
-        public DTOEmployees(int id, string name, int jobID, string userName, string password)
-        {
-            ID = id;
-            Name = name;
-            JobID = jobID;
-            UserName = userName;
-            Password = password;
-        }
-    }
-
-   
     public class clsHashing
     {
         public static string HashString(string input)

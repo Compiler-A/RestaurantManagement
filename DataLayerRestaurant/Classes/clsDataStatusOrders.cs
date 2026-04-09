@@ -1,59 +1,12 @@
 ﻿using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Options;
 using RestaurantDataLayer;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Metadata.Ecma335;
-using System.Text;
-using System.Threading.Tasks;
-using System.ComponentModel.DataAnnotations;
+using ContractsLayerRestaurant.DTOs.StatusOrders;
+using DataLayerRestaurant.Interfaces;
 
 
-namespace DataLayerRestaurant
-{
-
-    public class DTOStatusOrdersCRequest
-    {
-        [Required(ErrorMessage = "Name is required.")]
-        public string Name { get; set; }
-
-        public DTOStatusOrdersCRequest(string statusName) 
-        {
-            this.Name = statusName;
-        }
-    }
-
-    public class DTOStatusOrdersURequest : DTOStatusOrdersCRequest
-    {
-
-        [Range(1,int.MaxValue,ErrorMessage = "ID must be greater than 0.")]
-        public int ID { get; set; }
-
-        public DTOStatusOrdersURequest(int ID, string statusOrderName) : base(statusOrderName)
-        {
-            this.ID = ID;
-        }
-    }
-
-    public class DTOStatusOrders
-    {
-        public int ID { get; set; }
-        public string Name { get; set; }
-
-        public DTOStatusOrders()
-        {
-            ID = -1;
-            Name = string.Empty;
-        }
-        public DTOStatusOrders(int idStatusOrder, string statusOrderName)
-        {
-            this.ID = idStatusOrder;
-            this.Name = statusOrderName;
-        }
-    }
-
-    
+namespace DataLayerRestaurant.Classes
+{    
 
     public class  clsCompositionDStatusOrders : ICompositionDataBase<DTOStatusOrders>
     {

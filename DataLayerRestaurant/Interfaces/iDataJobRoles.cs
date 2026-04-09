@@ -1,6 +1,7 @@
 ﻿using RestaurantDataLayer;
+using ContractsLayerRestaurant.DTOs.JobRoles;
 
-namespace DataLayerRestaurant
+namespace DataLayerRestaurant.Interfaces
 {
     public interface IReadableDJobRoles : IReadableDataBase<DTOJobRoles>
     { }

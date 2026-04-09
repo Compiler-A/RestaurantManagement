@@ -1,63 +1,11 @@
 ﻿using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Options;
 using RestaurantDataLayer;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime;
-using System.Text;
-using System.Threading.Tasks;
-using System.ComponentModel.DataAnnotations;
+using ContractsLayerRestaurant.DTOs.Settings;
+using DataLayerRestaurant.Interfaces;
 
-namespace DataLayerRestaurant
+namespace DataLayerRestaurant.Classes
 {
-    public class DTOSettingsCRequest
-    {
-
-        [Required(ErrorMessage = "Name is required.")]
-        public string Name { get; set; } = string.Empty;
-
-        [Range(0, double.MaxValue, ErrorMessage = "Value must be greater than 0.")]
-        public decimal Value { get; set; }
-
-        public DTOSettingsCRequest(string name, decimal value)
-        {
-            Name = name;
-            Value = value;
-        }
-    }
-    public class DTOSettingsURequest : DTOSettingsCRequest
-    {
-        [Range(1, int.MaxValue, ErrorMessage = "ID must be greater than 0.")]
-        public int ID { get; set; }
-        public DTOSettingsURequest(int id,string name, decimal value) : base(name, value)
-        {
-            ID = id;
-        }
-    }
-
-    public class DTOSettings
-    {
-        public int ID { get; set; }
-        public string Name { get; set; } = string.Empty;
-        public decimal Value { get; set; }
-
-        public DTOSettings()
-        {
-            ID = -1;
-            Name = string.Empty;
-            Value = 0;
-        }
-        public DTOSettings(int id, string key, string value)
-        {
-            ID = id;
-            Name = key;
-            Value = 0;
-        }
-    }
-
-   
-
     public class clsCompositionDSettings : ICompositionDataBase <DTOSettings>
     {
         public DTOSettings GetDataFromDataBase(SqlDataReader reader)

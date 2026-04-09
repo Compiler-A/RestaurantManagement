@@ -548,6 +548,16 @@
         "build": {
           "buildTransitive/net6.0/_._": {}
         }
+      },
+      "ContractsLayerRestaurant/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v8.0",
+        "compile": {
+          "bin/placeholder/ContractsLayerRestaurant.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/ContractsLayerRestaurant.dll": {}
+        }
       }
     }
   },
@@ -1625,10 +1635,16 @@
         "system.security.cryptography.protecteddata.nuspec",
         "useSharedDesignerContext.txt"
       ]
+    },
+    "ContractsLayerRestaurant/1.0.0": {
+      "type": "project",
+      "path": "../ContractsLayerRestaurant/ContractsLayerRestaurant.csproj",
+      "msbuildProject": "../ContractsLayerRestaurant/ContractsLayerRestaurant.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net8.0": [
+      "ContractsLayerRestaurant >= 1.0.0",
       "Microsoft.Data.SqlClient >= 7.0.0",
       "Microsoft.Extensions.Options >= 10.0.5",
       "Swashbuckle.AspNetCore >= 6.6.2"
@@ -1665,7 +1681,11 @@
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "D:\\Programming\\Projects\\RestaurantProjectv2\\ContractsLayerRestaurant\\ContractsLayerRestaurant.csproj": {
+              "projectPath": "D:\\Programming\\Projects\\RestaurantProjectv2\\ContractsLayerRestaurant\\ContractsLayerRestaurant.csproj"
+            }
+          }
         }
       },
       "warningProperties": {

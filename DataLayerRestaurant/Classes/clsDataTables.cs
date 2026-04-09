@@ -1,97 +1,11 @@
 ﻿using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Options;
 using RestaurantDataLayer;
-using System;
-using System.Collections.Generic;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.PortableExecutable;
-using System.Text;
-using System.Threading.Tasks;
-using System.Threading.Tasks;
-using System.ComponentModel.DataAnnotations;
+using ContractsLayerRestaurant.DTOs.Tables;
+using DataLayerRestaurant.Interfaces;
 
-namespace DataLayerRestaurant
+namespace DataLayerRestaurant.Classes
 {
-
-    public class DTOTablesCRequest
-    {
-        [Range(1, int.MaxValue, ErrorMessage = "Seats must be a positive integer.")]
-        public int Seats { get; set; }
-
-        [Range(1, int.MaxValue, ErrorMessage = "StatusTableID must be a positive integer.")]
-        public int StatusTableID { get; set; }
-
-        public DTOTablesCRequest( int Seats, int StatusTableID)
-        {
-            this.Seats = Seats;
-            this.StatusTableID = StatusTableID;
-        }
-    }
-
-    public class DTOTablesURequest : DTOTablesCRequest
-    {
-        [Range(1, int.MaxValue, ErrorMessage = "ID must be a positive integer.")]
-        public int ID { get; set; }
-        public DTOTablesURequest(int ID,  int Seats, int StatusTableID) 
-            : base( Seats, StatusTableID)
-        {
-            this.ID = ID;
-        }
-    }
-
-    public class DTOTablesFilterStatusTableRequest
-    {
-        [Range(1, int.MaxValue, ErrorMessage = "Page must be a positive integer.")]
-        public int Page { get; set; }
-
-        [Range(1, int.MaxValue, ErrorMessage = "StatusTableID must be a positive integer.")]
-        public int StatusTableID { get; set; }
-    }
-
-    public class DTOTablesFilterSeatTableRequest
-    {
-        [Range(1, int.MaxValue, ErrorMessage = "Page must be a positive integer.")]
-        public int Page { get; set; }
-        [Range(1, int.MaxValue, ErrorMessage = "Seats must be a positive integer.")]
-        public int Seats { get; set; }
-    }
-    public class DTOTablesFilterStatusAndSeatTableRequest
-    {
-        [Range(1, int.MaxValue, ErrorMessage = "Page must be a positive integer.")]
-        public int Page { get; set; }
-        [Range(0, int.MaxValue, ErrorMessage = "StatusTableID must be a positive integer.")]
-        public int StatusTableID { get; set; }
-        [Range(0, int.MaxValue, ErrorMessage = "Seats must be a positive integer.")]
-        public int Seats { get; set; }
-    }
-
-
-    public class DTOTables
-    {         
-        public int ID {  get; set; }
-        public string Name { get; set; }
-        public int Seats { get; set; }
-        public int StatusTableID { get; set; }
-        public DTOStatusTables? StatusTable { get; set; }
-
-        public DTOTables()
-        {
-            ID = -1;
-            Name = string.Empty;
-            Seats = -1;
-            StatusTable = null;
-            StatusTableID = -1;
-        }
-        public DTOTables(int iD, string table, int seats, int statusTableID)
-        {
-            ID = iD;
-            Name = table;
-            Seats = seats;
-            StatusTableID = statusTableID;
-        }
-    }
-
 
     public class clsCompositionDTables : ICompositionDataBase<DTOTables>
     {

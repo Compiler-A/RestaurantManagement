@@ -1,61 +1,13 @@
 ﻿using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Options;
 using RestaurantDataLayer;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime;
-using System.Text;
-using System.Threading.Tasks;
-using System.ComponentModel.DataAnnotations;
+using DataLayerRestaurant.Interfaces;
+using ContractsLayerRestaurant.DTOs.JobRoles;
 
 
-namespace DataLayerRestaurant
+
+namespace DataLayerRestaurant.Classes
 { 
-    public class DTOJobRolesCRequest
-    {
-        [Required(ErrorMessage = "Name is required.")]
-        public string Name { get; set; }
-        public string? Description { get; set; }
-
-        public DTOJobRolesCRequest(string Name, string Description) 
-        {
-            this.Name = Name;
-            this.Description = Description;
-        }
-    }
-
-    public class DTOJobRolesURequest : DTOJobRolesCRequest
-    {
-        [Range(1, int.MaxValue, ErrorMessage = "ID must be greater than 0.")]
-        public int ID { get; set; }
-
-        public DTOJobRolesURequest(int ID , string Name, string Description) : base (Name, Description)
-        {
-            this.ID  = ID;
-        }
-    }
-
-    public class DTOJobRoles
-    {
-        public int ID {  get; set; }
-        public string Name { get; set; }
-        public string? Description { get; set; }
-
-        public DTOJobRoles(int ID, string name, string? description)
-        {
-            this.ID = ID;
-            this.Name = name;
-            this.Description = description;
-        }
-        public DTOJobRoles()
-        {
-            ID = -1;
-            Name = string.Empty;
-            Description = null;
-        }
-    }
-
 
     public class clsCompositionDJobRoles : ICompositionDataBase<DTOJobRoles>
     {
