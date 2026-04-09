@@ -1,5 +1,7 @@
-﻿using BusinessLayerRestaurant;
-using DataLayerRestaurant;
+﻿using BusinessLayerRestaurant.Interfaces;
+using BusinessLayerRestaurant.Classes;
+using DataLayerRestaurant.Interfaces;
+using DataLayerRestaurant.Classes;
 
 namespace APILayer.Extensions
 {
@@ -7,12 +9,11 @@ namespace APILayer.Extensions
     {
         public static IServiceCollection AddOrdersServices(this IServiceCollection Services)
         {
-            Services.AddScoped<IWritableDOrders, DataLayerRestaurant.clsOrdersWriter>();
-            Services.AddScoped<IReadableDOrders, DataLayerRestaurant.clsOrdersReader>();
+            Services.AddScoped<IWritableDOrders, DataLayerRestaurant.Classes.clsOrdersWriter>();
+            Services.AddScoped<IReadableDOrders, DataLayerRestaurant.Classes.clsOrdersReader>();
             Services.AddScoped<IDataOrders, clsDataOrders>();
-            Services.AddScoped<IWritableBOrders, BusinessLayerRestaurant.clsOrdersWriter>();
-            Services.AddScoped<IReadableBOrders, BusinessLayerRestaurant.clsOrdersReader>();
-            Services.AddScoped<IDTOBOrders, clsOrdersDtoContainer>();
+            Services.AddScoped<IWritableBOrders, BusinessLayerRestaurant.Classes.clsOrdersWriter>();
+            Services.AddScoped<IReadableBOrders, BusinessLayerRestaurant.Classes.clsOrdersReader>();
             Services.AddScoped<IInterfaceBOrders, clsOrdersRepositoryBridge>();
             Services.AddScoped<ICompositionBOrders, clsStatusOrderLoader>();
             Services.AddScoped<ICompositionBOrders, clsEmployeeLoader>();

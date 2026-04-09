@@ -1,5 +1,7 @@
-﻿using BusinessLayerRestaurant;
-using DataLayerRestaurant;
+﻿using BusinessLayerRestaurant.Interfaces;
+using BusinessLayerRestaurant.Classes;
+using DataLayerRestaurant.Interfaces;
+using DataLayerRestaurant.Classes;
 
 namespace APILayer.Extensions
 {
@@ -7,15 +9,14 @@ namespace APILayer.Extensions
     {
         public static IServiceCollection AddMenuItemsServices(this IServiceCollection Services)
         {
-            Services.AddScoped<IReadableDMenuItems, DataLayerRestaurant.clsMenuItemsReader>();
-            Services.AddScoped<IWritableDMenuItems, DataLayerRestaurant.clsMenuItemsWriter>();
+            Services.AddScoped<IReadableDMenuItems, DataLayerRestaurant.Classes.clsMenuItemsReader>();
+            Services.AddScoped<IWritableDMenuItems, DataLayerRestaurant.Classes.clsMenuItemsWriter>();
             Services.AddScoped<IDataMenuItems, clsDataMenuItems>();
             Services.AddScoped<ICompositionBMenuItems, clsTypeItemLoader>();
             Services.AddScoped<ICompositionBMenuItems, clsStatusMenuLoader>();
-            Services.AddScoped<IDTOBMenuItems, clsMenuItemsDtoContainer>();
             Services.AddScoped<IInterfaceBMenuItems, clsMenuItemsRepositoryBridge>();
-            Services.AddScoped<IReadableBMenuItems, BusinessLayerRestaurant.clsMenuItemsReader>();
-            Services.AddScoped<IWritableBMenuItems, BusinessLayerRestaurant.clsMenuItemsWriter>();
+            Services.AddScoped<IReadableBMenuItems, BusinessLayerRestaurant.Classes.clsMenuItemsReader>();
+            Services.AddScoped<IWritableBMenuItems, BusinessLayerRestaurant.Classes.clsMenuItemsWriter>();
             Services.AddScoped<IBusinessMenuItems, clsBusinessMenuItem>();
             return Services;
         }

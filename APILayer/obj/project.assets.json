@@ -564,10 +564,21 @@
           "bin/placeholder/BusinessLayerRestaurant.dll": {}
         }
       },
+      "ContractsLayerRestaurant/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v8.0",
+        "compile": {
+          "bin/placeholder/ContractsLayerRestaurant.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/ContractsLayerRestaurant.dll": {}
+        }
+      },
       "DataLayerRestaurant/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v8.0",
         "dependencies": {
+          "ContractsLayerRestaurant": "1.0.0",
           "Microsoft.Data.SqlClient": "7.0.0",
           "Microsoft.Extensions.Options": "10.0.5",
           "Swashbuckle.AspNetCore": "6.6.2"
@@ -1660,6 +1671,11 @@
       "type": "project",
       "path": "../BusinessLayerRestaurant/BusinessLayerRestaurant.csproj",
       "msbuildProject": "../BusinessLayerRestaurant/BusinessLayerRestaurant.csproj"
+    },
+    "ContractsLayerRestaurant/1.0.0": {
+      "type": "project",
+      "path": "../ContractsLayerRestaurant/ContractsLayerRestaurant.csproj",
+      "msbuildProject": "../ContractsLayerRestaurant/ContractsLayerRestaurant.csproj"
     },
     "DataLayerRestaurant/1.0.0": {
       "type": "project",

@@ -1,4 +1,5 @@
-using BusinessLayerRestaurant;
+using BusinessLayerRestaurant.Classes;
+using BusinessLayerRestaurant.Interfaces;
 using DataLayerRestaurant;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;

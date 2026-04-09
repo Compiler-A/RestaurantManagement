@@ -1,9 +1,7 @@
 ﻿using APILayer.Filters;
-using BusinessLayerRestaurant;
-using DataLayerRestaurant;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.Diagnostics;
+using BusinessLayerRestaurant.Interfaces;
+using ContractsLayerRestaurant.DTOs.Employees;
 
 namespace APILayer.Controllers
 {

@@ -1,8 +1,8 @@
-﻿using BusinessLayerRestaurant;
-using Microsoft.AspNetCore.Http;
+﻿using APILayer.Filters;
 using Microsoft.AspNetCore.Mvc;
-using DataLayerRestaurant;
-using APILayer.Filters;
+using BusinessLayerRestaurant.Interfaces;
+using ContractsLayerRestaurant.DTOs.OrderDetails;
+
 
 namespace APILayer.Controllers
 {

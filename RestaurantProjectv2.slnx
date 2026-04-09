@@ -1,5 +1,6 @@
 <Solution>
   <Project Path="APILayer/APILayer.csproj" />
   <Project Path="BusinessLayerRestaurant/BusinessLayerRestaurant.csproj" />
+  <Project Path="ContractsLayerRestaurant/ContractsLayerRestaurant.csproj" Id="b9ded9e3-0721-4dc2-9de1-2ce7c893f839" />
   <Project Path="DataLayerRestaurant/DataLayerRestaurant.csproj" />
 </Solution>

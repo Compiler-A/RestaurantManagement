@@ -1,12 +1,8 @@
 ﻿using APILayer.Filters;
-using BusinessLayerRestaurant;
-using DataLayerRestaurant;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+using BusinessLayerRestaurant.Interfaces;
+using ContractsLayerRestaurant.DTOs.TypeItems;
+
 
 namespace APILayer.Controllers
 {

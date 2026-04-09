@@ -1,10 +1,8 @@
 ﻿using APILayer.Filters;
-using BusinessLayerRestaurant;
-using DataLayerRestaurant;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+using BusinessLayerRestaurant.Interfaces;
+using ContractsLayerRestaurant.DTOs.StatusMenus;
+
 
 
 namespace APILayer.Controllers

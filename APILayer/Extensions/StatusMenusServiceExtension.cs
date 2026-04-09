@@ -1,5 +1,7 @@
-﻿using BusinessLayerRestaurant;
-using DataLayerRestaurant;
+﻿using BusinessLayerRestaurant.Interfaces;
+using BusinessLayerRestaurant.Classes;
+using DataLayerRestaurant.Interfaces;
+using DataLayerRestaurant.Classes;
 
 namespace APILayer.Extensions
 {
@@ -7,12 +9,11 @@ namespace APILayer.Extensions
     {
         public static IServiceCollection AddStatusMenusServices(this IServiceCollection Services)
         {
-            Services.AddScoped<IReadableDStatusMenus, DataLayerRestaurant.clsStatusMenusReader>();
-            Services.AddScoped<IWritableDStatusMenus, DataLayerRestaurant.clsStatusMenusWriter>();
+            Services.AddScoped<IReadableDStatusMenus, DataLayerRestaurant.Classes.clsStatusMenusReader>();
+            Services.AddScoped<IWritableDStatusMenus, DataLayerRestaurant.Classes.clsStatusMenusWriter>();
             Services.AddScoped<IDataStatusMenus, clsDataStatusMenus>();
-            Services.AddScoped<IWritableBStatusMenus, BusinessLayerRestaurant.clsStatusMenusWriter>();
-            Services.AddScoped<IReadableBStatusMenus, BusinessLayerRestaurant.clsStatusMenusReader>();
-            Services.AddScoped<IDTOBStatusMenus, clsStatusMenusDtoContainer>();
+            Services.AddScoped<IWritableBStatusMenus, BusinessLayerRestaurant.Classes.clsStatusMenusWriter>();
+            Services.AddScoped<IReadableBStatusMenus, BusinessLayerRestaurant.Classes.clsStatusMenusReader>();
             Services.AddScoped<IInterfaceBStatusMenus, clsStatusMenusRepositoryBridge>();
             Services.AddScoped<IBusinessStatusMenus, clsBusinessStatusMenus>();
             return Services;

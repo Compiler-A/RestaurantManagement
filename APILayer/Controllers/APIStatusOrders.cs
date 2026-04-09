@@ -1,9 +1,7 @@
 ﻿using APILayer.Filters;
-using BusinessLayerRestaurant;
-using DataLayerRestaurant;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+using BusinessLayerRestaurant.Interfaces;
+using ContractsLayerRestaurant.DTOs.StatusOrders;
 
 
 namespace APILayer.Controllers

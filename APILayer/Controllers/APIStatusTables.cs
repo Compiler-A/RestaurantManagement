@@ -1,13 +1,8 @@
 ﻿using APILayer.Filters;
-using BusinessLayerRestaurant;
-using DataLayerRestaurant;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Formatters;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using System;
-using System.Collections;
-using System.Collections.Generic;
+using BusinessLayerRestaurant.Interfaces;
+using ContractsLayerRestaurant.DTOs.StatusTables;
+
 
 
 namespace APILayer.Controllers

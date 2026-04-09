@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
 using System.Text.Json;
-using BusinessLayerRestaurant;
+using BusinessLayerRestaurant.Interfaces;
 using System.Diagnostics;
 
 namespace APILayer.Middleware

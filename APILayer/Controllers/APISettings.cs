@@ -1,9 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.HttpResults;
+﻿using APILayer.Filters;
 using Microsoft.AspNetCore.Mvc;
-using DataLayerRestaurant;
-using BusinessLayerRestaurant;
-using APILayer.Filters;
+using BusinessLayerRestaurant.Interfaces;
+using ContractsLayerRestaurant.DTOs.Settings;
+
 
 namespace APILayer.Controllers
 {

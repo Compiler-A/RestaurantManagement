@@ -1,5 +1,7 @@
-﻿using BusinessLayerRestaurant;
-using DataLayerRestaurant;
+﻿using BusinessLayerRestaurant.Interfaces;
+using BusinessLayerRestaurant.Classes;
+using DataLayerRestaurant.Interfaces;
+using DataLayerRestaurant.Classes;
 
 namespace APILayer.Extensions
 {
@@ -8,13 +10,12 @@ namespace APILayer.Extensions
         public static IServiceCollection AddJobRolesServices(this IServiceCollection Services)
         {
 
-            Services.AddScoped<IReadableDJobRoles, DataLayerRestaurant.clsJobRolesReader>();
-            Services.AddScoped<IWritableDJobRoles, DataLayerRestaurant.clsJobRolesWriter>();
+            Services.AddScoped<IReadableDJobRoles, DataLayerRestaurant.Classes.clsJobRolesReader>();
+            Services.AddScoped<IWritableDJobRoles, DataLayerRestaurant.Classes.clsJobRolesWriter>();
             Services.AddScoped<IDataJobRoles, clsDataJobRoles>();
-            Services.AddScoped<IWritableBJobRoles, BusinessLayerRestaurant.clsJobRolesWriter>();
-            Services.AddScoped<IReadableBJobRoles, BusinessLayerRestaurant.clsJobRolesReader>();
+            Services.AddScoped<IWritableBJobRoles, BusinessLayerRestaurant.Classes.clsJobRolesWriter>();
+            Services.AddScoped<IReadableBJobRoles, BusinessLayerRestaurant.Classes.clsJobRolesReader>();
             Services.AddScoped<IInterfaceBJobRoles, clsBJobRolesRepositoryBridge>();
-            Services.AddScoped<IDTOBJobRoles, clsJobRolesDtoContainer>();
             Services.AddScoped<IBusinessJobRoles, clsBusinessJobRoles>();
             return Services;
         }

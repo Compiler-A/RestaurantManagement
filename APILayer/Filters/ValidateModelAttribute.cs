@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using BusinessLayerRestaurant;
+using BusinessLayerRestaurant.Interfaces;
 using System.Diagnostics;
 
 namespace APILayer.Filters

@@ -1,5 +1,7 @@
-﻿using BusinessLayerRestaurant;
-using DataLayerRestaurant;
+﻿using BusinessLayerRestaurant.Interfaces;
+using BusinessLayerRestaurant.Classes;
+using DataLayerRestaurant.Interfaces;
+using DataLayerRestaurant.Classes;
 
 namespace APILayer.Extensions
 {
@@ -8,13 +10,12 @@ namespace APILayer.Extensions
         public static IServiceCollection AddTypeItemsServices(this IServiceCollection Services)
         {
 
-            Services.AddScoped<IReadableDTypeItems, DataLayerRestaurant.clsTypeItemsReader>();
-            Services.AddScoped<IWritableDTypeItems, DataLayerRestaurant.clsTypeItemsWriter>();
+            Services.AddScoped<IReadableDTypeItems, DataLayerRestaurant.Classes.clsTypeItemsReader>();
+            Services.AddScoped<IWritableDTypeItems, DataLayerRestaurant.Classes.clsTypeItemsWriter>();
             Services.AddScoped<IDataTypeItems, clsDataTypeItems>();
-            Services.AddScoped<IDTOBTypeItems, clsTypeItemsDtoContainer>();
             Services.AddScoped<IInterfaceBTypeItems, clsTypeItemsRepositoryBridge>();
-            Services.AddScoped<IReadableBTypeItems, BusinessLayerRestaurant.clsTypeItemsReader>();
-            Services.AddScoped<IWritableBTypeItems, BusinessLayerRestaurant.clsTypeItemsWriter>();
+            Services.AddScoped<IReadableBTypeItems, BusinessLayerRestaurant.Classes.clsTypeItemsReader>();
+            Services.AddScoped<IWritableBTypeItems, BusinessLayerRestaurant.Classes.clsTypeItemsWriter>();
             Services.AddScoped<IBusinessTypeItems, clsBusinessTypeItems>();
 
             return Services;

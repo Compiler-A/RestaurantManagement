@@ -1,5 +1,7 @@
-﻿using BusinessLayerRestaurant;
-using DataLayerRestaurant;
+﻿using BusinessLayerRestaurant.Interfaces;
+using BusinessLayerRestaurant.Classes;
+using DataLayerRestaurant.Interfaces;
+using DataLayerRestaurant.Classes;
 
 namespace APILayer.Extensions
 {
@@ -8,11 +10,10 @@ namespace APILayer.Extensions
         public static IServiceCollection AddSettingsServices(this IServiceCollection Services)
         {
             Services.AddScoped<IDataSettings, clsDataSettings>();
-            Services.AddScoped<IWritableDSettings, DataLayerRestaurant.clsSettingsWriter>();
-            Services.AddScoped<IReadableDSettings, DataLayerRestaurant.clsSettingsReader>();
-            Services.AddScoped<IReadableBSettings, BusinessLayerRestaurant.clsSettingsReader>();
-            Services.AddScoped<IWritableBSettings, BusinessLayerRestaurant.clsSettingsWriter>();
-            Services.AddScoped<IDTOBSettings, clsSettingsDtoContainer>();
+            Services.AddScoped<IWritableDSettings, DataLayerRestaurant.Classes.clsSettingsWriter>();
+            Services.AddScoped<IReadableDSettings, DataLayerRestaurant.Classes.clsSettingsReader>();
+            Services.AddScoped<IReadableBSettings, BusinessLayerRestaurant.Classes.clsSettingsReader>();
+            Services.AddScoped<IWritableBSettings, BusinessLayerRestaurant.Classes.clsSettingsWriter>();
             Services.AddScoped<IInterfaceBSettings, clsSettingsRepositoryBridge>();
             Services.AddScoped<IBusinessSettings, clsBusinessSettings>();
             return Services;
