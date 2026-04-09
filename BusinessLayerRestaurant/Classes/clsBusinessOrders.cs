@@ -1,17 +1,12 @@
 ﻿#pragma warning disable CA1416 // Validate platform compatibility
-using DataLayerRestaurant;
-using RestaurantDataLayer;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
 using System.Diagnostics;
+using BusinessLayerRestaurant.Interfaces;
+using DataLayerRestaurant.Interfaces;
+using ContractsLayerRestaurant.DTOs.Orders;
 
 
-namespace BusinessLayerRestaurant
+
+namespace BusinessLayerRestaurant.Classes
 {
 
     public class clsOrdersRepositoryBridge : IInterfaceBOrders

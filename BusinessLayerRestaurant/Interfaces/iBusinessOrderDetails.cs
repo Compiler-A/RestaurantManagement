@@ -1,13 +1,8 @@
-﻿using BusinessLayerRestaurant;
-using DataLayerRestaurant;
-using RestaurantDataLayer;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using RestaurantDataLayer;
+using DataLayerRestaurant.Interfaces;
+using ContractsLayerRestaurant.DTOs.OrderDetails;
 
-namespace BusinessLayerRestaurant
+namespace BusinessLayerRestaurant.Interfaces
 {
     
     public interface IInterfaceBOrderDetails : IInterfaceBase<IDataOrderDetails>

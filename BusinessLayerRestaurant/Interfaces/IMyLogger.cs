@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessLayerRestaurant
+namespace BusinessLayerRestaurant.Interfaces
 {
     public interface IMyLogger
     {

@@ -1,12 +1,8 @@
 ﻿#pragma warning disable CA1416 // Validate platform compatibility
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using BusinessLayerRestaurant.Interfaces;
 
-namespace BusinessLayerRestaurant
+namespace BusinessLayerRestaurant.Classes
 {
     public class clsLogger : IMyLogger
     {
