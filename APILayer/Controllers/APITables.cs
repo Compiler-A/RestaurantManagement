@@ -12,9 +12,9 @@ namespace APILayer.Controllers
     [TypeFilter(typeof(ValidateModelAttribute))]
     public class APITables :  BaseController
     {
-        private readonly IBusinessTables dataTablesBusiness;
+        private readonly ITablesService dataTablesBusiness;
 
-        public APITables(IBusinessTables TableBusiness) 
+        public APITables(ITablesService TableBusiness) 
         {
             dataTablesBusiness = TableBusiness;
         }

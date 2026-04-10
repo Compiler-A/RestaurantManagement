@@ -13,8 +13,8 @@ namespace APILayer.Controllers
     public class APIMenuItems : BaseController
     {
         
-        IBusinessMenuItems _BusinessMenuItem;
-        public APIMenuItems(IBusinessMenuItems b)
+        IMenuItemsService _BusinessMenuItem;
+        public APIMenuItems(IMenuItemsService b)
         {
             _BusinessMenuItem = b;
         }

@@ -8,7 +8,7 @@ namespace BusinessLayerRestaurant.Classes
 {
     
 
-    public class clsEmployeesRepositoryBridge : IInterfaceBEmployees
+    public class clsEmployeesContainer : IEmployeesServiceContainer
     {
         private IDataEmployees _IEmployees;
         public IDataEmployees IData
@@ -17,25 +17,25 @@ namespace BusinessLayerRestaurant.Classes
             set => _IEmployees = value;
         }
 
-        private IBusinessJobRoles _IJobRoles;
-        public IBusinessJobRoles IBusinessJobRole
+        private IJobRolesService _IJobRoles;
+        public IJobRolesService IBusinessJobRole
         {
             get => _IJobRoles;
             set => _IJobRoles = value;
         }
 
-        public clsEmployeesRepositoryBridge(IDataEmployees Employee, IBusinessJobRoles JobRoles)
+        public clsEmployeesContainer(IDataEmployees Employee, IJobRolesService JobRoles)
         {
             _IEmployees = Employee;
             _IJobRoles = JobRoles;
         }
     }
 
-    public class clsJobRoleLoader : ICompositionBEmployees
+    public class clsJobRoleLoader : IEmployeesServiceComposition
     {
-        private IBusinessJobRoles _IData;
+        private IJobRolesService _IData;
 
-        public clsJobRoleLoader(IBusinessJobRoles JobRole)
+        public clsJobRoleLoader(IJobRolesService JobRole)
         {
             _IData = JobRole;
         }
@@ -47,11 +47,11 @@ namespace BusinessLayerRestaurant.Classes
 
     }
 
-    public class clsCompositionEmployeeesLoader: ICompositionBEmployees
+    public class clsCompositionEmployeeesLoader: IEmployeesServiceComposition
     {
-        private IEnumerable<ICompositionBEmployees> _loaders;
+        private IEnumerable<IEmployeesServiceComposition> _loaders;
         public clsCompositionEmployeeesLoader
-            (IEnumerable<ICompositionBEmployees> loaders)
+            (IEnumerable<IEmployeesServiceComposition> loaders)
         {
             _loaders = loaders;
         }
@@ -64,12 +64,12 @@ namespace BusinessLayerRestaurant.Classes
         }
     }
 
-    public class clsEmployeesReader :  clsCompositionEmployeeesLoader ,IReadableBEmployees
+    public class clsEmployeesReader :  clsCompositionEmployeeesLoader ,IEmployeesServiceReader
     {
-        private IInterfaceBEmployees _Interface;
+        private IEmployeesServiceContainer _Interface;
         private readonly IMyLogger _Logger;
 
-        public clsEmployeesReader(IInterfaceBEmployees Interface, IEnumerable<ICompositionBEmployees> Loaders, IMyLogger Logger) 
+        public clsEmployeesReader(IEmployeesServiceContainer Interface, IEnumerable<IEmployeesServiceComposition> Loaders, IMyLogger Logger) 
             : base(Loaders)
         {
             _Interface = Interface;
@@ -132,11 +132,11 @@ namespace BusinessLayerRestaurant.Classes
 
     }
 
-    public class clsEmployeesWriter : clsCompositionEmployeeesLoader , IWritableBEmployees
+    public class clsEmployeesWriter : clsCompositionEmployeeesLoader , IEmployeesServiceWriter
     {
-        private IInterfaceBEmployees _Interface;
+        private IEmployeesServiceContainer _Interface;
         private readonly IMyLogger _Logger;
-        public clsEmployeesWriter(IInterfaceBEmployees Interface, IMyLogger Logger, IEnumerable<ICompositionBEmployees> Loaders)
+        public clsEmployeesWriter(IEmployeesServiceContainer Interface, IMyLogger Logger, IEnumerable<IEmployeesServiceComposition> Loaders)
             : base(Loaders)
         {
             _Interface = Interface;
@@ -193,21 +193,21 @@ namespace BusinessLayerRestaurant.Classes
         }
     }
 
-    public class clsBusinessEmployees : IBusinessEmployees
+    public class clsEmployeesService : IEmployeesService
     {
-        IReadableBEmployees _IRead;
-        IWritableBEmployees _IWrite;
-        IInterfaceBEmployees _Interface;
+        IEmployeesServiceReader _IRead;
+        IEmployeesServiceWriter _IWrite;
+        IEmployeesServiceContainer _Interface;
 
-        public clsBusinessEmployees
-            (IReadableBEmployees Read, IWritableBEmployees Write, IInterfaceBEmployees Interface)
+        public clsEmployeesService
+            (IEmployeesServiceReader Read, IEmployeesServiceWriter Write, IEmployeesServiceContainer Interface)
         {
             _IRead = Read;
             _IWrite = Write;
             _Interface = Interface;
         }
 
-        public IBusinessJobRoles IJobRole
+        public IJobRolesService IJobRole
         {
             get => _Interface.IBusinessJobRole;
             set => _Interface.IBusinessJobRole = value;

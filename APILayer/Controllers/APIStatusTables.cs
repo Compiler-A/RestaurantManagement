@@ -13,9 +13,9 @@ namespace APILayer.Controllers
     public class APIStatusTables : BaseController
     {
 
-        private readonly IBusinessStatusTables _businessStatusTables;
+        private readonly IStatusTablesService _businessStatusTables;
 
-        public APIStatusTables(IBusinessStatusTables businessStatusTables)
+        public APIStatusTables(IStatusTablesService businessStatusTables)
         {
             _businessStatusTables = businessStatusTables;
         }

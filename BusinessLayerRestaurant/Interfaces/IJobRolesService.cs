@@ -6,31 +6,31 @@ namespace BusinessLayerRestaurant.Interfaces
 {
 
 
-    public interface IInterfaceBJobRoles : IInterfaceBase<IDataJobRoles>
+    public interface IJobRolesServiceContainer : IInterfaceBase<IDataJobRoles>
     { }
 
-    public interface IReadableBJobRoles : IReadableBusinessBase<DTOJobRoles> 
+    public interface IJobRolesServiceReader : IReadableBusinessBase<DTOJobRoles> 
     { }
-    public interface IWritableBJobRoles : IWritableBusinessBase<DTOJobRoles, DTOJobRolesCRequest, DTOJobRolesURequest>
+    public interface IJobRolesServiceWriter : IWritableBusinessBase<DTOJobRoles, DTOJobRolesCRequest, DTOJobRolesURequest>
     { }
 
-    public interface IReadableBusinessJobRoles
+    public interface IJobRolesServiceReadable
     {
         Task<List<DTOJobRoles>> GetAllJobRolesAsync(int page);
         Task<DTOJobRoles?> GetJobRoleAsync(int ID);
     }
 
-    public interface IWritableBusinessJobRoles
+    public interface IJobRolesServiceWritable
     {
         Task<DTOJobRoles?> AddJobRoleAsync(DTOJobRolesCRequest Request);
         Task<DTOJobRoles?> UpdateJobRoleAsync(DTOJobRolesURequest Request);
         Task<bool> DeleteJobRoleAsync(int ID);
     }
 
-    public interface ICRUDBusinessJobRoles : IReadableBusinessJobRoles, IWritableBusinessJobRoles
+    public interface ICRUDJobRolesService : IJobRolesServiceReadable, IJobRolesServiceWritable
     { }
 
-    public interface IBusinessJobRoles : ICRUDBusinessJobRoles
+    public interface IJobRolesService : ICRUDJobRolesService
     {
     }
 }

@@ -9,7 +9,7 @@ namespace BusinessLayerRestaurant.Classes
 {
 
 
-    public class clsTypeItemsRepositoryBridge : IInterfaceBTypeItems
+    public class clsTypeItemsContainer : ITypeItemsServiceContainer
     {
         private IDataTypeItems _IDataTypeItem;
         public IDataTypeItems IData
@@ -18,17 +18,17 @@ namespace BusinessLayerRestaurant.Classes
             set => _IDataTypeItem = value;
         }
 
-        public clsTypeItemsRepositoryBridge(IDataTypeItems Data)
+        public clsTypeItemsContainer(IDataTypeItems Data)
         {
             _IDataTypeItem = Data;
         }
     }
 
-    public class clsTypeItemsReader : IReadableBTypeItems
+    public class clsTypeItemsReader : ITypeItemsServiceReader
     {
-        private IInterfaceBTypeItems _Interface;
+        private ITypeItemsServiceContainer _Interface;
         private IMyLogger _Logger;
-        public clsTypeItemsReader(IInterfaceBTypeItems Interface, IMyLogger logger)
+        public clsTypeItemsReader(ITypeItemsServiceContainer Interface, IMyLogger logger)
         {
             _Interface = Interface;
             _Logger = logger;
@@ -57,11 +57,11 @@ namespace BusinessLayerRestaurant.Classes
         }
     }
 
-    public class clsTypeItemsWriter : IWritableBTypeItems
+    public class clsTypeItemsWriter : ITypeItemsServiceWriter
     {
-        private IInterfaceBTypeItems _Interface;
+        private ITypeItemsServiceContainer _Interface;
         private IMyLogger _Logger;
-        public clsTypeItemsWriter(IInterfaceBTypeItems @interface, IMyLogger logger)
+        public clsTypeItemsWriter(ITypeItemsServiceContainer @interface, IMyLogger logger)
         {
             _Interface = @interface;
             _Logger = logger;
@@ -105,12 +105,12 @@ namespace BusinessLayerRestaurant.Classes
 
 
 
-    public class clsBusinessTypeItems : IBusinessTypeItems
+    public class clsTypeItemsService : IBusinessService
     {
-        IWritableBTypeItems _IWrite;
-        IReadableBTypeItems _IRead;
+        ITypeItemsServiceWriter _IWrite;
+        ITypeItemsServiceReader _IRead;
 
-        public clsBusinessTypeItems( IWritableBTypeItems write,  IReadableBTypeItems read)
+        public clsTypeItemsService( ITypeItemsServiceWriter write,  ITypeItemsServiceReader read)
         {
             _IWrite = write;
             _IRead = read;

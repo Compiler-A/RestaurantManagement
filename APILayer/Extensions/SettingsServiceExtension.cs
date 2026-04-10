@@ -12,10 +12,10 @@ namespace APILayer.Extensions
             Services.AddScoped<IDataSettings, clsDataSettings>();
             Services.AddScoped<IWritableDSettings, DataLayerRestaurant.Classes.clsSettingsWriter>();
             Services.AddScoped<IReadableDSettings, DataLayerRestaurant.Classes.clsSettingsReader>();
-            Services.AddScoped<IReadableBSettings, BusinessLayerRestaurant.Classes.clsSettingsReader>();
-            Services.AddScoped<IWritableBSettings, BusinessLayerRestaurant.Classes.clsSettingsWriter>();
-            Services.AddScoped<IInterfaceBSettings, clsSettingsRepositoryBridge>();
-            Services.AddScoped<IBusinessSettings, clsBusinessSettings>();
+            Services.AddScoped<ISettingsServiceReader, BusinessLayerRestaurant.Classes.clsSettingsReader>();
+            Services.AddScoped<ISettingsServiceWriter, BusinessLayerRestaurant.Classes.clsSettingsWriter>();
+            Services.AddScoped<ISettingsServiceContainer, clsSettingsContainer>();
+            Services.AddScoped<ISettingsService, clsSettingsService>();
             return Services;
         }
     }

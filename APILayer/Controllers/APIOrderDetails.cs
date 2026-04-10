@@ -11,12 +11,12 @@ namespace APILayer.Controllers
     [TypeFilter(typeof(ValidateModelAttribute))]
     public class APIOrderDetails : BaseController
     {
-        public APIOrderDetails(IBusinessOrderDetails b)
+        public APIOrderDetails(IOrderDetailsService b)
         {
             _businessOrderDetail = b;
         }
 
-        private readonly IBusinessOrderDetails _businessOrderDetail;
+        private readonly IOrderDetailsService _businessOrderDetail;
 
         
 

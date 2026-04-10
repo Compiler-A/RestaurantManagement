@@ -10,7 +10,7 @@ namespace BusinessLayerRestaurant.Classes
 {
 
 
-    public class clsTablesRepositoryBridge : IInterfaceBTables
+    public class clsTablesContainer : ITablesServiceContainer
     {
         private IDataTables _IDataTable;
         public IDataTables IData
@@ -18,24 +18,24 @@ namespace BusinessLayerRestaurant.Classes
             get => _IDataTable;
             set => _IDataTable = value;
         }
-        private IBusinessStatusTables _IBusinessStatusTable;
-        public IBusinessStatusTables IBusinessStatusTable
+        private IStatusTablesService _IBusinessStatusTable;
+        public IStatusTablesService IBusinessStatusTable
         {
             get => _IBusinessStatusTable;
             set => _IBusinessStatusTable = value;
         }
 
-        public clsTablesRepositoryBridge(IDataTables @Data, IBusinessStatusTables @IBusinessStatusTable)
+        public clsTablesContainer(IDataTables @Data, IStatusTablesService @IBusinessStatusTable)
         {
             _IDataTable = @Data;
             _IBusinessStatusTable = @IBusinessStatusTable;
         }
     }
 
-    public class clsStatusTableLoader : ICompositionBTables
+    public class clsStatusTableLoader : ITablesServiceComposition
     {
-        private IBusinessStatusTables _IData;
-        public clsStatusTableLoader(IBusinessStatusTables iData)
+        private IStatusTablesService _IData;
+        public clsStatusTableLoader(IStatusTablesService iData)
         {
             _IData = iData;
         }
@@ -46,11 +46,11 @@ namespace BusinessLayerRestaurant.Classes
         }
     }
 
-    public class clsCompositionTablesLoader : ICompositionBTables
+    public class clsCompositionTablesLoader : ITablesServiceComposition
     {
-        private IEnumerable<ICompositionBTables> _loaders;
+        private IEnumerable<ITablesServiceComposition> _loaders;
         public clsCompositionTablesLoader
-            (IEnumerable<ICompositionBTables> loaders)
+            (IEnumerable<ITablesServiceComposition> loaders)
         {
             _loaders = loaders;
         }
@@ -63,11 +63,11 @@ namespace BusinessLayerRestaurant.Classes
         }
     }
 
-    public class clsTablesReader : clsCompositionTablesLoader, IReadableBTables
+    public class clsTablesReader : clsCompositionTablesLoader, ITablesServiceReader
     {
-        private IInterfaceBTables _Interface;
+        private ITablesServiceContainer _Interface;
         private IMyLogger _Logger;
-        public clsTablesReader(IInterfaceBTables @interface,IMyLogger Logger ,IEnumerable<ICompositionBTables> loaders)
+        public clsTablesReader(ITablesServiceContainer @interface,IMyLogger Logger ,IEnumerable<ITablesServiceComposition> loaders)
             : base(loaders)
         {
             _Interface = @interface;
@@ -167,12 +167,12 @@ namespace BusinessLayerRestaurant.Classes
         }
     }
 
-    public class clsTablesWriter : clsCompositionTablesLoader , IWritableBTables
+    public class clsTablesWriter : clsCompositionTablesLoader , ITablesServiceWriter
     {
-        private IInterfaceBTables _Interfaces;
+        private ITablesServiceContainer _Interfaces;
         private IMyLogger _Logger;
         public clsTablesWriter
-            (IMyLogger Logger, IInterfaceBTables @interface, IEnumerable<ICompositionBTables> loader) : base(loader)
+            (IMyLogger Logger, ITablesServiceContainer @interface, IEnumerable<ITablesServiceComposition> loader) : base(loader)
         {
             _Logger = Logger;
             _Interfaces = @interface;
@@ -221,14 +221,14 @@ namespace BusinessLayerRestaurant.Classes
     }
 
 
-    public class clsBusinessTables : IBusinessTables
+    public class clsTablesService : ITablesService
     {
-        private IInterfaceBTables _Interfaces;
-        private IWritableBTables _IWrite;
-        private IReadableBTables _IRead;
+        private ITablesServiceContainer _Interfaces;
+        private ITablesServiceWriter _IWrite;
+        private ITablesServiceReader _IRead;
 
-        public clsBusinessTables( IInterfaceBTables table, IWritableBTables write, 
-            IReadableBTables read)
+        public clsTablesService( ITablesServiceContainer table, ITablesServiceWriter write, 
+            ITablesServiceReader read)
         {
             _Interfaces = table;
             _IWrite = write;
@@ -236,7 +236,7 @@ namespace BusinessLayerRestaurant.Classes
         }
 
 
-        public IBusinessStatusTables IStatusTable
+        public IStatusTablesService IStatusTable
         {
             get => _Interfaces.IBusinessStatusTable;
             set => _Interfaces.IBusinessStatusTable = value;

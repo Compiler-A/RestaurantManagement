@@ -12,8 +12,8 @@ namespace APILayer.Controllers
     public class APIStatusOrders : BaseController
     {
 
-        private readonly IBusinessStatusOrders _StatusOrder;
-        public APIStatusOrders(IBusinessStatusOrders statusOrder)
+        private readonly IStatusOrdersService _StatusOrder;
+        public APIStatusOrders(IStatusOrdersService statusOrder)
         {
             _StatusOrder = statusOrder;
         }

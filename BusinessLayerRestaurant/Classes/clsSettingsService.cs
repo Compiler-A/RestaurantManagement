@@ -9,7 +9,7 @@ using ContractsLayerRestaurant.DTOs.Settings;
 namespace BusinessLayerRestaurant.Classes
 {
 
-    public class clsSettingsRepositoryBridge : IInterfaceBSettings
+    public class clsSettingsContainer : ISettingsServiceContainer
     {
         private IDataSettings _IDataSetting;
         public IDataSettings IData 
@@ -18,7 +18,7 @@ namespace BusinessLayerRestaurant.Classes
             set => _IDataSetting = value; 
         }
 
-        public clsSettingsRepositoryBridge(IDataSettings dataSetting)
+        public clsSettingsContainer(IDataSettings dataSetting)
         {
             _IDataSetting = dataSetting;
         }
@@ -26,11 +26,11 @@ namespace BusinessLayerRestaurant.Classes
 
 
 
-    public class clsSettingsReader : IReadableBSettings
+    public class clsSettingsReader : ISettingsServiceReader
     {
         private IMyLogger _Logger;
-        private IInterfaceBSettings _Interface;
-        public clsSettingsReader(IInterfaceBSettings setting, IMyLogger logger)
+        private ISettingsServiceContainer _Interface;
+        public clsSettingsReader(ISettingsServiceContainer setting, IMyLogger logger)
         {
             _Interface = setting;
             _Logger = logger;
@@ -58,11 +58,11 @@ namespace BusinessLayerRestaurant.Classes
             return dto;
         }
     }
-    public class clsSettingsWriter : IWritableBSettings
+    public class clsSettingsWriter : ISettingsServiceWriter
     {
         private IMyLogger _Logger;
-        private IInterfaceBSettings _Interface;
-        public clsSettingsWriter(IInterfaceBSettings setting, IMyLogger Logger)
+        private ISettingsServiceContainer _Interface;
+        public clsSettingsWriter(ISettingsServiceContainer setting, IMyLogger Logger)
         {
             _Interface = setting;
             _Logger = Logger;
@@ -108,14 +108,14 @@ namespace BusinessLayerRestaurant.Classes
     }
 
 
-    public class clsBusinessSettings : IBusinessSettings
+    public class clsSettingsService : ISettingsService
     {
-        private IWritableBSettings _IWrite;
-        private IReadableBSettings _IRead;
+        private ISettingsServiceWriter _IWrite;
+        private ISettingsServiceReader _IRead;
 
-        public clsBusinessSettings(
-            IWritableBSettings Write,
-            IReadableBSettings read)
+        public clsSettingsService(
+            ISettingsServiceWriter Write,
+            ISettingsServiceReader read)
         {
             _IWrite = Write;
             _IRead = read;

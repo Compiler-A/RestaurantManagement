@@ -5,32 +5,32 @@ using ContractsLayerRestaurant.DTOs.StatusMenus;
 namespace BusinessLayerRestaurant.Interfaces
 {
 
-    public interface IInterfaceBStatusMenus : IInterfaceBase<IDataStatusMenus>
+    public interface IStatusMenusServiceContainer : IInterfaceBase<IDataStatusMenus>
     { }
 
-    public interface IReadableBStatusMenus : IReadableBusinessBase<DTOStatusMenus>
+    public interface IStatusMenusServiceReader : IReadableBusinessBase<DTOStatusMenus>
     { }
 
-    public interface IWritableBStatusMenus 
+    public interface IStatusMenusServiceWriter 
         : IWritableBusinessBase<DTOStatusMenus, DTOStatusMenusCRequest, DTOStatusMenusURequest>
     { }
 
-    public interface IReadableBusinessStatusMenus
+    public interface IStatusMenusServiceReadable
     {
         Task<List<DTOStatusMenus>> GetAllStatusMenusAsync(int page);
         Task<DTOStatusMenus?> GetStatusMenuAsync(int id);
     }
 
-    public interface IWritableBusinessStatusMenus
+    public interface IStatusMenusServiceWritable
     {
         Task<DTOStatusMenus?> AddStatusMenuAsync(DTOStatusMenusCRequest Request);
         Task<DTOStatusMenus?> UpdateStatusMenuAsync(DTOStatusMenusURequest Request);
         Task<bool> DeleteStatusMenuAsync(int ID);
     }
-    public interface ICRUDBusinessStatusMenus : IReadableBusinessStatusMenus , IWritableBusinessStatusMenus
+    public interface ICRUDStatusMenusService : IStatusMenusServiceReadable , IStatusMenusServiceWritable
     { }
 
-    public interface IBusinessStatusMenus : ICRUDBusinessStatusMenus
+    public interface IStatusMenusService : ICRUDStatusMenusService
     { }
 
 }

@@ -39,7 +39,7 @@ builder.Services.AddStatusTablesServices();
 builder.Services.AddTablesServices();
 builder.Services.AddTypeItemsServices();
 
-builder.Services.AddSingleton<IMyLogger, clsLogger>();
+builder.Services.AddSingleton<IMyLogger, clsMyLogger>();
 
 
 var app = builder.Build();

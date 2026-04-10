@@ -4,37 +4,37 @@ using ContractsLayerRestaurant.DTOs.StatusTables;
 
 namespace BusinessLayerRestaurant.Interfaces
 {
-    public interface IReadableBStatusTables : IReadableBusinessBase<DTOStatusTables>
+    public interface IStatusTablesServiceReader : IReadableBusinessBase<DTOStatusTables>
     {   
         Task<bool> isFindAsync(int id);
     }
 
-    public interface IWritableBStatusTables : IWritableBusinessBase<DTOStatusTables, DTOStatusTablesCRequest, DTOStatusTablesURequest>
+    public interface IStatusTablesServiceWriter : IWritableBusinessBase<DTOStatusTables, DTOStatusTablesCRequest, DTOStatusTablesURequest>
     { }
 
 
-    public interface IInterfaceBStatusTables : IInterfaceBase<IDataStatusTables>
+    public interface IStatusTablesServiceContainer : IInterfaceBase<IDataStatusTables>
     { }
 
 
-    public interface IReadableBusinessStatusTables
+    public interface IStatusTablesServiceReadable
     {
         Task<List<DTOStatusTables>> GetAllStatusTablesAsync(int page);
         Task<DTOStatusTables?> GetStatusTableAsync(int id);
         Task<bool> isFindStatusTableAsync(int id);
     }
 
-    public interface IWritableBusinessStatusTables
+    public interface IStatusTablesServiceWritable
     {
         Task<DTOStatusTables?> AddStatusTableAsync(DTOStatusTablesCRequest Request);
         Task<DTOStatusTables?> UpdateStatusTableAsync(DTOStatusTablesURequest Request);
         Task<bool> DeleteStatusTableAsync(int ID);
 
     }
-    public interface ICRUDBusinessStatusTables : IWritableBusinessStatusTables, IReadableBusinessStatusTables
+    public interface ICRUDStatusTablesService : IStatusTablesServiceWritable, IStatusTablesServiceReadable
     { }
 
-    public interface IBusinessStatusTables : ICRUDBusinessStatusTables
+    public interface IStatusTablesService : ICRUDStatusTablesService
     { }
 
 }

@@ -12,8 +12,8 @@ namespace APILayer.Controllers
     [TypeFilter(typeof(ValidateModelAttribute))]
     public class APIJobRoles : BaseController
     {
-        private readonly IBusinessJobRoles jobRoles;
-        public APIJobRoles(IBusinessJobRoles jobRoles)
+        private readonly IJobRolesService jobRoles;
+        public APIJobRoles(IJobRolesService jobRoles)
         {
             this.jobRoles = jobRoles;
         }

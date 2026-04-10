@@ -5,32 +5,29 @@ using ContractsLayerRestaurant.DTOs.Employees;
 
 namespace BusinessLayerRestaurant.Interfaces
 {
-
-
-
-    public interface IInterfaceBEmployees : IInterfaceBase<IDataEmployees>
+    public interface IEmployeesServiceContainer : IInterfaceBase<IDataEmployees>
     {
-        IBusinessJobRoles IBusinessJobRole { get; set; }
+        IJobRolesService IBusinessJobRole { get; set; }
     }
 
-    public interface IInterfaceBusinessEmployee
+    public interface IEmployeesServiceContainers
     {
-        IBusinessJobRoles IJobRole { get; set; }
+        IJobRolesService IJobRole { get; set; }
     }
 
 
-    public interface ICompositionBEmployees
+    public interface IEmployeesServiceComposition
     {
         Task LoadDataAsync(DTOEmployees item);
     }
 
-    public interface IReadableBEmployees : IReadableBusinessBase<DTOEmployees>
+    public interface IEmployeesServiceReader : IReadableBusinessBase<DTOEmployees>
     {
         Task<DTOEmployees?> LoginAsync(DTOEmployeesLoginRequest Request);
         Task<DTOEmployees?> GetAsync(string UserName);
     }
 
-    public interface IReadableBusinessEmployees
+    public interface IEmployeesServiceReadable
     {
         Task<DTOEmployees?> GetLoginEmployeeAsync(DTOEmployeesLoginRequest Request);
         Task<List<DTOEmployees>> GetAllEmployeesAsync(int page);
@@ -38,14 +35,14 @@ namespace BusinessLayerRestaurant.Interfaces
         Task<DTOEmployees?> GetEmployeeAsync(string UserName);
     }
 
-    public interface IWritableBEmployees 
+    public interface IEmployeesServiceWriter 
         : IWritableBusinessBase<DTOEmployees, DTOEmployeesCRequest, DTOEmployeesURequest>
     {
         Task<bool> ChangePasswordAsync(DTOEmployeesChangedPassword Changed);
 
     }
 
-    public interface IWritableBusinessEmployees
+    public interface IEmployeesServiceWritable
     {
         Task<DTOEmployees?> CreateEmployeeAsync(DTOEmployeesCRequest Request);
         Task<DTOEmployees?> UpdateEmployeeAsync(DTOEmployeesURequest Request);
@@ -53,10 +50,10 @@ namespace BusinessLayerRestaurant.Interfaces
         Task<bool> ChangePasswordAsync(DTOEmployeesChangedPassword Changed);
     }
 
-    public interface ICRUDBusinessEmployees : IWritableBusinessEmployees, IReadableBusinessEmployees
+    public interface ICRUDEmployeesService : IEmployeesServiceWritable, IEmployeesServiceReadable
     { }
 
-    public interface IBusinessEmployees : ICRUDBusinessEmployees, IInterfaceBusinessEmployee
+    public interface IEmployeesService : ICRUDEmployeesService, IEmployeesServiceContainers
     {
     }
 

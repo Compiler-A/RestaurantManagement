@@ -13,10 +13,10 @@ namespace APILayer.Extensions
             Services.AddScoped<IReadableDTypeItems, DataLayerRestaurant.Classes.clsTypeItemsReader>();
             Services.AddScoped<IWritableDTypeItems, DataLayerRestaurant.Classes.clsTypeItemsWriter>();
             Services.AddScoped<IDataTypeItems, clsDataTypeItems>();
-            Services.AddScoped<IInterfaceBTypeItems, clsTypeItemsRepositoryBridge>();
-            Services.AddScoped<IReadableBTypeItems, BusinessLayerRestaurant.Classes.clsTypeItemsReader>();
-            Services.AddScoped<IWritableBTypeItems, BusinessLayerRestaurant.Classes.clsTypeItemsWriter>();
-            Services.AddScoped<IBusinessTypeItems, clsBusinessTypeItems>();
+            Services.AddScoped<ITypeItemsServiceContainer, clsTypeItemsContainer>();
+            Services.AddScoped<ITypeItemsServiceReader, BusinessLayerRestaurant.Classes.clsTypeItemsReader>();
+            Services.AddScoped<ITypeItemsServiceWriter, BusinessLayerRestaurant.Classes.clsTypeItemsWriter>();
+            Services.AddScoped<IBusinessService, clsTypeItemsService>();
 
             return Services;
         }

@@ -13,10 +13,10 @@ namespace APILayer.Extensions
             Services.AddScoped<IReadableDJobRoles, DataLayerRestaurant.Classes.clsJobRolesReader>();
             Services.AddScoped<IWritableDJobRoles, DataLayerRestaurant.Classes.clsJobRolesWriter>();
             Services.AddScoped<IDataJobRoles, clsDataJobRoles>();
-            Services.AddScoped<IWritableBJobRoles, BusinessLayerRestaurant.Classes.clsJobRolesWriter>();
-            Services.AddScoped<IReadableBJobRoles, BusinessLayerRestaurant.Classes.clsJobRolesReader>();
-            Services.AddScoped<IInterfaceBJobRoles, clsBJobRolesRepositoryBridge>();
-            Services.AddScoped<IBusinessJobRoles, clsBusinessJobRoles>();
+            Services.AddScoped<IJobRolesServiceWriter, BusinessLayerRestaurant.Classes.clsJobRolesWriter>();
+            Services.AddScoped<IJobRolesServiceReader, BusinessLayerRestaurant.Classes.clsJobRolesReader>();
+            Services.AddScoped<IJobRolesServiceContainer, clsJobRolesContainer>();
+            Services.AddScoped<IJobRolesService, clsJobRolesService>();
             return Services;
         }
     }

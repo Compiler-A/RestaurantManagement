@@ -9,7 +9,7 @@ namespace BusinessLayerRestaurant.Classes
 {
     
 
-    public class clsBJobRolesRepositoryBridge : IInterfaceBJobRoles
+    public class clsJobRolesContainer : IJobRolesServiceContainer
     {
         private IDataJobRoles _IJobRole;
         public IDataJobRoles IData
@@ -18,7 +18,7 @@ namespace BusinessLayerRestaurant.Classes
             set => _IJobRole = value;
         }
 
-        public clsBJobRolesRepositoryBridge(IDataJobRoles IJobRole)
+        public clsJobRolesContainer(IDataJobRoles IJobRole)
         {
             _IJobRole = IJobRole;
         }
@@ -26,11 +26,11 @@ namespace BusinessLayerRestaurant.Classes
     }
 
 
-    public class clsJobRolesReader : IReadableBJobRoles
+    public class clsJobRolesReader : IJobRolesServiceReader
     {
-        private IInterfaceBJobRoles _Interface;
+        private IJobRolesServiceContainer _Interface;
         private IMyLogger _Logger;
-        public clsJobRolesReader(IInterfaceBJobRoles setting, IMyLogger myLogger)
+        public clsJobRolesReader(IJobRolesServiceContainer setting, IMyLogger myLogger)
         {
             _Interface = setting;
             _Logger = myLogger;
@@ -58,11 +58,11 @@ namespace BusinessLayerRestaurant.Classes
         }
     }
 
-    public class clsJobRolesWriter :  IWritableBJobRoles
+    public class clsJobRolesWriter :  IJobRolesServiceWriter
     {
-        private IInterfaceBJobRoles _Interface;
+        private IJobRolesServiceContainer _Interface;
         private IMyLogger _Logger;
-        public clsJobRolesWriter(IInterfaceBJobRoles jobrole, IMyLogger logger)
+        public clsJobRolesWriter(IJobRolesServiceContainer jobrole, IMyLogger logger)
         {
             _Interface = jobrole;
             _Logger = logger;
@@ -106,12 +106,12 @@ namespace BusinessLayerRestaurant.Classes
 
    
 
-    public class clsBusinessJobRoles : IBusinessJobRoles
+    public class clsJobRolesService : IJobRolesService
     {
 
-        IReadableBJobRoles _IRead;
-        IWritableBJobRoles _IWrite;
-        public clsBusinessJobRoles( IReadableBJobRoles iRead, IWritableBJobRoles iWrite)
+        IJobRolesServiceReader _IRead;
+        IJobRolesServiceWriter _IWrite;
+        public clsJobRolesService( IJobRolesServiceReader iRead, IJobRolesServiceWriter iWrite)
         {
             _IRead = iRead;
             _IWrite = iWrite;

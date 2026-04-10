@@ -12,11 +12,11 @@ namespace APILayer.Extensions
             Services.AddScoped<IReadableDTables, DataLayerRestaurant.Classes.clsTablesReader>();
             Services.AddScoped<IWritableDTables, DataLayerRestaurant.Classes.clsTablesWriter>();
             Services.AddScoped<IDataTables, clsDataTables>();
-            Services.AddScoped<IReadableBTables, BusinessLayerRestaurant.Classes.clsTablesReader>();
-            Services.AddScoped<IWritableBTables, BusinessLayerRestaurant.Classes.clsTablesWriter>();
-            Services.AddScoped<IInterfaceBTables, clsTablesRepositoryBridge>();
-            Services.AddScoped<ICompositionBTables, clsStatusTableLoader>();
-            Services.AddScoped<IBusinessTables, clsBusinessTables>();
+            Services.AddScoped<ITablesServiceReader, BusinessLayerRestaurant.Classes.clsTablesReader>();
+            Services.AddScoped<ITablesServiceWriter, BusinessLayerRestaurant.Classes.clsTablesWriter>();
+            Services.AddScoped<ITablesServiceContainer, clsTablesContainer>();
+            Services.AddScoped<ITablesServiceComposition, clsStatusTableLoader>();
+            Services.AddScoped<ITablesService, clsTablesService>();
             return Services;
         }
     }

@@ -5,48 +5,48 @@ using ContractsLayerRestaurant.DTOs.OrderDetails;
 namespace BusinessLayerRestaurant.Interfaces
 {
     
-    public interface IInterfaceBOrderDetails : IInterfaceBase<IDataOrderDetails>
+    public interface IOrderDetailsServiceContainer : IInterfaceBase<IDataOrderDetails>
     {
-        IBusinessOrders IBusinessOrder { get; set; }
-        IBusinessMenuItems IBusinessMenuItem { get; set; }
+        IOrdersService IBusinessOrder { get; set; }
+        IMenuItemsService IBusinessMenuItem { get; set; }
     }
 
-    public interface ICompositionBOrderDetails
+    public interface IOrderDetailsServiceComposition
     {
         Task LoadDataAsync(DTOOrderDetails item);
     }
 
-    public interface IInterfaceBusinessOrderDetails
+    public interface IOrderDetailsServiceContainers
     {
-        IBusinessOrders IOrder { get; set; }
-        IBusinessMenuItems IMenuItem { get; set; }
+        IOrdersService IOrder { get; set; }
+        IMenuItemsService IMenuItem { get; set; }
     }
 
-    public interface IReadableBOrderDetails : IReadableBusinessBase<DTOOrderDetails>
+    public interface IOrderDetailsServiceReader : IReadableBusinessBase<DTOOrderDetails>
     {
         Task<List<DTOOrderDetails>> GetAllByOrderIDAsync(int orderID);
     }
 
-    public interface IWritableBOrderDetails
+    public interface IOrderDetailsServiceWriter
        : IWritableBusinessBase<DTOOrderDetails, DTOOrderDetailsCRequest, DTOOrderDetailsURequest>
     { }
 
-    public interface IReadableBusinessOrderDetails
+    public interface IOrderDetailsServiceReadable
     {
         Task<List<DTOOrderDetails>> GetAllOrderDetailsAsync(int page);
         Task<List<DTOOrderDetails>> GetAllOrderDetailsByOrderIDAsync(int orderID);
         Task<DTOOrderDetails?> GetOrderDetailAsync(int page);
     }
-    public interface IWritableBusinessOrderDetails
+    public interface IOrderDetailsServiceWritable
     {
         Task<DTOOrderDetails?> AddOrderDetailAsync(DTOOrderDetailsCRequest Request);
         Task<DTOOrderDetails?> UpdateOrderDetailAsync(DTOOrderDetailsURequest Request);
         Task<bool> DeleteOrderDetailAsync(int ID);
     }
-    public interface ICRUDBusinessOrderDetails : IWritableBusinessOrderDetails, IReadableBusinessOrderDetails
+    public interface ICRUDOrderDetailsService : IOrderDetailsServiceWritable, IOrderDetailsServiceReadable
     { }
 
-    public interface IBusinessOrderDetails : ICRUDBusinessOrderDetails, IInterfaceBusinessOrderDetails
+    public interface IOrderDetailsService : ICRUDOrderDetailsService, IOrderDetailsServiceContainers
     {
     }
 

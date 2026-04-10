@@ -12,10 +12,10 @@ namespace APILayer.Extensions
             Services.AddScoped<IReadableDStatusTables, DataLayerRestaurant.Classes.clsStatusTablesReader>();
             Services.AddScoped<IWritableDStatusTables, DataLayerRestaurant.Classes.clsStatusTablesWriter>();
             Services.AddScoped<IDataStatusTables, clsDataStatusTables>();
-            Services.AddScoped<IReadableBStatusTables, BusinessLayerRestaurant.Classes.clsStatusTablesReader>();
-            Services.AddScoped<IWritableBStatusTables, BusinessLayerRestaurant.Classes.clsStatusTablesWriter>();
-            Services.AddScoped<IInterfaceBStatusTables, clsStatusTablesRepositoryBridge>();
-            Services.AddScoped<IBusinessStatusTables, clsBusinessStatusTables>();
+            Services.AddScoped<IStatusTablesServiceReader, BusinessLayerRestaurant.Classes.clsStatusTablesReader>();
+            Services.AddScoped<IStatusTablesServiceWriter, BusinessLayerRestaurant.Classes.clsStatusTablesWriter>();
+            Services.AddScoped<IStatusTablesServiceContainer, clsStatusTablesContainer>();
+            Services.AddScoped<IStatusTablesService, clsStatusTablesService>();
 
             return Services;
         }

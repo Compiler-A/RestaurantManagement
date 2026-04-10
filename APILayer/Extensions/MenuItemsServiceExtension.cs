@@ -12,12 +12,12 @@ namespace APILayer.Extensions
             Services.AddScoped<IReadableDMenuItems, DataLayerRestaurant.Classes.clsMenuItemsReader>();
             Services.AddScoped<IWritableDMenuItems, DataLayerRestaurant.Classes.clsMenuItemsWriter>();
             Services.AddScoped<IDataMenuItems, clsDataMenuItems>();
-            Services.AddScoped<ICompositionBMenuItems, clsTypeItemLoader>();
-            Services.AddScoped<ICompositionBMenuItems, clsStatusMenuLoader>();
-            Services.AddScoped<IInterfaceBMenuItems, clsMenuItemsRepositoryBridge>();
-            Services.AddScoped<IReadableBMenuItems, BusinessLayerRestaurant.Classes.clsMenuItemsReader>();
-            Services.AddScoped<IWritableBMenuItems, BusinessLayerRestaurant.Classes.clsMenuItemsWriter>();
-            Services.AddScoped<IBusinessMenuItems, clsBusinessMenuItem>();
+            Services.AddScoped<IMenuItemsServiceComposition, clsTypeItemLoader>();
+            Services.AddScoped<IMenuItemsServiceComposition, clsStatusMenuLoader>();
+            Services.AddScoped<IMenuItemsServiceContainer, clsMenuItemsContainer>();
+            Services.AddScoped<IMenuItemsServiceReader, BusinessLayerRestaurant.Classes.clsMenuItemsReader>();
+            Services.AddScoped<IMenuItemsServiceWriter, BusinessLayerRestaurant.Classes.clsMenuItemsWriter>();
+            Services.AddScoped<IMenuItemsService, clsMenuItemService>();
             return Services;
         }
     }

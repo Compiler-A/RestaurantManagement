@@ -12,11 +12,11 @@ namespace APILayer.Extensions
             Services.AddScoped<IReadableDEmployees, DataLayerRestaurant.Classes.clsEmployeesReader>();
             Services.AddScoped<IWritableDEmployees, DataLayerRestaurant.Classes.clsEmployeesWriter>();
             Services.AddScoped<IDataEmployees, clsDataEmployees>();
-            Services.AddScoped<IReadableBEmployees, BusinessLayerRestaurant.Classes.clsEmployeesReader>();
-            Services.AddScoped<IWritableBEmployees, BusinessLayerRestaurant.Classes.clsEmployeesWriter>();
-            Services.AddScoped<IInterfaceBEmployees, clsEmployeesRepositoryBridge>();
-            Services.AddScoped<ICompositionBEmployees, clsJobRoleLoader>();
-            Services.AddScoped<IBusinessEmployees, clsBusinessEmployees>();
+            Services.AddScoped<IEmployeesServiceReader, BusinessLayerRestaurant.Classes.clsEmployeesReader>();
+            Services.AddScoped<IEmployeesServiceWriter, BusinessLayerRestaurant.Classes.clsEmployeesWriter>();
+            Services.AddScoped<IEmployeesServiceContainer, clsEmployeesContainer>();
+            Services.AddScoped<IEmployeesServiceComposition, clsJobRoleLoader>();
+            Services.AddScoped<IEmployeesService, clsEmployeesService>();
             return Services;
         }
     }

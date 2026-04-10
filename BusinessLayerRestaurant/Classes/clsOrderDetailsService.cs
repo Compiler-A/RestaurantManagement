@@ -9,7 +9,7 @@ using ContractsLayerRestaurant.DTOs.OrderDetails;
 namespace BusinessLayerRestaurant.Classes
 {
 
-    public class clsOrderDetailsRepositoryBridge : IInterfaceBOrderDetails
+    public class clsOrderDetailsContainer : IOrderDetailsServiceContainer
     {
         private IDataOrderDetails _IDataOrderDetail;
         public IDataOrderDetails IData
@@ -18,20 +18,20 @@ namespace BusinessLayerRestaurant.Classes
             set => _IDataOrderDetail = value;
         }
 
-        private IBusinessOrders _IBusinessOrder;
-        public IBusinessOrders IBusinessOrder
+        private IOrdersService _IBusinessOrder;
+        public IOrdersService IBusinessOrder
         {
             get => _IBusinessOrder;
             set => _IBusinessOrder = value;
         }
-        private IBusinessMenuItems _IBusinessMenuItem;
-        public IBusinessMenuItems IBusinessMenuItem
+        private IMenuItemsService _IBusinessMenuItem;
+        public IMenuItemsService IBusinessMenuItem
         {
             get => _IBusinessMenuItem;
             set => _IBusinessMenuItem = value;
         }
 
-        public clsOrderDetailsRepositoryBridge(IDataOrderDetails iData, IBusinessOrders iBusinessOrder, IBusinessMenuItems iBusinessMenuItem)
+        public clsOrderDetailsContainer(IDataOrderDetails iData, IOrdersService iBusinessOrder, IMenuItemsService iBusinessMenuItem)
         {
             _IDataOrderDetail = iData;
             _IBusinessOrder = iBusinessOrder;
@@ -40,10 +40,10 @@ namespace BusinessLayerRestaurant.Classes
     }
 
 
-    public class clsOrderLoader : ICompositionBOrderDetails
+    public class clsOrderLoader : IOrderDetailsServiceComposition
     {
-        IBusinessOrders _Order;
-        public clsOrderLoader(IBusinessOrders order)
+        IOrdersService _Order;
+        public clsOrderLoader(IOrdersService order)
         { 
             _Order = order;
         }
@@ -52,10 +52,10 @@ namespace BusinessLayerRestaurant.Classes
             item.Order = await _Order.GetOrderAsync(item.OrderID);
         }
     }
-    public class clsMenuItemLoader : ICompositionBOrderDetails
+    public class clsMenuItemLoader : IOrderDetailsServiceComposition
     {
-        IBusinessMenuItems _MenuItem;
-        public clsMenuItemLoader(IBusinessMenuItems menuItem)
+        IMenuItemsService _MenuItem;
+        public clsMenuItemLoader(IMenuItemsService menuItem)
         {
             _MenuItem = menuItem;
         }
@@ -64,11 +64,11 @@ namespace BusinessLayerRestaurant.Classes
             item.Item = await _MenuItem.GetMenuItemAsync(item.ItemID);
         }
     }
-    public class clsCompositionOrderDetailsLoader : ICompositionBOrderDetails
+    public class clsCompositionOrderDetailsLoader : IOrderDetailsServiceComposition
     {
-        private IEnumerable<ICompositionBOrderDetails> _loaders;
+        private IEnumerable<IOrderDetailsServiceComposition> _loaders;
         public clsCompositionOrderDetailsLoader
-            (IEnumerable<ICompositionBOrderDetails> loaders)
+            (IEnumerable<IOrderDetailsServiceComposition> loaders)
         {
             _loaders = loaders;
         }
@@ -82,12 +82,12 @@ namespace BusinessLayerRestaurant.Classes
     }
 
 
-    public class clsOrderDetailsReader : clsCompositionOrderDetailsLoader, IReadableBOrderDetails
+    public class clsOrderDetailsReader : clsCompositionOrderDetailsLoader, IOrderDetailsServiceReader
     {
-        private IInterfaceBOrderDetails _Interfaces;
+        private IOrderDetailsServiceContainer _Interfaces;
         private IMyLogger _Logger;
         public clsOrderDetailsReader
-            (IInterfaceBOrderDetails Interfaces, IEnumerable<ICompositionBOrderDetails> loaders, IMyLogger logger) : base(loaders)
+            (IOrderDetailsServiceContainer Interfaces, IEnumerable<IOrderDetailsServiceComposition> loaders, IMyLogger logger) : base(loaders)
         {
             _Interfaces = Interfaces;
             _Logger = logger;
@@ -136,12 +136,12 @@ namespace BusinessLayerRestaurant.Classes
         }
     }
 
-    public class clsOrderDetailsWriter : clsCompositionOrderDetailsLoader, IWritableBOrderDetails
+    public class clsOrderDetailsWriter : clsCompositionOrderDetailsLoader, IOrderDetailsServiceWriter
     {
-        private IInterfaceBOrderDetails _Interfaces;
+        private IOrderDetailsServiceContainer _Interfaces;
         private IMyLogger _Logger;
         public clsOrderDetailsWriter
-            (IMyLogger Logger ,IInterfaceBOrderDetails @interface, IEnumerable<ICompositionBOrderDetails> loader) : base(loader)
+            (IMyLogger Logger ,IOrderDetailsServiceContainer @interface, IEnumerable<IOrderDetailsServiceComposition> loader) : base(loader)
         {
             _Interfaces = @interface;
             _Logger = Logger;
@@ -193,28 +193,28 @@ namespace BusinessLayerRestaurant.Classes
 
 
 
-    public class clsBusinessOrderDetails : IBusinessOrderDetails
+    public class clsOrderDetailsService : IOrderDetailsService
     {
-        private IInterfaceBOrderDetails _Interface;
-        private IWritableBOrderDetails _IWrite;
-        private IReadableBOrderDetails _Read;
+        private IOrderDetailsServiceContainer _Interface;
+        private IOrderDetailsServiceWriter _IWrite;
+        private IOrderDetailsServiceReader _Read;
 
-        public clsBusinessOrderDetails(
-            IWritableBOrderDetails Write,
-            IReadableBOrderDetails read,
-            IInterfaceBOrderDetails interfaces)
+        public clsOrderDetailsService(
+            IOrderDetailsServiceWriter Write,
+            IOrderDetailsServiceReader read,
+            IOrderDetailsServiceContainer interfaces)
         {
             _IWrite = Write;
             _Read = read;
             _Interface = interfaces;
         }
 
-        public IBusinessMenuItems IMenuItem
+        public IMenuItemsService IMenuItem
         {
             get => _Interface.IBusinessMenuItem;
             set => _Interface.IBusinessMenuItem = value;
         }
-        public IBusinessOrders IOrder
+        public IOrdersService IOrder
         {
             get => _Interface.IBusinessOrder;
             set => _Interface.IBusinessOrder = value;

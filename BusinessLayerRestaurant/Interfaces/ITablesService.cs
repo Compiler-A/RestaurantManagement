@@ -5,22 +5,22 @@ using ContractsLayerRestaurant.DTOs.Tables;
 namespace BusinessLayerRestaurant.Interfaces
 {
 
-    public interface IInterfaceBTables : IInterfaceBase<IDataTables>
+    public interface ITablesServiceContainer : IInterfaceBase<IDataTables>
     {
-        IBusinessStatusTables IBusinessStatusTable{ get; set; }
+        IStatusTablesService IBusinessStatusTable { get; set; }
     }
 
-    public interface ICompositionBTables
+    public interface ITablesServiceComposition
     {
         Task LoadDataAsync(DTOTables item);
     }
 
-    public interface IInterfaceBusinessTables
+    public interface ITablesServiceContainers
     {
-        IBusinessStatusTables IStatusTable { get; set; }
+        IStatusTablesService IStatusTable { get; set; }
     }
 
-    public interface IReadableBTables : IReadableBusinessBase<DTOTables>
+    public interface ITablesServiceReader : IReadableBusinessBase<DTOTables>
     {
         Task<List<DTOTables>> GetAllAsync();
         Task<List<DTOTables>> GetFilter1Async(DTOTablesFilterStatusTableRequest Request);
@@ -30,12 +30,12 @@ namespace BusinessLayerRestaurant.Interfaces
         Task<List<DTOTables>> GetAllAvailablesAsync();
     }
 
-    public interface IWritableBTables
+    public interface ITablesServiceWriter
        : IWritableBusinessBase<DTOTables, DTOTablesCRequest, DTOTablesURequest>
     {
     }
 
-    public interface IReadableBusinessTables
+    public interface ITablesServiceReadable
     {
         Task<List<DTOTables>> GetAllTablesAsync(int page);
         Task<DTOTables?> GetTableAsync(int id);
@@ -46,16 +46,16 @@ namespace BusinessLayerRestaurant.Interfaces
         Task<List<DTOTables>> GetTablesFilter3Async(DTOTablesFilterStatusAndSeatTableRequest Request);
         Task<List<DTOTables>> GetAllTablesAvailablesAsync();
     }
-    public interface IWritableBusinessTables
+    public interface ITablesServiceWritable
     {
         Task<DTOTables?> AddTableAsync(DTOTablesCRequest Request);
         Task<DTOTables?> UpdateTableAsync(DTOTablesURequest Request);
         Task<bool> DeleteTableAsync(int ID);
     }
-    public interface ICRUDBusinessTables : IReadableBusinessTables, IWritableBusinessTables
+    public interface ICRUDTablesService : ITablesServiceReadable, ITablesServiceWritable
     { }
 
-    public interface IBusinessTables : ICRUDBusinessTables, IInterfaceBusinessTables
+    public interface ITablesService : ICRUDTablesService, ITablesServiceContainers
     {
     }
 }

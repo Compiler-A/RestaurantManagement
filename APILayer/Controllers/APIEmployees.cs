@@ -10,9 +10,9 @@ namespace APILayer.Controllers
     [TypeFilter(typeof(ValidateModelAttribute))]
     public class APIEmployees : BaseController
     {
-        private readonly IBusinessEmployees employees;
+        private readonly IEmployeesService employees;
         private readonly IMyLogger _Logger;
-        public APIEmployees(IBusinessEmployees employees, IMyLogger logger)
+        public APIEmployees(IEmployeesService employees, IMyLogger logger)
         {
             this.employees = employees;
             _Logger = logger;

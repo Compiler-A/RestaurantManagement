@@ -9,10 +9,10 @@ using ContractsLayerRestaurant.DTOs.StatusOrders;
 namespace BusinessLayerRestaurant.Classes
 {
 
-    public class clsStatusOrdersRepositoryBridge : IInterfaceBStatusOrders
+    public class clsStatusOrdersContainer : IStatusOrdersServiceContainer
     {
         private IDataStatusOrders _IDataStatusOrder;
-        public clsStatusOrdersRepositoryBridge(IDataStatusOrders IDataStatusOrder)
+        public clsStatusOrdersContainer(IDataStatusOrders IDataStatusOrder)
         {
             this._IDataStatusOrder = IDataStatusOrder;
         }
@@ -23,11 +23,11 @@ namespace BusinessLayerRestaurant.Classes
         }
     }
 
-    public class clsStatusOrdersReader : IReadableBStatusOrders
+    public class clsStatusOrdersReader : IStatusOrdersServiceReader
     {
-        private IInterfaceBStatusOrders _Interface;
+        private IStatusOrdersServiceContainer _Interface;
         private IMyLogger _Logger;
-        public clsStatusOrdersReader(IInterfaceBStatusOrders Interface, IMyLogger logger)
+        public clsStatusOrdersReader(IStatusOrdersServiceContainer Interface, IMyLogger logger)
         {
             _Interface = Interface;
             _Logger = logger;
@@ -58,9 +58,9 @@ namespace BusinessLayerRestaurant.Classes
     }
     public class clsStatusOrdersWriter : IWritableBStatusOrders
     {
-        private IInterfaceBStatusOrders _Interface;
+        private IStatusOrdersServiceContainer _Interface;
         private IMyLogger _Logger;
-        public clsStatusOrdersWriter(IInterfaceBStatusOrders setting, IMyLogger Logger)
+        public clsStatusOrdersWriter(IStatusOrdersServiceContainer setting, IMyLogger Logger)
         {
             _Interface = setting;
             _Logger = Logger;
@@ -105,12 +105,12 @@ namespace BusinessLayerRestaurant.Classes
     }
 
 
-    public class clsBusinessStatusOrders : IBusinessStatusOrders
+    public class clsStatusOrdersService : IStatusOrdersService
     {
-        private IReadableBStatusOrders _IRead;
+        private IStatusOrdersServiceReader _IRead;
         private IWritableBStatusOrders _IWrite;
 
-        public clsBusinessStatusOrders(IReadableBStatusOrders read, IWritableBStatusOrders write)
+        public clsStatusOrdersService(IStatusOrdersServiceReader read, IWritableBStatusOrders write)
         {
             _IRead = read;
             _IWrite = write;

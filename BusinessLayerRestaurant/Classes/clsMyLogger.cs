@@ -4,7 +4,7 @@ using BusinessLayerRestaurant.Interfaces;
 
 namespace BusinessLayerRestaurant.Classes
 {
-    public class clsLogger : IMyLogger
+    public class clsMyLogger : IMyLogger
     {
         public void EventLogs(string Message, EventLogEntryType EventType, string Type = "Application")
         {

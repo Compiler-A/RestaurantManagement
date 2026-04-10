@@ -12,12 +12,12 @@ namespace APILayer.Extensions
             Services.AddScoped<IReadableDOrderDetails, DataLayerRestaurant.Classes.clsOrderDetailsReader>();
             Services.AddScoped<IWritableDOrderDetails, DataLayerRestaurant.Classes.clsOrderDetailsWriter>();
             Services.AddScoped<IDataOrderDetails, clsDataOrderDetails>();
-            Services.AddScoped<IReadableBOrderDetails, BusinessLayerRestaurant.Classes.clsOrderDetailsReader>();
-            Services.AddScoped<IWritableBOrderDetails, BusinessLayerRestaurant.Classes.clsOrderDetailsWriter>();
-            Services.AddScoped<IInterfaceBOrderDetails, clsOrderDetailsRepositoryBridge>();
-            Services.AddScoped<ICompositionBOrderDetails, clsOrderLoader>();
-            Services.AddScoped<ICompositionBOrderDetails, clsMenuItemLoader>();
-            Services.AddScoped<IBusinessOrderDetails, clsBusinessOrderDetails>();
+            Services.AddScoped<IOrderDetailsServiceReader, BusinessLayerRestaurant.Classes.clsOrderDetailsReader>();
+            Services.AddScoped<IOrderDetailsServiceWriter, BusinessLayerRestaurant.Classes.clsOrderDetailsWriter>();
+            Services.AddScoped<IOrderDetailsServiceContainer, clsOrderDetailsContainer>();
+            Services.AddScoped<IOrderDetailsServiceComposition, clsOrderLoader>();
+            Services.AddScoped<IOrderDetailsServiceComposition, clsMenuItemLoader>();
+            Services.AddScoped<IOrderDetailsService, clsOrderDetailsService>();
             return Services;
         }
     }

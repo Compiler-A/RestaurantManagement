@@ -9,34 +9,34 @@ using ContractsLayerRestaurant.DTOs.Orders;
 namespace BusinessLayerRestaurant.Classes
 {
 
-    public class clsOrdersRepositoryBridge : IInterfaceBOrders
+    public class clsOrdersContainer : IOrdersServiceContainer
     {
         private IDataOrders _Iorder;
-        private IBusinessStatusOrders _IStatusOrder;
-        private IBusinessEmployees _IBusinessEmployee;
-        private IBusinessTables _IBusinessTable;
+        private IStatusOrdersService _IStatusOrder;
+        private IEmployeesService _IBusinessEmployee;
+        private ITablesService _IBusinessTable;
         public IDataOrders IData
         {
             get => _Iorder;
             set => _Iorder = value;
         }
-        public IBusinessStatusOrders IBusinessStatusOrder
+        public IStatusOrdersService IBusinessStatusOrder
         {
             get => _IStatusOrder;
             set => _IStatusOrder = value;
         }
-        public IBusinessEmployees IBusinessEmployee
+        public IEmployeesService IBusinessEmployee
         {
             get => _IBusinessEmployee;
             set => _IBusinessEmployee = value;
         }
-        public IBusinessTables IBusinessTable
+        public ITablesService IBusinessTable
         {
             get => _IBusinessTable;
             set => _IBusinessTable = value;
         }
-        public clsOrdersRepositoryBridge
-            (IDataOrders Order, IBusinessEmployees Business, IBusinessStatusOrders StatusOrder, IBusinessTables Table)
+        public clsOrdersContainer
+            (IDataOrders Order, IEmployeesService Business, IStatusOrdersService StatusOrder, ITablesService Table)
         {
             _IStatusOrder = StatusOrder;
             _IBusinessEmployee = Business;
@@ -45,10 +45,10 @@ namespace BusinessLayerRestaurant.Classes
         }
     }
 
-    public class  clsStatusOrderLoader : ICompositionBOrders
+    public class  clsStatusOrderLoader : IOrdersServiceComposition
     {
-        private IBusinessStatusOrders _Status;
-        public clsStatusOrderLoader(IBusinessStatusOrders Status)
+        private IStatusOrdersService _Status;
+        public clsStatusOrderLoader(IStatusOrdersService Status)
         {
             _Status = Status;
         }
@@ -58,10 +58,10 @@ namespace BusinessLayerRestaurant.Classes
             item.statusOrders = await _Status.GetStatusOrdersAsync(item.StatusOrderID);
         }
     }
-    public class clsEmployeeLoader : ICompositionBOrders 
+    public class clsEmployeeLoader : IOrdersServiceComposition 
     {
-        private IBusinessEmployees _Employee;
-        public clsEmployeeLoader(IBusinessEmployees Employee)
+        private IEmployeesService _Employee;
+        public clsEmployeeLoader(IEmployeesService Employee)
         {
             _Employee = Employee;
         }
@@ -69,10 +69,10 @@ namespace BusinessLayerRestaurant.Classes
             item.employees = await _Employee.GetEmployeeAsync(item.EmployerID);
         }
     }
-    public class clsTableLoader : ICompositionBOrders
+    public class clsTableLoader : IOrdersServiceComposition
     {
-        private IBusinessTables _Table;
-        public clsTableLoader(IBusinessTables Table)
+        private ITablesService _Table;
+        public clsTableLoader(ITablesService Table)
         {
             _Table = Table;
         }
@@ -83,9 +83,9 @@ namespace BusinessLayerRestaurant.Classes
     }
     public class clsCompositionOrdersLoader
     {
-        private IEnumerable<ICompositionBOrders> _loaders;
+        private IEnumerable<IOrdersServiceComposition> _loaders;
         public clsCompositionOrdersLoader
-            (IEnumerable<ICompositionBOrders> loaders)
+            (IEnumerable<IOrdersServiceComposition> loaders)
         {
             _loaders = loaders;
         }
@@ -98,12 +98,12 @@ namespace BusinessLayerRestaurant.Classes
         }
 
     }
-    public class clsOrdersReader : clsCompositionOrdersLoader, IReadableBOrders
+    public class clsOrdersReader : clsCompositionOrdersLoader, IOrdersServiceReader
     {
-        private IInterfaceBOrders _Interfaces;
+        private IOrdersServiceContainer _Interfaces;
         private IMyLogger _Logger;
         public clsOrdersReader
-            (IInterfaceBOrders Interfaces, IEnumerable<ICompositionBOrders> loaders, IMyLogger logger) : base(loaders)
+            (IOrdersServiceContainer Interfaces, IEnumerable<IOrdersServiceComposition> loaders, IMyLogger logger) : base(loaders)
         {
             _Interfaces = Interfaces;
             _Logger = logger;
@@ -158,12 +158,12 @@ namespace BusinessLayerRestaurant.Classes
             return koko;
         }
     }
-    public class clsOrdersWriter : clsCompositionOrdersLoader, IWritableBOrders
+    public class clsOrdersWriter : clsCompositionOrdersLoader, IOrdersServiceWriter
     {
-        private IInterfaceBOrders _Interfaces;
+        private IOrdersServiceContainer _Interfaces;
         private IMyLogger _Logger;
         public clsOrdersWriter
-            (IMyLogger Logger, IInterfaceBOrders Interfaces, IEnumerable<ICompositionBOrders> loaders) : base(loaders)
+            (IMyLogger Logger, IOrdersServiceContainer Interfaces, IEnumerable<IOrdersServiceComposition> loaders) : base(loaders)
         {
             _Logger = Logger;
             _Interfaces = Interfaces;
@@ -209,16 +209,16 @@ namespace BusinessLayerRestaurant.Classes
     }
 
 
-    public class clsBusinessOrders : IBusinessOrders
+    public class clsOrdersService : IOrdersService
     {
-        private IInterfaceBOrders _Interface;
-        private IWritableBOrders _IWrite;
-        private IReadableBOrders _Read;
+        private IOrdersServiceContainer _Interface;
+        private IOrdersServiceWriter _IWrite;
+        private IOrdersServiceReader _Read;
 
-        public clsBusinessOrders(
-            IWritableBOrders Write,             
-            IReadableBOrders read,
-            IInterfaceBOrders Interface)
+        public clsOrdersService(
+            IOrdersServiceWriter Write,             
+            IOrdersServiceReader read,
+            IOrdersServiceContainer Interface)
         {
             _IWrite = Write;
             _Read = read;
@@ -226,17 +226,17 @@ namespace BusinessLayerRestaurant.Classes
         }
 
 
-        public IBusinessStatusOrders IStatusOrder
+        public IStatusOrdersService IStatusOrder
         {
             get => _Interface.IBusinessStatusOrder;
             set => _Interface.IBusinessStatusOrder = value;
         }
-        public IBusinessEmployees IEmployee
+        public IEmployeesService IEmployee
         {
             get => _Interface.IBusinessEmployee;
             set => _Interface.IBusinessEmployee = value;
         }
-        public IBusinessTables ITable
+        public ITablesService ITable
         {
             get => _Interface.IBusinessTable;
             set => _Interface.IBusinessTable = value;

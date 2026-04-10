@@ -9,7 +9,7 @@ using ContractsLayerRestaurant.DTOs.StatusMenus;
 namespace BusinessLayerRestaurant.Classes
 {
 
-    public class clsStatusMenusRepositoryBridge : IInterfaceBStatusMenus
+    public class clsStatusMenusContainer : IStatusMenusServiceContainer
     {
         private IDataStatusMenus _IData;
         public IDataStatusMenus IData
@@ -18,17 +18,17 @@ namespace BusinessLayerRestaurant.Classes
             set => _IData = value;
         }
 
-        public clsStatusMenusRepositoryBridge(IDataStatusMenus IData)
+        public clsStatusMenusContainer(IDataStatusMenus IData)
         {
             _IData = IData;
         }
     }
 
-    public class clsStatusMenusReader : IReadableBStatusMenus
+    public class clsStatusMenusReader : IStatusMenusServiceReader
     {
-        private IInterfaceBStatusMenus _Interface;
+        private IStatusMenusServiceContainer _Interface;
         private IMyLogger _Logger;
-        public clsStatusMenusReader(IInterfaceBStatusMenus @interface, IMyLogger logger)
+        public clsStatusMenusReader(IStatusMenusServiceContainer @interface, IMyLogger logger)
         {
             _Interface = @interface;
             _Logger = logger;
@@ -59,11 +59,11 @@ namespace BusinessLayerRestaurant.Classes
         }
     }
 
-    public class clsStatusMenusWriter : IWritableBStatusMenus
+    public class clsStatusMenusWriter : IStatusMenusServiceWriter
     {
-        private IInterfaceBStatusMenus _Interface;
+        private IStatusMenusServiceContainer _Interface;
         private IMyLogger _Logger;
-        public clsStatusMenusWriter(IInterfaceBStatusMenus @interface, IMyLogger logger)
+        public clsStatusMenusWriter(IStatusMenusServiceContainer @interface, IMyLogger logger)
         {
             _Interface = @interface;
             _Logger = logger;
@@ -107,12 +107,12 @@ namespace BusinessLayerRestaurant.Classes
     }
 
     
-    public class clsBusinessStatusMenus : IBusinessStatusMenus
+    public class clsStatusMenusService : IStatusMenusService
     {
-        IReadableBStatusMenus _IRead;
-        IWritableBStatusMenus _IWrite;
+        IStatusMenusServiceReader _IRead;
+        IStatusMenusServiceWriter _IWrite;
 
-        public clsBusinessStatusMenus( IWritableBStatusMenus Write, IReadableBStatusMenus Read)
+        public clsStatusMenusService( IStatusMenusServiceWriter Write, IStatusMenusServiceReader Read)
         {
             _IRead = Read;
             _IWrite = Write;

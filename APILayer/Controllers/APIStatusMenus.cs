@@ -12,9 +12,9 @@ namespace APILayer.Controllers
     [TypeFilter(typeof(ValidateModelAttribute))]
     public class APIStatusMenus : BaseController
     {
-        private readonly IBusinessStatusMenus _dataStatusMenus;
+        private readonly IStatusMenusService _dataStatusMenus;
 
-        public APIStatusMenus(IBusinessStatusMenus dataStatusMenus)
+        public APIStatusMenus(IStatusMenusService dataStatusMenus)
         {
             _dataStatusMenus = dataStatusMenus;
         }

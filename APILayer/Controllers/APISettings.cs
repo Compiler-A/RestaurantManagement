@@ -11,9 +11,9 @@ namespace APILayer.Controllers
     [TypeFilter(typeof(ValidateModelAttribute))]
     public class APISettings : BaseController
     {
-        private readonly IBusinessSettings _BusinessSettings;
+        private readonly ISettingsService _BusinessSettings;
        
-        public APISettings(IBusinessSettings s)
+        public APISettings(ISettingsService s)
         {
             _BusinessSettings = s;
         }

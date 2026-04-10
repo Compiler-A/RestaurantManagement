@@ -12,10 +12,10 @@ namespace APILayer.Extensions
             Services.AddScoped<IReadableDStatusOrders, DataLayerRestaurant.Classes.clsStatusOrdersReader>();
             Services.AddScoped<IWritableDStatusOrders, DataLayerRestaurant.Classes.clsStatusOrdersWriter>();
             Services.AddScoped<IDataStatusOrders, clsDataStatusOrders>();
-            Services.AddScoped<IReadableBStatusOrders, BusinessLayerRestaurant.Classes.clsStatusOrdersReader>();
+            Services.AddScoped<IStatusOrdersServiceReader, BusinessLayerRestaurant.Classes.clsStatusOrdersReader>();
             Services.AddScoped<IWritableBStatusOrders, BusinessLayerRestaurant.Classes.clsStatusOrdersWriter>();
-            Services.AddScoped<IInterfaceBStatusOrders, clsStatusOrdersRepositoryBridge>();
-            Services.AddScoped<IBusinessStatusOrders, clsBusinessStatusOrders>();
+            Services.AddScoped<IStatusOrdersServiceContainer, clsStatusOrdersContainer>();
+            Services.AddScoped<IStatusOrdersService, clsStatusOrdersService>();
             return Services;
         }
     }
