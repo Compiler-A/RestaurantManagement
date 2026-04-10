@@ -1,17 +1,17 @@
-﻿using RestaurantDataLayer;
-using ContractsLayerRestaurant.DTOs.Employees;
+﻿using ContractsLayerRestaurant.DTOs.Employees;
+using RestaurantDataLayer;
 
 
 namespace DataLayerRestaurant.Interfaces
 {
-    public interface IReadableDEmployees : IReadableDataBase<DTOEmployees>
+    public interface IEmployeesRepositoryReader : IReadableDataBase<DTOEmployees>
     {
         Task<DTOEmployees?> GetDataLoginAsync(DTOEmployeesLoginRequest Request);
         Task<DTOEmployees?> GetDataAsync(string UserName);
 
     }
 
-    public interface IReadableDataEmployees
+    public interface IJobRolesRepositoryReadable
     {
         Task<DTOEmployees?> GetLoginEmployeeAsync(DTOEmployeesLoginRequest Request);
         Task<List<DTOEmployees>> GetAllEmployeesAsync(int page);
@@ -19,14 +19,14 @@ namespace DataLayerRestaurant.Interfaces
         Task<DTOEmployees?> GetEmployeeAsync(string UserName);
     }
 
-    public interface IWritableDEmployees 
+    public interface IEmployeesRepositoryWriter 
         : IWritableDataBase<DTOEmployees, DTOEmployeesCRequest, DTOEmployeesURequest>
     {
         Task<bool> ChangedDataPasswordAsync(DTOEmployeesChangedPassword Changed);
     }
 
 
-    public interface IWritableDataEmployees
+    public interface IEmployeesRepositoryWritable
     {
         Task<DTOEmployees?> AddEmployeeAsync(DTOEmployeesCRequest Request);
         Task<DTOEmployees?> UpdateEmployeeAsync(DTOEmployeesURequest Request);
@@ -35,6 +35,6 @@ namespace DataLayerRestaurant.Interfaces
     }
 
 
-    public interface IDataEmployees : IReadableDataEmployees, IWritableDataEmployees { }
+    public interface IEmployeesRepository : IJobRolesRepositoryReadable, IEmployeesRepositoryWritable { }
 
 }

@@ -6,7 +6,7 @@ namespace BusinessLayerRestaurant.Interfaces
 {
 
 
-    public interface IJobRolesServiceContainer : IInterfaceBase<IDataJobRoles>
+    public interface IJobRolesServiceContainer : IInterfaceBase<IJobRolesRepository>
     { }
 
     public interface IJobRolesServiceReader : IReadableBusinessBase<DTOJobRoles> 

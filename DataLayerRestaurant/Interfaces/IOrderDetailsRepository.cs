@@ -3,22 +3,22 @@ using ContractsLayerRestaurant.DTOs.OrderDetails;
 
 namespace DataLayerRestaurant.Interfaces
 {
-    public interface IReadableDOrderDetails : IReadableDataBase<DTOOrderDetails>
+    public interface IOrderDetailsRepositoryReader : IReadableDataBase<DTOOrderDetails>
     {
         Task<List<DTOOrderDetails>> GetAllDataByOrderIDAsync(int orderID);
     }
-    public interface IWritableDOrderDetails : IWritableDataBase<DTOOrderDetails,DTOOrderDetailsCRequest, DTOOrderDetailsURequest>
+    public interface IOrderDetailsRepositoryWriter : IWritableDataBase<DTOOrderDetails,DTOOrderDetailsCRequest, DTOOrderDetailsURequest>
     {
     }
 
-    public interface IWritableDataOrderDetails
+    public interface IOrderDetailsRepositoryWritable
     {
         Task<DTOOrderDetails?> AddOrderDetailAsync(DTOOrderDetailsCRequest Request);
         Task<DTOOrderDetails?> UpdateOrderDetailAsync(DTOOrderDetailsURequest Request);
         Task<bool> DeleteOrderDetailAsync(int id);
     }
 
-    public interface IReadableDataOrderDetails
+    public interface IOrderDetailsRepositoryReadable
     {
         Task<List<DTOOrderDetails>> GetAllOrderDetailsAsync(int page);
         Task<List<DTOOrderDetails>> GetAllOrderDetailsByOrderIDAsync(int orderID);
@@ -26,7 +26,7 @@ namespace DataLayerRestaurant.Interfaces
 
     }
 
-    public interface IDataOrderDetails : IReadableDataOrderDetails, IWritableDataOrderDetails
+    public interface IOrderDetailsRepository : IOrderDetailsRepositoryReadable, IOrderDetailsRepositoryWritable
     {
     }
 }

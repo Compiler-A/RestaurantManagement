@@ -12,8 +12,8 @@ namespace BusinessLayerRestaurant.Classes
 
     public class clsTablesContainer : ITablesServiceContainer
     {
-        private IDataTables _IDataTable;
-        public IDataTables IData
+        private ITablesRepository _IDataTable;
+        public ITablesRepository IData
         {
             get => _IDataTable;
             set => _IDataTable = value;
@@ -25,7 +25,7 @@ namespace BusinessLayerRestaurant.Classes
             set => _IBusinessStatusTable = value;
         }
 
-        public clsTablesContainer(IDataTables @Data, IStatusTablesService @IBusinessStatusTable)
+        public clsTablesContainer(ITablesRepository @Data, IStatusTablesService @IBusinessStatusTable)
         {
             _IDataTable = @Data;
             _IBusinessStatusTable = @IBusinessStatusTable;

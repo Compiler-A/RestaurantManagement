@@ -10,9 +10,9 @@ namespace APILayer.Controllers
     [TypeFilter(typeof(ValidateModelAttribute))]
     public class APITypeItems : BaseController
     {
-        private readonly IBusinessService _dataLayer;
+        private readonly ITypeItemsService _dataLayer;
 
-        public APITypeItems(IBusinessService DataItem)
+        public APITypeItems(ITypeItemsService DataItem)
         {
             _dataLayer = DataItem;
         }

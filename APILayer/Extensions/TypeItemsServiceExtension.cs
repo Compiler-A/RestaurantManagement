@@ -10,13 +10,13 @@ namespace APILayer.Extensions
         public static IServiceCollection AddTypeItemsServices(this IServiceCollection Services)
         {
 
-            Services.AddScoped<IReadableDTypeItems, DataLayerRestaurant.Classes.clsTypeItemsReader>();
-            Services.AddScoped<IWritableDTypeItems, DataLayerRestaurant.Classes.clsTypeItemsWriter>();
-            Services.AddScoped<IDataTypeItems, clsDataTypeItems>();
+            Services.AddScoped<ITypeItemsRepositoryReader, clsTypeItemsRepositoryReader>();
+            Services.AddScoped<ITypeItemsRepositoryWriter, clsTypeItemsRepositoryWriter>();
+            Services.AddScoped<ITypeItemsRepository, clsTypeItemsRepository>();
             Services.AddScoped<ITypeItemsServiceContainer, clsTypeItemsContainer>();
-            Services.AddScoped<ITypeItemsServiceReader, BusinessLayerRestaurant.Classes.clsTypeItemsReader>();
-            Services.AddScoped<ITypeItemsServiceWriter, BusinessLayerRestaurant.Classes.clsTypeItemsWriter>();
-            Services.AddScoped<IBusinessService, clsTypeItemsService>();
+            Services.AddScoped<ITypeItemsServiceReader, clsTypeItemsReader>();
+            Services.AddScoped<ITypeItemsServiceWriter, clsTypeItemsWriter>();
+            Services.AddScoped<ITypeItemsService, clsTypeItemsService>();
 
             return Services;
         }

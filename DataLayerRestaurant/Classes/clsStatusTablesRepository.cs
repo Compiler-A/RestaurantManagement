@@ -10,7 +10,7 @@ using DataLayerRestaurant.Interfaces;
 namespace DataLayerRestaurant.Classes
 {
 
-    public class clsCompositionDStatusTables : ICompositionDataBase<DTOStatusTables>
+    public class clsStatusTablesRepositoryComposition : ICompositionDataBase<DTOStatusTables>
     {
         public DTOStatusTables GetDataFromDataBase(SqlDataReader reader)
         {
@@ -22,12 +22,12 @@ namespace DataLayerRestaurant.Classes
         }
     }
 
-    public class clsStatusTablesReader : clsCompositionDStatusTables, IReadableDStatusTables
+    public class clsStatusTablesRepositoryReader : clsStatusTablesRepositoryComposition, IStatusTablesRepositoryReader
     {
 
         private readonly clsMySettings _Settings;
 
-        public clsStatusTablesReader(IOptions<clsMySettings> Settings)
+        public clsStatusTablesRepositoryReader(IOptions<clsMySettings> Settings)
         {
             _Settings = Settings.Value;
         }
@@ -101,13 +101,13 @@ namespace DataLayerRestaurant.Classes
     }
 
 
-    public class clsStatusTablesWriter : clsCompositionDStatusTables, IWritableDStatusTables
+    public class clsStatusTablesRepositoryWriter : clsStatusTablesRepositoryComposition, IStatusTablesRepositoryWriter
     {
 
 
         readonly private clsMySettings _Settings;
 
-        public clsStatusTablesWriter(IOptions<clsMySettings> Settings)
+        public clsStatusTablesRepositoryWriter(IOptions<clsMySettings> Settings)
         {
             _Settings = Settings.Value;
         }
@@ -179,11 +179,11 @@ namespace DataLayerRestaurant.Classes
         }
     }
 
-    public class clsDataStatusTables : IDataStatusTables
+    public class clsStatusTablesRepository : IStatusTablesRepository
     {
-        private IReadableDStatusTables _IRead;
-        private IWritableDStatusTables _IWrite;
-        public clsDataStatusTables(IReadableDStatusTables Read, IWritableDStatusTables Write) 
+        private IStatusTablesRepositoryReader _IRead;
+        private IStatusTablesRepositoryWriter _IWrite;
+        public clsStatusTablesRepository(IStatusTablesRepositoryReader Read, IStatusTablesRepositoryWriter Write) 
         {
             _IRead = Read;
             _IWrite = Write;

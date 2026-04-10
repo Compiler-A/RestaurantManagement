@@ -11,14 +11,14 @@ namespace BusinessLayerRestaurant.Classes
 
     public class clsJobRolesContainer : IJobRolesServiceContainer
     {
-        private IDataJobRoles _IJobRole;
-        public IDataJobRoles IData
+        private IJobRolesRepository _IJobRole;
+        public IJobRolesRepository IData
         {
             get => _IJobRole;
             set => _IJobRole = value;
         }
 
-        public clsJobRolesContainer(IDataJobRoles IJobRole)
+        public clsJobRolesContainer(IJobRolesRepository IJobRole)
         {
             _IJobRole = IJobRole;
         }

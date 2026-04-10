@@ -5,7 +5,7 @@ using ContractsLayerRestaurant.DTOs.StatusMenus;
 namespace BusinessLayerRestaurant.Interfaces
 {
 
-    public interface IStatusMenusServiceContainer : IInterfaceBase<IDataStatusMenus>
+    public interface IStatusMenusServiceContainer : IInterfaceBase<IStatusMenusRepository>
     { }
 
     public interface IStatusMenusServiceReader : IReadableBusinessBase<DTOStatusMenus>

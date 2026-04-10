@@ -6,7 +6,7 @@ using DataLayerRestaurant.Interfaces;
 
 namespace DataLayerRestaurant.Classes
 {
-    public class clsCompositionDSettings : ICompositionDataBase <DTOSettings>
+    public class clsSettingsRepositoryComposition : ICompositionDataBase <DTOSettings>
     {
         public DTOSettings GetDataFromDataBase(SqlDataReader reader)
         {
@@ -19,12 +19,12 @@ namespace DataLayerRestaurant.Classes
         }
     }
 
-    public class clsSettingsReader : clsCompositionDSettings , IReadableDSettings
+    public class clsSettingsRepositoryReader : clsSettingsRepositoryComposition , ISettingsRepositoryReader
     {
 
         private readonly clsMySettings _Settings;
 
-        public clsSettingsReader(IOptions<clsMySettings> settings)
+        public clsSettingsRepositoryReader(IOptions<clsMySettings> settings)
         {
             _Settings = settings.Value;
         }
@@ -76,11 +76,11 @@ namespace DataLayerRestaurant.Classes
             return result;
         }
     }
-    public class clsSettingsWriter : clsCompositionDSettings , IWritableDSettings
+    public class clsSettingsRepositoryWriter : clsSettingsRepositoryComposition , ISettingsRepositoryWriter
     {
 
         private readonly clsMySettings _Settings;
-        public clsSettingsWriter(IOptions<clsMySettings> settings)
+        public clsSettingsRepositoryWriter(IOptions<clsMySettings> settings)
         {
             _Settings = settings.Value;
         }
@@ -147,12 +147,12 @@ namespace DataLayerRestaurant.Classes
         }
     }
 
-    public class clsDataSettings : IDataSettings
+    public class clsSettingsRepository : ISettingsRepository
     {
-        private readonly IWritableDSettings _Write;
-        private readonly IReadableDSettings _Read;
+        private readonly ISettingsRepositoryWriter _Write;
+        private readonly ISettingsRepositoryReader _Read;
 
-        public clsDataSettings(IWritableDSettings write, IReadableDSettings read)
+        public clsSettingsRepository(ISettingsRepositoryWriter write, ISettingsRepositoryReader read)
         {
             _Write = write;
             _Read = read;

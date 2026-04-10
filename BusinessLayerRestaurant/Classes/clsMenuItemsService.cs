@@ -11,15 +11,15 @@ namespace BusinessLayerRestaurant.Classes
 
     public class clsMenuItemsContainer : IMenuItemsServiceContainer
     {
-        private IDataMenuItems _IData;
-        public IDataMenuItems IData
+        private IMenuItemsRepository _IData;
+        public IMenuItemsRepository IData
         {
             get => _IData;
             set => _IData = value;
         }
 
-        private IBusinessService _IBusinessTypeItem;
-        public IBusinessService IBusinessTypeItem
+        private ITypeItemsService _IBusinessTypeItem;
+        public ITypeItemsService IBusinessTypeItem
         {
             get => _IBusinessTypeItem;
             set => _IBusinessTypeItem = value;
@@ -31,7 +31,7 @@ namespace BusinessLayerRestaurant.Classes
             set => _IBusinessStatusMenu = value;
         }
 
-        public clsMenuItemsContainer(IDataMenuItems iData, IBusinessService iTypeItem, IStatusMenusService iStatusMenu)
+        public clsMenuItemsContainer(IMenuItemsRepository iData, ITypeItemsService iTypeItem, IStatusMenusService iStatusMenu)
         {
             _IData = iData;
             _IBusinessTypeItem = iTypeItem;
@@ -41,8 +41,8 @@ namespace BusinessLayerRestaurant.Classes
 
     public class clsTypeItemLoader : IMenuItemsServiceComposition
     {
-        private IBusinessService _BusinessTypeItem;
-        public clsTypeItemLoader(IBusinessService BusinessTypeItem)
+        private ITypeItemsService _BusinessTypeItem;
+        public clsTypeItemLoader(ITypeItemsService BusinessTypeItem)
         {
             _BusinessTypeItem = BusinessTypeItem;
         }
@@ -228,7 +228,7 @@ namespace BusinessLayerRestaurant.Classes
             set => _Interface.IBusinessStatusMenu = value;
         }
 
-        public IBusinessService ITypeItem
+        public ITypeItemsService ITypeItem
         {
             get => _Interface.IBusinessTypeItem;
             set => _Interface.IBusinessTypeItem = value;

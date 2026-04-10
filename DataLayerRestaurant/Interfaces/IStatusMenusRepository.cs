@@ -4,24 +4,24 @@ using ContractsLayerRestaurant.DTOs.StatusMenus;
 namespace DataLayerRestaurant.Interfaces
 {
 
-    public interface IReadableDStatusMenus : IReadableDataBase<DTOStatusMenus>
+    public interface IStatusMenusRepositoryReader : IReadableDataBase<DTOStatusMenus>
     {
 
     }
 
-    public interface IWritableDStatusMenus 
+    public interface IStatusMenusRepositoryWriter 
         : IWritableDataBase<DTOStatusMenus, DTOStatusMenusCRequest, DTOStatusMenusURequest>
     {
 
     }
 
-    public interface IReadableDataStatusMenus
+    public interface IStatusMenusRepositoryReadable
     {
         Task<DTOStatusMenus?> GetStatusMenuAsync(int ID);
         Task<List<DTOStatusMenus>> GetAllStatusMenusAsync(int Page);
     }
 
-    public interface IWritableDataStatusMenus
+    public interface IStatusMenusRepositoryWritable
     {
         Task<DTOStatusMenus?> AddStatusMenuAsync(DTOStatusMenusCRequest Request);
         Task<DTOStatusMenus?> UpdateStatusMenuAsync(DTOStatusMenusURequest Request);
@@ -30,7 +30,7 @@ namespace DataLayerRestaurant.Interfaces
 
 
 
-    public interface IDataStatusMenus : IReadableDataStatusMenus, IWritableDataStatusMenus
+    public interface IStatusMenusRepository : IStatusMenusRepositoryReadable, IStatusMenusRepositoryWritable
     {
         
     }

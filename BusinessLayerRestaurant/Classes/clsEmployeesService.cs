@@ -10,8 +10,8 @@ namespace BusinessLayerRestaurant.Classes
 
     public class clsEmployeesContainer : IEmployeesServiceContainer
     {
-        private IDataEmployees _IEmployees;
-        public IDataEmployees IData
+        private IEmployeesRepository _IEmployees;
+        public IEmployeesRepository IData
         {
             get => _IEmployees;
             set => _IEmployees = value;
@@ -24,7 +24,7 @@ namespace BusinessLayerRestaurant.Classes
             set => _IJobRoles = value;
         }
 
-        public clsEmployeesContainer(IDataEmployees Employee, IJobRolesService JobRoles)
+        public clsEmployeesContainer(IEmployeesRepository Employee, IJobRolesService JobRoles)
         {
             _IEmployees = Employee;
             _IJobRoles = JobRoles;

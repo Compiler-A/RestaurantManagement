@@ -5,7 +5,7 @@ using ContractsLayerRestaurant.DTOs.Settings;
 namespace BusinessLayerRestaurant.Interfaces
 {
 
-    public interface ISettingsServiceContainer : IInterfaceBase<IDataSettings>
+    public interface ISettingsServiceContainer : IInterfaceBase<ISettingsRepository>
     { }
 
     public interface ISettingsServiceReader : IReadableBusinessBase<DTOSettings>

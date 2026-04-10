@@ -3,24 +3,24 @@ using ContractsLayerRestaurant.DTOs.StatusTables;
 
 namespace DataLayerRestaurant.Interfaces
 {
-    public interface IReadableDStatusTables : IReadableDataBase<DTOStatusTables>
+    public interface IStatusTablesRepositoryReader : IReadableDataBase<DTOStatusTables>
     {
         Task<bool> isFindDataAsync(int id);
     }
 
-    public interface IWritableDStatusTables : IWritableDataBase<DTOStatusTables,DTOStatusTablesCRequest, DTOStatusTablesURequest>
+    public interface IStatusTablesRepositoryWriter : IWritableDataBase<DTOStatusTables,DTOStatusTablesCRequest, DTOStatusTablesURequest>
     {
 
     }
 
-    public interface IReadableDataStatusTables
+    public interface IStatusTablesRepositoryReadable
     {
         Task<DTOStatusTables?> GetStatuTableAsync(int id);
         Task<List<DTOStatusTables>> GetAllStatustablesAsync(int page);
         Task<bool> isFindAsync(int id);
     }
 
-    public interface IWritableDataStatusTables
+    public interface IStatusTablesRepositoryWritable
     {
         Task<DTOStatusTables?> AddStatusTableAsync(DTOStatusTablesCRequest Request);
         Task<DTOStatusTables?> UpdateStatusTableAsync(DTOStatusTablesURequest Request);
@@ -29,6 +29,6 @@ namespace DataLayerRestaurant.Interfaces
 
 
 
-    public interface IDataStatusTables : IReadableDataStatusTables, IWritableDataStatusTables
+    public interface IStatusTablesRepository : IStatusTablesRepositoryReadable, IStatusTablesRepositoryWritable
     { }
 }

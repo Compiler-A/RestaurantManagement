@@ -22,7 +22,7 @@ namespace DataLayerRestaurant.Classes
         }
     }
 
-    public class clsCompositionDEmployees : clsHashing ,ICompositionDataBase<DTOEmployees>
+    public class clsEmployeesRepositoryComposition : clsHashing ,ICompositionDataBase<DTOEmployees>
     {
         public DTOEmployees GetDataFromDataBase(SqlDataReader reader)
         {
@@ -38,10 +38,10 @@ namespace DataLayerRestaurant.Classes
     }
 
 
-    public class clsEmployeesReader :clsCompositionDEmployees ,IReadableDEmployees
+    public class clsEmployeesRepositoryReader :clsEmployeesRepositoryComposition ,IEmployeesRepositoryReader
     {
         private readonly clsMySettings _Setting;
-        public clsEmployeesReader(IOptions<clsMySettings> settings)
+        public clsEmployeesRepositoryReader(IOptions<clsMySettings> settings)
         {
             _Setting = settings.Value;
         }
@@ -142,10 +142,10 @@ namespace DataLayerRestaurant.Classes
     }
 
 
-    public class clsEmployeesWriter: clsCompositionDEmployees , IWritableDEmployees
+    public class clsEmployeesRepositoryWriter: clsEmployeesRepositoryComposition , IEmployeesRepositoryWriter
     {
         private readonly clsMySettings _Setting;
-        public clsEmployeesWriter(IOptions<clsMySettings> settings)
+        public clsEmployeesRepositoryWriter(IOptions<clsMySettings> settings)
         {
             _Setting = settings.Value;
         }
@@ -245,12 +245,12 @@ namespace DataLayerRestaurant.Classes
 
     }
 
-    public class clsDataEmployees :IDataEmployees
+    public class clsEmployeesRepository :IEmployeesRepository
     {
-        private IReadableDEmployees _IRead;
-        private IWritableDEmployees _IWrite;
+        private IEmployeesRepositoryReader _IRead;
+        private IEmployeesRepositoryWriter _IWrite;
 
-        public clsDataEmployees(IReadableDEmployees Read, IWritableDEmployees Write)
+        public clsEmployeesRepository(IEmployeesRepositoryReader Read, IEmployeesRepositoryWriter Write)
         {
             _IRead = Read;
             _IWrite = Write;

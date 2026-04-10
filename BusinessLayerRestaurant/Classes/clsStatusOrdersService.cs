@@ -11,12 +11,12 @@ namespace BusinessLayerRestaurant.Classes
 
     public class clsStatusOrdersContainer : IStatusOrdersServiceContainer
     {
-        private IDataStatusOrders _IDataStatusOrder;
-        public clsStatusOrdersContainer(IDataStatusOrders IDataStatusOrder)
+        private IStatusOrdersRepository _IDataStatusOrder;
+        public clsStatusOrdersContainer(IStatusOrdersRepository IDataStatusOrder)
         {
             this._IDataStatusOrder = IDataStatusOrder;
         }
-        public IDataStatusOrders IData
+        public IStatusOrdersRepository IData
         {
             get => this._IDataStatusOrder;
             set => this._IDataStatusOrder = value;

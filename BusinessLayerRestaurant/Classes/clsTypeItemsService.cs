@@ -11,14 +11,14 @@ namespace BusinessLayerRestaurant.Classes
 
     public class clsTypeItemsContainer : ITypeItemsServiceContainer
     {
-        private IDataTypeItems _IDataTypeItem;
-        public IDataTypeItems IData
+        private ITypeItemsRepository _IDataTypeItem;
+        public ITypeItemsRepository IData
         {
             get => _IDataTypeItem;
             set => _IDataTypeItem = value;
         }
 
-        public clsTypeItemsContainer(IDataTypeItems Data)
+        public clsTypeItemsContainer(ITypeItemsRepository Data)
         {
             _IDataTypeItem = Data;
         }
@@ -105,7 +105,7 @@ namespace BusinessLayerRestaurant.Classes
 
 
 
-    public class clsTypeItemsService : IBusinessService
+    public class clsTypeItemsService : ITypeItemsService
     {
         ITypeItemsServiceWriter _IWrite;
         ITypeItemsServiceReader _IRead;

@@ -5,7 +5,7 @@ using ContractsLayerRestaurant.DTOs.Tables;
 namespace BusinessLayerRestaurant.Interfaces
 {
 
-    public interface ITablesServiceContainer : IInterfaceBase<IDataTables>
+    public interface ITablesServiceContainer : IInterfaceBase<ITablesRepository>
     {
         IStatusTablesService IBusinessStatusTable { get; set; }
     }

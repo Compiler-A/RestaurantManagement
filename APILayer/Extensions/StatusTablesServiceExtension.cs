@@ -9,11 +9,11 @@ namespace APILayer.Extensions
     {
         public static IServiceCollection AddStatusTablesServices(this IServiceCollection Services)
         {
-            Services.AddScoped<IReadableDStatusTables, DataLayerRestaurant.Classes.clsStatusTablesReader>();
-            Services.AddScoped<IWritableDStatusTables, DataLayerRestaurant.Classes.clsStatusTablesWriter>();
-            Services.AddScoped<IDataStatusTables, clsDataStatusTables>();
-            Services.AddScoped<IStatusTablesServiceReader, BusinessLayerRestaurant.Classes.clsStatusTablesReader>();
-            Services.AddScoped<IStatusTablesServiceWriter, BusinessLayerRestaurant.Classes.clsStatusTablesWriter>();
+            Services.AddScoped<IStatusTablesRepositoryReader, clsStatusTablesRepositoryReader>();
+            Services.AddScoped<IStatusTablesRepositoryWriter, clsStatusTablesRepositoryWriter>();
+            Services.AddScoped<IStatusTablesRepository, clsStatusTablesRepository>();
+            Services.AddScoped<IStatusTablesServiceReader, clsStatusTablesReader>();
+            Services.AddScoped<IStatusTablesServiceWriter, clsStatusTablesWriter>();
             Services.AddScoped<IStatusTablesServiceContainer, clsStatusTablesContainer>();
             Services.AddScoped<IStatusTablesService, clsStatusTablesService>();
 

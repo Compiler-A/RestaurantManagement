@@ -9,11 +9,11 @@ namespace APILayer.Extensions
     {
         public static IServiceCollection AddOrdersServices(this IServiceCollection Services)
         {
-            Services.AddScoped<IWritableDOrders, DataLayerRestaurant.Classes.clsOrdersWriter>();
-            Services.AddScoped<IReadableDOrders, DataLayerRestaurant.Classes.clsOrdersReader>();
-            Services.AddScoped<IDataOrders, clsDataOrders>();
-            Services.AddScoped<IOrdersServiceWriter, BusinessLayerRestaurant.Classes.clsOrdersWriter>();
-            Services.AddScoped<IOrdersServiceReader, BusinessLayerRestaurant.Classes.clsOrdersReader>();
+            Services.AddScoped<IOrdersRepositoryWriter, clsOrdersRepositoryWriter>();
+            Services.AddScoped<IOrdersRepositoryReader, clsOrdersRepositoryReader>();
+            Services.AddScoped<IOrdersRepository, clsOrdersRepository>();
+            Services.AddScoped<IOrdersServiceWriter, clsOrdersWriter>();
+            Services.AddScoped<IOrdersServiceReader, clsOrdersReader>();
             Services.AddScoped<IOrdersServiceContainer, clsOrdersContainer>();
             Services.AddScoped<IOrdersServiceComposition, clsStatusOrderLoader>();
             Services.AddScoped<IOrdersServiceComposition, clsEmployeeLoader>();

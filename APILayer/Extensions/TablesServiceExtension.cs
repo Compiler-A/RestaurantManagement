@@ -9,11 +9,11 @@ namespace APILayer.Extensions
     {
         public static IServiceCollection AddTablesServices(this IServiceCollection Services)
         {
-            Services.AddScoped<IReadableDTables, DataLayerRestaurant.Classes.clsTablesReader>();
-            Services.AddScoped<IWritableDTables, DataLayerRestaurant.Classes.clsTablesWriter>();
-            Services.AddScoped<IDataTables, clsDataTables>();
-            Services.AddScoped<ITablesServiceReader, BusinessLayerRestaurant.Classes.clsTablesReader>();
-            Services.AddScoped<ITablesServiceWriter, BusinessLayerRestaurant.Classes.clsTablesWriter>();
+            Services.AddScoped<ITablesRepositoryReader, clsTablesRepositoryReader>();
+            Services.AddScoped<ITablesRepositoryWriter, clsTablesRepositoryWriter>();
+            Services.AddScoped<ITablesRepository, clsTablesRepository>();
+            Services.AddScoped<ITablesServiceReader, clsTablesReader>();
+            Services.AddScoped<ITablesServiceWriter, clsTablesWriter>();
             Services.AddScoped<ITablesServiceContainer, clsTablesContainer>();
             Services.AddScoped<ITablesServiceComposition, clsStatusTableLoader>();
             Services.AddScoped<ITablesService, clsTablesService>();

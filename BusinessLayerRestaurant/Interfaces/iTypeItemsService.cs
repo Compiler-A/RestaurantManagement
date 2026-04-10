@@ -4,7 +4,7 @@ using ContractsLayerRestaurant.DTOs.TypeItems;
 
 namespace BusinessLayerRestaurant.Interfaces
 {
-    public interface ITypeItemsServiceContainer : IInterfaceBase<IDataTypeItems>
+    public interface ITypeItemsServiceContainer : IInterfaceBase<ITypeItemsRepository>
     { }
 
     public interface ITypeItemsServiceReader : IReadableBusinessBase<DTOTypeItems>
@@ -30,6 +30,6 @@ namespace BusinessLayerRestaurant.Interfaces
     public interface ICRUDTypeItemsService : ITypeItemsServiceWritable , ITypeItemsServiceReadable
     { }
 
-    public interface IBusinessService : ICRUDTypeItemsService { }
+    public interface ITypeItemsService : ICRUDTypeItemsService { }
 
 }

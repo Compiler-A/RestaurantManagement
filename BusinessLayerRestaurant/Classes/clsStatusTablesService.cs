@@ -12,13 +12,13 @@ namespace BusinessLayerRestaurant.Classes
 
     public class clsStatusTablesContainer : IStatusTablesServiceContainer
     {
-        private IDataStatusTables _IStatusTable;
-        public IDataStatusTables IData
+        private IStatusTablesRepository _IStatusTable;
+        public IStatusTablesRepository IData
         {
             get => _IStatusTable;
             set => _IStatusTable = value;
         }
-        public clsStatusTablesContainer(IDataStatusTables iStatusTable)
+        public clsStatusTablesContainer(IStatusTablesRepository iStatusTable)
         {
             _IStatusTable = iStatusTable;
         }

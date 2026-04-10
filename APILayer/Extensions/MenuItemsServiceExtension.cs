@@ -9,14 +9,14 @@ namespace APILayer.Extensions
     {
         public static IServiceCollection AddMenuItemsServices(this IServiceCollection Services)
         {
-            Services.AddScoped<IReadableDMenuItems, DataLayerRestaurant.Classes.clsMenuItemsReader>();
-            Services.AddScoped<IWritableDMenuItems, DataLayerRestaurant.Classes.clsMenuItemsWriter>();
-            Services.AddScoped<IDataMenuItems, clsDataMenuItems>();
+            Services.AddScoped<IMenuItemsRepositoryReader, clsMenuItemsRepositoryReader>();
+            Services.AddScoped<IMenuItemsRepositoryWriter, clsMenuItemsRepositoryWriter>();
+            Services.AddScoped<IMenuItemsRepository, clsMenuItemsRepository>();
             Services.AddScoped<IMenuItemsServiceComposition, clsTypeItemLoader>();
             Services.AddScoped<IMenuItemsServiceComposition, clsStatusMenuLoader>();
             Services.AddScoped<IMenuItemsServiceContainer, clsMenuItemsContainer>();
-            Services.AddScoped<IMenuItemsServiceReader, BusinessLayerRestaurant.Classes.clsMenuItemsReader>();
-            Services.AddScoped<IMenuItemsServiceWriter, BusinessLayerRestaurant.Classes.clsMenuItemsWriter>();
+            Services.AddScoped<IMenuItemsServiceReader, clsMenuItemsReader>();
+            Services.AddScoped<IMenuItemsServiceWriter, clsMenuItemsWriter>();
             Services.AddScoped<IMenuItemsService, clsMenuItemService>();
             return Services;
         }

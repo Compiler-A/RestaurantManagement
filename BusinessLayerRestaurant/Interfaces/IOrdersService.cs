@@ -11,7 +11,7 @@ namespace BusinessLayerRestaurant.Interfaces
     public interface IOrdersServiceWriter : IWritableBusinessBase<DTOOrders, DTOOrderCRequest, DTOOrderURequest>
     { }
 
-    public interface IOrdersServiceContainer : IInterfaceBase<IDataOrders>
+    public interface IOrdersServiceContainer : IInterfaceBase<IOrdersRepository>
     {
         IStatusOrdersService IBusinessStatusOrder { get; set; }
         IEmployeesService IBusinessEmployee { get; set; }

@@ -8,7 +8,7 @@ using DataLayerRestaurant.Interfaces;
 namespace DataLayerRestaurant.Classes
 {    
 
-    public class  clsCompositionDStatusOrders : ICompositionDataBase<DTOStatusOrders>
+    public class  clsStatusOrdersRepositoryComposition : ICompositionDataBase<DTOStatusOrders>
     {
         public DTOStatusOrders GetDataFromDataBase(SqlDataReader reader)
         {
@@ -19,11 +19,11 @@ namespace DataLayerRestaurant.Classes
             };
         }
     }
-    public class clsStatusOrdersReader : clsCompositionDStatusOrders, IReadableDStatusOrders
+    public class clsStatusOrdersRepositoryReader : clsStatusOrdersRepositoryComposition, IStatusOrdersRepositoryReader
     {
         public readonly clsMySettings _Settings;
 
-        public clsStatusOrdersReader(IOptions<clsMySettings> Settings)
+        public clsStatusOrdersRepositoryReader(IOptions<clsMySettings> Settings)
         {
             _Settings = Settings.Value;
         }
@@ -75,12 +75,12 @@ namespace DataLayerRestaurant.Classes
             return List;
         }
     }
-    public class clsStatusOrdersWriter : clsCompositionDStatusOrders, IWritableDStatusOrders
+    public class clsStatusOrdersRepositoryWriter : clsStatusOrdersRepositoryComposition, IStatusOrdersRepositoryWriter
     {
 
         private readonly clsMySettings _Settings;
 
-        public clsStatusOrdersWriter(IOptions<clsMySettings> Settings)
+        public clsStatusOrdersRepositoryWriter(IOptions<clsMySettings> Settings)
         {
             _Settings = Settings.Value;
         }
@@ -150,11 +150,11 @@ namespace DataLayerRestaurant.Classes
         }
     }
 
-    public class clsDataStatusOrders : IDataStatusOrders
+    public class clsStatusOrdersRepository : IStatusOrdersRepository
     {
-        IReadableDStatusOrders _Read;
-        IWritableDStatusOrders _Write;
-        public clsDataStatusOrders(IReadableDStatusOrders Read, IWritableDStatusOrders Write)
+        IStatusOrdersRepositoryReader _Read;
+        IStatusOrdersRepositoryWriter _Write;
+        public clsStatusOrdersRepository(IStatusOrdersRepositoryReader Read, IStatusOrdersRepositoryWriter Write)
         {
             _Read = Read;
             _Write = Write;

@@ -6,7 +6,7 @@ using ContractsLayerRestaurant.DTOs.StatusMenus;
 
 namespace DataLayerRestaurant.Classes
 { 
-    public class clsCompositionDStatusMenus : ICompositionDataBase<DTOStatusMenus>
+    public class clsStatusMenusRepositoryComposition : ICompositionDataBase<DTOStatusMenus>
     {
         public DTOStatusMenus GetDataFromDataBase(SqlDataReader reader)
         {
@@ -21,11 +21,11 @@ namespace DataLayerRestaurant.Classes
         }
     }
 
-    public class clsStatusMenusReader : clsCompositionDStatusMenus, IReadableDStatusMenus
+    public class clsStatusMenusRepositoryReader : clsStatusMenusRepositoryComposition, IStatusMenusRepositoryReader
     {
         private readonly clsMySettings _Settings;
 
-        public clsStatusMenusReader(IOptions<clsMySettings> settings)
+        public clsStatusMenusRepositoryReader(IOptions<clsMySettings> settings)
         {
             _Settings = settings.Value;
         }
@@ -69,11 +69,11 @@ namespace DataLayerRestaurant.Classes
         }
     }
     
-    public class clsStatusMenusWriter : clsCompositionDStatusMenus , IWritableDStatusMenus
+    public class clsStatusMenusRepositoryWriter : clsStatusMenusRepositoryComposition , IStatusMenusRepositoryWriter
     {
         private readonly clsMySettings _Settings;
 
-        public clsStatusMenusWriter(IOptions<clsMySettings> settings)
+        public clsStatusMenusRepositoryWriter(IOptions<clsMySettings> settings)
         {
             _Settings = settings.Value;
         }
@@ -137,12 +137,12 @@ namespace DataLayerRestaurant.Classes
         }
     }
 
-    public class clsDataStatusMenus : IDataStatusMenus
+    public class clsStatusMenusRepository : IStatusMenusRepository
     {
-        IReadableDStatusMenus _IRead;
-        IWritableDStatusMenus _IWrite;
+        IStatusMenusRepositoryReader _IRead;
+        IStatusMenusRepositoryWriter _IWrite;
 
-        public clsDataStatusMenus(IReadableDStatusMenus read, IWritableDStatusMenus write)
+        public clsStatusMenusRepository(IStatusMenusRepositoryReader read, IStatusMenusRepositoryWriter write)
         {
             _IRead = read;
             _IWrite = write;

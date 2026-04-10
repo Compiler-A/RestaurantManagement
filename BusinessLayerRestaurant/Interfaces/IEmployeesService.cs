@@ -5,7 +5,7 @@ using ContractsLayerRestaurant.DTOs.Employees;
 
 namespace BusinessLayerRestaurant.Interfaces
 {
-    public interface IEmployeesServiceContainer : IInterfaceBase<IDataEmployees>
+    public interface IEmployeesServiceContainer : IInterfaceBase<IEmployeesRepository>
     {
         IJobRolesService IBusinessJobRole { get; set; }
     }

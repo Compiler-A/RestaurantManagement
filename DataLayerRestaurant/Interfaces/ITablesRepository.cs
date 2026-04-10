@@ -4,7 +4,7 @@ using ContractsLayerRestaurant.DTOs.Tables;
 
 namespace DataLayerRestaurant.Interfaces
 {
-    public interface IReadableDTables : IReadableDataBase<DTOTables>
+    public interface ITablesRepositoryReader : IReadableDataBase<DTOTables>
     {
         Task<List<DTOTables>> GetFilterStatusDataAsync(DTOTablesFilterStatusTableRequest Request);
         Task<List<DTOTables>> GetFilterSeatDataAsync(DTOTablesFilterSeatTableRequest Request);
@@ -14,12 +14,12 @@ namespace DataLayerRestaurant.Interfaces
         Task<List<DTOTables>> GetAllDataAvailablesAsync();
     }
 
-    public interface IWritableDTables : IWritableDataBase<DTOTables,DTOTablesCRequest, DTOTablesURequest>
+    public interface ITablesRepositoryWriter : IWritableDataBase<DTOTables,DTOTablesCRequest, DTOTablesURequest>
     { 
     }
 
 
-    public interface IReadableDataTables
+    public interface ITablesRepositoryReadable
     {
         Task<DTOTables?> GetTableAsync(int id);
         Task<List<DTOTables>> GetAlltablesAsync(int page);
@@ -31,7 +31,7 @@ namespace DataLayerRestaurant.Interfaces
         Task<List<DTOTables>> GetAllTablesAvailablesAsync();
     }
 
-    public interface IWritableDataTables
+    public interface ITablesRepositoryWritable
     {
         Task<DTOTables?> AddTableAsync(DTOTablesCRequest Table);
         Task<DTOTables?> UpdateTableAsync(DTOTablesURequest Table);
@@ -40,6 +40,6 @@ namespace DataLayerRestaurant.Interfaces
 
 
 
-    public interface IDataTables : IReadableDataTables, IWritableDataTables
+    public interface ITablesRepository : ITablesRepositoryReadable, ITablesRepositoryWritable
     { }
 }

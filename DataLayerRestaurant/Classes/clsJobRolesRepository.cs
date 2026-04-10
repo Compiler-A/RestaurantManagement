@@ -9,7 +9,7 @@ using ContractsLayerRestaurant.DTOs.JobRoles;
 namespace DataLayerRestaurant.Classes
 { 
 
-    public class clsCompositionDJobRoles : ICompositionDataBase<DTOJobRoles>
+    public class clsJobRolesRepositoryComposition : ICompositionDataBase<DTOJobRoles>
     {
         public DTOJobRoles GetDataFromDataBase(SqlDataReader reader)
         {
@@ -24,10 +24,10 @@ namespace DataLayerRestaurant.Classes
         }
     }
 
-    public class clsJobRolesReader: clsCompositionDJobRoles ,IReadableDJobRoles
+    public class clsJobRolesRepositoryReader: clsJobRolesRepositoryComposition ,IJobRolesRepositoryReader
     {
         private readonly clsMySettings _Settings;
-        public clsJobRolesReader(IOptions<clsMySettings> mySettings)
+        public clsJobRolesRepositoryReader(IOptions<clsMySettings> mySettings)
         {
             _Settings = mySettings.Value;
         }
@@ -80,10 +80,10 @@ namespace DataLayerRestaurant.Classes
         }
     }
     
-    public class clsJobRolesWriter : clsCompositionDJobRoles , IWritableDJobRoles
+    public class clsJobRolesRepositoryWriter : clsJobRolesRepositoryComposition , IJobRolesRepositoryWriter
     {
         private readonly clsMySettings _Settings;
-        public clsJobRolesWriter(IOptions<clsMySettings> mySettings)
+        public clsJobRolesRepositoryWriter(IOptions<clsMySettings> mySettings)
         {
             _Settings = mySettings.Value;
         }
@@ -155,12 +155,12 @@ namespace DataLayerRestaurant.Classes
         }
     }
 
-    public class clsDataJobRoles : IDataJobRoles
+    public class clsJobRolesRepository : IJobRolesRepository
     {
-        IWritableDJobRoles _IWrite;
-        IReadableDJobRoles _IRead;
+        IJobRolesRepositoryWriter _IWrite;
+        IJobRolesRepositoryReader _IRead;
 
-        public clsDataJobRoles(IWritableDJobRoles write,  IReadableDJobRoles read)
+        public clsJobRolesRepository(IJobRolesRepositoryWriter write,  IJobRolesRepositoryReader read)
         {
             _IRead = read;
             _IWrite = write;

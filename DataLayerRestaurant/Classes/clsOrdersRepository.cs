@@ -7,7 +7,7 @@ using ContractsLayerRestaurant.DTOs.Orders;
 namespace DataLayerRestaurant.Classes
 {
     
-    public class clsCompositionDOrders : ICompositionDataBase<DTOOrders> 
+    public class clsOrdersRepositoryComposition : ICompositionDataBase<DTOOrders> 
     {
         public DTOOrders GetDataFromDataBase(SqlDataReader reader)
         {
@@ -25,10 +25,10 @@ namespace DataLayerRestaurant.Classes
         }
     }
 
-    public class clsOrdersReader : clsCompositionDOrders, IReadableDOrders
+    public class clsOrdersRepositoryReader : clsOrdersRepositoryComposition, IOrdersRepositoryReader
     {
         private readonly clsMySettings _Settings;
-        public clsOrdersReader(IOptions<clsMySettings> settings)
+        public clsOrdersRepositoryReader(IOptions<clsMySettings> settings)
         {
             _Settings = settings.Value;
         }
@@ -112,11 +112,11 @@ namespace DataLayerRestaurant.Classes
         }
     }
 
-    public class clsOrdersWriter :clsCompositionDOrders, IWritableDOrders
+    public class clsOrdersRepositoryWriter :clsOrdersRepositoryComposition, IOrdersRepositoryWriter
     {
 
         private readonly clsMySettings _Settings;
-        public clsOrdersWriter(IOptions<clsMySettings> settings)
+        public clsOrdersRepositoryWriter(IOptions<clsMySettings> settings)
         {
             _Settings = settings.Value;
         }
@@ -196,12 +196,12 @@ namespace DataLayerRestaurant.Classes
         }
     }
 
-    public class clsDataOrders : IDataOrders
+    public class clsOrdersRepository : IOrdersRepository
     {
-        IWritableDOrders _Write;
-        IReadableDOrders _Read;
+        IOrdersRepositoryWriter _Write;
+        IOrdersRepositoryReader _Read;
 
-        public clsDataOrders(IWritableDOrders write, IReadableDOrders read)
+        public clsOrdersRepository(IOrdersRepositoryWriter write, IOrdersRepositoryReader read)
         {
             _Write = write;
             _Read = read;

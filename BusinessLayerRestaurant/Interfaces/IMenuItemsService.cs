@@ -5,9 +5,9 @@ using ContractsLayerRestaurant.DTOs.MenuItems;
 namespace BusinessLayerRestaurant.Interfaces
 {
 
-    public interface IMenuItemsServiceContainer : IInterfaceBase<IDataMenuItems>
+    public interface IMenuItemsServiceContainer : IInterfaceBase<IMenuItemsRepository>
     {
-        IBusinessService IBusinessTypeItem { get; set; }
+        ITypeItemsService IBusinessTypeItem { get; set; }
         IStatusMenusService IBusinessStatusMenu { get; set; }
     }
 
@@ -27,7 +27,7 @@ namespace BusinessLayerRestaurant.Interfaces
 
     public interface IMenuItemsServiceContainers
     {
-        IBusinessService ITypeItem { get; set; }
+        ITypeItemsService ITypeItem { get; set; }
         IStatusMenusService IStatusMenu { get; set; }
     }
 

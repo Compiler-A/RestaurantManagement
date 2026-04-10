@@ -11,8 +11,8 @@ namespace BusinessLayerRestaurant.Classes
 
     public class clsOrderDetailsContainer : IOrderDetailsServiceContainer
     {
-        private IDataOrderDetails _IDataOrderDetail;
-        public IDataOrderDetails IData
+        private IOrderDetailsRepository _IDataOrderDetail;
+        public IOrderDetailsRepository IData
         {
             get => _IDataOrderDetail;
             set => _IDataOrderDetail = value;
@@ -31,7 +31,7 @@ namespace BusinessLayerRestaurant.Classes
             set => _IBusinessMenuItem = value;
         }
 
-        public clsOrderDetailsContainer(IDataOrderDetails iData, IOrdersService iBusinessOrder, IMenuItemsService iBusinessMenuItem)
+        public clsOrderDetailsContainer(IOrderDetailsRepository iData, IOrdersService iBusinessOrder, IMenuItemsService iBusinessMenuItem)
         {
             _IDataOrderDetail = iData;
             _IBusinessOrder = iBusinessOrder;

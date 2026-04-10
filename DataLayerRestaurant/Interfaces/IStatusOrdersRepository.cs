@@ -3,22 +3,22 @@ using ContractsLayerRestaurant.DTOs.StatusOrders;
 
 namespace DataLayerRestaurant.Interfaces
 {
-    public interface IReadableDStatusOrders : IReadableDataBase<DTOStatusOrders>
+    public interface IStatusOrdersRepositoryReader : IReadableDataBase<DTOStatusOrders>
     { }
-    public interface IWritableDStatusOrders : IWritableDataBase<DTOStatusOrders,DTOStatusOrdersCRequest, DTOStatusOrdersURequest>
+    public interface IStatusOrdersRepositoryWriter : IWritableDataBase<DTOStatusOrders,DTOStatusOrdersCRequest, DTOStatusOrdersURequest>
     { }
 
-    public interface IReadableDataStatusOrders
+    public interface IStatusOrdersRepositoryReadable
     {
         Task<DTOStatusOrders?> GetStatusOrderAsync(int ID);
         Task<List<DTOStatusOrders>> GetAllStatusOrdersAsync(int Page);
     }
-    public interface IWritableStatusOrdersData
+    public interface IStatusOrdersRepositoryWritable
     {
         Task<DTOStatusOrders?> AddStatusOrderAsync(DTOStatusOrdersCRequest Request);
         Task<DTOStatusOrders?> UpdateStatusOrderAsync(DTOStatusOrdersURequest Request);
         Task<bool> DeleteStatusOrderAsync(int ID);
     }
-    public interface IDataStatusOrders : IReadableDataStatusOrders, IWritableStatusOrdersData { }
+    public interface IStatusOrdersRepository : IStatusOrdersRepositoryReadable, IStatusOrdersRepositoryWritable { }
 
 }

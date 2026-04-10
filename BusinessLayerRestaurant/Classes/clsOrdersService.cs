@@ -11,11 +11,11 @@ namespace BusinessLayerRestaurant.Classes
 
     public class clsOrdersContainer : IOrdersServiceContainer
     {
-        private IDataOrders _Iorder;
+        private IOrdersRepository _Iorder;
         private IStatusOrdersService _IStatusOrder;
         private IEmployeesService _IBusinessEmployee;
         private ITablesService _IBusinessTable;
-        public IDataOrders IData
+        public IOrdersRepository IData
         {
             get => _Iorder;
             set => _Iorder = value;
@@ -36,7 +36,7 @@ namespace BusinessLayerRestaurant.Classes
             set => _IBusinessTable = value;
         }
         public clsOrdersContainer
-            (IDataOrders Order, IEmployeesService Business, IStatusOrdersService StatusOrder, ITablesService Table)
+            (IOrdersRepository Order, IEmployeesService Business, IStatusOrdersService StatusOrder, ITablesService Table)
         {
             _IStatusOrder = StatusOrder;
             _IBusinessEmployee = Business;

@@ -9,11 +9,11 @@ namespace APILayer.Extensions
     {
         public static IServiceCollection AddStatusMenusServices(this IServiceCollection Services)
         {
-            Services.AddScoped<IReadableDStatusMenus, DataLayerRestaurant.Classes.clsStatusMenusReader>();
-            Services.AddScoped<IWritableDStatusMenus, DataLayerRestaurant.Classes.clsStatusMenusWriter>();
-            Services.AddScoped<IDataStatusMenus, clsDataStatusMenus>();
-            Services.AddScoped<IStatusMenusServiceWriter, BusinessLayerRestaurant.Classes.clsStatusMenusWriter>();
-            Services.AddScoped<IStatusMenusServiceReader, BusinessLayerRestaurant.Classes.clsStatusMenusReader>();
+            Services.AddScoped<IStatusMenusRepositoryReader, clsStatusMenusRepositoryReader>();
+            Services.AddScoped<IStatusMenusRepositoryWriter, clsStatusMenusRepositoryWriter>();
+            Services.AddScoped<IStatusMenusRepository, clsStatusMenusRepository>();
+            Services.AddScoped<IStatusMenusServiceWriter, clsStatusMenusWriter>();
+            Services.AddScoped<IStatusMenusServiceReader, clsStatusMenusReader>();
             Services.AddScoped<IStatusMenusServiceContainer, clsStatusMenusContainer>();
             Services.AddScoped<IStatusMenusService, clsStatusMenusService>();
             return Services;

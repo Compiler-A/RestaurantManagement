@@ -7,7 +7,7 @@ using DataLayerRestaurant.Interfaces;
 namespace DataLayerRestaurant.Classes
 {
 
-    public class clsCompositionDTables : ICompositionDataBase<DTOTables>
+    public class clsTablesRepositoryComposition : ICompositionDataBase<DTOTables>
     {
         public DTOTables GetDataFromDataBase(SqlDataReader Reader)
         {
@@ -21,11 +21,11 @@ namespace DataLayerRestaurant.Classes
         }
     }
 
-    public class clsTablesReader : clsCompositionDTables ,IReadableDTables
+    public class clsTablesRepositoryReader : clsTablesRepositoryComposition ,ITablesRepositoryReader
     {
 
         private readonly clsMySettings _Settings;
-        public clsTablesReader(IOptions<clsMySettings> settings)
+        public clsTablesRepositoryReader(IOptions<clsMySettings> settings)
         {
             _Settings = settings.Value;
         }
@@ -208,12 +208,12 @@ namespace DataLayerRestaurant.Classes
         }
     }
 
-    public class clsTablesWriter : clsCompositionDTables, IWritableDTables
+    public class clsTablesRepositoryWriter : clsTablesRepositoryComposition, ITablesRepositoryWriter
     {
 
         private readonly clsMySettings _Settings;
 
-        public clsTablesWriter(IOptions<clsMySettings> settings)
+        public clsTablesRepositoryWriter(IOptions<clsMySettings> settings)
         {
             _Settings = settings.Value;
         }
@@ -280,12 +280,12 @@ namespace DataLayerRestaurant.Classes
 
     }
 
-    public class clsDataTables : IDataTables
+    public class clsTablesRepository : ITablesRepository
     {
-        IWritableDTables _IWrite;
-        IReadableDTables _IRead;
+        ITablesRepositoryWriter _IWrite;
+        ITablesRepositoryReader _IRead;
 
-        public clsDataTables(IWritableDTables write, IReadableDTables read)
+        public clsTablesRepository(ITablesRepositoryWriter write, ITablesRepositoryReader read)
         {
             _IWrite = write;
             _IRead = read;

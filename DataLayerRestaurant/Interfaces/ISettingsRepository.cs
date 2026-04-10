@@ -4,23 +4,23 @@ using ContractsLayerRestaurant.DTOs.Settings;
 
 namespace DataLayerRestaurant.Interfaces
 {
-    public interface IReadableDSettings : IReadableDataBase<DTOSettings>
+    public interface ISettingsRepositoryReader : IReadableDataBase<DTOSettings>
     { }
-    public interface IWritableDSettings : IWritableDataBase<DTOSettings,DTOSettingsCRequest, DTOSettingsURequest>
+    public interface ISettingsRepositoryWriter : IWritableDataBase<DTOSettings,DTOSettingsCRequest, DTOSettingsURequest>
     { }
 
-    public interface IReadableDataSettings
+    public interface ISettingsRepositoryReadable
     {
         Task<List<DTOSettings>> GetAllSettingsAsync(int page);
         Task<DTOSettings?> GetSettingAsync(int ID);
     }
-    public interface IWritableDataSettings
+    public interface ISettingsRepositoryWritable
     {
         Task<DTOSettings?> AddSettingAsync(DTOSettingsCRequest setting);
         Task<DTOSettings?> UpdateSettingAsync(DTOSettingsURequest setting);
         Task<bool> DeleteSettingAsync(int ID);
     }
 
-    public interface IDataSettings : IReadableDataSettings, IWritableDataSettings
+    public interface ISettingsRepository : ISettingsRepositoryReadable, ISettingsRepositoryWritable
     { }
 }

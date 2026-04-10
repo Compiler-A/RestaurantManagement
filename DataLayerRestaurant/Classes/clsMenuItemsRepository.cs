@@ -8,7 +8,7 @@ using ContractsLayerRestaurant.DTOs.MenuItems;
 namespace DataLayerRestaurant.Classes
 {
 
-    public class clsCompositionDMenuItems : ICompositionDataBase<DTOMenuItems>
+    public class clsMenuItemsRepositoryCompositon : ICompositionDataBase<DTOMenuItems>
     {
         public DTOMenuItems GetDataFromDataBase(SqlDataReader reader)
         {
@@ -27,10 +27,10 @@ namespace DataLayerRestaurant.Classes
     }
 
 
-    public class clsMenuItemsReader : clsCompositionDMenuItems ,IReadableDMenuItems
+    public class clsMenuItemsRepositoryReader : clsMenuItemsRepositoryCompositon ,IMenuItemsRepositoryReader
     {
         private readonly clsMySettings _Settings;
-        public clsMenuItemsReader(IOptions<clsMySettings> settings)
+        public clsMenuItemsRepositoryReader(IOptions<clsMySettings> settings)
         {
             _Settings = settings.Value;
         }
@@ -120,10 +120,10 @@ namespace DataLayerRestaurant.Classes
 
     }
 
-    public class clsMenuItemsWriter : clsCompositionDMenuItems ,IWritableDMenuItems
+    public class clsMenuItemsRepositoryWriter : clsMenuItemsRepositoryCompositon ,IMenuItemsRepositoryWriter
     {
         private readonly clsMySettings _Settings;
-        public clsMenuItemsWriter(IOptions<clsMySettings> settings)
+        public clsMenuItemsRepositoryWriter(IOptions<clsMySettings> settings)
         {
             _Settings = settings.Value;
         }
@@ -193,13 +193,13 @@ namespace DataLayerRestaurant.Classes
     }
 
 
-    public class clsDataMenuItems : IDataMenuItems
+    public class clsMenuItemsRepository : IMenuItemsRepository
     {
 
-        IReadableDMenuItems _IRead;
-        IWritableDMenuItems _IWrite;
+        IMenuItemsRepositoryReader _IRead;
+        IMenuItemsRepositoryWriter _IWrite;
 
-        public clsDataMenuItems(IReadableDMenuItems iRead, IWritableDMenuItems iWrite)
+        public clsMenuItemsRepository(IMenuItemsRepositoryReader iRead, IMenuItemsRepositoryWriter iWrite)
         {
             _IRead = iRead;
             _IWrite = iWrite;

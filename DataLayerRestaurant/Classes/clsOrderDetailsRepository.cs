@@ -1,16 +1,12 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using ContractsLayerRestaurant.DTOs.OrderDetails;
+using DataLayerRestaurant.Interfaces;
+using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Options;
 using RestaurantDataLayer;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http.Headers;
-using DataLayerRestaurant.Interfaces;
-using ContractsLayerRestaurant.DTOs.OrderDetails;
 
 namespace DataLayerRestaurant.Classes
 {
-    public class clsCompositionDOrderDetails : ICompositionDataBase<DTOOrderDetails>
+    public class clsOrderDetailsRepositoryComposition : ICompositionDataBase<DTOOrderDetails>
     {
         public DTOOrderDetails GetDataFromDataBase(SqlDataReader reader)
         {
@@ -25,12 +21,12 @@ namespace DataLayerRestaurant.Classes
         }
     }
 
-    public class clsOrderDetailsReader : clsCompositionDOrderDetails ,IReadableDOrderDetails
+    public class clsOrderDetailsRepositoryReader : clsOrderDetailsRepositoryComposition ,IOrderDetailsRepositoryReader
     {
 
         private readonly clsMySettings _Settings;
 
-        public clsOrderDetailsReader(IOptions<clsMySettings> Settings)
+        public clsOrderDetailsRepositoryReader(IOptions<clsMySettings> Settings)
         {
             _Settings = Settings.Value;
         }
@@ -103,10 +99,10 @@ namespace DataLayerRestaurant.Classes
         }
     }
 
-    public class clsOrderDetailsWriter : clsCompositionDOrderDetails,IWritableDOrderDetails
+    public class clsOrderDetailsRepositoryWriter : clsOrderDetailsRepositoryComposition,IOrderDetailsRepositoryWriter
     {
         private readonly clsMySettings _Settings;
-        public clsOrderDetailsWriter(IOptions<clsMySettings> settings)
+        public clsOrderDetailsRepositoryWriter(IOptions<clsMySettings> settings)
         {
             _Settings = settings.Value; 
         }
@@ -180,11 +176,11 @@ namespace DataLayerRestaurant.Classes
     }
 
 
-    public class clsDataOrderDetails : IDataOrderDetails 
+    public class clsOrderDetailsRepository : IOrderDetailsRepository 
     {
-        IReadableDOrderDetails _Read;
-        IWritableDOrderDetails _Write;
-        public clsDataOrderDetails(IReadableDOrderDetails Read, IWritableDOrderDetails Write)
+        IOrderDetailsRepositoryReader _Read;
+        IOrderDetailsRepositoryWriter _Write;
+        public clsOrderDetailsRepository(IOrderDetailsRepositoryReader Read, IOrderDetailsRepositoryWriter Write)
         {
             _Read = Read;
             _Write = Write;

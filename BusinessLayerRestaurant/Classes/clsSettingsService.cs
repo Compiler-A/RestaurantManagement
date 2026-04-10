@@ -11,14 +11,14 @@ namespace BusinessLayerRestaurant.Classes
 
     public class clsSettingsContainer : ISettingsServiceContainer
     {
-        private IDataSettings _IDataSetting;
-        public IDataSettings IData 
+        private ISettingsRepository _IDataSetting;
+        public ISettingsRepository IData 
         { 
             get => _IDataSetting; 
             set => _IDataSetting = value; 
         }
 
-        public clsSettingsContainer(IDataSettings dataSetting)
+        public clsSettingsContainer(ISettingsRepository dataSetting)
         {
             _IDataSetting = dataSetting;
         }

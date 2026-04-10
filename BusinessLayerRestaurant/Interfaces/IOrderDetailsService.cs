@@ -5,7 +5,7 @@ using ContractsLayerRestaurant.DTOs.OrderDetails;
 namespace BusinessLayerRestaurant.Interfaces
 {
     
-    public interface IOrderDetailsServiceContainer : IInterfaceBase<IDataOrderDetails>
+    public interface IOrderDetailsServiceContainer : IInterfaceBase<IOrderDetailsRepository>
     {
         IOrdersService IBusinessOrder { get; set; }
         IMenuItemsService IBusinessMenuItem { get; set; }

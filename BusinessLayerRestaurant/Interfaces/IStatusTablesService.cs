@@ -13,7 +13,7 @@ namespace BusinessLayerRestaurant.Interfaces
     { }
 
 
-    public interface IStatusTablesServiceContainer : IInterfaceBase<IDataStatusTables>
+    public interface IStatusTablesServiceContainer : IInterfaceBase<IStatusTablesRepository>
     { }
 
 
