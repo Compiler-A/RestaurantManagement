@@ -9,20 +9,7 @@ using Microsoft.Extensions.Options;
 namespace DataLayerRestaurant.Classes
 {
 
-    public class clsHashing
-    {
-        public static string HashString(string input)
-        {
-            using (SHA256 sha256 = SHA256.Create())
-            {
-                byte[] bytes = Encoding.UTF8.GetBytes(input);
-                byte[] hashBytes = sha256.ComputeHash(bytes);
-                return  Convert.ToBase64String(hashBytes);
-            }
-        }
-    }
-
-    public class clsEmployeesRepositoryComposition : clsHashing ,ICompositionDataBase<DTOEmployees>
+    public class clsEmployeesRepositoryComposition : ICompositionDataBase<DTOEmployees>
     {
         public DTOEmployees GetDataFromDataBase(SqlDataReader reader)
         {
@@ -76,7 +63,7 @@ namespace DataLayerRestaurant.Classes
                 {
                     Command.CommandType = System.Data.CommandType.StoredProcedure;
                     Command.Parameters.AddWithValue("@UserName", Request.UserName);
-                    Command.Parameters.AddWithValue("@Password", clsHashing.HashString(Request.Password));
+                    Command.Parameters.AddWithValue("@Password", (Request.Password));
 
 
                     await Connection.OpenAsync();
@@ -160,8 +147,7 @@ namespace DataLayerRestaurant.Classes
                 {
                     Command.CommandType = System.Data.CommandType.StoredProcedure;
                     Command.Parameters.AddWithValue("@ID", clsChanged.ID);
-                    Command.Parameters.AddWithValue("@NewPassword", clsHashing.HashString(clsChanged.NewPassword));
-                    Command.Parameters.AddWithValue("@CurrentPassword", clsHashing.HashString(clsChanged.CurrentPassword));
+                    Command.Parameters.AddWithValue("@NewPassword", (clsChanged.NewPassword));
                     await Connection.OpenAsync();
                     int rowsAffected = await Command.ExecuteNonQueryAsync();
                     Changed = rowsAffected > 0;
@@ -181,11 +167,7 @@ namespace DataLayerRestaurant.Classes
                     Command.Parameters.AddWithValue("@JobID", employee.JobID);
                     Command.Parameters.AddWithValue("@UserName", employee.UserName);
                     Command.Parameters.AddWithValue("@Password", employee.Password);
-                    SqlParameter output = new SqlParameter("@NewID", System.Data.SqlDbType.Int)
-                    {
-                        Direction = System.Data.ParameterDirection.Output
-                    };
-                    Command.Parameters.Add(output);
+
                     await Connection.OpenAsync();
                     using (SqlDataReader reader = await Command.ExecuteReaderAsync())
                     {
@@ -245,7 +227,7 @@ namespace DataLayerRestaurant.Classes
 
     }
 
-    public class clsEmployeesRepository :IEmployeesRepository
+    public class clsEmployeesRepository : IEmployeesRepository
     {
         private IEmployeesRepositoryReader _IRead;
         private IEmployeesRepositoryWriter _IWrite;

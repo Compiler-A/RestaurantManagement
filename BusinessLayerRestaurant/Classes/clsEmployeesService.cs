@@ -68,24 +68,31 @@ namespace BusinessLayerRestaurant.Classes
     {
         private IEmployeesServiceContainer _Interface;
         private readonly IMyLogger _Logger;
+        private readonly IHashingService _HashingService;
 
-        public clsEmployeesReader(IEmployeesServiceContainer Interface, IEnumerable<IEmployeesServiceComposition> Loaders, IMyLogger Logger) 
+        public clsEmployeesReader(IHashingService HashingService,IEmployeesServiceContainer Interface, IEnumerable<IEmployeesServiceComposition> Loaders, IMyLogger Logger) 
             : base(Loaders)
         {
             _Interface = Interface;
+            _HashingService = HashingService;
             _Logger = Logger;
         }
         public async Task<DTOEmployees?> LoginAsync(DTOEmployeesLoginRequest Request)
-        {
-            var dto =  await _Interface.IData.GetLoginEmployeeAsync(Request);
-
-            if (dto == null)
+        { 
+            var Data = await _Interface.IData.GetEmployeeAsync(Request.UserName);
+            if (Data == null)
             {
-                throw new InvalidOperationException("Not Login!");
+                throw new KeyNotFoundException("Not Found!");
             }
-            await LoadDataAsync(dto);
-            _Logger.EventLogs($"Employee Login, UserName: {dto.UserName}", EventLogEntryType.Information);
-            return dto;
+            var Valid = _HashingService.ValidationBCrypt(Request.Password, Data.Password);
+            if (!Valid)
+            {
+                throw new InvalidOperationException("Bad password!");
+            }
+
+            await LoadDataAsync(Data);
+            _Logger.EventLogs($"Employee Login, UserName: {Data.UserName}", EventLogEntryType.Information);
+            return Data;
         }
 
         public async Task<DTOEmployees?> GetAsync(int ID)
@@ -135,16 +142,31 @@ namespace BusinessLayerRestaurant.Classes
     public class clsEmployeesWriter : clsCompositionEmployeeesLoader , IEmployeesServiceWriter
     {
         private IEmployeesServiceContainer _Interface;
+        private IHashingService _HashingService;
         private readonly IMyLogger _Logger;
-        public clsEmployeesWriter(IEmployeesServiceContainer Interface, IMyLogger Logger, IEnumerable<IEmployeesServiceComposition> Loaders)
+        public clsEmployeesWriter(IHashingService HashingService,IEmployeesServiceContainer Interface, IMyLogger Logger, IEnumerable<IEmployeesServiceComposition> Loaders)
             : base(Loaders)
         {
             _Interface = Interface;
+            _HashingService = HashingService;
             _Logger = Logger;
         }
 
         public async Task<bool> ChangePasswordAsync(DTOEmployeesChangedPassword Request)
         {
+            var Data = await _Interface.IData.GetEmployeeAsync(Request.ID);
+            if (Data == null)
+            {
+                throw new KeyNotFoundException("Not Found!");
+            }
+            var Valid = _HashingService.ValidationBCrypt(Request.CurrentPassword, Data.Password);
+            if (!Valid)
+            {
+                throw new InvalidOperationException("Bad password!");
+            }
+
+            Request.NewPassword = _HashingService.BCryptHashing(Request.NewPassword);
+
             var result = await _Interface.IData.ChangedPasswordEmployeeAsync(Request);
             if (!result)
             {
@@ -156,6 +178,8 @@ namespace BusinessLayerRestaurant.Classes
 
         public async Task<DTOEmployees?> CreateAsync(DTOEmployeesCRequest request)
         {
+            request.Password = _HashingService.BCryptHashing(request.Password);
+
             var result = await _Interface.IData.AddEmployeeAsync(request);
             if (result == null)
             {
@@ -168,7 +192,8 @@ namespace BusinessLayerRestaurant.Classes
 
         public async Task<DTOEmployees?> UpdateAsync(DTOEmployeesURequest request)
         {
-            
+
+            request.Password = _HashingService.BCryptHashing(request.Password);
 
             var result = await _Interface.IData.UpdateEmployeeAsync(request);
             if (result == null)

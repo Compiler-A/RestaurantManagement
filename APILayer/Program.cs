@@ -38,6 +38,7 @@ builder.Services.AddStatusOrdersServices();
 builder.Services.AddStatusTablesServices();
 builder.Services.AddTablesServices();
 builder.Services.AddTypeItemsServices();
+builder.Services.AddHashingServices();
 
 builder.Services.AddSingleton<IMyLogger, clsMyLogger>();
 

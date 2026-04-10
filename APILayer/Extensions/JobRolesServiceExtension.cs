@@ -12,7 +12,7 @@ namespace APILayer.Extensions
 
             Services.AddScoped<IJobRolesRepositoryReader, clsJobRolesRepositoryReader>();
             Services.AddScoped<IJobRolesRepositoryWriter, clsJobRolesRepositoryWriter>();
-            Services.AddScoped<clsJobRolesRepository, clsJobRolesRepository>();
+            Services.AddScoped<IJobRolesRepository, clsJobRolesRepository>();
             Services.AddScoped<IJobRolesServiceWriter, clsJobRolesWriter>();
             Services.AddScoped<IJobRolesServiceReader, clsJobRolesReader>();
             Services.AddScoped<IJobRolesServiceContainer, clsJobRolesContainer>();

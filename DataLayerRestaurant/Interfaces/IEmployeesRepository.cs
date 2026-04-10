@@ -11,7 +11,7 @@ namespace DataLayerRestaurant.Interfaces
 
     }
 
-    public interface IJobRolesRepositoryReadable
+    public interface IEmployeesRepositoryReadable
     {
         Task<DTOEmployees?> GetLoginEmployeeAsync(DTOEmployeesLoginRequest Request);
         Task<List<DTOEmployees>> GetAllEmployeesAsync(int page);
@@ -35,6 +35,6 @@ namespace DataLayerRestaurant.Interfaces
     }
 
 
-    public interface IEmployeesRepository : IJobRolesRepositoryReadable, IEmployeesRepositoryWritable { }
+    public interface IEmployeesRepository : IEmployeesRepositoryReadable, IEmployeesRepositoryWritable { }
 
 }
