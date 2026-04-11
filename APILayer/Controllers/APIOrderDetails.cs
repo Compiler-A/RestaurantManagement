@@ -32,7 +32,7 @@ namespace APILayer.Controllers
                 throw new ArgumentOutOfRangeException("Page number must be greater than 0.");
             }
             var orders = await _businessOrderDetail.GetAllOrderDetailsAsync(page);
-            return CreateResponse<IEnumerable<DTOOrderDetails>>(orders, StatusCodes.Status200OK, $"Count: {orders.Count}");
+            return CreateResponse<IEnumerable<DTOOrderDetails>>(orders, StatusCodes.Status200OK, $"Row: {orders.Count}");
         }
 
 
@@ -49,7 +49,7 @@ namespace APILayer.Controllers
             }
             var orders = await _businessOrderDetail.GetAllOrderDetailsByOrderIDAsync(orderID);
 
-            return CreateResponse<IEnumerable<DTOOrderDetails>>(orders, StatusCodes.Status200OK, $"Count: {orders.Count}");
+            return CreateResponse<IEnumerable<DTOOrderDetails>>(orders, StatusCodes.Status200OK, $"Row: {orders.Count}");
 
         }
 
@@ -65,7 +65,7 @@ namespace APILayer.Controllers
                 throw new ArgumentOutOfRangeException("ID must be greater than 0.");
             }
             var order = await _businessOrderDetail.GetOrderDetailAsync(ID);
-            return CreateResponse<DTOOrderDetails?>(order, StatusCodes.Status200OK, "Find Saccessfully");
+            return CreateResponse<DTOOrderDetails?>(order, StatusCodes.Status200OK, "Found Successfully!");
 
         }
 
@@ -103,7 +103,7 @@ namespace APILayer.Controllers
 
 
             var result = await _businessOrderDetail.UpdateOrderDetailAsync(dto);
-            return CreateResponse<DTOOrderDetails>(result!, StatusCodes.Status200OK, "Order Detail updated successfully");
+            return CreateResponse<DTOOrderDetails>(result!, StatusCodes.Status200OK, "Order Detail Updated Successfully!");
 
         }
 
@@ -120,7 +120,7 @@ namespace APILayer.Controllers
                 throw new ArgumentOutOfRangeException("ID number must be greater than 0.");
             }
             var result = await _businessOrderDetail.DeleteOrderDetailAsync(ID);
-            return CreateResponse(true, StatusCodes.Status200OK, "Order detail deleted successfully");
+            return CreateResponse(true, StatusCodes.Status200OK, "Order Detail Deleted Successfully!");
         }
     }
 }

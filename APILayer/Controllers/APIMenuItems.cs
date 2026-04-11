@@ -34,7 +34,7 @@ namespace APILayer.Controllers
             }
 
             var menuItems = await _BusinessMenuItem.GetAllMenuItemsAsync(page);
-            return CreateResponse(menuItems, StatusCodes.Status200OK, "Menu Items retrieved successfully.");
+            return CreateResponse(menuItems, StatusCodes.Status200OK, $"Row: {menuItems.Count}");
 
         }
 
@@ -47,7 +47,7 @@ namespace APILayer.Controllers
         public async Task<ActionResult<ApiResponse<List<DTOMenuItems>>>> GetAllAvailablesAsync()
         {
             var menuItems = await _BusinessMenuItem.GetAllMenuItemsAvailablesAsync();
-            return CreateResponse(menuItems, StatusCodes.Status200OK, "Menu Items retrieved successfully.");
+            return CreateResponse(menuItems, StatusCodes.Status200OK, $"Row: {menuItems.Count}");
         }
 
 
@@ -64,7 +64,7 @@ namespace APILayer.Controllers
             }
 
             var menuItems = await _BusinessMenuItem.GetAllMenuItemsFiltersAsync(Request);
-            return CreateResponse<List<DTOMenuItems>>(menuItems!, StatusCodes.Status200OK, "Filtered Menu Items retrieved successfully.");
+            return CreateResponse<List<DTOMenuItems>>(menuItems!, StatusCodes.Status200OK, $"Row: {menuItems.Count}");
 
         }
 
@@ -81,7 +81,7 @@ namespace APILayer.Controllers
             }
 
             var menuItem = await _BusinessMenuItem.GetMenuItemAsync(ID);
-            return CreateResponse<DTOMenuItems>(menuItem!, StatusCodes.Status200OK, "Menu Item retrieved successfully.");
+            return CreateResponse<DTOMenuItems>(menuItem!, StatusCodes.Status200OK, "Found Successfully!");
         }
 
         [HttpPost(Name ="AddMenuItem")]
@@ -119,7 +119,7 @@ namespace APILayer.Controllers
 
 
             var dto = await _BusinessMenuItem.UpdateMenuItemAsync(menuItem);
-            return CreateResponse<DTOMenuItems>(dto!, StatusCodes.Status200OK, "Menu Item updated successfully.");
+            return CreateResponse<DTOMenuItems>(dto!, StatusCodes.Status200OK, "Menu Item Updated Successfully!");
 
 
         }
@@ -138,7 +138,7 @@ namespace APILayer.Controllers
             }
 
             bool isDeleted = await _BusinessMenuItem.DeleteMenuItemAsync(ID);
-            return CreateResponse(isDeleted ,StatusCodes.Status200OK, "Menu Item deleted successfully.");
+            return CreateResponse(isDeleted ,StatusCodes.Status200OK, "Menu Item Deleted Successfully!");
         }
     }
 }

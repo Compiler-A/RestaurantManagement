@@ -33,7 +33,7 @@ namespace APILayer.Controllers
             }
 
             var list = await _dataStatusMenus.GetAllStatusMenusAsync(page);
-            return CreateResponse(list, StatusCodes.Status200OK, "Status Menus retrieved successfully.");
+            return CreateResponse(list, StatusCodes.Status200OK, $"Row: {list.Count}");
 
         }
 
@@ -50,7 +50,7 @@ namespace APILayer.Controllers
             }
 
             var resource = await _dataStatusMenus.GetStatusMenuAsync(ID);
-            return CreateResponse<DTOStatusMenus>(resource!, StatusCodes.Status200OK, "Status Menu retrieved successfully.");
+            return CreateResponse<DTOStatusMenus>(resource!, StatusCodes.Status200OK, "Found Successfully!");
         }
 
         [HttpPost(Name = "AddStatusMenu")]
@@ -87,7 +87,7 @@ namespace APILayer.Controllers
 
 
             var dto = await _dataStatusMenus.UpdateStatusMenuAsync(statusMenu);
-            return CreateResponse<DTOStatusMenus>(dto!, StatusCodes.Status200OK, "Status Menu updated successfully.");
+            return CreateResponse<DTOStatusMenus>(dto!, StatusCodes.Status200OK, "Status Menu Updated Successfully!");
 
         }
 
@@ -105,7 +105,7 @@ namespace APILayer.Controllers
             }
 
             bool isDeleted = await _dataStatusMenus.DeleteStatusMenuAsync(ID);
-            return CreateResponse<bool>(isDeleted, StatusCodes.Status200OK, "Status Menu Deleted Saccessfully!");
+            return CreateResponse<bool>(isDeleted, StatusCodes.Status200OK, "Status Menu Deleted Successfully!");
 
 
         }

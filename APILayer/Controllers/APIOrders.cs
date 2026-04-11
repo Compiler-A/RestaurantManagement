@@ -32,7 +32,7 @@ namespace APILayer.Controllers
                 throw new ArgumentOutOfRangeException("Page number must be greater than 0.");
             }
             var orders = await _businessOrders.GetAllOrdersAsync(page);
-            return CreateResponse<IEnumerable<DTOOrders>>(orders, StatusCodes.Status200OK, $"Count: {orders.Count}");
+            return CreateResponse<IEnumerable<DTOOrders>>(orders, StatusCodes.Status200OK, $"Row: {orders.Count}");
 
         }
 
@@ -48,7 +48,7 @@ namespace APILayer.Controllers
                 throw new ArgumentOutOfRangeException("ID number must be greater than 0.");
             }
             var order = await _businessOrders.GetOrderAsync(ID);
-            return CreateResponse<DTOOrders?>(order, StatusCodes.Status200OK, "Find Saccessfully");
+            return CreateResponse<DTOOrders?>(order, StatusCodes.Status200OK, "Found Successfully!");
         }
 
 
@@ -67,7 +67,7 @@ namespace APILayer.Controllers
 
 
             var order = await _businessOrders.GetFilterOrdersAsync(Request);
-            return CreateResponse<List<DTOOrders>?>(order, StatusCodes.Status200OK, "Find Saccessfully");
+            return CreateResponse<List<DTOOrders>?>(order, StatusCodes.Status200OK, "Found Successfully!");
         }
 
         [HttpPost(Name = "AddNewOrder")]
@@ -101,7 +101,7 @@ namespace APILayer.Controllers
 
 
             var result = await _businessOrders.UpdateOrderAsync(dto);
-            return CreateResponse<DTOOrders>(result!, StatusCodes.Status200OK, "Order updated successfully");
+            return CreateResponse<DTOOrders>(result!, StatusCodes.Status200OK, "Order Updated Successfully!");
 
         }
 
@@ -117,7 +117,7 @@ namespace APILayer.Controllers
                 throw new ArgumentOutOfRangeException("ID number must be greater than 0.");
             }
             var result = await _businessOrders.DeleteOrderAsync(ID);
-            return CreateResponse(true, StatusCodes.Status200OK, "Order deleted successfully");
+            return CreateResponse(true, StatusCodes.Status200OK, "Order Deleted Successfully!");
 
         }
     }

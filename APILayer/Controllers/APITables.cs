@@ -28,7 +28,7 @@ namespace APILayer.Controllers
         {
 
             var data = await dataTablesBusiness.GetAllTablesAsync();
-            return CreateResponse<IEnumerable<DTOTables>>(data, StatusCodes.Status200OK, $"Find {data.Count} Data!");
+            return CreateResponse<IEnumerable<DTOTables>>(data, StatusCodes.Status200OK, $"Row: {data.Count}");
         }
 
         [HttpGet(Name = "GetAllTables")]
@@ -43,7 +43,7 @@ namespace APILayer.Controllers
                 throw new ArgumentOutOfRangeException("Page must be greater than 0.");
             }
             var data = await dataTablesBusiness.GetAllTablesAsync(page);
-            return CreateResponse<IEnumerable<DTOTables>>(data, StatusCodes.Status200OK, $"Find {data.Count} in this page!");
+            return CreateResponse<IEnumerable<DTOTables>>(data, StatusCodes.Status200OK, $"Row: {data.Count}");
 
         }
         
@@ -55,7 +55,7 @@ namespace APILayer.Controllers
         public async Task<ActionResult<ApiResponse<IEnumerable<DTOTables>>>> GetAllAvailablesAsync()
         {
             var data = await dataTablesBusiness.GetAllTablesAvailablesAsync();
-            return CreateResponse<IEnumerable<DTOTables>>(data, StatusCodes.Status200OK, $"Find {data.Count} in this page!");
+            return CreateResponse<IEnumerable<DTOTables>>(data, StatusCodes.Status200OK, $"Row: {data.Count}");
 
         }
 
@@ -120,7 +120,7 @@ namespace APILayer.Controllers
                 throw new ArgumentOutOfRangeException("Table Number is Empty!");
             }
             var list = await dataTablesBusiness.GetTableByNameAsync(tableNumber);
-            return CreateResponse<DTOTables>(list!, StatusCodes.Status200OK, $"Ramadan N word");
+            return CreateResponse<DTOTables>(list!, StatusCodes.Status200OK, $"Found Successfully!");
 
         }
 
@@ -137,7 +137,7 @@ namespace APILayer.Controllers
                 throw new ArgumentOutOfRangeException("ID must be greater than 0.");
             }
             var data = await dataTablesBusiness.GetTableAsync(ID);
-            return CreateResponse<DTOTables>(data!, StatusCodes.Status200OK, "Found Data!");
+            return CreateResponse<DTOTables>(data!, StatusCodes.Status200OK, "Found Successfully!");
 
         }
 
@@ -173,7 +173,7 @@ namespace APILayer.Controllers
 
 
             var dto = await dataTablesBusiness.UpdateTableAsync(Table);
-            return CreateResponse<DTOTables>(dto!, StatusCodes.Status200OK, "Update Saccessfully!");
+            return CreateResponse<DTOTables>(dto!, StatusCodes.Status200OK, "Table Updated Successfully!");
 
         }
 
@@ -192,7 +192,7 @@ namespace APILayer.Controllers
             }
 
             var result = await dataTablesBusiness.DeleteTableAsync(ID);
-            return CreateResponse<bool>(true!, StatusCodes.Status200OK, "Delete Saccessfully!");
+            return CreateResponse<bool>(true!, StatusCodes.Status200OK, "Table Deleted Successfully!");
 
         }
     }

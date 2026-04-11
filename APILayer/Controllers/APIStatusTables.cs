@@ -32,7 +32,7 @@ namespace APILayer.Controllers
                 throw new ArgumentOutOfRangeException("Page number must be greater than 0.");
             }
             var list = await _businessStatusTables.GetAllStatusTablesAsync(Page);
-            return CreateResponse<IEnumerable<DTOStatusTables>>(list!, StatusCodes.Status200OK, "Completed!");
+            return CreateResponse<IEnumerable<DTOStatusTables>>(list!, StatusCodes.Status200OK, $"Row: {list.Count}");
 
         }
 
@@ -48,7 +48,7 @@ namespace APILayer.Controllers
                 throw new ArgumentOutOfRangeException("ID number must be greater than 0.");
             }
             var statusTable = await _businessStatusTables.GetStatusTableAsync(ID);
-            return CreateResponse<DTOStatusTables>(statusTable!, StatusCodes.Status200OK, "Completed!");
+            return CreateResponse<DTOStatusTables>(statusTable!, StatusCodes.Status200OK, "Found Successfully!");
 
         }
 
@@ -89,7 +89,7 @@ namespace APILayer.Controllers
 
 
             var result = await _businessStatusTables.UpdateStatusTableAsync(Request);
-            return CreateResponse<DTOStatusTables>(result!, StatusCodes.Status200OK, "StatusTable updated successfully.");
+            return CreateResponse<DTOStatusTables>(result!, StatusCodes.Status200OK, "Status Table Updated Successfully!");
             
         }
 
@@ -107,7 +107,7 @@ namespace APILayer.Controllers
                 throw new ArgumentOutOfRangeException("ID number must be greater than 0.");
             }
             var result = await _businessStatusTables.DeleteStatusTableAsync(ID);
-            return CreateResponse<bool>(true!, StatusCodes.Status200OK, "StatusTable deleted successfully.");
+            return CreateResponse<bool>(true!, StatusCodes.Status200OK, "Status Table Deleted Successfully!");
         }
     }
 }

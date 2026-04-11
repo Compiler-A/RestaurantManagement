@@ -1,7 +1,8 @@
 ﻿using APILayer.Filters;
-using Microsoft.AspNetCore.Mvc;
 using BusinessLayerRestaurant.Interfaces;
 using ContractsLayerRestaurant.DTOs.TypeItems;
+using Microsoft.AspNetCore.Mvc;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 
 namespace APILayer.Controllers
@@ -29,7 +30,7 @@ namespace APILayer.Controllers
                 throw new ArgumentOutOfRangeException("Page number must be greater than 0.");
             }
             var typeItems = await _dataLayer.GetAllTypeItemsAsync(page);
-            return CreateResponse<IEnumerable<DTOTypeItems>>(typeItems, StatusCodes.Status200OK, "Completed!");
+            return CreateResponse<IEnumerable<DTOTypeItems>>(typeItems, StatusCodes.Status200OK, $"Row: {typeItems.Count}");
 
         }
 
@@ -45,7 +46,7 @@ namespace APILayer.Controllers
                 throw new ArgumentOutOfRangeException("ID number must be greater than 0.");
             }
             var typeItemDto = await _dataLayer.GetTypeItemAsync(ID);
-            return CreateResponse(typeItemDto!, StatusCodes.Status200OK, "Completed");
+            return CreateResponse(typeItemDto!, StatusCodes.Status200OK, "Found Successfully!");
 
         }
 
@@ -81,7 +82,7 @@ namespace APILayer.Controllers
 
 
             var dto = await _dataLayer.UpdateTypeItemAsync(typeItem);
-            return CreateResponse(dto!, StatusCodes.Status200OK, "Update successfully");
+            return CreateResponse(dto!, StatusCodes.Status200OK, "Type Item Updated Successfully!");
 
         }
 
@@ -97,7 +98,7 @@ namespace APILayer.Controllers
                 throw new ArgumentOutOfRangeException("ID number must be greater than 0.");
 
             var typeItem = await _dataLayer.GetTypeItemAsync(ID);
-            return CreateResponse<bool>(true, StatusCodes.Status200OK, "Deleted successfully");
+            return CreateResponse<bool>(true, StatusCodes.Status200OK, "Type Item Deleted Successfully!");
         }
     }
 }

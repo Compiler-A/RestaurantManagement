@@ -45,7 +45,7 @@ namespace APILayer.Controllers
                 throw new ArgumentOutOfRangeException("ID number must be greater than 0.");
             }
             var DTO = await jobRoles.GetJobRoleAsync(ID);
-            return CreateResponse<DTOJobRoles>(DTO!, StatusCodes.Status200OK, "Find Saccessfully!");
+            return CreateResponse<DTOJobRoles>(DTO!, StatusCodes.Status200OK, "Found Successfully!");
         }
 
         [HttpPost(Name = "AddJobRole")]
@@ -80,7 +80,7 @@ namespace APILayer.Controllers
 
 
             var result = await jobRoles.UpdateJobRoleAsync(Update);
-            return CreateResponse<DTOJobRoles>(result!, StatusCodes.Status200OK, "Job Role updated successfully.");
+            return CreateResponse<DTOJobRoles>(result!, StatusCodes.Status200OK, "Job Role Updated Successfully!");
 
            
         }
@@ -99,7 +99,7 @@ namespace APILayer.Controllers
                 throw new ArgumentOutOfRangeException("ID number must be greater than 0.");
             }
             var result = await jobRoles.DeleteJobRoleAsync(id);
-            return CreateResponse<bool>(true!, StatusCodes.Status200OK, "jobRole deleted successfully.");
+            return CreateResponse<bool>(true!, StatusCodes.Status200OK, "Job Role Deleted Successfully!");
         }
     }
 }

@@ -48,7 +48,7 @@ namespace APILayer.Controllers
             }
 
             var DTO = await _StatusOrder.GetStatusOrdersAsync(ID);
-            return CreateResponse<DTOStatusOrders>(DTO!, StatusCodes.Status200OK, "Find Saccessfully!");
+            return CreateResponse<DTOStatusOrders>(DTO!, StatusCodes.Status200OK, "Found Successfully!");
         }
 
         [HttpPost(Name = "AddStatusOrder")]
@@ -84,7 +84,7 @@ namespace APILayer.Controllers
 
 
             var result = await _StatusOrder.UpdateStatusOrdersAsync(Request);
-            return CreateResponse<DTOStatusOrders>(result!, StatusCodes.Status200OK, "StatusOrder updated successfully.");
+            return CreateResponse<DTOStatusOrders>(result!, StatusCodes.Status200OK, "Status Order Updated Successfully!");
 
         }
 
@@ -102,7 +102,7 @@ namespace APILayer.Controllers
                 throw new ArgumentOutOfRangeException("ID must be greater than 0.");
             }
             var result = await _StatusOrder.DeleteStatusOrdersAsync(ID);
-            return CreateResponse<bool>(true!, StatusCodes.Status200OK, "StatusOrder deleted successfully.");
+            return CreateResponse<bool>(true!, StatusCodes.Status200OK, "Status Order Deleted Successfully!");
         }
     }
 }

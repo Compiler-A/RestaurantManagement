@@ -47,7 +47,7 @@ namespace APILayer.Controllers
                 throw new ArgumentOutOfRangeException("ID must be greater than 0.");
             }
             var DTO = await employees.GetEmployeeAsync(ID);
-            return CreateResponse<DTOEmployees>(DTO!, StatusCodes.Status200OK, "Success");
+            return CreateResponse<DTOEmployees>(DTO!, StatusCodes.Status200OK, "Found Successfully!");
         }
 
         [HttpPost(Name = "AddEmployee")]
@@ -82,7 +82,7 @@ namespace APILayer.Controllers
             
 
             var dto = await this.employees.UpdateEmployeeAsync(employee);
-            return CreateResponse<DTOEmployees>(dto!, StatusCodes.Status200OK, "Employee updated successfully.");
+            return CreateResponse<DTOEmployees>(dto!, StatusCodes.Status200OK, "Employee Updated Successfully!");
         }
 
         [HttpDelete("{ID}", Name = "DeleteEmployee")]
@@ -99,7 +99,7 @@ namespace APILayer.Controllers
             }
 
             var success = await employees.DeleteEmployeeAsync(ID);
-            return CreateResponse<bool>(true, StatusCodes.Status200OK, "Employee deleted successfully.");
+            return CreateResponse<bool>(true, StatusCodes.Status200OK, "Employee Deleted Successfully!");
         }
 
         [HttpPost("login", Name = "LoginEmployeeAsync")]
@@ -118,7 +118,7 @@ namespace APILayer.Controllers
             
 
             var DTO = await employees.GetLoginEmployeeAsync(Login);
-            return CreateResponse<DTOEmployees>(DTO!, StatusCodes.Status200OK, "Success");
+            return CreateResponse<DTOEmployees>(DTO!, StatusCodes.Status200OK, "Found Successfully!");
         }
 
         [HttpPost("changed-password", Name = "ChangeEmployeePasswordAsync")]
@@ -134,7 +134,7 @@ namespace APILayer.Controllers
                 throw new ArgumentNullException("Request is null!");
             }
             var success = await employees.ChangePasswordAsync(Changed);
-            return CreateResponse<bool>(true, StatusCodes.Status200OK, "Password changed successfully.");
+            return CreateResponse<bool>(true, StatusCodes.Status200OK, "Password Changed Successfully!");
 
             
         }
@@ -152,7 +152,7 @@ namespace APILayer.Controllers
                 throw new ArgumentException("Username is null or empty.");
             }
             var DTO = await employees.GetEmployeeAsync(userName);
-            return CreateResponse<DTOEmployees>(DTO!, StatusCodes.Status200OK, "Success");
+            return CreateResponse<DTOEmployees>(DTO!, StatusCodes.Status200OK, "Found Successfully!");
 
         }
 

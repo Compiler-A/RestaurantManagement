@@ -46,7 +46,7 @@ namespace APILayer.Controllers
                 throw new ArgumentOutOfRangeException("ID must be greater than 0.");
             }
             var DTO = await _BusinessSettings.GetSettingAsync(ID);
-            return CreateResponse<DTOSettings>(DTO!, StatusCodes.Status200OK, "Success");
+            return CreateResponse<DTOSettings>(DTO!, StatusCodes.Status200OK, "Found Successfully!");
         }
 
         [HttpPost(Name = "AddSetting")]
@@ -83,7 +83,7 @@ namespace APILayer.Controllers
 
 
             var success = await _BusinessSettings.UpdateSettingAsync(Setting);
-            return CreateResponse<DTOSettings>(success!, StatusCodes.Status200OK, "Setting updated successfully.");
+            return CreateResponse<DTOSettings>(success!, StatusCodes.Status200OK, "Setting Updated Successfully!");
 
         }
 
@@ -100,7 +100,7 @@ namespace APILayer.Controllers
                 throw new ArgumentOutOfRangeException("ID must be greater than 0.");
             }
             var success = await _BusinessSettings.DeleteSettingAsync(ID);
-            return CreateResponse<bool>(success, StatusCodes.Status200OK, "Setting deleted successfully.");
+            return CreateResponse<bool>(success, StatusCodes.Status200OK, "Setting Deleted Successfully!");
 
         }
     }
