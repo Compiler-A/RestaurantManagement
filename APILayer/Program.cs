@@ -42,7 +42,18 @@ builder.Services.AddHashingServices();
 
 builder.Services.AddSingleton<IMyLogger, clsMyLogger>();
 
-
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("RMApiCorsPolicy", policy =>
+    {
+        policy.WithOrigins(
+            "https://localhost:7292",
+            "http://localhost:5223"
+            )
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
 var app = builder.Build();
 
 //Middleware for global exception handling
