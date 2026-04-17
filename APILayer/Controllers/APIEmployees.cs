@@ -118,27 +118,6 @@ namespace APILayer.Controllers
             return CreateResponse<bool>(true, StatusCodes.Status200OK, "Employee Deleted Successfully!");
         }
 
-        [HttpPost("login", Name = "LoginEmployeeAsync")]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        [ProducesResponseType(StatusCodes.Status409Conflict)]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status409Conflict)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<ActionResult<ApiResponse<DTOEmployees>>> LoginAsync([FromBody] DTOEmployeesLoginRequest Login)
-        {
-            if (Login == null)
-            {
-                throw new ArgumentNullException("Request is null!");
-            }
-            
-
-            var DTO = await employees.GetLoginEmployeeAsync(Login);
-            return CreateResponse<DTOEmployees>(DTO!, StatusCodes.Status200OK, "Found Successfully!");
-        }
 
         [HttpPost("changed-password", Name = "ChangeEmployeePasswordAsync")]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]

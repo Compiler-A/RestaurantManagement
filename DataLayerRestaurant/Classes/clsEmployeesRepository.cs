@@ -55,29 +55,6 @@ namespace DataLayerRestaurant.Classes
             return employee;
         }
 
-        public async Task<DTOEmployees?> GetDataLoginAsync(DTOEmployeesLoginRequest Request)
-        {
-            using (SqlConnection Connection = new SqlConnection(_Setting.ConnectionString))
-            {
-                using (SqlCommand Command = new SqlCommand("Employees.SP_LoginEmployee", Connection))
-                {
-                    Command.CommandType = System.Data.CommandType.StoredProcedure;
-                    Command.Parameters.AddWithValue("@UserName", Request.UserName);
-                    Command.Parameters.AddWithValue("@Password", (Request.Password));
-
-
-                    await Connection.OpenAsync();
-                    using (SqlDataReader reader = await Command.ExecuteReaderAsync())
-                    {
-                        if (await reader.ReadAsync())
-                        {
-                            return  GetDataFromDataBase(reader);
-                        }
-                    }
-                }
-            }
-            return null;
-        }
 
         public async Task<List<DTOEmployees>> GetAllDataAsync(int page)
         {
@@ -251,12 +228,6 @@ namespace DataLayerRestaurant.Classes
         public async Task<DTOEmployees?> GetEmployeeAsync(string Name)
         {
             return await _IRead.GetDataAsync(Name);
-        }
-
-        public async Task<DTOEmployees?> GetLoginEmployeeAsync(DTOEmployeesLoginRequest Request)
-        {
-            return await _IRead.GetDataLoginAsync(Request);
-
         }
 
         public async Task<bool> ChangedPasswordEmployeeAsync(DTOEmployeesChangedPassword Request)

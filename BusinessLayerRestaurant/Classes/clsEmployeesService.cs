@@ -77,23 +77,7 @@ namespace BusinessLayerRestaurant.Classes
             _HashingService = HashingService;
             _Logger = Logger;
         }
-        public async Task<DTOEmployees?> LoginAsync(DTOEmployeesLoginRequest Request)
-        { 
-            var Data = await _Interface.IData.GetEmployeeAsync(Request.UserName);
-            if (Data == null)
-            {
-                throw new KeyNotFoundException("Not Found!");
-            }
-            var Valid = _HashingService.ValidationBCrypt(Request.Password, Data.Password);
-            if (!Valid)
-            {
-                throw new InvalidOperationException("Bad password!");
-            }
-
-            await LoadDataAsync(Data);
-            _Logger.EventLogs($"Employee Login, UserName: {Data.UserName}", EventLogEntryType.Information);
-            return Data;
-        }
+        
 
         public async Task<DTOEmployees?> GetAsync(int ID)
         {
@@ -236,13 +220,6 @@ namespace BusinessLayerRestaurant.Classes
         {
             get => _Interface.IBusinessJobRole;
             set => _Interface.IBusinessJobRole = value;
-        }
-
-
-
-        public async Task<DTOEmployees?> GetLoginEmployeeAsync(DTOEmployeesLoginRequest request)
-        {
-            return await _IRead.LoginAsync(request);
         }
 
         public async Task<bool> ChangePasswordAsync(DTOEmployeesChangedPassword Request)

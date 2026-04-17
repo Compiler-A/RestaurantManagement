@@ -6,14 +6,12 @@ namespace DataLayerRestaurant.Interfaces
 {
     public interface IEmployeesRepositoryReader : IReadableDataBase<DTOEmployees>
     {
-        Task<DTOEmployees?> GetDataLoginAsync(DTOEmployeesLoginRequest Request);
         Task<DTOEmployees?> GetDataAsync(string UserName);
 
     }
 
     public interface IEmployeesRepositoryReadable
     {
-        Task<DTOEmployees?> GetLoginEmployeeAsync(DTOEmployeesLoginRequest Request);
         Task<List<DTOEmployees>> GetAllEmployeesAsync(int page);
         Task<DTOEmployees?> GetEmployeeAsync(int ID);
         Task<DTOEmployees?> GetEmployeeAsync(string UserName);

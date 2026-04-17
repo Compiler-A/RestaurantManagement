@@ -23,13 +23,11 @@ namespace BusinessLayerRestaurant.Interfaces
 
     public interface IEmployeesServiceReader : IReadableBusinessBase<DTOEmployees>
     {
-        Task<DTOEmployees?> LoginAsync(DTOEmployeesLoginRequest Request);
         Task<DTOEmployees?> GetAsync(string UserName);
     }
 
     public interface IEmployeesServiceReadable
     {
-        Task<DTOEmployees?> GetLoginEmployeeAsync(DTOEmployeesLoginRequest Request);
         Task<List<DTOEmployees>> GetAllEmployeesAsync(int page);
         Task<DTOEmployees?> GetEmployeeAsync(int ID);
         Task<DTOEmployees?> GetEmployeeAsync(string UserName);
