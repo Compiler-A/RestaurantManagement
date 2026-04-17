@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
+using System.Security.Authentication;
 using System.Text.Json;
 using BusinessLayerRestaurant.Interfaces;
 using System.Diagnostics;
@@ -64,7 +65,10 @@ namespace APILayer.Middleware
                     statusCode = StatusCodes.Status409Conflict;
                     message = invOpEx.Message;
                     break;
-
+                case AuthenticationException authEx:
+                    statusCode = StatusCodes.Status401Unauthorized;
+                    message = authEx.Message;
+                    break;
                 case UnauthorizedAccessException unAuthEx:
                     statusCode = StatusCodes.Status403Forbidden;
                     message = unAuthEx.Message;

@@ -70,7 +70,7 @@ namespace BusinessLayerRestaurant.Classes
         private readonly IMyLogger _Logger;
         private readonly IHashingService _HashingService;
 
-        public clsEmployeesReader(IHashingService HashingService,IEmployeesServiceContainer Interface, IEnumerable<IEmployeesServiceComposition> Loaders, IMyLogger Logger) 
+        public clsEmployeesReader(IHashingService HashingService, IEmployeesServiceContainer Interface, IEnumerable<IEmployeesServiceComposition> Loaders, IMyLogger Logger) 
             : base(Loaders)
         {
             _Interface = Interface;
