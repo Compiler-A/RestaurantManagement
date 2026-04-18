@@ -1,3 +1,4 @@
+using APILayer.Authorization;
 using APILayer.Extensions;
 using APILayer.Filters;
 using APILayer.Middleware;
@@ -5,6 +6,7 @@ using BusinessLayerRestaurant.Classes;
 using BusinessLayerRestaurant.Interfaces;
 using DataLayerRestaurant;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
@@ -26,6 +28,14 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 Encoding.UTF8.GetBytes("THIS_IS_A_VERY_SECRET_KEY_RM123456"))
         };
     });
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("EmployeeOwnerOrAdmin", policy =>
+        policy.Requirements.Add(new EmployeeOwnerOrAdminRequirement()));
+    options.AddPolicy("EmployeeByUserNameOwnerOrAdmin", policy =>
+        policy.Requirements.Add(new EmployeeUserNameOwnerOrAdminRequirement()));
+});
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -84,6 +94,8 @@ builder.Services.AddTablesServices();
 builder.Services.AddTypeItemsServices();
 builder.Services.AddHashingServices();
 
+builder.Services.AddSingleton<IAuthorizationHandler, EmployeeUserNameOwnerOrAdminHandler>();
+builder.Services.AddSingleton<IAuthorizationHandler, EmployeeOwnerOrAdminHandler>();
 builder.Services.AddSingleton<IMyLogger, clsMyLogger>();
 
 builder.Services.AddCors(options =>

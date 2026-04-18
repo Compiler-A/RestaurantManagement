@@ -44,7 +44,6 @@ namespace APILayer.Controllers
         }
 
         [AllowAnonymous]
-        [Authorize(Roles = "Manager")]
         [HttpGet("all-availables", Name = "GetAllTablesAvailables")]
         public async Task<ActionResult<ApiResponse<IEnumerable<DTOTables>>>> GetAllAvailablesAsync()
         {

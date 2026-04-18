@@ -3,6 +3,8 @@ using BusinessLayerRestaurant.Interfaces;
 using ContractsLayerRestaurant.DTOs.Employees;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Authentication;
+using System.Security.Claims;
 
 namespace APILayer.Controllers
 {
@@ -32,14 +34,22 @@ namespace APILayer.Controllers
             return CreateResponse<IEnumerable<DTOEmployees>>(list, StatusCodes.Status200OK, $"Row: {list.Count}");
         }
 
-        [Authorize(Roles = "Manager")]
         [HttpGet("{ID}", Name = "GetEmployeeByID")]
-        public async Task<ActionResult<ApiResponse<DTOEmployees>>> GetByIDAsync([FromRoute] int ID = 1)
+        public async Task<ActionResult<ApiResponse<DTOEmployees>>> GetByIDAsync
+            ([FromRoute] int ID , [FromServices] IAuthorizationService authorizationService)
         {
             if (ID <= 0)
             {
                 throw new ArgumentOutOfRangeException("ID must be greater than 0.");
             }
+            var authResult = await authorizationService.AuthorizeAsync(
+                User,
+                ID,
+                "EmployeeOwnerOrAdmin");
+
+            if (!authResult.Succeeded)
+                throw new UnauthorizedAccessException("Access denied.");
+
             var DTO = await employees.GetEmployeeAsync(ID);
             return CreateResponse<DTOEmployees>(DTO!, StatusCodes.Status200OK, "Found Successfully!");
         }
@@ -86,7 +96,7 @@ namespace APILayer.Controllers
         }
 
 
-        [Authorize(Roles = "Manager")]
+        [Authorize]
         [HttpPost("changed-password", Name = "ChangeEmployeePasswordAsync")]
         public async Task<ActionResult<ApiResponse<bool>>> ChangePasswordAsync([FromBody] DTOEmployeesChangedPassword Changed)
         {
@@ -94,18 +104,34 @@ namespace APILayer.Controllers
             {
                 throw new ArgumentNullException("Request is null!");
             }
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (int.TryParse(userId, out int authenticatedEmployeeId) &&
+                authenticatedEmployeeId != Changed.ID)
+            {
+                throw new AuthenticationException("Invalid credentials");
+            }
             var success = await employees.ChangePasswordAsync(Changed);
             return CreateResponse<bool>(true, StatusCodes.Status200OK, "Password Changed Successfully!");
         }
 
-        [Authorize(Roles = "Manager")]
+        [Authorize]
         [HttpGet("user-name/{userName}", Name = "GetEmployeeByUserName")]
-        public async Task<ActionResult<ApiResponse<DTOEmployees>>> GetByUserNameAsync([FromRoute] string userName)
+        public async Task<ActionResult<ApiResponse<DTOEmployees>>> GetByUserNameAsync
+            ([FromRoute] string userName, [FromServices] IAuthorizationService authorizationService)
         {
             if (string.IsNullOrWhiteSpace(userName))
             {
                 throw new ArgumentException("Username is null or empty.");
             }
+
+            var authResult = await authorizationService.AuthorizeAsync(
+                User,
+                userName,
+                "EmployeeByUserNameOwnerOrAdmin");
+
+            if (!authResult.Succeeded)
+                throw new UnauthorizedAccessException("Access denied.");
             var DTO = await employees.GetEmployeeAsync(userName);
             return CreateResponse<DTOEmployees>(DTO!, StatusCodes.Status200OK, "Found Successfully!");
 
