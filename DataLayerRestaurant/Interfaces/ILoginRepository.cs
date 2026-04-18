@@ -1,5 +1,5 @@
 ﻿using ContractsLayerRestaurant.DTOs.Employees;
-using ContractsLayerRestaurant.DTOs.Login;
+using ContractsLayerRestaurant.DTOs.Auth;
 using RestaurantDataLayer;
 using System;
 using System.Collections.Generic;

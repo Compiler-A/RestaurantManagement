@@ -22,14 +22,8 @@ namespace APILayer.Controllers
             _businessStatusTables = businessStatusTables;
         }
 
+        [AllowAnonymous]
         [HttpGet(Name = "GetAllStatusTables")]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        [ProducesResponseType(StatusCodes.Status409Conflict)]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<ApiResponse<IEnumerable<DTOStatusTables>>>> GetAllAsync([FromQuery] int Page)
         {
             if (Page <= 0)
@@ -41,14 +35,8 @@ namespace APILayer.Controllers
 
         }
 
+        [AllowAnonymous]
         [HttpGet("{ID}", Name = "GetStatusTableByID")]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        [ProducesResponseType(StatusCodes.Status409Conflict)]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<ApiResponse<DTOStatusTables>>> GetByIDAsync([FromRoute] int ID)
         {
             if (ID <= 0)
@@ -60,15 +48,8 @@ namespace APILayer.Controllers
 
         }
 
-
+        [Authorize(Roles = "Manager")]
         [HttpPost(Name = "AddStatusTable")]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        [ProducesResponseType(StatusCodes.Status409Conflict)]
-        [ProducesResponseType(StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<ApiResponse<DTOStatusTables>>> CreateAsync([FromBody] DTOStatusTablesCRequest Request)
         {
 
@@ -82,16 +63,9 @@ namespace APILayer.Controllers
 
         }
 
-        
 
+        [Authorize(Roles = "Manager")]
         [HttpPut(Name = "UpdateStatusTable")]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        [ProducesResponseType(StatusCodes.Status409Conflict)]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<ApiResponse<DTOStatusTables>>> UpdateAsync([FromBody] DTOStatusTablesURequest Request)
         {
             if (Request == null)
@@ -105,15 +79,8 @@ namespace APILayer.Controllers
             
         }
 
-
+        [Authorize(Roles = "Manager")]
         [HttpDelete("{ID}", Name = "DeleteStatusTable")]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        [ProducesResponseType(StatusCodes.Status409Conflict)]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<ApiResponse<bool>>> DeleteAsync([FromRoute] int ID)
         {
             if (ID <= 0)

@@ -1,4 +1,5 @@
 using APILayer.Extensions;
+using APILayer.Filters;
 using APILayer.Middleware;
 using BusinessLayerRestaurant.Classes;
 using BusinessLayerRestaurant.Interfaces;
@@ -25,7 +26,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 Encoding.UTF8.GetBytes("THIS_IS_A_VERY_SECRET_KEY_RM123456"))
         };
     });
-
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -54,6 +54,7 @@ builder.Services.AddSwaggerGen(options =>
             new string[] {}
         }
     });
+    options.OperationFilter<DefaultResponsesOperationFilter>();
 });
 
 builder.Services.AddControllers(options =>

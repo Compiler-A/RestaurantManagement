@@ -1,4 +1,4 @@
-﻿namespace ContractsLayerRestaurant.DTOs.Login
+﻿namespace ContractsLayerRestaurant.DTOs.Auth
 {
     public class DTORefreshRequest
     {

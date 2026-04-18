@@ -20,16 +20,9 @@ namespace APILayer.Controllers
 
         private readonly IOrdersService _businessOrders;
 
-        
-       
+
+        [Authorize(Roles = "Manager,Chef,Sous Chef,Waiter")]
         [HttpGet(Name = "GetAllOrders")]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        [ProducesResponseType(StatusCodes.Status409Conflict)]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<ApiResponse<IEnumerable<DTOOrders>>>> GetAllAsync([FromQuery] int page = 1)
         {
             if (page <= 0)
@@ -41,14 +34,8 @@ namespace APILayer.Controllers
 
         }
 
+        [Authorize(Roles = "Manager,Chef,Sous Chef,Waiter")]
         [HttpGet("{ID}", Name ="GetOrderByID")]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        [ProducesResponseType(StatusCodes.Status409Conflict)]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<ApiResponse<DTOOrders?>>> GetByIDAsync([FromRoute] int ID)
         {
             if (ID <= 0)
@@ -59,15 +46,8 @@ namespace APILayer.Controllers
             return CreateResponse<DTOOrders?>(order, StatusCodes.Status200OK, "Found Successfully!");
         }
 
-
+        [Authorize(Roles = "Manager,Chef,Sous Chef,Waiter")]
         [HttpGet("filter", Name = "GetFilterOrder")]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        [ProducesResponseType(StatusCodes.Status409Conflict)]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<ApiResponse<List<DTOOrders>?>>> GetFilterAsync
             ([FromQuery] DTOOrderFilterRequest Request)
         {
@@ -81,14 +61,8 @@ namespace APILayer.Controllers
             return CreateResponse<List<DTOOrders>?>(order, StatusCodes.Status200OK, "Found Successfully!");
         }
 
+        [Authorize(Roles = "Manager,Waiter")]
         [HttpPost(Name = "AddNewOrder")]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        [ProducesResponseType(StatusCodes.Status409Conflict)]
-        [ProducesResponseType(StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<ApiResponse<DTOOrders>>> CreateAsync([FromBody] DTOOrderCRequest dto)
         {
             if (dto == null)
@@ -101,14 +75,8 @@ namespace APILayer.Controllers
 
         }
 
+        [Authorize(Roles = "Manager,Chef,Sous Chef,Waiter")]
         [HttpPut(Name = "UpdateOrder")]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        [ProducesResponseType(StatusCodes.Status409Conflict)]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<ApiResponse<DTOOrders>>> UpdateAsync([FromBody] DTOOrderURequest dto)
         {
             if (dto == null)
@@ -122,14 +90,8 @@ namespace APILayer.Controllers
 
         }
 
+        [Authorize(Roles = "Manager,Waiter")]
         [HttpDelete("{ID}")]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        [ProducesResponseType(StatusCodes.Status409Conflict)]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<ApiResponse<bool>>> DeleteAsync(int ID)
         {
             if (ID <= 0)

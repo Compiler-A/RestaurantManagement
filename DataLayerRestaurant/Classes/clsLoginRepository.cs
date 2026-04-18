@@ -1,5 +1,5 @@
 ﻿using ContractsLayerRestaurant.DTOs.Employees;
-using ContractsLayerRestaurant.DTOs.Login;
+using ContractsLayerRestaurant.DTOs.Auth;
 using DataLayerRestaurant.Interfaces;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Options;

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ContractsLayerRestaurant.DTOs.Login
+namespace ContractsLayerRestaurant.DTOs.Auth
 {
     public class DTOLogin
     {
