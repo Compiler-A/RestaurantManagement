@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 
-namespace APILayer.Authorization
+namespace APILayer.Authorization.Employee
 {
     public class EmployeeOwnerOrAdminHandler 
         : AuthorizationHandler<EmployeeOwnerOrAdminRequirement, int>

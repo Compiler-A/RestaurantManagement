@@ -1,4 +1,6 @@
 using APILayer.Authorization;
+using APILayer.Authorization.Employee;
+using APILayer.Authorization.Order;
 using APILayer.Extensions;
 using APILayer.Filters;
 using APILayer.Middleware;
@@ -35,6 +37,8 @@ builder.Services.AddAuthorization(options =>
         policy.Requirements.Add(new EmployeeOwnerOrAdminRequirement()));
     options.AddPolicy("EmployeeByUserNameOwnerOrAdmin", policy =>
         policy.Requirements.Add(new EmployeeUserNameOwnerOrAdminRequirement()));
+    options.AddPolicy("WaiterOwnerOrAdmin", policy =>
+        policy.Requirements.Add(new WaiterOwnerOrAdminRequirement()));
 });
 
 builder.Services.AddControllers();
@@ -96,6 +100,7 @@ builder.Services.AddHashingServices();
 
 builder.Services.AddSingleton<IAuthorizationHandler, EmployeeUserNameOwnerOrAdminHandler>();
 builder.Services.AddSingleton<IAuthorizationHandler, EmployeeOwnerOrAdminHandler>();
+builder.Services.AddSingleton<IAuthorizationHandler, WaiterOwnerOrAdminHandler>();
 builder.Services.AddSingleton<IMyLogger, clsMyLogger>();
 
 builder.Services.AddCors(options =>

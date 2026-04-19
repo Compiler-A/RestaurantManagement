@@ -63,13 +63,17 @@ namespace APILayer.Controllers
 
         [Authorize(Roles = "Manager,Waiter")]
         [HttpPost(Name = "AddNewOrder")]
-        public async Task<ActionResult<ApiResponse<DTOOrders>>> CreateAsync([FromBody] DTOOrderCRequest dto)
+        public async Task<ActionResult<ApiResponse<DTOOrders>>> CreateAsync
+            ([FromBody] DTOOrderCRequest dto, [FromServices] IAuthorizationService authorizationService)
         {
             if (dto == null)
             {
                 throw new ArgumentNullException("Request is null!");
             }
+            var authResult = await authorizationService.AuthorizeAsync(User, dto.EmployerID, "WaiterOwnerOrAdmin");
 
+            if (!authResult.Succeeded)
+                throw new UnauthorizedAccessException("Access denied.");
             var result = await _businessOrders.AddOrderAsync(dto);
             return CreatedAtRoute("GetOrderByID", new { ID = result!.ID }, result);
 
@@ -77,20 +81,24 @@ namespace APILayer.Controllers
 
         [Authorize(Roles = "Manager,Chef,Sous Chef,Waiter")]
         [HttpPut(Name = "UpdateOrder")]
-        public async Task<ActionResult<ApiResponse<DTOOrders>>> UpdateAsync([FromBody] DTOOrderURequest dto)
+        public async Task<ActionResult<ApiResponse<DTOOrders>>> UpdateAsync
+            ([FromBody] DTOOrderURequest dto, [FromServices] IAuthorizationService authorizationService)
         {
             if (dto == null)
             {
                 throw new ArgumentNullException("Request is null!");
             }
+            var authResult = await authorizationService.AuthorizeAsync(User, dto.EmployerID, "WaiterOwnerOrAdmin");
 
+            if (!authResult.Succeeded)
+                throw new UnauthorizedAccessException("Access denied.");
 
             var result = await _businessOrders.UpdateOrderAsync(dto);
             return CreateResponse<DTOOrders>(result!, StatusCodes.Status200OK, "Order Updated Successfully!");
 
         }
 
-        [Authorize(Roles = "Manager,Waiter")]
+        [Authorize(Roles = "Manager,Chef,Sous Chef")]
         [HttpDelete("{ID}")]
         public async Task<ActionResult<ApiResponse<bool>>> DeleteAsync(int ID)
         {
@@ -98,6 +106,7 @@ namespace APILayer.Controllers
             {
                 throw new ArgumentOutOfRangeException("ID number must be greater than 0.");
             }
+
             var result = await _businessOrders.DeleteOrderAsync(ID);
             return CreateResponse(true, StatusCodes.Status200OK, "Order Deleted Successfully!");
 

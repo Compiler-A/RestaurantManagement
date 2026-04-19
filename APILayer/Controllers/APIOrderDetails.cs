@@ -62,12 +62,18 @@ namespace APILayer.Controllers
 
         [Authorize(Roles = "Manager,Waiter")]
         [HttpPost(Name = "AddNewOrderDetail")]
-        public async Task<ActionResult<ApiResponse<DTOOrderDetails>>> CreateAsync([FromBody] DTOOrderDetailsCRequest dto)
+        public async Task<ActionResult<ApiResponse<DTOOrderDetails>>> CreateAsync
+            ([FromBody] DTOOrderDetailsCRequest dto, [FromServices] IAuthorizationService authorizationService)
         {
             if (dto == null)
             {
                 throw new ArgumentNullException("Request is null!");
             }
+            var order = await _businessOrderDetail.IOrder.GetOrderAsync(dto.OrderID);
+            var authResult = await authorizationService.AuthorizeAsync(User, order!.EmployerID, "WaiterOwnerOrAdmin");
+
+            if (!authResult.Succeeded)
+                throw new UnauthorizedAccessException("Access denied.");
 
 
             var result = await _businessOrderDetail.AddOrderDetailAsync(dto);
@@ -77,12 +83,17 @@ namespace APILayer.Controllers
 
         [Authorize(Roles = "Manager,Chef,Sous Chef,Waiter")]
         [HttpPut(Name = "UpdateOrderDetail")]
-        public async Task<ActionResult<ApiResponse<DTOOrderDetails>>> UpdateAsync([FromBody] DTOOrderDetailsURequest dto)
+        public async Task<ActionResult<ApiResponse<DTOOrderDetails>>> UpdateAsync
+            ([FromBody] DTOOrderDetailsURequest dto, [FromServices] IAuthorizationService authorizationService)
         {
             if (dto == null)
             {
                 throw new ArgumentNullException("Request is null!");
             }
+            var order = await _businessOrderDetail.IOrder.GetOrderAsync(dto.OrderID);
+            var authResult = await authorizationService.AuthorizeAsync(User, order!.EmployerID, "WaiterOwnerOrAdmin");
+            if (!authResult.Succeeded)
+                throw new UnauthorizedAccessException("Access denied.");
 
 
             var result = await _businessOrderDetail.UpdateOrderDetailAsync(dto);
