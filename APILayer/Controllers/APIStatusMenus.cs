@@ -1,8 +1,9 @@
 ﻿using APILayer.Filters;
-using Microsoft.AspNetCore.Mvc;
 using BusinessLayerRestaurant.Interfaces;
 using ContractsLayerRestaurant.DTOs.StatusMenus;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 
 
 
@@ -23,6 +24,7 @@ namespace APILayer.Controllers
 
         [AllowAnonymous]
         [HttpGet(Name = "GetAllStatusMenus")]
+        [EnableRateLimiting("GetAllLimiter")]
         public async Task<ActionResult<ApiResponse<List<DTOStatusMenus>>>> GetAllAsync([FromQuery] int page = 1)
         {
             if (page <= 0)
@@ -36,6 +38,7 @@ namespace APILayer.Controllers
         }
 
         [AllowAnonymous]
+        [EnableRateLimiting("GetOneLimiter")]
         [HttpGet("{ID}", Name = "GetStatusMenuByID")]
         public async Task<ActionResult<ApiResponse<DTOStatusMenus>>> GetByIDAsync(int ID)
         {
@@ -49,6 +52,7 @@ namespace APILayer.Controllers
         }
 
         [AllowAnonymous]
+        [EnableRateLimiting("AddLimiter")]
         [HttpPost(Name = "AddStatusMenu")]
         public async Task<ActionResult<ApiResponse<DTOStatusMenus>>> CreateAsync([FromBody] DTOStatusMenusCRequest statusMenu)
         {
@@ -64,6 +68,7 @@ namespace APILayer.Controllers
         }
 
         [Authorize(Roles = "Manager")]
+        [EnableRateLimiting("UpdateLimiter")]
         [HttpPut(Name = "UpdateStatusMenu")]
         public async Task<ActionResult<ApiResponse<DTOStatusMenus>>> UpdateAsync([FromBody] DTOStatusMenusURequest statusMenu)
         {
@@ -79,6 +84,7 @@ namespace APILayer.Controllers
         }
 
         [Authorize(Roles = "Manager")]
+        [EnableRateLimiting("DeleteLimiter")]
         [HttpDelete("{ID}")]
         public async Task<ActionResult<ApiResponse<bool>>> DeleteStatusMenu(int ID)
         {

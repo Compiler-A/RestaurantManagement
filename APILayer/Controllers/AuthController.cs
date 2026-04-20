@@ -1,6 +1,7 @@
 ﻿using BusinessLayerRestaurant.Interfaces;
 using ContractsLayerRestaurant.DTOs.Auth;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 
 
 namespace APILayer.Controllers
@@ -16,6 +17,7 @@ namespace APILayer.Controllers
         }
 
         [HttpPost("login")]
+        [EnableRateLimiting("AuthLimiter")]
         public async Task<ActionResult<ApiResponse<DTOTokenResponse>>> Login([FromBody] DTOLoginRequest request)
         {
             if (request == null)
@@ -29,6 +31,7 @@ namespace APILayer.Controllers
 
 
         [HttpPost("refresh")]
+        [EnableRateLimiting("AuthLimiter")]
         public async Task<ActionResult<ApiResponse<DTOTokenResponse>>> Refresh([FromBody] DTORefreshRequest request)
         {
             if (request == null)

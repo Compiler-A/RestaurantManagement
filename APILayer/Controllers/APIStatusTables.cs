@@ -1,8 +1,9 @@
 ﻿using APILayer.Filters;
-using Microsoft.AspNetCore.Mvc;
 using BusinessLayerRestaurant.Interfaces;
 using ContractsLayerRestaurant.DTOs.StatusTables;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 
 
 
@@ -24,6 +25,7 @@ namespace APILayer.Controllers
 
         [AllowAnonymous]
         [HttpGet(Name = "GetAllStatusTables")]
+        [EnableRateLimiting("GetAllLimiter")]
         public async Task<ActionResult<ApiResponse<IEnumerable<DTOStatusTables>>>> GetAllAsync([FromQuery] int Page)
         {
             if (Page <= 0)
@@ -36,6 +38,7 @@ namespace APILayer.Controllers
         }
 
         [AllowAnonymous]
+        [EnableRateLimiting("GetOneLimiter")]
         [HttpGet("{ID}", Name = "GetStatusTableByID")]
         public async Task<ActionResult<ApiResponse<DTOStatusTables>>> GetByIDAsync([FromRoute] int ID)
         {
@@ -49,6 +52,7 @@ namespace APILayer.Controllers
         }
 
         [Authorize(Roles = "Manager")]
+        [EnableRateLimiting("AddLimiter")]
         [HttpPost(Name = "AddStatusTable")]
         public async Task<ActionResult<ApiResponse<DTOStatusTables>>> CreateAsync([FromBody] DTOStatusTablesCRequest Request)
         {
@@ -65,6 +69,7 @@ namespace APILayer.Controllers
 
 
         [Authorize(Roles = "Manager")]
+        [EnableRateLimiting("UpdateLimiter")]
         [HttpPut(Name = "UpdateStatusTable")]
         public async Task<ActionResult<ApiResponse<DTOStatusTables>>> UpdateAsync([FromBody] DTOStatusTablesURequest Request)
         {
@@ -80,6 +85,7 @@ namespace APILayer.Controllers
         }
 
         [Authorize(Roles = "Manager")]
+        [EnableRateLimiting("DeleteLimiter")]
         [HttpDelete("{ID}", Name = "DeleteStatusTable")]
         public async Task<ActionResult<ApiResponse<bool>>> DeleteAsync([FromRoute] int ID)
         {

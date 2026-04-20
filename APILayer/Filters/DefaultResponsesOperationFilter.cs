@@ -13,8 +13,8 @@ namespace APILayer.Filters
             operation.Responses.TryAdd("403", new OpenApiResponse { Description = "Forbidden" });
             operation.Responses.TryAdd("404", new OpenApiResponse { Description = "Not Found" });
             operation.Responses.TryAdd("409", new OpenApiResponse { Description = "Conflict" });
+            operation.Responses.TryAdd("429", new OpenApiResponse { Description = "Too Many Requests" });
             operation.Responses.TryAdd("500", new OpenApiResponse { Description = "Server Error" });
-
             if (context.ApiDescription.HttpMethod == "POST")
             {
                 operation.Responses.TryAdd("201", new OpenApiResponse { Description = "Created" });

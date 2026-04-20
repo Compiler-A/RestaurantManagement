@@ -3,6 +3,7 @@ using BusinessLayerRestaurant.Interfaces;
 using ContractsLayerRestaurant.DTOs.Employees;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using System.Security.Authentication;
 using System.Security.Claims;
 
@@ -23,6 +24,7 @@ namespace APILayer.Controllers
 
         [Authorize(Roles = "Manager")]
         [HttpGet(Name = "GetAllEmployeesAsync")]
+        [EnableRateLimiting("GetAllLimiter")]
         public async Task<ActionResult<ApiResponse<IEnumerable<DTOEmployees>>>> GetAllAsync([FromQuery] int page = 1)
         {
             if (page <= 0)
@@ -35,6 +37,7 @@ namespace APILayer.Controllers
         }
 
         [HttpGet("{ID}", Name = "GetEmployeeByID")]
+        [EnableRateLimiting("GetOneLimiter")]
         public async Task<ActionResult<ApiResponse<DTOEmployees>>> GetByIDAsync
             ([FromRoute] int ID , [FromServices] IAuthorizationService authorizationService)
         {
@@ -56,6 +59,7 @@ namespace APILayer.Controllers
 
         [Authorize(Roles = "Manager")]
         [HttpPost(Name = "AddEmployee")]
+        [EnableRateLimiting("AddLimiter")]
         public async Task<ActionResult<ApiResponse<DTOEmployees>>> CreateAsync([FromBody] DTOEmployeesCRequest employee)
         {
             if (employee == null)
@@ -69,6 +73,7 @@ namespace APILayer.Controllers
         }
 
         [Authorize(Roles = "Manager")]
+        [EnableRateLimiting("UpdateLimiter")]
         [HttpPut(Name = "UpdateEmployee")]
         public async Task<ActionResult<ApiResponse<DTOEmployees>>> UpdateAsync([FromBody] DTOEmployeesURequest employee)
         {
@@ -83,6 +88,7 @@ namespace APILayer.Controllers
         }
 
         [Authorize(Roles = "Manager")]
+        [EnableRateLimiting("DeleteLimiter")]
         [HttpDelete("{ID}", Name = "DeleteEmployee")]
         public async Task<ActionResult<ApiResponse<bool>>> DeleteAsync([FromRoute] int ID)
         {
@@ -97,6 +103,7 @@ namespace APILayer.Controllers
 
 
         [Authorize]
+        [EnableRateLimiting("AuthLimiter")]
         [HttpPost("changed-password", Name = "ChangeEmployeePasswordAsync")]
         public async Task<ActionResult<ApiResponse<bool>>> ChangePasswordAsync([FromBody] DTOEmployeesChangedPassword Changed)
         {
@@ -116,6 +123,7 @@ namespace APILayer.Controllers
         }
 
         [Authorize]
+        [EnableRateLimiting("GetOneLimiter")]
         [HttpGet("user-name/{userName}", Name = "GetEmployeeByUserName")]
         public async Task<ActionResult<ApiResponse<DTOEmployees>>> GetByUserNameAsync
             ([FromRoute] string userName, [FromServices] IAuthorizationService authorizationService)

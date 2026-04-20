@@ -1,8 +1,9 @@
 ﻿using APILayer.Filters;
-using Microsoft.AspNetCore.Mvc;
 using BusinessLayerRestaurant.Interfaces;
 using ContractsLayerRestaurant.DTOs.Settings;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 
 
 namespace APILayer.Controllers
@@ -22,6 +23,7 @@ namespace APILayer.Controllers
 
         [Authorize(Roles = "Manager")]
         [HttpGet(Name = "GetAllSettings")]
+        [EnableRateLimiting("GetAllLimiter")]
         public async Task<ActionResult<ApiResponse<IEnumerable<DTOSettings>>>> GetAllAsync([FromQuery] int page = 1)
         {
 
@@ -34,6 +36,7 @@ namespace APILayer.Controllers
         }
 
         [Authorize(Roles = "Manager")]
+        [EnableRateLimiting("GetOneLimiter")]
         [HttpGet("{ID}", Name = "GetSettingByID")]
         public async Task<ActionResult<ApiResponse<DTOSettings>>> GetByIDAsync([FromRoute] int ID = 1)
         {
@@ -46,6 +49,7 @@ namespace APILayer.Controllers
         }
 
         [Authorize(Roles = "Manager")]
+        [EnableRateLimiting("AddLimiter")]
         [HttpPost(Name = "AddSetting")]
         public async Task<ActionResult<ApiResponse<DTOSettings>>> CreateAsync([FromBody] DTOSettingsCRequest Setting)
         {
@@ -61,6 +65,7 @@ namespace APILayer.Controllers
         }
 
         [Authorize(Roles = "Manager")]
+        [EnableRateLimiting("UpdateLimiter")]
         [HttpPut(Name = "UpdateSetting")]
         public async Task<ActionResult<ApiResponse<DTOSettings>>> UpdateAsync([FromBody] DTOSettingsURequest Setting)
         {
@@ -76,6 +81,7 @@ namespace APILayer.Controllers
         }
 
         [Authorize(Roles = "Manager")]
+        [EnableRateLimiting("DeleteLimiter")]
         [HttpDelete("{ID}", Name = "DeleteSetting")]
         public async Task<ActionResult<ApiResponse<bool>>> DeleteAsync([FromRoute] int ID)
         {

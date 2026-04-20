@@ -1,8 +1,9 @@
 ﻿using APILayer.Filters;
-using Microsoft.AspNetCore.Mvc;
 using BusinessLayerRestaurant.Interfaces;
 using ContractsLayerRestaurant.DTOs.Tables;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 
 
 
@@ -22,6 +23,7 @@ namespace APILayer.Controllers
         }
 
         [AllowAnonymous]
+        [EnableRateLimiting("GetAllLimiter")]
         [HttpGet("all-nopagination", Name = "GetAllTablesNoPagination")]
         public async Task<ActionResult<ApiResponse<IEnumerable<DTOTables>>>> GetAllNoPaginationAsync()
         {
@@ -31,6 +33,7 @@ namespace APILayer.Controllers
         }
 
         [AllowAnonymous]
+        [EnableRateLimiting("GetAllLimiter")]
         [HttpGet(Name = "GetAllTables")]
         public async Task<ActionResult<ApiResponse<IEnumerable<DTOTables>>>> GetAllAsync([FromQuery] int page = 1)
         {
@@ -44,6 +47,7 @@ namespace APILayer.Controllers
         }
 
         [AllowAnonymous]
+        [EnableRateLimiting("GetAllLimiter")]
         [HttpGet("all-availables", Name = "GetAllTablesAvailables")]
         public async Task<ActionResult<ApiResponse<IEnumerable<DTOTables>>>> GetAllAvailablesAsync()
         {
@@ -53,6 +57,7 @@ namespace APILayer.Controllers
         }
 
         [AllowAnonymous]
+        [EnableRateLimiting("GetAllLimiter")]
         [HttpGet("allfilter-seats", Name = "GetAllFilterSeats")]
         public async Task<ActionResult<ApiResponse<IEnumerable<DTOTables>>>> GetlAllFilterSeatsAsync([FromQuery] DTOTablesFilterSeatTableRequest Request)
         {
@@ -67,6 +72,7 @@ namespace APILayer.Controllers
 
 
         [AllowAnonymous]
+        [EnableRateLimiting("GetAllLimiter")]
         [HttpGet("allfilter-statustables", Name = "GetAllMenuTables")]
         public async Task<ActionResult<ApiResponse<IEnumerable<DTOTables>>>> GetAllFilterStatustablesAsync([FromQuery] DTOTablesFilterStatusTableRequest Request)
         {
@@ -80,6 +86,7 @@ namespace APILayer.Controllers
         }
 
         [AllowAnonymous]
+        [EnableRateLimiting("GetAllLimiter")]
         [HttpGet("allfilter-global", Name = "GetAllFilterSeatsStatusTables")]
         public async Task<ActionResult<ApiResponse<IEnumerable<DTOTables>>>> GetAllFilterSeatsStatusTablesAsync([FromQuery] DTOTablesFilterStatusAndSeatTableRequest Request)
         {
@@ -93,6 +100,7 @@ namespace APILayer.Controllers
         }
 
         [AllowAnonymous]
+        [EnableRateLimiting("GetOneLimiter")]
         [HttpGet("table-name", Name = "GetTableByTableName")]
         public async Task<ActionResult<ApiResponse<DTOTables>>> GetByTableNameAsync([FromQuery] string tableNumber = "")
         {
@@ -107,6 +115,7 @@ namespace APILayer.Controllers
 
 
         [AllowAnonymous]
+        [EnableRateLimiting("GetOneLimiter")]
         [HttpGet("{ID}", Name = "GetTableByID")]
         public async Task<ActionResult<ApiResponse<DTOTables>>> GetByIDAsync([FromRoute] int ID = 1)
         {
@@ -120,6 +129,7 @@ namespace APILayer.Controllers
         }
 
         [Authorize(Roles = "Manager")]
+        [EnableRateLimiting("AddLimiter")]
         [HttpPost(Name = "AddTable")]
         public async Task<ActionResult<ApiResponse<DTOTables>>> CreateAsync(DTOTablesCRequest Table)
         {
@@ -134,6 +144,7 @@ namespace APILayer.Controllers
         }
 
         [Authorize(Roles = "Manager,Cleaner")]
+        [EnableRateLimiting("UpdateLimiter")]
         [HttpPut(Name = "UpdateTable")]
         public async Task<ActionResult<ApiResponse<DTOTables>>> UpdateAsync(DTOTablesURequest Table)
         {
@@ -148,6 +159,7 @@ namespace APILayer.Controllers
         }
 
         [Authorize(Roles = "Manager")]
+        [EnableRateLimiting("DeleteLimiter")]
         [HttpDelete("{ID}" , Name = "DeleteTable")]
         public async Task<ActionResult<ApiResponse<bool>>> DeleteAsync([FromRoute] int ID)
         {

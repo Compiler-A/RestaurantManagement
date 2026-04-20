@@ -1,8 +1,9 @@
 ﻿using APILayer.Filters;
-using Microsoft.AspNetCore.Mvc;
 using BusinessLayerRestaurant.Interfaces;
 using ContractsLayerRestaurant.DTOs.Orders;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 
 
 namespace APILayer.Controllers
@@ -23,6 +24,7 @@ namespace APILayer.Controllers
 
         [Authorize(Roles = "Manager,Chef,Sous Chef,Waiter")]
         [HttpGet(Name = "GetAllOrders")]
+        [EnableRateLimiting("GetAllLimiter")]
         public async Task<ActionResult<ApiResponse<IEnumerable<DTOOrders>>>> GetAllAsync([FromQuery] int page = 1)
         {
             if (page <= 0)
@@ -35,6 +37,7 @@ namespace APILayer.Controllers
         }
 
         [Authorize(Roles = "Manager,Chef,Sous Chef,Waiter")]
+        [EnableRateLimiting("GetOneLimiter")]
         [HttpGet("{ID}", Name ="GetOrderByID")]
         public async Task<ActionResult<ApiResponse<DTOOrders?>>> GetByIDAsync([FromRoute] int ID)
         {
@@ -48,6 +51,7 @@ namespace APILayer.Controllers
 
         [Authorize(Roles = "Manager,Chef,Sous Chef,Waiter")]
         [HttpGet("filter", Name = "GetFilterOrder")]
+        [EnableRateLimiting("GetAllLimiter")]
         public async Task<ActionResult<ApiResponse<List<DTOOrders>?>>> GetFilterAsync
             ([FromQuery] DTOOrderFilterRequest Request)
         {
@@ -62,6 +66,7 @@ namespace APILayer.Controllers
         }
 
         [Authorize(Roles = "Manager,Waiter")]
+        [EnableRateLimiting("AddLimiter")]
         [HttpPost(Name = "AddNewOrder")]
         public async Task<ActionResult<ApiResponse<DTOOrders>>> CreateAsync
             ([FromBody] DTOOrderCRequest dto, [FromServices] IAuthorizationService authorizationService)
@@ -80,6 +85,7 @@ namespace APILayer.Controllers
         }
 
         [Authorize(Roles = "Manager,Chef,Sous Chef,Waiter")]
+        [EnableRateLimiting("UpdateLimiter")]
         [HttpPut(Name = "UpdateOrder")]
         public async Task<ActionResult<ApiResponse<DTOOrders>>> UpdateAsync
             ([FromBody] DTOOrderURequest dto, [FromServices] IAuthorizationService authorizationService)
@@ -99,6 +105,7 @@ namespace APILayer.Controllers
         }
 
         [Authorize(Roles = "Manager,Chef,Sous Chef")]
+        [EnableRateLimiting("DeleteLimiter")]
         [HttpDelete("{ID}")]
         public async Task<ActionResult<ApiResponse<bool>>> DeleteAsync(int ID)
         {
