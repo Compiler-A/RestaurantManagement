@@ -3,7 +3,7 @@ using BusinessLayerRestaurant.Interfaces;
 using DataLayerRestaurant.Classes;
 using DataLayerRestaurant.Interfaces;
 
-namespace APILayer.Extensions
+namespace APILayer.Extensions.Services
 {
     public static class HashingServiceExtension
     {

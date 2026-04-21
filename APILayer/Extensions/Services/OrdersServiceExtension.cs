@@ -3,7 +3,7 @@ using BusinessLayerRestaurant.Classes;
 using DataLayerRestaurant.Interfaces;
 using DataLayerRestaurant.Classes;
 
-namespace APILayer.Extensions
+namespace APILayer.Extensions.Services
 {
     public static class OrdersServiceExtension
     {
