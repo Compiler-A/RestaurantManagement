@@ -23,7 +23,7 @@ namespace APILayer.Controllers
 
         [AllowAnonymous]
         [HttpGet( Name = "GetAllStatusOrders")]
-        [EnableRateLimiting("GetAllLimiter")]
+        [EnableRateLimiting(NameRateLimitPolicies.GetAll)]
         public async Task<ActionResult<ApiResponse<IEnumerable<DTOStatusOrders>>>> GetAllAsync([FromQuery] int page = 1)
         {
             if (page <= 0)
@@ -37,7 +37,7 @@ namespace APILayer.Controllers
         }
 
         [AllowAnonymous]
-        [EnableRateLimiting("GetOneLimiter")]
+        [EnableRateLimiting(NameRateLimitPolicies.GetOne)]
         [HttpGet("{ID}", Name = "GetStatusOrderByID")]
         public async Task<ActionResult<ApiResponse<DTOStatusOrders>>> GetByIDAsync([FromRoute] int ID = 1)
         {
@@ -51,7 +51,7 @@ namespace APILayer.Controllers
         }
 
         [Authorize(Roles = "Manager")]
-        [EnableRateLimiting("AddLimiter")]
+        [EnableRateLimiting(NameRateLimitPolicies.Add)]
         [HttpPost(Name = "AddStatusOrder")]
         public async Task<ActionResult<ApiResponse<DTOStatusOrders>>> CreateAsync([FromBody] DTOStatusOrdersCRequest Request)
         {
@@ -66,7 +66,7 @@ namespace APILayer.Controllers
         }
 
         [Authorize(Roles = "Manager")]
-        [EnableRateLimiting("UpdateLimiter")]
+        [EnableRateLimiting(NameRateLimitPolicies.Update)]
         [HttpPut(Name = "UpdateStatusOrder")]
         public async Task<ActionResult<ApiResponse<DTOStatusOrders>>> UpdateAsync([FromBody] DTOStatusOrdersURequest Request)
         {
@@ -82,7 +82,7 @@ namespace APILayer.Controllers
         }
 
         [Authorize(Roles = "Manager")]
-        [EnableRateLimiting("DeleteLimiter")]
+        [EnableRateLimiting(NameRateLimitPolicies.Delete)]
         [HttpDelete("{ID}",Name = "DeleteStatusOrder")]
         public async Task<ActionResult<ApiResponse<bool>>> DeleteAsync([FromRoute] int ID)
         {

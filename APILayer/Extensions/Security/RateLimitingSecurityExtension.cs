@@ -1,4 +1,5 @@
-﻿using ContractsLayerRestaurant.DTOs.Auth;
+﻿using APILayer.Filters;
+using ContractsLayerRestaurant.DTOs.Auth;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.Extensions.Options;
 using System.Threading.RateLimiting;
@@ -10,9 +11,9 @@ namespace APILayer.Extensions.Security
     public static class RateLimitingSecurityExtension
     {
 
-        private static void _AddPolicies(DTORateLimitePolicies RLP)
+        private static void _AddPolicies(RateLimiterOptions options,RateLimitePoliciesOptions RLP)
         {
-            RLP.options.AddPolicy(RLP.NamePolicy, httpContext =>
+            options.AddPolicy(RLP.NamePolicy, httpContext =>
             {
                 var ip = httpContext.Connection.RemoteIpAddress?.ToString() ?? "unknown";
 
@@ -36,7 +37,7 @@ namespace APILayer.Extensions.Security
 
                 if (context.Response.StatusCode == StatusCodes.Status429TooManyRequests)
                 {
-                    await context.Response.WriteAsync("Too many login attempts. Please try again later.");
+                    await context.Response.WriteAsync("Too many requests. Please try again later.");
                 }
             });
             return app;
@@ -48,12 +49,12 @@ namespace APILayer.Extensions.Security
             {
                 options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
 
-                _AddPolicies(new DTORateLimitePolicies(options, "AuthLimiter", 5, 1, 0));
-                _AddPolicies(new DTORateLimitePolicies(options, "GetAllLimiter", 30, 1, 0));
-                _AddPolicies(new DTORateLimitePolicies(options, "GetOneLimiter", 60, 1, 0));
-                _AddPolicies(new DTORateLimitePolicies(options, "AddLimiter", 10, 1, 0));
-                _AddPolicies(new DTORateLimitePolicies(options, "UpdateLimiter", 15, 1, 0));
-                _AddPolicies(new DTORateLimitePolicies(options, "DeleteLimiter", 5, 1, 0));
+                _AddPolicies(options,new RateLimitePoliciesOptions(NameRateLimitPolicies.Auth, 5, 1, 0));
+                _AddPolicies(options,new RateLimitePoliciesOptions(NameRateLimitPolicies.GetAll, 30, 1, 0));
+                _AddPolicies(options,new RateLimitePoliciesOptions(NameRateLimitPolicies.GetOne, 60, 1, 0));
+                _AddPolicies(options,new RateLimitePoliciesOptions(NameRateLimitPolicies.Add, 10, 1, 0));
+                _AddPolicies(options,new RateLimitePoliciesOptions(NameRateLimitPolicies.Update, 15, 1, 0));
+                _AddPolicies(options,new RateLimitePoliciesOptions(NameRateLimitPolicies.Delete, 5, 1, 0));
             });
             return services;
         }

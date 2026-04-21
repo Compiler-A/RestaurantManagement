@@ -23,7 +23,7 @@ namespace APILayer.Controllers
 
         [Authorize(Roles = "Manager")]
         [HttpGet(Name = "GetAllSettings")]
-        [EnableRateLimiting("GetAllLimiter")]
+        [EnableRateLimiting(NameRateLimitPolicies.GetAll)]
         public async Task<ActionResult<ApiResponse<IEnumerable<DTOSettings>>>> GetAllAsync([FromQuery] int page = 1)
         {
 
@@ -36,7 +36,7 @@ namespace APILayer.Controllers
         }
 
         [Authorize(Roles = "Manager")]
-        [EnableRateLimiting("GetOneLimiter")]
+        [EnableRateLimiting(NameRateLimitPolicies.GetOne)]
         [HttpGet("{ID}", Name = "GetSettingByID")]
         public async Task<ActionResult<ApiResponse<DTOSettings>>> GetByIDAsync([FromRoute] int ID = 1)
         {
@@ -49,7 +49,7 @@ namespace APILayer.Controllers
         }
 
         [Authorize(Roles = "Manager")]
-        [EnableRateLimiting("AddLimiter")]
+        [EnableRateLimiting(NameRateLimitPolicies.Add)]
         [HttpPost(Name = "AddSetting")]
         public async Task<ActionResult<ApiResponse<DTOSettings>>> CreateAsync([FromBody] DTOSettingsCRequest Setting)
         {
@@ -65,7 +65,7 @@ namespace APILayer.Controllers
         }
 
         [Authorize(Roles = "Manager")]
-        [EnableRateLimiting("UpdateLimiter")]
+        [EnableRateLimiting(NameRateLimitPolicies.Update)]
         [HttpPut(Name = "UpdateSetting")]
         public async Task<ActionResult<ApiResponse<DTOSettings>>> UpdateAsync([FromBody] DTOSettingsURequest Setting)
         {
@@ -81,7 +81,7 @@ namespace APILayer.Controllers
         }
 
         [Authorize(Roles = "Manager")]
-        [EnableRateLimiting("DeleteLimiter")]
+        [EnableRateLimiting(NameRateLimitPolicies.Delete)]
         [HttpDelete("{ID}", Name = "DeleteSetting")]
         public async Task<ActionResult<ApiResponse<bool>>> DeleteAsync([FromRoute] int ID)
         {

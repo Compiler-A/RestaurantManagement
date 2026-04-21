@@ -24,7 +24,7 @@ namespace APILayer.Controllers
 
         [AllowAnonymous]
         [HttpGet(Name ="GetAllMenuItems")]
-        [EnableRateLimiting("GetAllLimiter")]
+        [EnableRateLimiting(NameRateLimitPolicies.GetAll)]
         public async Task<ActionResult<ApiResponse<List<DTOMenuItems>>>> GetAllAsync([FromQuery] int page = 1)
         {
             if (page <= 0)
@@ -39,7 +39,7 @@ namespace APILayer.Controllers
 
         [AllowAnonymous]
         [HttpGet("all-availables")]
-        [EnableRateLimiting("GetAllLimiter")]
+        [EnableRateLimiting(NameRateLimitPolicies.GetAll)]
         public async Task<ActionResult<ApiResponse<List<DTOMenuItems>>>> GetAllAvailablesAsync()
         {
             var menuItems = await _BusinessMenuItem.GetAllMenuItemsAvailablesAsync();
@@ -48,7 +48,7 @@ namespace APILayer.Controllers
 
         [AllowAnonymous]
         [HttpGet("all-filters")]
-        [EnableRateLimiting("GetAllLimiter")]
+        [EnableRateLimiting(NameRateLimitPolicies.GetAll)]
         public async Task<ActionResult<ApiResponse<List<DTOMenuItems>>>> GetAllFiltersAsync([FromQuery] DTOMenuItemsFilterRequest Request)
         {
             if (Request == null)
@@ -62,7 +62,7 @@ namespace APILayer.Controllers
         }
 
         [AllowAnonymous]
-        [EnableRateLimiting("GetOneLimiter")]
+        [EnableRateLimiting(NameRateLimitPolicies.GetOne)]
         [HttpGet("{ID}", Name ="GetMenuItemByID")]
         public async Task<ActionResult<ApiResponse<DTOMenuItems>>> GetByIDAsync([FromRoute] int ID)
         {
@@ -76,7 +76,7 @@ namespace APILayer.Controllers
         }
 
         [Authorize(Roles = "Manager,Chef")]
-        [EnableRateLimiting("AddLimiter")]
+        [EnableRateLimiting(NameRateLimitPolicies.Add)]
         [HttpPost(Name ="AddMenuItem")]
         public async Task<ActionResult<ApiResponse<DTOMenuItems>>> CreateAsync([FromBody] DTOMenuItemsCRequest menuItem)
         {
@@ -93,7 +93,7 @@ namespace APILayer.Controllers
 
 
         [Authorize(Roles = "Manager,Chef,Sous Chef")]
-        [EnableRateLimiting("UpdateLimiter")]
+        [EnableRateLimiting(NameRateLimitPolicies.Update)]
         [HttpPut(Name ="UpdateMenuItem")]
         public async Task<ActionResult<ApiResponse<DTOMenuItems>>> UpdateAsync([FromBody] DTOMenuItemsURequest menuItem)
         {
@@ -110,7 +110,7 @@ namespace APILayer.Controllers
         }
 
         [Authorize(Roles = "Manager,Chef")]
-        [EnableRateLimiting("DeleteLimiter")]
+        [EnableRateLimiting(NameRateLimitPolicies.Delete)]
         [HttpDelete("{ID}")]
         public async Task<ActionResult<ApiResponse<bool>>> DeleteAsync([FromRoute] int ID)
         {

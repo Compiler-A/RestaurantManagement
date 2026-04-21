@@ -23,7 +23,7 @@ namespace APILayer.Controllers
 
         [AllowAnonymous]
         [HttpGet(Name = "GetAllJobRoles")]
-        [EnableRateLimiting("GetAllLimiter")]
+        [EnableRateLimiting(NameRateLimitPolicies.GetAll)]
         public async Task<ActionResult<ApiResponse<IEnumerable<DTOJobRoles>>>> GetAllAsync([FromQuery] int page = 1)
         {
             if (page <= 0)
@@ -35,7 +35,7 @@ namespace APILayer.Controllers
         }
 
         [AllowAnonymous]
-        [EnableRateLimiting("GetOneLimiter")]
+        [EnableRateLimiting(NameRateLimitPolicies.GetOne)]
         [HttpGet("{ID}", Name = "GetJobRoleByID")]
         public async Task<ActionResult<ApiResponse<DTOJobRoles>>> GetByIDAsync([FromRoute] int ID = 1)
         {
@@ -48,7 +48,7 @@ namespace APILayer.Controllers
         }
 
         [Authorize(Roles = "Manager")]
-        [EnableRateLimiting("AddLimiter")]
+        [EnableRateLimiting(NameRateLimitPolicies.Add)]
         [HttpPost(Name = "AddJobRole")]
         public async Task<ActionResult<ApiResponse<DTOJobRoles>>> CreateAsync([FromBody] DTOJobRolesCRequest JobRole)
         {
@@ -62,7 +62,7 @@ namespace APILayer.Controllers
         }
 
         [Authorize(Roles = "Manager")]
-        [EnableRateLimiting("UpdateLimiter")]
+        [EnableRateLimiting(NameRateLimitPolicies.Update)]
         [HttpPut(Name = "UpdateJobRole")]
         public async Task<ActionResult<ApiResponse<DTOJobRoles>>> UpdateAsync([FromBody] DTOJobRolesURequest Update)
         {
@@ -79,7 +79,7 @@ namespace APILayer.Controllers
         }
 
         [Authorize(Roles = "Manager")]
-        [EnableRateLimiting("DeleteLimiter")]
+        [EnableRateLimiting(NameRateLimitPolicies.Delete)]
         [HttpDelete("{id}", Name = "DeleteJobRole")]
         public async Task<ActionResult<ApiResponse<bool>>> DeleteAsync([FromRoute] int id)
         {
