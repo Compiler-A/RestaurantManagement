@@ -28,7 +28,6 @@ namespace APILayer.Extensions.Services
             Services.AddSingleton<IAuthorizationHandler, EmployeeOwnerOrAdminHandler>();
             Services.AddSingleton<IAuthorizationHandler, WaiterOwnerOrAdminHandler>();
             Services.AddSingleton<IMyLogger, clsMyLogger>();
-
             return Services;
         }
     }

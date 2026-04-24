@@ -14,6 +14,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+using Microsoft.Extensions.Options;
 
 namespace BusinessLayerRestaurant.Classes
 {
@@ -102,14 +103,14 @@ namespace BusinessLayerRestaurant.Classes
     {
         private ILoginServiceContainer _Interface;
         private ILoginServiceReader _Reader;
-        private readonly IMyLogger _Logger;
+        private IOptions<JwtSettings> _Options;
 
-        public clsLoginWriter(ILoginServiceContainer Interface,ILoginServiceReader Reader, IMyLogger Logger, IEnumerable<ILoginServiceComposition> loaders)
+        public clsLoginWriter(IOptions<JwtSettings> Options,ILoginServiceContainer Interface,ILoginServiceReader Reader, IEnumerable<ILoginServiceComposition> loaders)
             : base(loaders)
         {
             _Interface = Interface;
             _Reader = Reader;
-            _Logger = Logger;
+            _Options = Options;
         }
         private string GenerateRefreshToken()
         {
@@ -130,18 +131,18 @@ namespace BusinessLayerRestaurant.Classes
                 new Claim(ClaimTypes.Role, Role)
             };
 
-
+            
             var key = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes("THIS_IS_A_VERY_SECRET_KEY_RM123456"));
+                Encoding.UTF8.GetBytes(_Options.Value.SecretKey));
 
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
 
             var token = new JwtSecurityToken(
-                issuer: "RMAPI",
-                audience: "RMAPIEmployees",
+                issuer: _Options.Value.Issuer,
+                audience: _Options.Value.Audience,
                 claims: claims,
-                expires: DateTime.UtcNow.AddMinutes(10),
+                expires: DateTime.UtcNow.AddMinutes(_Options.Value.ExpirationMinutes),
                 signingCredentials: creds
             );
             return new JwtSecurityTokenHandler().WriteToken(token);

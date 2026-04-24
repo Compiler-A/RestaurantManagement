@@ -1,18 +1,19 @@
 using APILayer.Authorization;
 using APILayer.Authorization.Employee;
 using APILayer.Authorization.Order;
+using APILayer.Extensions.Configuration;
 using APILayer.Extensions.Security;
 using APILayer.Extensions.Services;
-using APILayer.Filters;
 using APILayer.Middleware;
 using BusinessLayerRestaurant.Classes;
-using BusinessLayerRestaurant.Interfaces;
 using DataLayerRestaurant;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.OpenApi.Models;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
+
+builder.Services.AddMySettingsConfiguration(builder.Configuration);
+builder.Services.AddJwtSettingConfiguration(builder.Configuration);
 
 builder.Services.AddAuthenticationExtension();
 builder.Services.AddAuthorizationExtension();
@@ -31,10 +32,6 @@ builder.Services.AddControllers(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGenExtension();
 
-
-// Configure strongly typed settings objects
-builder.Services.Configure<clsMySettings>(
-    builder.Configuration.GetSection("MySettings"));
 
 builder.Services.AddServicesExtensions();
 

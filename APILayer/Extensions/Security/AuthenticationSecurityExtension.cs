@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using BusinessLayerRestaurant.Classes;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
@@ -6,8 +8,12 @@ namespace APILayer.Extensions.Security
 {
     public static class AuthenticationSecurityExtension
     {
+        
         public static IServiceCollection AddAuthenticationExtension(this IServiceCollection services)
         {
+            var provider = services.BuildServiceProvider();
+            var jwtSettings = provider.GetRequiredService<IOptions<JwtSettings>>().Value;
+
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>
             {
@@ -18,10 +24,10 @@ namespace APILayer.Extensions.Security
                     ValidateAudience = true,
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
-                    ValidIssuer = "RMAPI",
-                    ValidAudience = "RMAPIEmployees",
+                    ValidIssuer = jwtSettings.Issuer,
+                    ValidAudience = jwtSettings.Audience,
                     IssuerSigningKey = new SymmetricSecurityKey(
-                    Encoding.UTF8.GetBytes("THIS_IS_A_VERY_SECRET_KEY_RM123456"))
+                    Encoding.UTF8.GetBytes(jwtSettings.SecretKey))
                 };
             });
             return services;
