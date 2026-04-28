@@ -4,17 +4,14 @@ using System.Security.Authentication;
 using ContractsLayerRestaurant.DTORequest.Auth;
 using DataLayerRestaurant.Interfaces;
 using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 using Microsoft.Extensions.Options;
+using DomainLayer.Entities;
+
 
 namespace BusinessLayerRestaurant.Classes
 {

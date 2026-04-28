@@ -1,6 +1,7 @@
 ﻿using RestaurantDataLayer;
 using DataLayerRestaurant.Interfaces;
 using ContractsLayerRestaurant.DTORequest.Settings;
+using DomainLayer.Entities;
 
 namespace BusinessLayerRestaurant.Interfaces
 {

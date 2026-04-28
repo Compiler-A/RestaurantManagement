@@ -3,6 +3,7 @@ using System.Diagnostics;
 using BusinessLayerRestaurant.Interfaces;
 using DataLayerRestaurant.Interfaces;
 using ContractsLayerRestaurant.DTORequest.TypeItems;
+using DomainLayer.Entities;
 
 
 namespace BusinessLayerRestaurant.Classes

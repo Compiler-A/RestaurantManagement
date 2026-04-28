@@ -3,6 +3,7 @@ using System.Diagnostics;
 using BusinessLayerRestaurant.Interfaces;
 using DataLayerRestaurant.Interfaces;
 using ContractsLayerRestaurant.DTORequest.StatusOrders;
+using DomainLayer.Entities;
 
 
 
