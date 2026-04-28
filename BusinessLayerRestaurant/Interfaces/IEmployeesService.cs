@@ -1,6 +1,6 @@
 ﻿using RestaurantDataLayer;
 using DataLayerRestaurant.Interfaces;
-using ContractsLayerRestaurant.DTOs.Employees;
+using ContractsLayerRestaurant.DTORequest.Employees;
 
 
 namespace BusinessLayerRestaurant.Interfaces
@@ -18,23 +18,23 @@ namespace BusinessLayerRestaurant.Interfaces
 
     public interface IEmployeesServiceComposition
     {
-        Task LoadDataAsync(DTOEmployees item);
+        Task LoadDataAsync(Employee item);
     }
 
-    public interface IEmployeesServiceReader : IReadableBusinessBase<DTOEmployees>
+    public interface IEmployeesServiceReader : IReadableBusinessBase<Employee>
     {
-        Task<DTOEmployees?> GetAsync(string UserName);
+        Task<Employee?> GetAsync(string UserName);
     }
 
     public interface IEmployeesServiceReadable
     {
-        Task<List<DTOEmployees>> GetAllEmployeesAsync(int page);
-        Task<DTOEmployees?> GetEmployeeAsync(int ID);
-        Task<DTOEmployees?> GetEmployeeAsync(string UserName);
+        Task<List<Employee>> GetAllEmployeesAsync(int page);
+        Task<Employee?> GetEmployeeAsync(int ID);
+        Task<Employee?> GetEmployeeAsync(string UserName);
     }
 
     public interface IEmployeesServiceWriter 
-        : IWritableBusinessBase<DTOEmployees, DTOEmployeesCRequest, DTOEmployeesURequest>
+        : IWritableBusinessBase<Employee, DTOEmployeesCRequest, DTOEmployeesURequest>
     {
         Task<bool> ChangePasswordAsync(DTOEmployeesChangedPassword Changed);
 
@@ -42,8 +42,8 @@ namespace BusinessLayerRestaurant.Interfaces
 
     public interface IEmployeesServiceWritable
     {
-        Task<DTOEmployees?> CreateEmployeeAsync(DTOEmployeesCRequest Request);
-        Task<DTOEmployees?> UpdateEmployeeAsync(DTOEmployeesURequest Request);
+        Task<Employee?> CreateEmployeeAsync(DTOEmployeesCRequest Request);
+        Task<Employee?> UpdateEmployeeAsync(DTOEmployeesURequest Request);
         Task<bool> DeleteEmployeeAsync(int ID);
         Task<bool> ChangePasswordAsync(DTOEmployeesChangedPassword Changed);
     }

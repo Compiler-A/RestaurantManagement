@@ -1,6 +1,6 @@
 ﻿using APILayer.Filters;
 using BusinessLayerRestaurant.Interfaces;
-using ContractsLayerRestaurant.DTOs.MenuItems;
+using ContractsLayerRestaurant.DTORequest.MenuItems;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
@@ -25,7 +25,7 @@ namespace APILayer.Controllers
         [AllowAnonymous]
         [HttpGet(Name ="GetAllMenuItems")]
         [EnableRateLimiting(NameRateLimitPolicies.GetAll)]
-        public async Task<ActionResult<ApiResponse<List<DTOMenuItems>>>> GetAllAsync([FromQuery] int page = 1)
+        public async Task<ActionResult<ApiResponse<List<MenuItem>>>> GetAllAsync([FromQuery] int page = 1)
         {
             if (page <= 0)
             {
@@ -40,7 +40,7 @@ namespace APILayer.Controllers
         [AllowAnonymous]
         [HttpGet("all-availables")]
         [EnableRateLimiting(NameRateLimitPolicies.GetAll)]
-        public async Task<ActionResult<ApiResponse<List<DTOMenuItems>>>> GetAllAvailablesAsync()
+        public async Task<ActionResult<ApiResponse<List<MenuItem>>>> GetAllAvailablesAsync()
         {
             var menuItems = await _BusinessMenuItem.GetAllMenuItemsAvailablesAsync();
             return CreateResponse(menuItems, StatusCodes.Status200OK, $"Row: {menuItems.Count}");
@@ -49,7 +49,7 @@ namespace APILayer.Controllers
         [AllowAnonymous]
         [HttpGet("all-filters")]
         [EnableRateLimiting(NameRateLimitPolicies.GetAll)]
-        public async Task<ActionResult<ApiResponse<List<DTOMenuItems>>>> GetAllFiltersAsync([FromQuery] DTOMenuItemsFilterRequest Request)
+        public async Task<ActionResult<ApiResponse<List<MenuItem>>>> GetAllFiltersAsync([FromQuery] DTOMenuItemsFilterRequest Request)
         {
             if (Request == null)
             {
@@ -57,14 +57,14 @@ namespace APILayer.Controllers
             }
 
             var menuItems = await _BusinessMenuItem.GetAllMenuItemsFiltersAsync(Request);
-            return CreateResponse<List<DTOMenuItems>>(menuItems!, StatusCodes.Status200OK, $"Row: {menuItems.Count}");
+            return CreateResponse<List<MenuItem>>(menuItems!, StatusCodes.Status200OK, $"Row: {menuItems.Count}");
 
         }
 
         [AllowAnonymous]
         [EnableRateLimiting(NameRateLimitPolicies.GetOne)]
         [HttpGet("{ID}", Name ="GetMenuItemByID")]
-        public async Task<ActionResult<ApiResponse<DTOMenuItems>>> GetByIDAsync([FromRoute] int ID)
+        public async Task<ActionResult<ApiResponse<MenuItem>>> GetByIDAsync([FromRoute] int ID)
         {
             if (ID <= 0)
             {
@@ -72,13 +72,13 @@ namespace APILayer.Controllers
             }
 
             var menuItem = await _BusinessMenuItem.GetMenuItemAsync(ID);
-            return CreateResponse<DTOMenuItems>(menuItem!, StatusCodes.Status200OK, "Found Successfully!");
+            return CreateResponse<MenuItem>(menuItem!, StatusCodes.Status200OK, "Found Successfully!");
         }
 
         [Authorize(Roles = "Manager,Chef")]
         [EnableRateLimiting(NameRateLimitPolicies.Add)]
         [HttpPost(Name ="AddMenuItem")]
-        public async Task<ActionResult<ApiResponse<DTOMenuItems>>> CreateAsync([FromBody] DTOMenuItemsCRequest menuItem)
+        public async Task<ActionResult<ApiResponse<MenuItem>>> CreateAsync([FromBody] DTOMenuItemsCRequest menuItem)
         {
             if (menuItem == null)
             {
@@ -95,7 +95,7 @@ namespace APILayer.Controllers
         [Authorize(Roles = "Manager,Chef,Sous Chef")]
         [EnableRateLimiting(NameRateLimitPolicies.Update)]
         [HttpPut(Name ="UpdateMenuItem")]
-        public async Task<ActionResult<ApiResponse<DTOMenuItems>>> UpdateAsync([FromBody] DTOMenuItemsURequest menuItem)
+        public async Task<ActionResult<ApiResponse<MenuItem>>> UpdateAsync([FromBody] DTOMenuItemsURequest menuItem)
         {
             if (menuItem == null)
             {
@@ -104,7 +104,7 @@ namespace APILayer.Controllers
 
 
             var dto = await _BusinessMenuItem.UpdateMenuItemAsync(menuItem);
-            return CreateResponse<DTOMenuItems>(dto!, StatusCodes.Status200OK, "Menu Item Updated Successfully!");
+            return CreateResponse<MenuItem>(dto!, StatusCodes.Status200OK, "Menu Item Updated Successfully!");
 
 
         }

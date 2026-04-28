@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using BusinessLayerRestaurant.Interfaces;
 using DataLayerRestaurant.Interfaces;
-using ContractsLayerRestaurant.DTOs.Employees;
+using ContractsLayerRestaurant.DTORequest.Employees;
 
 namespace BusinessLayerRestaurant.Classes
 {
@@ -40,7 +40,7 @@ namespace BusinessLayerRestaurant.Classes
             _IData = JobRole;
         }
 
-        public async Task LoadDataAsync(DTOEmployees item)
+        public async Task LoadDataAsync(Employee item)
         {
             item.JobRoles = await _IData.GetJobRoleAsync(item.JobID);
         }
@@ -55,7 +55,7 @@ namespace BusinessLayerRestaurant.Classes
         {
             _loaders = loaders;
         }
-        public async Task LoadDataAsync(DTOEmployees item)
+        public async Task LoadDataAsync(Employee item)
         {
             foreach (var item1 in _loaders)
             {
@@ -79,7 +79,7 @@ namespace BusinessLayerRestaurant.Classes
         }
         
 
-        public async Task<DTOEmployees?> GetAsync(int ID)
+        public async Task<Employee?> GetAsync(int ID)
         {
             var result = await _Interface.IData.GetEmployeeAsync(ID);
             if (result == null)
@@ -92,7 +92,7 @@ namespace BusinessLayerRestaurant.Classes
             return result;
         }
 
-        public async Task<DTOEmployees?> GetAsync(string UserName)
+        public async Task<Employee?> GetAsync(string UserName)
         {
             var dto = await _Interface.IData.GetEmployeeAsync(UserName);
             if (dto == null)
@@ -104,7 +104,7 @@ namespace BusinessLayerRestaurant.Classes
             return dto;
         }
 
-        public async Task<List<DTOEmployees>> GetAllAsync(int page)
+        public async Task<List<Employee>> GetAllAsync(int page)
         {
             var result = await _Interface.IData.GetAllEmployeesAsync(page);
 
@@ -160,7 +160,7 @@ namespace BusinessLayerRestaurant.Classes
             return result;
         }
 
-        public async Task<DTOEmployees?> CreateAsync(DTOEmployeesCRequest request)
+        public async Task<Employee?> CreateAsync(DTOEmployeesCRequest request)
         {
             request.Password = _HashingService.BCryptHashing(request.Password);
 
@@ -174,7 +174,7 @@ namespace BusinessLayerRestaurant.Classes
             return result;
         }
 
-        public async Task<DTOEmployees?> UpdateAsync(DTOEmployeesURequest request)
+        public async Task<Employee?> UpdateAsync(DTOEmployeesURequest request)
         {
 
             request.Password = _HashingService.BCryptHashing(request.Password);
@@ -228,27 +228,27 @@ namespace BusinessLayerRestaurant.Classes
         }
         
 
-        public async Task<DTOEmployees?> GetEmployeeAsync(int ID)
+        public async Task<Employee?> GetEmployeeAsync(int ID)
         {
             return await _IRead.GetAsync(ID);
         }
 
-        public async Task<DTOEmployees?> GetEmployeeAsync(string Name)
+        public async Task<Employee?> GetEmployeeAsync(string Name)
         {
             return await _IRead.GetAsync(Name);
         }
 
-        public async Task<List<DTOEmployees>> GetAllEmployeesAsync(int Page)
+        public async Task<List<Employee>> GetAllEmployeesAsync(int Page)
         {
            return await _IRead.GetAllAsync(Page);
         }
 
-        public async Task<DTOEmployees?> CreateEmployeeAsync(DTOEmployeesCRequest request)
+        public async Task<Employee?> CreateEmployeeAsync(DTOEmployeesCRequest request)
         {
             return await _IWrite.CreateAsync(request);
         }
 
-        public async Task<DTOEmployees?> UpdateEmployeeAsync(DTOEmployeesURequest request)
+        public async Task<Employee?> UpdateEmployeeAsync(DTOEmployeesURequest request)
         {
             return await _IWrite.UpdateAsync(request);
         }

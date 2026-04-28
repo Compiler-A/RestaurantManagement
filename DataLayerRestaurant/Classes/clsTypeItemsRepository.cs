@@ -1,17 +1,17 @@
 ﻿using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Options;
 using RestaurantDataLayer;
-using ContractsLayerRestaurant.DTOs.TypeItems;
+using ContractsLayerRestaurant.DTORequest.TypeItems;
 using DataLayerRestaurant.Interfaces;
 
 namespace DataLayerRestaurant.Classes
 {
 
-    public class clsTypeItemsRepositoryComposition : ICompositionDataBase<DTOTypeItems>
+    public class clsTypeItemsRepositoryComposition : ICompositionDataBase<TypeItem>
     {
-        public DTOTypeItems GetDataFromDataBase(SqlDataReader reader)
+        public TypeItem GetDataFromDataBase(SqlDataReader reader)
         {
-            return new DTOTypeItems
+            return new TypeItem
             {
                 ID = reader.GetInt32(reader.GetOrdinal("TypeItemID")),
                 Name = reader.GetString(reader.GetOrdinal("Name")),
@@ -32,9 +32,9 @@ namespace DataLayerRestaurant.Classes
         }
 
 
-        public async Task<List<DTOTypeItems>> GetAllDataAsync(int page)
+        public async Task<List<TypeItem>> GetAllDataAsync(int page)
         {
-            List<DTOTypeItems> list = new List<DTOTypeItems>();
+            List<TypeItem> list = new List<TypeItem>();
 
             using SqlConnection connection = new SqlConnection(_Settings.ConnectionString);
             using SqlCommand command = new SqlCommand("TypeItems.SP_GetAllTypeItems", connection)
@@ -56,9 +56,9 @@ namespace DataLayerRestaurant.Classes
             return list;
         }
 
-        public async Task<DTOTypeItems?> GetDataAsync(int id)
+        public async Task<TypeItem?> GetDataAsync(int id)
         {
-            DTOTypeItems? typeItem = null;
+            TypeItem? typeItem = null;
             using SqlConnection connection = new SqlConnection(_Settings.ConnectionString);
             using SqlCommand command = new SqlCommand("TypeItems.SP_GetTypeItemById", connection)
             {
@@ -86,7 +86,7 @@ namespace DataLayerRestaurant.Classes
             _Settings = Settings.Value;
         }   
 
-        public async Task<DTOTypeItems?> CreateDataAsync(DTOTypeItemsCRequest typeItem)
+        public async Task<TypeItem?> CreateDataAsync(DTOTypeItemsCRequest typeItem)
         {
             using SqlConnection connection = new SqlConnection(_Settings.ConnectionString);
             using SqlCommand command = new SqlCommand("TypeItems.SP_AddTypeItem", connection)
@@ -106,7 +106,7 @@ namespace DataLayerRestaurant.Classes
             return null;
         }
 
-        public async Task<DTOTypeItems?> UpdateDataAsync(DTOTypeItemsURequest typeItem)
+        public async Task<TypeItem?> UpdateDataAsync(DTOTypeItemsURequest typeItem)
         {
 
             using SqlConnection connection = new SqlConnection(_Settings.ConnectionString);
@@ -157,20 +157,20 @@ namespace DataLayerRestaurant.Classes
             _IWrite = Write;
         }
 
-        public async Task<DTOTypeItems?> GetTypeItemAsync(int ID)
+        public async Task<TypeItem?> GetTypeItemAsync(int ID)
         {
             return await _IRead.GetDataAsync(ID);
         }
-        public async Task<List<DTOTypeItems>> GetAllTypeItemsAsync(int Page)
+        public async Task<List<TypeItem>> GetAllTypeItemsAsync(int Page)
         {
             return await _IRead.GetAllDataAsync(Page);
         }
 
-        public async Task<DTOTypeItems?> AddTypeItemAsync(DTOTypeItemsCRequest Request)
+        public async Task<TypeItem?> AddTypeItemAsync(DTOTypeItemsCRequest Request)
         {
             return await _IWrite.CreateDataAsync(Request);
         }
-        public async Task<DTOTypeItems?> UpdateTypeItemAsync(DTOTypeItemsURequest Request)
+        public async Task<TypeItem?> UpdateTypeItemAsync(DTOTypeItemsURequest Request)
         {
             return await _IWrite.UpdateDataAsync(Request);
         }

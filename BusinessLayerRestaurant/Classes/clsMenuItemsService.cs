@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using BusinessLayerRestaurant.Interfaces;
 using DataLayerRestaurant.Interfaces;
-using ContractsLayerRestaurant.DTOs.MenuItems;
+using ContractsLayerRestaurant.DTORequest.MenuItems;
 
 
 
@@ -47,7 +47,7 @@ namespace BusinessLayerRestaurant.Classes
             _BusinessTypeItem = BusinessTypeItem;
         }
 
-        public async Task LoadDataAsync(DTOMenuItems item)
+        public async Task LoadDataAsync(MenuItem item)
         {
             item.TypeItems = await _BusinessTypeItem.GetTypeItemAsync(item.TypeItemID);
         }
@@ -61,7 +61,7 @@ namespace BusinessLayerRestaurant.Classes
             _Business = Business;
         }
 
-        public async Task LoadDataAsync(DTOMenuItems item)
+        public async Task LoadDataAsync(MenuItem item)
         {
             item.StatusMenus = await _Business.GetStatusMenuAsync(item.StatusMenuID);
         }
@@ -76,7 +76,7 @@ namespace BusinessLayerRestaurant.Classes
             _Interface = Interface;
         }
 
-        public async Task LoadDataAsync(DTOMenuItems Item)
+        public async Task LoadDataAsync(MenuItem Item)
         {
             foreach (var inter in _Interface)
             {
@@ -97,7 +97,7 @@ namespace BusinessLayerRestaurant.Classes
             _Logger = Logger;
         }
 
-        public async Task<DTOMenuItems?> GetAsync(int ID)
+        public async Task<MenuItem?> GetAsync(int ID)
         {
             var dto = await _Interface.IData.GetMenuItemAsync(ID);
             if (dto == null)
@@ -110,7 +110,7 @@ namespace BusinessLayerRestaurant.Classes
             return dto;
         }
 
-        public async Task<List<DTOMenuItems>> GetAllAsync(int Page)
+        public async Task<List<MenuItem>> GetAllAsync(int Page)
         {
             var list = await _Interface.IData.GetAllMenuItemsAsync(Page);
             if (list == null || list.Count == 0)
@@ -126,7 +126,7 @@ namespace BusinessLayerRestaurant.Classes
             return list;
         }
 
-        public async Task<List<DTOMenuItems>> GetAllAvailablesAsync()
+        public async Task<List<MenuItem>> GetAllAvailablesAsync()
         {
             var list = await _Interface.IData.GetAllMenuItemsAvailablesAsync();
             if (list == null || list.Count == 0)
@@ -142,7 +142,7 @@ namespace BusinessLayerRestaurant.Classes
             return list;
         }
 
-        public async Task<List<DTOMenuItems>> GetAllFiltersAsync(DTOMenuItemsFilterRequest Request)
+        public async Task<List<MenuItem>> GetAllFiltersAsync(DTOMenuItemsFilterRequest Request)
         {
             var list = await _Interface.IData.GetAllMenuItemsFiltersAsync(Request);
             if (list == null || list.Count == 0)
@@ -170,7 +170,7 @@ namespace BusinessLayerRestaurant.Classes
             _Logger = Logger;
         }
 
-        public async Task<DTOMenuItems?> CreateAsync(DTOMenuItemsCRequest Request)
+        public async Task<MenuItem?> CreateAsync(DTOMenuItemsCRequest Request)
         {
             var dto  = await _Interface.IData.AddMenuItemAsync(Request);
             if (dto == null)
@@ -183,7 +183,7 @@ namespace BusinessLayerRestaurant.Classes
             return dto;
         }
         
-        public async Task<DTOMenuItems?> UpdateAsync(DTOMenuItemsURequest Request)
+        public async Task<MenuItem?> UpdateAsync(DTOMenuItemsURequest Request)
         {
             var dto = await _Interface.IData.UpdateMenuItemAsync(Request);
             if (dto == null)
@@ -234,31 +234,31 @@ namespace BusinessLayerRestaurant.Classes
             set => _Interface.IBusinessTypeItem = value;
         }
 
-        public async Task<DTOMenuItems?> GetMenuItemAsync(int ID)
+        public async Task<MenuItem?> GetMenuItemAsync(int ID)
         {
             return await _IRead.GetAsync(ID);
         }
-        public async Task<List<DTOMenuItems>> GetAllMenuItemsAsync(int Page)
+        public async Task<List<MenuItem>> GetAllMenuItemsAsync(int Page)
         {
             return await _IRead.GetAllAsync(Page);
         }
 
-        public async Task<List<DTOMenuItems>> GetAllMenuItemsAvailablesAsync()
+        public async Task<List<MenuItem>> GetAllMenuItemsAvailablesAsync()
         {
             return await _IRead.GetAllAvailablesAsync();
         }
 
-        public async Task<List<DTOMenuItems>> GetAllMenuItemsFiltersAsync(DTOMenuItemsFilterRequest Request)
+        public async Task<List<MenuItem>> GetAllMenuItemsFiltersAsync(DTOMenuItemsFilterRequest Request)
         {
             return await _IRead.GetAllFiltersAsync(Request);
         }
 
-        public async Task<DTOMenuItems?> AddMenuItemAsync(DTOMenuItemsCRequest Request)
+        public async Task<MenuItem?> AddMenuItemAsync(DTOMenuItemsCRequest Request)
         {
             return await _IWrite.CreateAsync(Request);
         }
 
-        public async Task<DTOMenuItems?> UpdateMenuItemAsync(DTOMenuItemsURequest Request)
+        public async Task<MenuItem?> UpdateMenuItemAsync(DTOMenuItemsURequest Request)
         {
             return await _IWrite.UpdateAsync(Request);
         }

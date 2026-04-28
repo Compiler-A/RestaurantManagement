@@ -1,7 +1,7 @@
 ﻿#pragma warning disable CA1416 // Validate platform compatibility
 using BusinessLayerRestaurant.Interfaces;
 using System.Security.Authentication;
-using ContractsLayerRestaurant.DTOs.Auth;
+using ContractsLayerRestaurant.DTORequest.Auth;
 using DataLayerRestaurant.Interfaces;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -50,7 +50,7 @@ namespace BusinessLayerRestaurant.Classes
             _IData = Employee;
         }
 
-        public async Task LoadDataAsync(DTOLogin item)
+        public async Task LoadDataAsync(Auth item)
         {
             item.Employees = await _IData.GetEmployeeAsync(item.EmployeeID);
         }
@@ -65,7 +65,7 @@ namespace BusinessLayerRestaurant.Classes
         {
             _loaders = loaders;
         }
-        public async Task LoadDataAsync(DTOLogin item)
+        public async Task LoadDataAsync(Auth item)
         {
             foreach (var item1 in _loaders)
             {
@@ -86,7 +86,7 @@ namespace BusinessLayerRestaurant.Classes
             _Logger = Logger;
         }
 
-        public async Task<DTOLogin?> GetAsync(string UserName)
+        public async Task<Auth?> GetAsync(string UserName)
         {
             var Data = await _Interface.IData.GetDataAsync(UserName);
             if (Data == null)
@@ -169,7 +169,7 @@ namespace BusinessLayerRestaurant.Classes
             var accessToken = _GetAccessToken(employee.ID, employee.UserName, employee.JobRoles.Name);
             var refreshToken = GenerateRefreshToken();
 
-            var request = new DTOLoginCURequest
+            var request = new DTOAuthCURequest
             {
                 EmployeeID = employee.ID,
                 RefreshTokenHash = BCrypt.Net.BCrypt.HashPassword(refreshToken),
@@ -215,7 +215,7 @@ namespace BusinessLayerRestaurant.Classes
 
             // Rotation: replace refresh token
             var newRefreshToken = GenerateRefreshToken();
-            var request = new DTOLoginCURequest
+            var request = new DTOAuthCURequest
             {
                 EmployeeID = employee.EmployeeID,
                 RefreshTokenHash = BCrypt.Net.BCrypt.HashPassword(newRefreshToken),
@@ -273,7 +273,7 @@ namespace BusinessLayerRestaurant.Classes
             set => _Interface.IEmployee = value;
         }
 
-        public async Task<DTOLogin?> GetAsync(string UserName)
+        public async Task<Auth?> GetAsync(string UserName)
         {
             return await _Reader.GetAsync(UserName);
         }

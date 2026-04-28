@@ -1,6 +1,6 @@
 ﻿using APILayer.Filters;
 using BusinessLayerRestaurant.Interfaces;
-using ContractsLayerRestaurant.DTOs.Employees;
+using ContractsLayerRestaurant.DTORequest.Employees;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
@@ -25,7 +25,7 @@ namespace APILayer.Controllers
         [Authorize(Roles = "Manager")]
         [HttpGet(Name = "GetAllEmployeesAsync")]
         [EnableRateLimiting(NameRateLimitPolicies.GetAll)]
-        public async Task<ActionResult<ApiResponse<IEnumerable<DTOEmployees>>>> GetAllAsync([FromQuery] int page = 1)
+        public async Task<ActionResult<ApiResponse<IEnumerable<Employee>>>> GetAllAsync([FromQuery] int page = 1)
         {
             if (page <= 0)
             {
@@ -33,12 +33,12 @@ namespace APILayer.Controllers
             }
 
             var list = await employees.GetAllEmployeesAsync(page);
-            return CreateResponse<IEnumerable<DTOEmployees>>(list, StatusCodes.Status200OK, $"Row: {list.Count}");
+            return CreateResponse<IEnumerable<Employee>>(list, StatusCodes.Status200OK, $"Row: {list.Count}");
         }
 
         [HttpGet("{ID}", Name = "GetEmployeeByID")]
         [EnableRateLimiting(NameRateLimitPolicies.GetOne)]
-        public async Task<ActionResult<ApiResponse<DTOEmployees>>> GetByIDAsync
+        public async Task<ActionResult<ApiResponse<Employee>>> GetByIDAsync
             ([FromRoute] int ID , [FromServices] IAuthorizationService authorizationService)
         {
             if (ID <= 0)
@@ -54,13 +54,13 @@ namespace APILayer.Controllers
                 throw new UnauthorizedAccessException("Access denied.");
 
             var DTO = await employees.GetEmployeeAsync(ID);
-            return CreateResponse<DTOEmployees>(DTO!, StatusCodes.Status200OK, "Found Successfully!");
+            return CreateResponse<Employee>(DTO!, StatusCodes.Status200OK, "Found Successfully!");
         }
 
         [Authorize(Roles = "Manager")]
         [HttpPost(Name = "AddEmployee")]
         [EnableRateLimiting(NameRateLimitPolicies.Add)]
-        public async Task<ActionResult<ApiResponse<DTOEmployees>>> CreateAsync([FromBody] DTOEmployeesCRequest employee)
+        public async Task<ActionResult<ApiResponse<Employee>>> CreateAsync([FromBody] DTOEmployeesCRequest employee)
         {
             if (employee == null)
             {
@@ -75,7 +75,7 @@ namespace APILayer.Controllers
         [Authorize(Roles = "Manager")]
         [EnableRateLimiting(NameRateLimitPolicies.Update)]
         [HttpPut(Name = "UpdateEmployee")]
-        public async Task<ActionResult<ApiResponse<DTOEmployees>>> UpdateAsync([FromBody] DTOEmployeesURequest employee)
+        public async Task<ActionResult<ApiResponse<Employee>>> UpdateAsync([FromBody] DTOEmployeesURequest employee)
         {
             if (employee == null)
             {
@@ -84,7 +84,7 @@ namespace APILayer.Controllers
             
 
             var dto = await this.employees.UpdateEmployeeAsync(employee);
-            return CreateResponse<DTOEmployees>(dto!, StatusCodes.Status200OK, "Employee Updated Successfully!");
+            return CreateResponse<Employee>(dto!, StatusCodes.Status200OK, "Employee Updated Successfully!");
         }
 
         [Authorize(Roles = "Manager")]
@@ -125,7 +125,7 @@ namespace APILayer.Controllers
         [Authorize]
         [EnableRateLimiting(NameRateLimitPolicies.GetOne)]
         [HttpGet("user-name/{userName}", Name = "GetEmployeeByUserName")]
-        public async Task<ActionResult<ApiResponse<DTOEmployees>>> GetByUserNameAsync
+        public async Task<ActionResult<ApiResponse<Employee>>> GetByUserNameAsync
             ([FromRoute] string userName, [FromServices] IAuthorizationService authorizationService)
         {
             if (string.IsNullOrWhiteSpace(userName))
@@ -141,7 +141,7 @@ namespace APILayer.Controllers
             if (!authResult.Succeeded)
                 throw new UnauthorizedAccessException("Access denied.");
             var DTO = await employees.GetEmployeeAsync(userName);
-            return CreateResponse<DTOEmployees>(DTO!, StatusCodes.Status200OK, "Found Successfully!");
+            return CreateResponse<Employee>(DTO!, StatusCodes.Status200OK, "Found Successfully!");
 
         }
 

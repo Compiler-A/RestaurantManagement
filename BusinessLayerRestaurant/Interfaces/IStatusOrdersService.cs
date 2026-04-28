@@ -1,14 +1,14 @@
 ﻿using RestaurantDataLayer;
 using DataLayerRestaurant.Interfaces;
-using ContractsLayerRestaurant.DTOs.StatusOrders;
+using ContractsLayerRestaurant.DTORequest.StatusOrders;
 
 
 namespace BusinessLayerRestaurant.Interfaces
 {
-    public interface IStatusOrdersServiceReader : IReadableBusinessBase<DTOStatusOrders>
+    public interface IStatusOrdersServiceReader : IReadableBusinessBase<StatusOrder>
     { }
     public interface IWritableBStatusOrders :
-        IWritableBusinessBase<DTOStatusOrders, DTOStatusOrdersCRequest, DTOStatusOrdersURequest>
+        IWritableBusinessBase<StatusOrder, DTOStatusOrdersCRequest, DTOStatusOrdersURequest>
     { }
 
 
@@ -17,14 +17,14 @@ namespace BusinessLayerRestaurant.Interfaces
 
     public interface IStatusOrdersServiceReadable
     {
-        Task<List<DTOStatusOrders>> GetAllStatusOrdersAsync(int Page);
-        Task<DTOStatusOrders?> GetStatusOrdersAsync(int ID);
+        Task<List<StatusOrder>> GetAllStatusOrdersAsync(int Page);
+        Task<StatusOrder?> GetStatusOrdersAsync(int ID);
     }
 
     public interface IStatusOrdersServiceWritable
     {
-        Task<DTOStatusOrders?> AddStatusOrdersAsync(DTOStatusOrdersCRequest Request);
-        Task<DTOStatusOrders?> UpdateStatusOrdersAsync(DTOStatusOrdersURequest Request);
+        Task<StatusOrder?> AddStatusOrdersAsync(DTOStatusOrdersCRequest Request);
+        Task<StatusOrder?> UpdateStatusOrdersAsync(DTOStatusOrdersURequest Request);
         Task<bool> DeleteStatusOrdersAsync(int ID);
     }
     public interface ICRUDStatusOrdersService : IStatusOrdersServiceWritable, IStatusOrdersServiceReadable

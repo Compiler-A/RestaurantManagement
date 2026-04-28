@@ -1,24 +1,24 @@
-﻿using ContractsLayerRestaurant.DTOs.Employees;
+﻿using ContractsLayerRestaurant.DTORequest.Employees;
 using RestaurantDataLayer;
 
 
 namespace DataLayerRestaurant.Interfaces
 {
-    public interface IEmployeesRepositoryReader : IReadableDataBase<DTOEmployees>
+    public interface IEmployeesRepositoryReader : IReadableDataBase<Employee>
     {
-        Task<DTOEmployees?> GetDataAsync(string UserName);
+        Task<Employee?> GetDataAsync(string UserName);
 
     }
 
     public interface IEmployeesRepositoryReadable
     {
-        Task<List<DTOEmployees>> GetAllEmployeesAsync(int page);
-        Task<DTOEmployees?> GetEmployeeAsync(int ID);
-        Task<DTOEmployees?> GetEmployeeAsync(string UserName);
+        Task<List<Employee>> GetAllEmployeesAsync(int page);
+        Task<Employee?> GetEmployeeAsync(int ID);
+        Task<Employee?> GetEmployeeAsync(string UserName);
     }
 
     public interface IEmployeesRepositoryWriter 
-        : IWritableDataBase<DTOEmployees, DTOEmployeesCRequest, DTOEmployeesURequest>
+        : IWritableDataBase<Employee, DTOEmployeesCRequest, DTOEmployeesURequest>
     {
         Task<bool> ChangedDataPasswordAsync(DTOEmployeesChangedPassword Changed);
     }
@@ -26,8 +26,8 @@ namespace DataLayerRestaurant.Interfaces
 
     public interface IEmployeesRepositoryWritable
     {
-        Task<DTOEmployees?> AddEmployeeAsync(DTOEmployeesCRequest Request);
-        Task<DTOEmployees?> UpdateEmployeeAsync(DTOEmployeesURequest Request);
+        Task<Employee?> AddEmployeeAsync(DTOEmployeesCRequest Request);
+        Task<Employee?> UpdateEmployeeAsync(DTOEmployeesURequest Request);
         Task<bool> DeleteEmployeeAsync(int ID);
         Task<bool> ChangedPasswordEmployeeAsync(DTOEmployeesChangedPassword Changed);
     }

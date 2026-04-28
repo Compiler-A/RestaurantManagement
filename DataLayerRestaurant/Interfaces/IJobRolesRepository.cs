@@ -1,24 +1,24 @@
 ﻿using RestaurantDataLayer;
-using ContractsLayerRestaurant.DTOs.JobRoles;
+using ContractsLayerRestaurant.DTORequest.JobRoles;
 
 namespace DataLayerRestaurant.Interfaces
 {
-    public interface IJobRolesRepositoryReader : IReadableDataBase<DTOJobRoles>
+    public interface IJobRolesRepositoryReader : IReadableDataBase<JobRole>
     { }
     public interface IJobRolesRepositoryWriter
-        : IWritableDataBase<DTOJobRoles, DTOJobRolesCRequest, DTOJobRolesURequest> 
+        : IWritableDataBase<JobRole, DTOJobRolesCRequest, DTOJobRolesURequest> 
     { }
 
     public interface IJobRolesRepositoryReadable
     {
-        Task<List<DTOJobRoles>> GetAllJobRolesAsync(int page);
-        Task<DTOJobRoles?> GetJobRoleAsync(int ID);
+        Task<List<JobRole>> GetAllJobRolesAsync(int page);
+        Task<JobRole?> GetJobRoleAsync(int ID);
 
     }
     public interface IJobRolesRepositoryWritable
     {
-        Task<DTOJobRoles?> AddJobRoleAsync(DTOJobRolesCRequest DTO);
-        Task<DTOJobRoles?> UpdateJobRoleAsync(DTOJobRolesURequest DTO);
+        Task<JobRole?> AddJobRoleAsync(DTOJobRolesCRequest DTO);
+        Task<JobRole?> UpdateJobRoleAsync(DTOJobRolesURequest DTO);
         Task<bool> DeleteJobRoleAsync(int ID);
     }
 

@@ -1,6 +1,6 @@
 ﻿using APILayer.Filters;
 using BusinessLayerRestaurant.Interfaces;
-using ContractsLayerRestaurant.DTOs.JobRoles;
+using ContractsLayerRestaurant.DTORequest.JobRoles;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
@@ -24,33 +24,33 @@ namespace APILayer.Controllers
         [AllowAnonymous]
         [HttpGet(Name = "GetAllJobRoles")]
         [EnableRateLimiting(NameRateLimitPolicies.GetAll)]
-        public async Task<ActionResult<ApiResponse<IEnumerable<DTOJobRoles>>>> GetAllAsync([FromQuery] int page = 1)
+        public async Task<ActionResult<ApiResponse<IEnumerable<JobRole>>>> GetAllAsync([FromQuery] int page = 1)
         {
             if (page <= 0)
             {
                 throw new ArgumentOutOfRangeException("Page number must be greater than 0.");
             }
             var list = await jobRoles.GetAllJobRolesAsync(page);
-            return CreateResponse<IEnumerable<DTOJobRoles>>(list, StatusCodes.Status200OK, $"Row: {list.Count}");
+            return CreateResponse<IEnumerable<JobRole>>(list, StatusCodes.Status200OK, $"Row: {list.Count}");
         }
 
         [AllowAnonymous]
         [EnableRateLimiting(NameRateLimitPolicies.GetOne)]
         [HttpGet("{ID}", Name = "GetJobRoleByID")]
-        public async Task<ActionResult<ApiResponse<DTOJobRoles>>> GetByIDAsync([FromRoute] int ID = 1)
+        public async Task<ActionResult<ApiResponse<JobRole>>> GetByIDAsync([FromRoute] int ID = 1)
         {
             if (ID <= 0)
             {
                 throw new ArgumentOutOfRangeException("ID number must be greater than 0.");
             }
             var DTO = await jobRoles.GetJobRoleAsync(ID);
-            return CreateResponse<DTOJobRoles>(DTO!, StatusCodes.Status200OK, "Found Successfully!");
+            return CreateResponse<JobRole>(DTO!, StatusCodes.Status200OK, "Found Successfully!");
         }
 
         [Authorize(Roles = "Manager")]
         [EnableRateLimiting(NameRateLimitPolicies.Add)]
         [HttpPost(Name = "AddJobRole")]
-        public async Task<ActionResult<ApiResponse<DTOJobRoles>>> CreateAsync([FromBody] DTOJobRolesCRequest JobRole)
+        public async Task<ActionResult<ApiResponse<JobRole>>> CreateAsync([FromBody] DTOJobRolesCRequest JobRole)
         {
             if (JobRole == null)
             {
@@ -64,7 +64,7 @@ namespace APILayer.Controllers
         [Authorize(Roles = "Manager")]
         [EnableRateLimiting(NameRateLimitPolicies.Update)]
         [HttpPut(Name = "UpdateJobRole")]
-        public async Task<ActionResult<ApiResponse<DTOJobRoles>>> UpdateAsync([FromBody] DTOJobRolesURequest Update)
+        public async Task<ActionResult<ApiResponse<JobRole>>> UpdateAsync([FromBody] DTOJobRolesURequest Update)
         {
             if (Update == null)
             {
@@ -73,7 +73,7 @@ namespace APILayer.Controllers
 
 
             var result = await jobRoles.UpdateJobRoleAsync(Update);
-            return CreateResponse<DTOJobRoles>(result!, StatusCodes.Status200OK, "Job Role Updated Successfully!");
+            return CreateResponse<JobRole>(result!, StatusCodes.Status200OK, "Job Role Updated Successfully!");
 
            
         }

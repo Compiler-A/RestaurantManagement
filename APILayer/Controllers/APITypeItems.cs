@@ -1,6 +1,6 @@
 ﻿using APILayer.Filters;
 using BusinessLayerRestaurant.Interfaces;
-using ContractsLayerRestaurant.DTOs.TypeItems;
+using ContractsLayerRestaurant.DTORequest.TypeItems;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
@@ -24,21 +24,21 @@ namespace APILayer.Controllers
         [AllowAnonymous]
         [EnableRateLimiting(NameRateLimitPolicies.GetAll)]
         [HttpGet(Name = "GetAllTypeItems")]
-        public async Task<ActionResult<ApiResponse<IEnumerable<DTOTypeItems>>>> GetAllAsync([FromQuery] int page = 1)
+        public async Task<ActionResult<ApiResponse<IEnumerable<TypeItem>>>> GetAllAsync([FromQuery] int page = 1)
         {
             if (page <= 0)
             {
                 throw new ArgumentOutOfRangeException("Page number must be greater than 0.");
             }
             var typeItems = await _dataLayer.GetAllTypeItemsAsync(page);
-            return CreateResponse<IEnumerable<DTOTypeItems>>(typeItems, StatusCodes.Status200OK, $"Row: {typeItems.Count}");
+            return CreateResponse<IEnumerable<TypeItem>>(typeItems, StatusCodes.Status200OK, $"Row: {typeItems.Count}");
 
         }
 
         [AllowAnonymous]
         [EnableRateLimiting(NameRateLimitPolicies.GetOne)]
         [HttpGet("{ID}", Name = "GetTypeItemById")]
-        public async Task<ActionResult<ApiResponse<DTOTypeItems>>> GetByIDAsync([FromRoute] int ID)
+        public async Task<ActionResult<ApiResponse<TypeItem>>> GetByIDAsync([FromRoute] int ID)
         {
             if (ID <= 0)
             {
@@ -52,7 +52,7 @@ namespace APILayer.Controllers
         [Authorize(Roles = "Manager")]
         [EnableRateLimiting(NameRateLimitPolicies.Add)]
         [HttpPost(Name = "AddTypeItem")]
-        public async Task<ActionResult<ApiResponse<DTOTypeItems>>> CreateAsync([FromBody] DTOTypeItemsCRequest typeItem)
+        public async Task<ActionResult<ApiResponse<TypeItem>>> CreateAsync([FromBody] DTOTypeItemsCRequest typeItem)
         {
             if (typeItem == null)
                 throw new ArgumentNullException("Request is null!");
@@ -67,7 +67,7 @@ namespace APILayer.Controllers
         [Authorize(Roles = "Manager")]
         [EnableRateLimiting(NameRateLimitPolicies.Update)]
         [HttpPut(Name = "UpdateTypeItem")]
-        public async Task<ActionResult<ApiResponse<DTOTypeItems>>> UpdateAsync([FromBody] DTOTypeItemsURequest typeItem)
+        public async Task<ActionResult<ApiResponse<TypeItem>>> UpdateAsync([FromBody] DTOTypeItemsURequest typeItem)
         {
             if (typeItem == null)
                 throw new ArgumentNullException("Request is null!");

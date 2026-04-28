@@ -4,17 +4,17 @@ using RestaurantDataLayer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using ContractsLayerRestaurant.DTOs.StatusTables;
+using ContractsLayerRestaurant.DTORequest.StatusTables;
 using DataLayerRestaurant.Interfaces;
 
 namespace DataLayerRestaurant.Classes
 {
 
-    public class clsStatusTablesRepositoryComposition : ICompositionDataBase<DTOStatusTables>
+    public class clsStatusTablesRepositoryComposition : ICompositionDataBase<StatusTable>
     {
-        public DTOStatusTables GetDataFromDataBase(SqlDataReader reader)
+        public StatusTable GetDataFromDataBase(SqlDataReader reader)
         {
-            return new DTOStatusTables
+            return new StatusTable
             {
                 ID = reader.GetInt32(reader.GetOrdinal("StatusTableID")),
                 Name = reader.GetString(reader.GetOrdinal("Name"))
@@ -52,7 +52,7 @@ namespace DataLayerRestaurant.Classes
             }
 
         }
-        public async Task<DTOStatusTables?> GetDataAsync(int id)
+        public async Task<StatusTable?> GetDataAsync(int id)
         {
             using (SqlConnection Connection = new SqlConnection(_Settings.ConnectionString))
             {
@@ -73,9 +73,9 @@ namespace DataLayerRestaurant.Classes
             return null;
         }
 
-        public async Task<List<DTOStatusTables>> GetAllDataAsync(int page)
+        public async Task<List<StatusTable>> GetAllDataAsync(int page)
         {
-            List<DTOStatusTables> L = new List<DTOStatusTables>();
+            List<StatusTable> L = new List<StatusTable>();
             using (SqlConnection Connection = new SqlConnection(_Settings.ConnectionString))
             {
                 using (SqlCommand Command = new SqlCommand("StatusTables.SP_GetAllStatusTables", Connection))
@@ -89,7 +89,7 @@ namespace DataLayerRestaurant.Classes
                     {
                         while (await Reader.ReadAsync())
                         {
-                            DTOStatusTables menuItem = GetDataFromDataBase(Reader);
+                            StatusTable menuItem = GetDataFromDataBase(Reader);
                             L.Add(menuItem);
                         }
                     }
@@ -112,7 +112,7 @@ namespace DataLayerRestaurant.Classes
             _Settings = Settings.Value;
         }
 
-        public async Task<DTOStatusTables?> CreateDataAsync(DTOStatusTablesCRequest StatusTable)
+        public async Task<StatusTable?> CreateDataAsync(DTOStatusTablesCRequest StatusTable)
         {
             using (SqlConnection Connection = new SqlConnection(_Settings.ConnectionString))
             {
@@ -140,7 +140,7 @@ namespace DataLayerRestaurant.Classes
         }
 
 
-        public async Task<DTOStatusTables?> UpdateDataAsync(DTOStatusTablesURequest StatusTable)
+        public async Task<StatusTable?> UpdateDataAsync(DTOStatusTablesURequest StatusTable)
         {
             using (SqlConnection Connection = new SqlConnection(_Settings.ConnectionString))
             {
@@ -194,20 +194,20 @@ namespace DataLayerRestaurant.Classes
             return await _IRead.isFindDataAsync(id);
 
         }
-        public async Task<DTOStatusTables?> GetStatuTableAsync(int id)
+        public async Task<StatusTable?> GetStatuTableAsync(int id)
         {
             return await _IRead.GetDataAsync(id);
         }
 
-        public async Task<List<DTOStatusTables>> GetAllStatustablesAsync(int page)
+        public async Task<List<StatusTable>> GetAllStatustablesAsync(int page)
         {
             return await _IRead.GetAllDataAsync(page);
         }
-        public async Task<DTOStatusTables?> AddStatusTableAsync(DTOStatusTablesCRequest Request)
+        public async Task<StatusTable?> AddStatusTableAsync(DTOStatusTablesCRequest Request)
         {
             return await _IWrite.CreateDataAsync(Request);
         }
-        public async Task<DTOStatusTables?> UpdateStatusTableAsync(DTOStatusTablesURequest Request)
+        public async Task<StatusTable?> UpdateStatusTableAsync(DTOStatusTablesURequest Request)
         {
            return await _IWrite.UpdateDataAsync(Request);
         }

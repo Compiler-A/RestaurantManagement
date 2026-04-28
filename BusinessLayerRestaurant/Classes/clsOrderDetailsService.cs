@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using BusinessLayerRestaurant.Interfaces;
 using DataLayerRestaurant.Interfaces;
-using ContractsLayerRestaurant.DTOs.OrderDetails;
+using ContractsLayerRestaurant.DTORequest.OrderDetails;
 
 
 
@@ -47,7 +47,7 @@ namespace BusinessLayerRestaurant.Classes
         { 
             _Order = order;
         }
-        public async Task LoadDataAsync(DTOOrderDetails item)
+        public async Task LoadDataAsync(OrderDetail item)
         {
             item.Order = await _Order.GetOrderAsync(item.OrderID);
         }
@@ -59,7 +59,7 @@ namespace BusinessLayerRestaurant.Classes
         {
             _MenuItem = menuItem;
         }
-        public async Task LoadDataAsync(DTOOrderDetails item)
+        public async Task LoadDataAsync(OrderDetail item)
         {
             item.Item = await _MenuItem.GetMenuItemAsync(item.ItemID);
         }
@@ -72,7 +72,7 @@ namespace BusinessLayerRestaurant.Classes
         {
             _loaders = loaders;
         }
-        public async Task LoadDataAsync(DTOOrderDetails item)
+        public async Task LoadDataAsync(OrderDetail item)
         {
             foreach (var item1 in _loaders)
             {
@@ -92,7 +92,7 @@ namespace BusinessLayerRestaurant.Classes
             _Interfaces = Interfaces;
             _Logger = logger;
         }
-        public async Task<List<DTOOrderDetails>> GetAllAsync(int page)
+        public async Task<List<OrderDetail>> GetAllAsync(int page)
         {
             var ldto = await _Interfaces.IData.GetAllOrderDetailsAsync(page);
             if (ldto == null || ldto.Count == 0)
@@ -106,7 +106,7 @@ namespace BusinessLayerRestaurant.Classes
             _Logger.EventLogs($"OrderDetails Found, Count: {ldto.Count}", EventLogEntryType.Information);
             return ldto;
         }
-        public async Task<List<DTOOrderDetails>> GetAllByOrderIDAsync(int orderID)
+        public async Task<List<OrderDetail>> GetAllByOrderIDAsync(int orderID)
         {
             var ldto = await _Interfaces.IData.GetAllOrderDetailsByOrderIDAsync(orderID);
             if (ldto == null || ldto.Count == 0)
@@ -122,7 +122,7 @@ namespace BusinessLayerRestaurant.Classes
             return ldto;
         }
 
-        public async Task<DTOOrderDetails?> GetAsync(int ID)
+        public async Task<OrderDetail?> GetAsync(int ID)
         {
             var dto = await _Interfaces.IData.GetOrderDetailAsync(ID);
             if (dto == null)
@@ -146,7 +146,7 @@ namespace BusinessLayerRestaurant.Classes
             _Interfaces = @interface;
             _Logger = Logger;
         }
-        public async Task<DTOOrderDetails?> CreateAsync(DTOOrderDetailsCRequest Request)
+        public async Task<OrderDetail?> CreateAsync(DTOOrderDetailsCRequest Request)
         {
 
             var dto = await _Interfaces.IData.AddOrderDetailAsync(Request);
@@ -160,7 +160,7 @@ namespace BusinessLayerRestaurant.Classes
             throw new InvalidOperationException("Not Created!");
         }
 
-        public async Task<DTOOrderDetails?> UpdateAsync(DTOOrderDetailsURequest Request)
+        public async Task<OrderDetail?> UpdateAsync(DTOOrderDetailsURequest Request)
         {
 
             var dto = await _Interfaces.IData.UpdateOrderDetailAsync(Request);
@@ -220,25 +220,25 @@ namespace BusinessLayerRestaurant.Classes
             set => _Interface.IBusinessOrder = value;
         }
 
-        public Task<List<DTOOrderDetails>> GetAllOrderDetailsAsync(int page)
+        public Task<List<OrderDetail>> GetAllOrderDetailsAsync(int page)
         {
             return _Read.GetAllAsync(page);
         }
 
-        public async Task<DTOOrderDetails?> GetOrderDetailAsync(int ID)
+        public async Task<OrderDetail?> GetOrderDetailAsync(int ID)
         {
             return await _Read.GetAsync(ID);
         }
 
-        public async Task<List<DTOOrderDetails>> GetAllOrderDetailsByOrderIDAsync(int OrderID) 
+        public async Task<List<OrderDetail>> GetAllOrderDetailsByOrderIDAsync(int OrderID) 
         {
             return await _Read.GetAllByOrderIDAsync(OrderID);
         }
-        public async Task<DTOOrderDetails?> AddOrderDetailAsync(DTOOrderDetailsCRequest Request)
+        public async Task<OrderDetail?> AddOrderDetailAsync(DTOOrderDetailsCRequest Request)
         {
             return await _IWrite.CreateAsync(Request);
         }
-        public async Task<DTOOrderDetails?> UpdateOrderDetailAsync(DTOOrderDetailsURequest Request)
+        public async Task<OrderDetail?> UpdateOrderDetailAsync(DTOOrderDetailsURequest Request)
         {
             return await _IWrite.UpdateAsync(Request);
         }

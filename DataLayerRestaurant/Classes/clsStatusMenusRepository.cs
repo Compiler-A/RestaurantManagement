@@ -2,15 +2,15 @@
 using Microsoft.Extensions.Options;
 using RestaurantDataLayer;
 using DataLayerRestaurant.Interfaces;
-using ContractsLayerRestaurant.DTOs.StatusMenus;
+using ContractsLayerRestaurant.DTORequest.StatusMenus;
 
 namespace DataLayerRestaurant.Classes
 { 
-    public class clsStatusMenusRepositoryComposition : ICompositionDataBase<DTOStatusMenus>
+    public class clsStatusMenusRepositoryComposition : ICompositionDataBase<StatusMenu>
     {
-        public DTOStatusMenus GetDataFromDataBase(SqlDataReader reader)
+        public StatusMenu GetDataFromDataBase(SqlDataReader reader)
         {
-            return new DTOStatusMenus
+            return new StatusMenu
             {
                 ID = reader.GetInt32(reader.GetOrdinal("StatusMenuID")),
                 Name = reader.GetString(reader.GetOrdinal("Name")),
@@ -30,7 +30,7 @@ namespace DataLayerRestaurant.Classes
             _Settings = settings.Value;
         }
 
-        public async Task<DTOStatusMenus?> GetDataAsync(int id)
+        public async Task<StatusMenu?> GetDataAsync(int id)
         {
             using SqlConnection connection = new SqlConnection(_Settings.ConnectionString);
             using SqlCommand command = new SqlCommand("StatusMenus.SP_GetStatusMenusByID", connection)
@@ -48,9 +48,9 @@ namespace DataLayerRestaurant.Classes
             return null;
         }
 
-        public async Task<List<DTOStatusMenus>> GetAllDataAsync(int page)
+        public async Task<List<StatusMenu>> GetAllDataAsync(int page)
         {
-            var list = new List<DTOStatusMenus>();
+            var list = new List<StatusMenu>();
             using var connection = new SqlConnection(_Settings.ConnectionString);
             using var command = new SqlCommand("StatusMenus.SP_GetAllStatusMenus", connection)
             {
@@ -78,7 +78,7 @@ namespace DataLayerRestaurant.Classes
             _Settings = settings.Value;
         }
 
-        public async Task<DTOStatusMenus?> CreateDataAsync(DTOStatusMenusCRequest statusMenu)
+        public async Task<StatusMenu?> CreateDataAsync(DTOStatusMenusCRequest statusMenu)
         {
             using var connection = new SqlConnection(_Settings.ConnectionString);
             using var command = new SqlCommand("StatusMenus.SP_AddStatusMenus", connection)
@@ -99,7 +99,7 @@ namespace DataLayerRestaurant.Classes
             return null;
         }
 
-        public async Task<DTOStatusMenus?> UpdateDataAsync(DTOStatusMenusURequest statusMenu)
+        public async Task<StatusMenu?> UpdateDataAsync(DTOStatusMenusURequest statusMenu)
         {
             using var connection = new SqlConnection(_Settings.ConnectionString);
             using var command = new SqlCommand("StatusMenus.SP_UpdateStatusMenus", connection)
@@ -148,22 +148,22 @@ namespace DataLayerRestaurant.Classes
             _IWrite = write;
         }
 
-        public async Task<List<DTOStatusMenus>> GetAllStatusMenusAsync(int Page)
+        public async Task<List<StatusMenu>> GetAllStatusMenusAsync(int Page)
         {
             return await _IRead.GetAllDataAsync(Page);
         }
 
-        public async Task<DTOStatusMenus?> GetStatusMenuAsync(int ID)
+        public async Task<StatusMenu?> GetStatusMenuAsync(int ID)
         {
             return await _IRead.GetDataAsync(ID);
         }
 
-        public async Task<DTOStatusMenus?> AddStatusMenuAsync(DTOStatusMenusCRequest Request)
+        public async Task<StatusMenu?> AddStatusMenuAsync(DTOStatusMenusCRequest Request)
         {
             return await _IWrite.CreateDataAsync(Request);
         }
 
-        public async Task<DTOStatusMenus?> UpdateStatusMenuAsync(DTOStatusMenusURequest Request)
+        public async Task<StatusMenu?> UpdateStatusMenuAsync(DTOStatusMenusURequest Request)
         {
             return await _IWrite.UpdateDataAsync(Request);
         }

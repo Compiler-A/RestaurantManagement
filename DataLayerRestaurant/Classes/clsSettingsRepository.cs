@@ -1,16 +1,16 @@
 ﻿using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Options;
 using RestaurantDataLayer;
-using ContractsLayerRestaurant.DTOs.Settings;
+using ContractsLayerRestaurant.DTORequest.Settings;
 using DataLayerRestaurant.Interfaces;
 
 namespace DataLayerRestaurant.Classes
 {
-    public class clsSettingsRepositoryComposition : ICompositionDataBase <DTOSettings>
+    public class clsSettingsRepositoryComposition : ICompositionDataBase <Setting>
     {
-        public DTOSettings GetDataFromDataBase(SqlDataReader reader)
+        public Setting GetDataFromDataBase(SqlDataReader reader)
         {
-            return new DTOSettings
+            return new Setting
             {
                 ID = reader.GetInt32(reader.GetOrdinal("SettingID")),
                 Name = reader.GetString(reader.GetOrdinal("Name")),
@@ -29,9 +29,9 @@ namespace DataLayerRestaurant.Classes
             _Settings = settings.Value;
         }
 
-        public async Task<List<DTOSettings>> GetAllDataAsync(int page)
+        public async Task<List<Setting>> GetAllDataAsync(int page)
         {
-            List<DTOSettings> result = new List<DTOSettings>();
+            List<Setting> result = new List<Setting>();
             using (SqlConnection Connection = new SqlConnection(_Settings.ConnectionString))
             {
                 using (SqlCommand Command = new SqlCommand("Settings.SP_GetAllSettings", Connection))
@@ -53,9 +53,9 @@ namespace DataLayerRestaurant.Classes
             return result;
         }
 
-        public async Task<DTOSettings?> GetDataAsync(int ID)
+        public async Task<Setting?> GetDataAsync(int ID)
         {
-            DTOSettings? result = null;
+            Setting? result = null;
             using (SqlConnection Connection = new SqlConnection(_Settings.ConnectionString))
             {
                 using (SqlCommand Command = new SqlCommand("Settings.SP_GetSettingByID", Connection))
@@ -85,7 +85,7 @@ namespace DataLayerRestaurant.Classes
             _Settings = settings.Value;
         }
 
-        public async Task<DTOSettings?> CreateDataAsync(DTOSettingsCRequest dto)
+        public async Task<Setting?> CreateDataAsync(DTOSettingsCRequest dto)
         {
             using (SqlConnection Connection = new SqlConnection(_Settings.ConnectionString))
             {
@@ -107,7 +107,7 @@ namespace DataLayerRestaurant.Classes
             }
             return null;
         }
-        public async Task<DTOSettings?> UpdateDataAsync(DTOSettingsURequest DTO)
+        public async Task<Setting?> UpdateDataAsync(DTOSettingsURequest DTO)
         {
             using (SqlConnection Connection = new SqlConnection(_Settings.ConnectionString))
             {
@@ -158,23 +158,23 @@ namespace DataLayerRestaurant.Classes
             _Read = read;
         }
 
-        public async Task<List<DTOSettings>> GetAllSettingsAsync(int page)
+        public async Task<List<Setting>> GetAllSettingsAsync(int page)
         {
             return await _Read.GetAllDataAsync(page);
         }
 
-        public async Task<DTOSettings?> GetSettingAsync(int ID)
+        public async Task<Setting?> GetSettingAsync(int ID)
         { 
             return await _Read.GetDataAsync(ID);
         }
 
-        public async Task<DTOSettings?> AddSettingAsync(DTOSettingsCRequest DTO)
+        public async Task<Setting?> AddSettingAsync(DTOSettingsCRequest DTO)
         {
 
             return await _Write.CreateDataAsync(DTO);
         }
 
-        public async Task<DTOSettings?> UpdateSettingAsync(DTOSettingsURequest DTO)
+        public async Task<Setting?> UpdateSettingAsync(DTOSettingsURequest DTO)
         {
 
             return await _Write.UpdateDataAsync(DTO);

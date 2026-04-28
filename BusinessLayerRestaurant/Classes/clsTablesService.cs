@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using BusinessLayerRestaurant.Interfaces;
 using DataLayerRestaurant.Interfaces;
-using ContractsLayerRestaurant.DTOs.Tables;
+using ContractsLayerRestaurant.DTORequest.Tables;
 
 
 
@@ -40,7 +40,7 @@ namespace BusinessLayerRestaurant.Classes
             _IData = iData;
         }
 
-        public async Task LoadDataAsync(DTOTables item)
+        public async Task LoadDataAsync(Table item)
         {
             item.StatusTable = await _IData.GetStatusTableAsync(item.StatusTableID);
         }
@@ -54,7 +54,7 @@ namespace BusinessLayerRestaurant.Classes
         {
             _loaders = loaders;
         }
-        public async Task LoadDataAsync(DTOTables item)
+        public async Task LoadDataAsync(Table item)
         {
             foreach (var item1 in _loaders)
             {
@@ -74,7 +74,7 @@ namespace BusinessLayerRestaurant.Classes
             _Logger = Logger;
         }
 
-        private async Task<List<DTOTables>> _LoadAsync(List<DTOTables> list)
+        private async Task<List<Table>> _LoadAsync(List<Table> list)
         {
             foreach (var item in list)
             {
@@ -84,7 +84,7 @@ namespace BusinessLayerRestaurant.Classes
             return list;
         }
 
-        public async Task<List<DTOTables>> GetAllAsync(int page)
+        public async Task<List<Table>> GetAllAsync(int page)
         {
             var list = await _Interface.IData.GetAlltablesAsync(page);
             if (list == null || list.Count == 0)
@@ -94,7 +94,7 @@ namespace BusinessLayerRestaurant.Classes
             return await _LoadAsync(list);
         }
 
-        public async Task<DTOTables?> GetAsync(int id)
+        public async Task<Table?> GetAsync(int id)
         {
             var dto = await _Interface.IData.GetTableAsync(id);
             if (dto == null)
@@ -107,7 +107,7 @@ namespace BusinessLayerRestaurant.Classes
             return dto;
         }
 
-        public async Task<List<DTOTables>> GetAllAsync()
+        public async Task<List<Table>> GetAllAsync()
         {
             var list = await _Interface.IData.GetAlltablesAsync();
             if (list == null || list.Count == 0)
@@ -116,7 +116,7 @@ namespace BusinessLayerRestaurant.Classes
             }
             return await _LoadAsync(list);
         }
-        public async Task<List<DTOTables>> GetFilter1Async(DTOTablesFilterStatusTableRequest Request)
+        public async Task<List<Table>> GetFilter1Async(DTOTablesFilterStatusTableRequest Request)
         {
             var list = await _Interface.IData.GetFilterStatusTablesAsync(Request);
             if (list == null || list.Count == 0)
@@ -125,7 +125,7 @@ namespace BusinessLayerRestaurant.Classes
             }
             return await _LoadAsync(list);
         }
-        public async Task<List<DTOTables>> GetFilter2Async(DTOTablesFilterSeatTableRequest Request)
+        public async Task<List<Table>> GetFilter2Async(DTOTablesFilterSeatTableRequest Request)
         {
             var list = await _Interface.IData.GetFilterSeatTablesAsync(Request);
             if (list == null || list.Count == 0)
@@ -135,7 +135,7 @@ namespace BusinessLayerRestaurant.Classes
             return await _LoadAsync(list);
 
         }
-        public async Task<DTOTables?> GetByNameAsync(string tableNumber)
+        public async Task<Table?> GetByNameAsync(string tableNumber)
         {
             var dto = await _Interface.IData.GetTableByNameAsync(tableNumber);
             if (dto  == null)
@@ -147,7 +147,7 @@ namespace BusinessLayerRestaurant.Classes
             await LoadDataAsync(dto);
             return dto;
         }
-        public async Task<List<DTOTables>> GetFilter3Async(DTOTablesFilterStatusAndSeatTableRequest Request)
+        public async Task<List<Table>> GetFilter3Async(DTOTablesFilterStatusAndSeatTableRequest Request)
         {
             var list = await _Interface.IData.GetFilterStatusAndSeatTablesAsync(Request);
             if (list == null || list.Count == 0)
@@ -156,7 +156,7 @@ namespace BusinessLayerRestaurant.Classes
             }
             return await _LoadAsync(list);
         }
-        public async Task<List<DTOTables>> GetAllAvailablesAsync()
+        public async Task<List<Table>> GetAllAvailablesAsync()
         {
             var list = await _Interface.IData.GetAllTablesAvailablesAsync();
             if (list == null || list.Count == 0)
@@ -177,7 +177,7 @@ namespace BusinessLayerRestaurant.Classes
             _Logger = Logger;
             _Interfaces = @interface;
         }
-        public async Task<DTOTables?> CreateAsync(DTOTablesCRequest Request)
+        public async Task<Table?> CreateAsync(DTOTablesCRequest Request)
         {
 
             var dto = await _Interfaces.IData.AddTableAsync(Request);
@@ -191,7 +191,7 @@ namespace BusinessLayerRestaurant.Classes
             throw new InvalidOperationException("Not Created!");
         }
 
-        public async Task<DTOTables?> UpdateAsync(DTOTablesURequest Request)
+        public async Task<Table?> UpdateAsync(DTOTablesURequest Request)
         {
 
             var dto = await _Interfaces.IData.UpdateTableAsync(Request);
@@ -242,43 +242,43 @@ namespace BusinessLayerRestaurant.Classes
             set => _Interfaces.IBusinessStatusTable = value;
         }
 
-        public async Task<List<DTOTables>> GetAllTablesAsync(int page)
+        public async Task<List<Table>> GetAllTablesAsync(int page)
         {
             return await _IRead.GetAllAsync(page);
         }
-        public async Task<DTOTables?> GetTableAsync(int id)
+        public async Task<Table?> GetTableAsync(int id)
         {
             return await _IRead.GetAsync(id);
         }
-        public async Task<List<DTOTables>> GetAllTablesAsync()
+        public async Task<List<Table>> GetAllTablesAsync()
         {
             return await _IRead.GetAllAsync();
         }
-        public async Task<List<DTOTables>> GetTablesFilter1Async(DTOTablesFilterStatusTableRequest Request)
+        public async Task<List<Table>> GetTablesFilter1Async(DTOTablesFilterStatusTableRequest Request)
         {
             return await _IRead.GetFilter1Async(Request);
         }
-        public async Task<List<DTOTables>> GetTablesFilter2Async(DTOTablesFilterSeatTableRequest Request)
+        public async Task<List<Table>> GetTablesFilter2Async(DTOTablesFilterSeatTableRequest Request)
         {
            return await _IRead.GetFilter2Async(Request);
         }
-        public async Task<DTOTables?> GetTableByNameAsync(string tableNumber)
+        public async Task<Table?> GetTableByNameAsync(string tableNumber)
         {
             return await _IRead.GetByNameAsync(tableNumber);
         }
-        public async Task<List<DTOTables>> GetTablesFilter3Async(DTOTablesFilterStatusAndSeatTableRequest Request)
+        public async Task<List<Table>> GetTablesFilter3Async(DTOTablesFilterStatusAndSeatTableRequest Request)
         {
             return await _IRead.GetFilter3Async(Request);
         }
-        public async Task<List<DTOTables>> GetAllTablesAvailablesAsync()
+        public async Task<List<Table>> GetAllTablesAvailablesAsync()
         {
             return await _IRead.GetAllAvailablesAsync();
         }
-        public async Task<DTOTables?> AddTableAsync(DTOTablesCRequest Request)
+        public async Task<Table?> AddTableAsync(DTOTablesCRequest Request)
         {
             return await _IWrite.CreateAsync(Request);
         }
-        public async Task<DTOTables?> UpdateTableAsync(DTOTablesURequest Request)
+        public async Task<Table?> UpdateTableAsync(DTOTablesURequest Request)
         {
             return await _IWrite.UpdateAsync(Request);
         }

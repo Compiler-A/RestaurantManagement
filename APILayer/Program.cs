@@ -1,12 +1,7 @@
-using APILayer.Authorization;
-using APILayer.Authorization.Employee;
-using APILayer.Authorization.Order;
 using APILayer.Extensions.Configuration;
 using APILayer.Extensions.Security;
 using APILayer.Extensions.Services;
 using APILayer.Middleware;
-using BusinessLayerRestaurant.Classes;
-using DataLayerRestaurant;
 
 
 var builder = WebApplication.CreateBuilder(args);

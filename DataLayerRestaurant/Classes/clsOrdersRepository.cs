@@ -2,16 +2,16 @@
 using Microsoft.Extensions.Options;
 using RestaurantDataLayer;
 using DataLayerRestaurant.Interfaces;
-using ContractsLayerRestaurant.DTOs.Orders;
+using ContractsLayerRestaurant.DTORequest.Orders;
 
 namespace DataLayerRestaurant.Classes
 {
     
-    public class clsOrdersRepositoryComposition : ICompositionDataBase<DTOOrders> 
+    public class clsOrdersRepositoryComposition : ICompositionDataBase<Order> 
     {
-        public DTOOrders GetDataFromDataBase(SqlDataReader reader)
+        public Order GetDataFromDataBase(SqlDataReader reader)
         {
-            return new DTOOrders
+            return new Order
             {
                 ID = reader.GetInt32(reader.GetOrdinal("OrderID")),
                 TableID = reader.GetInt32(reader.GetOrdinal("TableID")),
@@ -33,9 +33,9 @@ namespace DataLayerRestaurant.Classes
             _Settings = settings.Value;
         }
 
-        public async Task<List<DTOOrders>> GetAllDataAsync(int page)
+        public async Task<List<Order>> GetAllDataAsync(int page)
         {
-            List<DTOOrders> result = new List<DTOOrders>();
+            List<Order> result = new List<Order>();
 
             using (SqlConnection Connection = new SqlConnection(_Settings.ConnectionString))
             {
@@ -58,9 +58,9 @@ namespace DataLayerRestaurant.Classes
             return result;
         }
 
-        public async Task<DTOOrders?> GetDataAsync(int ID)
+        public async Task<Order?> GetDataAsync(int ID)
         {
-            DTOOrders? result = null;
+            Order? result = null;
 
             using (SqlConnection Connection = new SqlConnection(_Settings.ConnectionString))
             {
@@ -82,9 +82,9 @@ namespace DataLayerRestaurant.Classes
             return result;
         }
 
-        public async Task<List<DTOOrders>?> GetFilterDataAsync(DTOOrderFilterRequest Request)
+        public async Task<List<Order>?> GetFilterDataAsync(DTOOrderFilterRequest Request)
         {
-            List<DTOOrders>? result = new List<DTOOrders>();
+            List<Order>? result = new List<Order>();
 
             using (SqlConnection Connection = new SqlConnection(_Settings.ConnectionString))
             {
@@ -121,7 +121,7 @@ namespace DataLayerRestaurant.Classes
             _Settings = settings.Value;
         }
 
-        public async Task<DTOOrders?> CreateDataAsync(DTOOrderCRequest order)
+        public async Task<Order?> CreateDataAsync(DTOOrderCRequest order)
         {
             using (SqlConnection Connection = new SqlConnection(_Settings.ConnectionString))
             {
@@ -150,7 +150,7 @@ namespace DataLayerRestaurant.Classes
             return null;
         }
 
-        public async Task<DTOOrders?> UpdateDataAsync(DTOOrderURequest order)
+        public async Task<Order?> UpdateDataAsync(DTOOrderURequest order)
         {
             using (SqlConnection Connection = new SqlConnection(_Settings.ConnectionString))
             {
@@ -207,24 +207,24 @@ namespace DataLayerRestaurant.Classes
             _Read = read;
         }
 
-        public async Task<List<DTOOrders>> GetAllOrdersAsync(int page)
+        public async Task<List<Order>> GetAllOrdersAsync(int page)
         {
             return await _Read.GetAllDataAsync(page);
         }
-        public async Task<DTOOrders?> GetOrderAsync(int ID)
+        public async Task<Order?> GetOrderAsync(int ID)
         {
             return await _Read.GetDataAsync(ID);
         }
-        public async Task<List<DTOOrders>?> GetFilterOrderAsync(DTOOrderFilterRequest Request)
+        public async Task<List<Order>?> GetFilterOrderAsync(DTOOrderFilterRequest Request)
         {
             return await _Read.GetFilterDataAsync(Request);
         }
 
-        public async Task<DTOOrders?> AddOrderAsync(DTOOrderCRequest order)
+        public async Task<Order?> AddOrderAsync(DTOOrderCRequest order)
         {
             return await _Write.CreateDataAsync(order);
         }
-        public async Task<DTOOrders?> UpdateOrderAsync(DTOOrderURequest order)
+        public async Task<Order?> UpdateOrderAsync(DTOOrderURequest order)
         {
             return await _Write.UpdateDataAsync(order);
         }

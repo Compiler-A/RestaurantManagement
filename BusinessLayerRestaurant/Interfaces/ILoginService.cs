@@ -1,4 +1,4 @@
-﻿using ContractsLayerRestaurant.DTOs.Auth;
+﻿using ContractsLayerRestaurant.DTORequest.Auth;
 using DataLayerRestaurant.Interfaces;
 using RestaurantDataLayer;
 using System;
@@ -16,12 +16,12 @@ namespace BusinessLayerRestaurant.Interfaces
 
     public interface ILoginServiceComposition
     {
-        Task LoadDataAsync(DTOLogin item);
+        Task LoadDataAsync(Auth item);
     }
 
     public interface ILoginServiceReader 
     {
-        Task<DTOLogin?> GetAsync(string UserName);
+        Task<Auth?> GetAsync(string UserName);
     }
 
 

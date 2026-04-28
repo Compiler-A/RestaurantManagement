@@ -1,6 +1,6 @@
 ﻿using APILayer.Filters;
 using BusinessLayerRestaurant.Interfaces;
-using ContractsLayerRestaurant.DTOs.Auth;
+using ContractsLayerRestaurant.DTORequest.Auth;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 

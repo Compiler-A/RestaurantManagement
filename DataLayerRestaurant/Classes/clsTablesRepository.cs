@@ -1,17 +1,17 @@
 ﻿using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Options;
 using RestaurantDataLayer;
-using ContractsLayerRestaurant.DTOs.Tables;
+using ContractsLayerRestaurant.DTORequest.Tables;
 using DataLayerRestaurant.Interfaces;
 
 namespace DataLayerRestaurant.Classes
 {
 
-    public class clsTablesRepositoryComposition : ICompositionDataBase<DTOTables>
+    public class clsTablesRepositoryComposition : ICompositionDataBase<Table>
     {
-        public DTOTables GetDataFromDataBase(SqlDataReader Reader)
+        public Table GetDataFromDataBase(SqlDataReader Reader)
         {
-            return new DTOTables
+            return new Table
             {
                 ID = Reader.GetInt32(Reader.GetOrdinal("TableID")),
                 Name = Reader.GetString(Reader.GetOrdinal("TableNumber")),
@@ -30,9 +30,9 @@ namespace DataLayerRestaurant.Classes
             _Settings = settings.Value;
         }
 
-        public async Task<List<DTOTables>> GetAllDataAvailablesAsync()
+        public async Task<List<Table>> GetAllDataAvailablesAsync()
         {
-            List<DTOTables> listTables = new List<DTOTables>();
+            List<Table> listTables = new List<Table>();
             using (SqlConnection Connection = new SqlConnection(_Settings.ConnectionString))
             {
                 using (SqlCommand Command = new SqlCommand("Tables.SP_GetTablesAvailables", Connection))
@@ -50,9 +50,9 @@ namespace DataLayerRestaurant.Classes
             }
             return listTables;
         }
-        public async Task<List<DTOTables>> GetAllDataAsync()
+        public async Task<List<Table>> GetAllDataAsync()
         {
-            List<DTOTables> listTables = new List<DTOTables>();
+            List<Table> listTables = new List<Table>();
             using (SqlConnection Connection = new SqlConnection(_Settings.ConnectionString))
             {
                 using (SqlCommand Command = new SqlCommand("Tables.SP_GetAllTablesNoPagination", Connection))
@@ -70,9 +70,9 @@ namespace DataLayerRestaurant.Classes
             }
             return listTables;
         }
-        public async Task<DTOTables?> GetDataAsync(int ID)
+        public async Task<Table?> GetDataAsync(int ID)
         {
-            DTOTables? table = new DTOTables();
+            Table? table = new Table();
             using (SqlConnection Connection = new SqlConnection(_Settings.ConnectionString))
             {
                 using (SqlCommand Command = new SqlCommand("Tables.SP_GetTableByID", Connection))
@@ -90,9 +90,9 @@ namespace DataLayerRestaurant.Classes
             return table;
         }
 
-        public async Task<DTOTables?> GetDataByNameAsync(string TableNumber)
+        public async Task<Table?> GetDataByNameAsync(string TableNumber)
         {
-            DTOTables? table = new DTOTables();
+            Table? table = new Table();
             using (SqlConnection Connection = new SqlConnection(_Settings.ConnectionString))
             {
                 using (SqlCommand Command = new SqlCommand("Tables.SP_GetTableByTableNumber", Connection))
@@ -110,9 +110,9 @@ namespace DataLayerRestaurant.Classes
             return table;
         }
 
-        public async Task<List<DTOTables>> GetFilterStatusAndSeatDataAsync(DTOTablesFilterStatusAndSeatTableRequest Request)
+        public async Task<List<Table>> GetFilterStatusAndSeatDataAsync(DTOTablesFilterStatusAndSeatTableRequest Request)
         {
-            List<DTOTables> listTables = new List<DTOTables>();
+            List<Table> listTables = new List<Table>();
             using (SqlConnection Connection = new SqlConnection(_Settings.ConnectionString))
             {
                 using (SqlCommand Command = new SqlCommand("Tables.SP_GetFilterStatusAndFilterSeatsTables", Connection))
@@ -134,9 +134,9 @@ namespace DataLayerRestaurant.Classes
             }
             return listTables;
         }
-        public async Task<List<DTOTables>> GetAllDataAsync(int page)
+        public async Task<List<Table>> GetAllDataAsync(int page)
         {
-            List<DTOTables> listTables = new List<DTOTables>();
+            List<Table> listTables = new List<Table>();
             using (SqlConnection Connection = new SqlConnection(_Settings.ConnectionString))
             {
                 using (SqlCommand Command = new SqlCommand("Tables.SP_GetAllTables", Connection))
@@ -157,9 +157,9 @@ namespace DataLayerRestaurant.Classes
             return listTables;
         }
 
-        public async Task<List<DTOTables>> GetFilterStatusDataAsync(DTOTablesFilterStatusTableRequest Request)
+        public async Task<List<Table>> GetFilterStatusDataAsync(DTOTablesFilterStatusTableRequest Request)
         {
-            List<DTOTables> listTables = new List<DTOTables>();
+            List<Table> listTables = new List<Table>();
             using (SqlConnection Connection = new SqlConnection(_Settings.ConnectionString))
             {
                 using (SqlCommand Command = new SqlCommand("[Tables].[SP_GetFilterStatusTables]", Connection))
@@ -182,9 +182,9 @@ namespace DataLayerRestaurant.Classes
             return listTables;
         }
 
-        public async Task<List<DTOTables>> GetFilterSeatDataAsync(DTOTablesFilterSeatTableRequest Request)
+        public async Task<List<Table>> GetFilterSeatDataAsync(DTOTablesFilterSeatTableRequest Request)
         {
-            List<DTOTables> listTables = new List<DTOTables>();
+            List<Table> listTables = new List<Table>();
             using (SqlConnection Connection = new SqlConnection(_Settings.ConnectionString))
             {
                 using (SqlCommand Command = new SqlCommand("Tables.SP_GetFilterSeatsTables", Connection))
@@ -218,7 +218,7 @@ namespace DataLayerRestaurant.Classes
             _Settings = settings.Value;
         }
 
-        public async Task<DTOTables?> CreateDataAsync(DTOTablesCRequest Tables)
+        public async Task<Table?> CreateDataAsync(DTOTablesCRequest Tables)
         {
             using (SqlConnection Connection = new SqlConnection(_Settings.ConnectionString))
             {
@@ -240,7 +240,7 @@ namespace DataLayerRestaurant.Classes
                 }
             }
         }
-        public async Task<DTOTables?> UpdateDataAsync(DTOTablesURequest Table)
+        public async Task<Table?> UpdateDataAsync(DTOTablesURequest Table)
         {
             using (SqlConnection Connection = new SqlConnection(_Settings.ConnectionString))
             {
@@ -292,48 +292,48 @@ namespace DataLayerRestaurant.Classes
         }
 
 
-        public async Task<List<DTOTables>> GetAllTablesAvailablesAsync()
+        public async Task<List<Table>> GetAllTablesAvailablesAsync()
         {
             return await _IRead.GetAllDataAvailablesAsync();
         }
-        public async Task<List<DTOTables>> GetAlltablesAsync()
+        public async Task<List<Table>> GetAlltablesAsync()
         {
             return await _IRead.GetAllDataAsync();
         }
-        public async Task<DTOTables?> GetTableAsync(int ID)
+        public async Task<Table?> GetTableAsync(int ID)
         {
             return await _IRead.GetDataAsync(ID);
         }
 
-        public async Task<DTOTables?> GetTableByNameAsync(string TableNumber)
+        public async Task<Table?> GetTableByNameAsync(string TableNumber)
         {
             return await _IRead.GetDataByNameAsync(TableNumber);
         }
 
-        public async Task<List<DTOTables>> GetFilterStatusAndSeatTablesAsync(DTOTablesFilterStatusAndSeatTableRequest Request)
+        public async Task<List<Table>> GetFilterStatusAndSeatTablesAsync(DTOTablesFilterStatusAndSeatTableRequest Request)
         {
             return await _IRead.GetFilterStatusAndSeatDataAsync(Request);
         }
-        public async Task<List<DTOTables>> GetAlltablesAsync(int page)
+        public async Task<List<Table>> GetAlltablesAsync(int page)
         {
             return await _IRead.GetAllDataAsync(page);
         }
 
-        public async Task<List<DTOTables>> GetFilterStatusTablesAsync(DTOTablesFilterStatusTableRequest Request)
+        public async Task<List<Table>> GetFilterStatusTablesAsync(DTOTablesFilterStatusTableRequest Request)
         {
             return await _IRead.GetFilterStatusDataAsync(Request);
         }
 
-        public async Task<List<DTOTables>> GetFilterSeatTablesAsync(DTOTablesFilterSeatTableRequest Request)
+        public async Task<List<Table>> GetFilterSeatTablesAsync(DTOTablesFilterSeatTableRequest Request)
         {
             return await _IRead.GetFilterSeatDataAsync(Request);
         }
 
-        public async Task<DTOTables?> AddTableAsync(DTOTablesCRequest Tables)
+        public async Task<Table?> AddTableAsync(DTOTablesCRequest Tables)
         {
             return await _IWrite.CreateDataAsync(Tables);
         }
-        public async Task<DTOTables?> UpdateTableAsync(DTOTablesURequest Table)
+        public async Task<Table?> UpdateTableAsync(DTOTablesURequest Table)
         {
             return await _IWrite.UpdateDataAsync(Table);
         }

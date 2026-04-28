@@ -1,14 +1,14 @@
 ﻿using RestaurantDataLayer;
 using DataLayerRestaurant.Interfaces;
-using ContractsLayerRestaurant.DTOs.Orders;
+using ContractsLayerRestaurant.DTORequest.Orders;
 
 namespace BusinessLayerRestaurant.Interfaces
 {
-    public interface IOrdersServiceReader : IReadableBusinessBase<DTOOrders>
+    public interface IOrdersServiceReader : IReadableBusinessBase<Order>
     {
-        Task<List<DTOOrders>?> GetFilterAsync(DTOOrderFilterRequest Request);
+        Task<List<Order>?> GetFilterAsync(DTOOrderFilterRequest Request);
     }
-    public interface IOrdersServiceWriter : IWritableBusinessBase<DTOOrders, DTOOrderCRequest, DTOOrderURequest>
+    public interface IOrdersServiceWriter : IWritableBusinessBase<Order, DTOOrderCRequest, DTOOrderURequest>
     { }
 
     public interface IOrdersServiceContainer : IInterfaceBase<IOrdersRepository>
@@ -20,7 +20,7 @@ namespace BusinessLayerRestaurant.Interfaces
 
     public interface IOrdersServiceComposition
     {
-        Task LoadDataAsync(DTOOrders item);
+        Task LoadDataAsync(Order item);
     }
 
 
@@ -32,14 +32,14 @@ namespace BusinessLayerRestaurant.Interfaces
     }
     public interface IOrdersServiceReadable
     {
-        Task<List<DTOOrders>> GetAllOrdersAsync(int page);
-        Task<DTOOrders?> GetOrderAsync(int ID);
-        Task<List<DTOOrders>?> GetFilterOrdersAsync(DTOOrderFilterRequest Request);
+        Task<List<Order>> GetAllOrdersAsync(int page);
+        Task<Order?> GetOrderAsync(int ID);
+        Task<List<Order>?> GetFilterOrdersAsync(DTOOrderFilterRequest Request);
     }
     public interface IOrdersServiceWritable
     {
-        Task<DTOOrders?> AddOrderAsync(DTOOrderCRequest Request);
-        Task<DTOOrders?> UpdateOrderAsync(DTOOrderURequest Request);
+        Task<Order?> AddOrderAsync(DTOOrderCRequest Request);
+        Task<Order?> UpdateOrderAsync(DTOOrderURequest Request);
         Task<bool> DeleteOrderAsync(int ID);
     }
 

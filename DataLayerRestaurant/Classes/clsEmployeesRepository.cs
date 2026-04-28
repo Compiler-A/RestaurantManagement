@@ -1,6 +1,6 @@
 ﻿using Microsoft.Data.SqlClient;
 using RestaurantDataLayer;
-using ContractsLayerRestaurant.DTOs.Employees;
+using ContractsLayerRestaurant.DTORequest.Employees;
 using DataLayerRestaurant.Interfaces;
 using System.Security.Cryptography;
 using System.Text;
@@ -9,11 +9,11 @@ using Microsoft.Extensions.Options;
 namespace DataLayerRestaurant.Classes
 {
 
-    public class clsEmployeesRepositoryComposition : ICompositionDataBase<DTOEmployees>
+    public class clsEmployeesRepositoryComposition : ICompositionDataBase<Employee>
     {
-        public DTOEmployees GetDataFromDataBase(SqlDataReader reader)
+        public Employee GetDataFromDataBase(SqlDataReader reader)
         {
-            return new DTOEmployees
+            return new Employee
             {
                 ID = reader.GetInt32(reader.GetOrdinal("EmployeeID")),
                 Name = reader.GetString(reader.GetOrdinal("Name")),
@@ -33,9 +33,9 @@ namespace DataLayerRestaurant.Classes
             _Setting = settings.Value;
         }
 
-        public async Task<DTOEmployees?> GetDataAsync(string UserName)
+        public async Task<Employee?> GetDataAsync(string UserName)
         {
-            DTOEmployees? employee = null;
+            Employee? employee = null;
             using (SqlConnection Connection = new SqlConnection(_Setting.ConnectionString))
             {
                 using (SqlCommand Command = new SqlCommand("[Employees].[SP_GetEmployeeByUserName]", Connection))
@@ -56,9 +56,9 @@ namespace DataLayerRestaurant.Classes
         }
 
 
-        public async Task<List<DTOEmployees>> GetAllDataAsync(int page)
+        public async Task<List<Employee>> GetAllDataAsync(int page)
         {
-            List<DTOEmployees> employees = new List<DTOEmployees>();
+            List<Employee> employees = new List<Employee>();
 
             using (SqlConnection Connection = new SqlConnection(_Setting.ConnectionString))
             {
@@ -82,9 +82,9 @@ namespace DataLayerRestaurant.Classes
             return employees;
         }
 
-        public async Task<DTOEmployees?> GetDataAsync(int ID)
+        public async Task<Employee?> GetDataAsync(int ID)
         {
-            DTOEmployees? employee = null;
+            Employee? employee = null;
             using (SqlConnection Connection = new SqlConnection(_Setting.ConnectionString))
             {
                 using (SqlCommand Command = new SqlCommand("[Employees].[SP_GetEmployeeByID]", Connection))
@@ -133,7 +133,7 @@ namespace DataLayerRestaurant.Classes
             return Changed;
         }
 
-        public async Task<DTOEmployees?> CreateDataAsync(DTOEmployeesCRequest employee)
+        public async Task<Employee?> CreateDataAsync(DTOEmployeesCRequest employee)
         {
             using (SqlConnection Connection = new SqlConnection(_Setting.ConnectionString))
             {
@@ -159,7 +159,7 @@ namespace DataLayerRestaurant.Classes
             return null;
         }
 
-        public async Task<DTOEmployees?> UpdateDataAsync(DTOEmployeesURequest employee)
+        public async Task<Employee?> UpdateDataAsync(DTOEmployeesURequest employee)
         {
             using (SqlConnection Connection = new SqlConnection(_Setting.ConnectionString))
             {
@@ -216,16 +216,16 @@ namespace DataLayerRestaurant.Classes
         }
 
 
-        public async Task<List<DTOEmployees>> GetAllEmployeesAsync(int Page)
+        public async Task<List<Employee>> GetAllEmployeesAsync(int Page)
         {
             return await _IRead.GetAllDataAsync(Page);
         }
-        public async Task<DTOEmployees?> GetEmployeeAsync(int ID)
+        public async Task<Employee?> GetEmployeeAsync(int ID)
         {
             return await _IRead.GetDataAsync(ID);
         }
 
-        public async Task<DTOEmployees?> GetEmployeeAsync(string Name)
+        public async Task<Employee?> GetEmployeeAsync(string Name)
         {
             return await _IRead.GetDataAsync(Name);
         }
@@ -235,11 +235,11 @@ namespace DataLayerRestaurant.Classes
             return await _IWrite.ChangedDataPasswordAsync(Request);
         }
         
-        public async Task<DTOEmployees?> AddEmployeeAsync(DTOEmployeesCRequest Request)
+        public async Task<Employee?> AddEmployeeAsync(DTOEmployeesCRequest Request)
         {
             return await _IWrite.CreateDataAsync(Request);
         }
-        public async Task<DTOEmployees?> UpdateEmployeeAsync(DTOEmployeesURequest Request)
+        public async Task<Employee?> UpdateEmployeeAsync(DTOEmployeesURequest Request)
         {
             return await _IWrite.UpdateDataAsync(Request);
         }

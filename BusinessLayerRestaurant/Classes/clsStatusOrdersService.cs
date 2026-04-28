@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using BusinessLayerRestaurant.Interfaces;
 using DataLayerRestaurant.Interfaces;
-using ContractsLayerRestaurant.DTOs.StatusOrders;
+using ContractsLayerRestaurant.DTORequest.StatusOrders;
 
 
 
@@ -32,7 +32,7 @@ namespace BusinessLayerRestaurant.Classes
             _Interface = Interface;
             _Logger = logger;
         }
-        public async Task<List<DTOStatusOrders>> GetAllAsync(int page)
+        public async Task<List<StatusOrder>> GetAllAsync(int page)
         {
             var list = await _Interface.IData.GetAllStatusOrdersAsync(page);
             if (list == null || list.Count == 0)
@@ -44,7 +44,7 @@ namespace BusinessLayerRestaurant.Classes
             return list;
         }
 
-        public async Task<DTOStatusOrders?> GetAsync(int ID)
+        public async Task<StatusOrder?> GetAsync(int ID)
         {
             var dto = await _Interface.IData.GetStatusOrderAsync(ID);
             if (dto == null)
@@ -68,7 +68,7 @@ namespace BusinessLayerRestaurant.Classes
 
 
 
-        public async Task<DTOStatusOrders?> CreateAsync(DTOStatusOrdersCRequest Request)
+        public async Task<StatusOrder?> CreateAsync(DTOStatusOrdersCRequest Request)
         {
 
             var dto = await _Interface.IData.AddStatusOrderAsync(Request);
@@ -79,7 +79,7 @@ namespace BusinessLayerRestaurant.Classes
             _Logger.EventLogs($"StatusOrder Created, Name: {dto.Name}", EventLogEntryType.Information);
             return dto;
         }
-        public async Task<DTOStatusOrders?> UpdateAsync(DTOStatusOrdersURequest Request)
+        public async Task<StatusOrder?> UpdateAsync(DTOStatusOrdersURequest Request)
         {  
             var dto = await _Interface.IData.UpdateStatusOrderAsync(Request);
             if (dto == null)
@@ -117,22 +117,22 @@ namespace BusinessLayerRestaurant.Classes
         }
 
 
-        public async Task<List<DTOStatusOrders>> GetAllStatusOrdersAsync(int page)
+        public async Task<List<StatusOrder>> GetAllStatusOrdersAsync(int page)
         {
             return await _IRead.GetAllAsync(page);
         }
 
-        public async Task<DTOStatusOrders?> GetStatusOrdersAsync(int ID)
+        public async Task<StatusOrder?> GetStatusOrdersAsync(int ID)
         {
             return await _IRead.GetAsync(ID);
         }
 
 
-        public async Task<DTOStatusOrders?> AddStatusOrdersAsync(DTOStatusOrdersCRequest Request)
+        public async Task<StatusOrder?> AddStatusOrdersAsync(DTOStatusOrdersCRequest Request)
         {
             return await _IWrite.CreateAsync(Request);
         }
-        public async Task<DTOStatusOrders?> UpdateStatusOrdersAsync(DTOStatusOrdersURequest Request)
+        public async Task<StatusOrder?> UpdateStatusOrdersAsync(DTOStatusOrdersURequest Request)
         {
             return await _IWrite.UpdateAsync(Request);
         }

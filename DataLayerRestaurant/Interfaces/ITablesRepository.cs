@@ -1,40 +1,40 @@
 ﻿using RestaurantDataLayer;
-using ContractsLayerRestaurant.DTOs.Tables;
+using ContractsLayerRestaurant.DTORequest.Tables;
 
 
 namespace DataLayerRestaurant.Interfaces
 {
-    public interface ITablesRepositoryReader : IReadableDataBase<DTOTables>
+    public interface ITablesRepositoryReader : IReadableDataBase<Table>
     {
-        Task<List<DTOTables>> GetFilterStatusDataAsync(DTOTablesFilterStatusTableRequest Request);
-        Task<List<DTOTables>> GetFilterSeatDataAsync(DTOTablesFilterSeatTableRequest Request);
-        Task<List<DTOTables>> GetFilterStatusAndSeatDataAsync(DTOTablesFilterStatusAndSeatTableRequest Request);
-        Task<DTOTables?> GetDataByNameAsync(string TableNumber);
-        Task<List<DTOTables>> GetAllDataAsync();
-        Task<List<DTOTables>> GetAllDataAvailablesAsync();
+        Task<List<Table>> GetFilterStatusDataAsync(DTOTablesFilterStatusTableRequest Request);
+        Task<List<Table>> GetFilterSeatDataAsync(DTOTablesFilterSeatTableRequest Request);
+        Task<List<Table>> GetFilterStatusAndSeatDataAsync(DTOTablesFilterStatusAndSeatTableRequest Request);
+        Task<Table?> GetDataByNameAsync(string TableNumber);
+        Task<List<Table>> GetAllDataAsync();
+        Task<List<Table>> GetAllDataAvailablesAsync();
     }
 
-    public interface ITablesRepositoryWriter : IWritableDataBase<DTOTables,DTOTablesCRequest, DTOTablesURequest>
+    public interface ITablesRepositoryWriter : IWritableDataBase<Table,DTOTablesCRequest, DTOTablesURequest>
     { 
     }
 
 
     public interface ITablesRepositoryReadable
     {
-        Task<DTOTables?> GetTableAsync(int id);
-        Task<List<DTOTables>> GetAlltablesAsync(int page);
-        Task<List<DTOTables>> GetFilterStatusTablesAsync(DTOTablesFilterStatusTableRequest Request);
-        Task<List<DTOTables>> GetFilterSeatTablesAsync(DTOTablesFilterSeatTableRequest Request);
-        Task<List<DTOTables>> GetFilterStatusAndSeatTablesAsync(DTOTablesFilterStatusAndSeatTableRequest Request);
-        Task<DTOTables?> GetTableByNameAsync(string TableNumber);
-        Task<List<DTOTables>> GetAlltablesAsync();
-        Task<List<DTOTables>> GetAllTablesAvailablesAsync();
+        Task<Table?> GetTableAsync(int id);
+        Task<List<Table>> GetAlltablesAsync(int page);
+        Task<List<Table>> GetFilterStatusTablesAsync(DTOTablesFilterStatusTableRequest Request);
+        Task<List<Table>> GetFilterSeatTablesAsync(DTOTablesFilterSeatTableRequest Request);
+        Task<List<Table>> GetFilterStatusAndSeatTablesAsync(DTOTablesFilterStatusAndSeatTableRequest Request);
+        Task<Table?> GetTableByNameAsync(string TableNumber);
+        Task<List<Table>> GetAlltablesAsync();
+        Task<List<Table>> GetAllTablesAvailablesAsync();
     }
 
     public interface ITablesRepositoryWritable
     {
-        Task<DTOTables?> AddTableAsync(DTOTablesCRequest Table);
-        Task<DTOTables?> UpdateTableAsync(DTOTablesURequest Table);
+        Task<Table?> AddTableAsync(DTOTablesCRequest Table);
+        Task<Table?> UpdateTableAsync(DTOTablesURequest Table);
         Task<bool> DeleteTableAsync(int id);
     }
 

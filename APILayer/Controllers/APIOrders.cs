@@ -1,6 +1,6 @@
 ﻿using APILayer.Filters;
 using BusinessLayerRestaurant.Interfaces;
-using ContractsLayerRestaurant.DTOs.Orders;
+using ContractsLayerRestaurant.DTORequest.Orders;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
@@ -25,34 +25,34 @@ namespace APILayer.Controllers
         [Authorize(Roles = "Manager,Chef,Sous Chef,Waiter")]
         [HttpGet(Name = "GetAllOrders")]
         [EnableRateLimiting(NameRateLimitPolicies.GetAll)]
-        public async Task<ActionResult<ApiResponse<IEnumerable<DTOOrders>>>> GetAllAsync([FromQuery] int page = 1)
+        public async Task<ActionResult<ApiResponse<IEnumerable<Order>>>> GetAllAsync([FromQuery] int page = 1)
         {
             if (page <= 0)
             {
                 throw new ArgumentOutOfRangeException("Page number must be greater than 0.");
             }
             var orders = await _businessOrders.GetAllOrdersAsync(page);
-            return CreateResponse<IEnumerable<DTOOrders>>(orders, StatusCodes.Status200OK, $"Row: {orders.Count}");
+            return CreateResponse<IEnumerable<Order>>(orders, StatusCodes.Status200OK, $"Row: {orders.Count}");
 
         }
 
         [Authorize(Roles = "Manager,Chef,Sous Chef,Waiter")]
         [EnableRateLimiting(NameRateLimitPolicies.GetOne)]
         [HttpGet("{ID}", Name ="GetOrderByID")]
-        public async Task<ActionResult<ApiResponse<DTOOrders?>>> GetByIDAsync([FromRoute] int ID)
+        public async Task<ActionResult<ApiResponse<Order?>>> GetByIDAsync([FromRoute] int ID)
         {
             if (ID <= 0)
             {
                 throw new ArgumentOutOfRangeException("ID number must be greater than 0.");
             }
             var order = await _businessOrders.GetOrderAsync(ID);
-            return CreateResponse<DTOOrders?>(order, StatusCodes.Status200OK, "Found Successfully!");
+            return CreateResponse<Order?>(order, StatusCodes.Status200OK, "Found Successfully!");
         }
 
         [Authorize(Roles = "Manager,Chef,Sous Chef,Waiter")]
         [HttpGet("filter", Name = "GetFilterOrder")]
         [EnableRateLimiting(NameRateLimitPolicies.GetAll)]
-        public async Task<ActionResult<ApiResponse<List<DTOOrders>?>>> GetFilterAsync
+        public async Task<ActionResult<ApiResponse<List<Order>?>>> GetFilterAsync
             ([FromQuery] DTOOrderFilterRequest Request)
         {
             if (Request == null)
@@ -62,13 +62,13 @@ namespace APILayer.Controllers
 
 
             var order = await _businessOrders.GetFilterOrdersAsync(Request);
-            return CreateResponse<List<DTOOrders>?>(order, StatusCodes.Status200OK, "Found Successfully!");
+            return CreateResponse<List<Order>?>(order, StatusCodes.Status200OK, "Found Successfully!");
         }
 
         [Authorize(Roles = "Manager,Waiter")]
         [EnableRateLimiting(NameRateLimitPolicies.Add)]
         [HttpPost(Name = "AddNewOrder")]
-        public async Task<ActionResult<ApiResponse<DTOOrders>>> CreateAsync
+        public async Task<ActionResult<ApiResponse<Order>>> CreateAsync
             ([FromBody] DTOOrderCRequest dto, [FromServices] IAuthorizationService authorizationService)
         {
             if (dto == null)
@@ -87,7 +87,7 @@ namespace APILayer.Controllers
         [Authorize(Roles = "Manager,Chef,Sous Chef,Waiter")]
         [EnableRateLimiting(NameRateLimitPolicies.Update)]
         [HttpPut(Name = "UpdateOrder")]
-        public async Task<ActionResult<ApiResponse<DTOOrders>>> UpdateAsync
+        public async Task<ActionResult<ApiResponse<Order>>> UpdateAsync
             ([FromBody] DTOOrderURequest dto, [FromServices] IAuthorizationService authorizationService)
         {
             if (dto == null)
@@ -100,7 +100,7 @@ namespace APILayer.Controllers
                 throw new UnauthorizedAccessException("Access denied.");
 
             var result = await _businessOrders.UpdateOrderAsync(dto);
-            return CreateResponse<DTOOrders>(result!, StatusCodes.Status200OK, "Order Updated Successfully!");
+            return CreateResponse<Order>(result!, StatusCodes.Status200OK, "Order Updated Successfully!");
 
         }
 

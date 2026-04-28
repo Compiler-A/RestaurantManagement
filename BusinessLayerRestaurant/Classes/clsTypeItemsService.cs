@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using BusinessLayerRestaurant.Interfaces;
 using DataLayerRestaurant.Interfaces;
-using ContractsLayerRestaurant.DTOs.TypeItems;
+using ContractsLayerRestaurant.DTORequest.TypeItems;
 
 
 namespace BusinessLayerRestaurant.Classes
@@ -33,7 +33,7 @@ namespace BusinessLayerRestaurant.Classes
             _Interface = Interface;
             _Logger = logger;
         }
-        public async Task<DTOTypeItems?> GetAsync(int ID)
+        public async Task<TypeItem?> GetAsync(int ID)
         {
             var result  = await _Interface.IData.GetTypeItemAsync(ID);
             if (result == null)
@@ -44,7 +44,7 @@ namespace BusinessLayerRestaurant.Classes
 
             return result;
         }
-        public async Task<List<DTOTypeItems>> GetAllAsync(int page)
+        public async Task<List<TypeItem>> GetAllAsync(int page)
         {
             var result = await _Interface.IData.GetAllTypeItemsAsync(page);
             if (result == null || result.Count == 0)
@@ -78,7 +78,7 @@ namespace BusinessLayerRestaurant.Classes
 
             return isDeleted;
         }
-        public async Task<DTOTypeItems?> UpdateAsync(DTOTypeItemsURequest Request)
+        public async Task<TypeItem?> UpdateAsync(DTOTypeItemsURequest Request)
         { 
             var result = await _Interface.IData.UpdateTypeItemAsync(Request);
             if (result == null)
@@ -90,7 +90,7 @@ namespace BusinessLayerRestaurant.Classes
             return result;
         }
 
-        public async Task<DTOTypeItems?> CreateAsync(DTOTypeItemsCRequest Request)
+        public async Task<TypeItem?> CreateAsync(DTOTypeItemsCRequest Request)
         {
             var result = await _Interface.IData.AddTypeItemAsync(Request);
             if (result == null)
@@ -116,20 +116,20 @@ namespace BusinessLayerRestaurant.Classes
             _IRead = read;
         }
 
-        public async Task<DTOTypeItems?> GetTypeItemAsync(int ID)
+        public async Task<TypeItem?> GetTypeItemAsync(int ID)
         {
             return await _IRead.GetAsync(ID);
         }
-        public async Task<List<DTOTypeItems>> GetAllTypeItemsAsync(int page)
+        public async Task<List<TypeItem>> GetAllTypeItemsAsync(int page)
         {
             return await _IRead.GetAllAsync(page);
         }
 
-        public async Task<DTOTypeItems?> AddTypeItemAsync(DTOTypeItemsCRequest Request)
+        public async Task<TypeItem?> AddTypeItemAsync(DTOTypeItemsCRequest Request)
         {
             return await _IWrite.CreateAsync(Request);
         }
-        public async Task<DTOTypeItems?> UpdateTypeItemAsync(DTOTypeItemsURequest Request)
+        public async Task<TypeItem?> UpdateTypeItemAsync(DTOTypeItemsURequest Request)
         {
             return await _IWrite.UpdateAsync(Request);
         }

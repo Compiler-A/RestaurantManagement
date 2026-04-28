@@ -1,6 +1,6 @@
 ﻿using RestaurantDataLayer;
 using DataLayerRestaurant.Interfaces;
-using ContractsLayerRestaurant.DTOs.MenuItems;
+using ContractsLayerRestaurant.DTORequest.MenuItems;
 
 namespace BusinessLayerRestaurant.Interfaces
 {
@@ -11,18 +11,18 @@ namespace BusinessLayerRestaurant.Interfaces
         IStatusMenusService IBusinessStatusMenu { get; set; }
     }
 
-    public interface IMenuItemsServiceReader : IReadableBusinessBase<DTOMenuItems>
+    public interface IMenuItemsServiceReader : IReadableBusinessBase<MenuItem>
     {
-        Task<List<DTOMenuItems>> GetAllFiltersAsync(DTOMenuItemsFilterRequest Request);
-        Task<List<DTOMenuItems>> GetAllAvailablesAsync();
+        Task<List<MenuItem>> GetAllFiltersAsync(DTOMenuItemsFilterRequest Request);
+        Task<List<MenuItem>> GetAllAvailablesAsync();
     }
 
     public interface IMenuItemsServiceWriter 
-        : IWritableBusinessBase<DTOMenuItems, DTOMenuItemsCRequest, DTOMenuItemsURequest>
+        : IWritableBusinessBase<MenuItem, DTOMenuItemsCRequest, DTOMenuItemsURequest>
     { }
     public interface IMenuItemsServiceComposition
     {
-        Task LoadDataAsync(DTOMenuItems item);
+        Task LoadDataAsync(MenuItem item);
     }
 
     public interface IMenuItemsServiceContainers
@@ -34,16 +34,16 @@ namespace BusinessLayerRestaurant.Interfaces
 
     public interface IMenuItemsServiceReadable
     {
-        Task<List<DTOMenuItems>> GetAllMenuItemsAsync(int page);
-        Task<DTOMenuItems?> GetMenuItemAsync(int id);
-        Task<List<DTOMenuItems>> GetAllMenuItemsFiltersAsync(DTOMenuItemsFilterRequest Request);
-        Task<List<DTOMenuItems>> GetAllMenuItemsAvailablesAsync();
+        Task<List<MenuItem>> GetAllMenuItemsAsync(int page);
+        Task<MenuItem?> GetMenuItemAsync(int id);
+        Task<List<MenuItem>> GetAllMenuItemsFiltersAsync(DTOMenuItemsFilterRequest Request);
+        Task<List<MenuItem>> GetAllMenuItemsAvailablesAsync();
     }
 
     public interface IMenuItemsServiceWritable
     {
-        Task<DTOMenuItems?> AddMenuItemAsync(DTOMenuItemsCRequest Request);
-        Task<DTOMenuItems?> UpdateMenuItemAsync(DTOMenuItemsURequest Request);
+        Task<MenuItem?> AddMenuItemAsync(DTOMenuItemsCRequest Request);
+        Task<MenuItem?> UpdateMenuItemAsync(DTOMenuItemsURequest Request);
         Task<bool> DeleteMenuItemAsync(int ID);
     }
 

@@ -1,6 +1,6 @@
 ﻿using APILayer.Filters;
 using BusinessLayerRestaurant.Interfaces;
-using ContractsLayerRestaurant.DTOs.StatusMenus;
+using ContractsLayerRestaurant.DTORequest.StatusMenus;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
@@ -25,7 +25,7 @@ namespace APILayer.Controllers
         [AllowAnonymous]
         [HttpGet(Name = "GetAllStatusMenus")]
         [EnableRateLimiting(NameRateLimitPolicies.GetAll)]
-        public async Task<ActionResult<ApiResponse<List<DTOStatusMenus>>>> GetAllAsync([FromQuery] int page = 1)
+        public async Task<ActionResult<ApiResponse<List<StatusMenu>>>> GetAllAsync([FromQuery] int page = 1)
         {
             if (page <= 0)
             {
@@ -40,7 +40,7 @@ namespace APILayer.Controllers
         [AllowAnonymous]
         [EnableRateLimiting(NameRateLimitPolicies.GetOne)]
         [HttpGet("{ID}", Name = "GetStatusMenuByID")]
-        public async Task<ActionResult<ApiResponse<DTOStatusMenus>>> GetByIDAsync(int ID)
+        public async Task<ActionResult<ApiResponse<StatusMenu>>> GetByIDAsync(int ID)
         {
             if (ID <= 0)
             {
@@ -48,13 +48,13 @@ namespace APILayer.Controllers
             }
 
             var resource = await _dataStatusMenus.GetStatusMenuAsync(ID);
-            return CreateResponse<DTOStatusMenus>(resource!, StatusCodes.Status200OK, "Found Successfully!");
+            return CreateResponse<StatusMenu>(resource!, StatusCodes.Status200OK, "Found Successfully!");
         }
 
         [AllowAnonymous]
         [EnableRateLimiting(NameRateLimitPolicies.Add)]
         [HttpPost(Name = "AddStatusMenu")]
-        public async Task<ActionResult<ApiResponse<DTOStatusMenus>>> CreateAsync([FromBody] DTOStatusMenusCRequest statusMenu)
+        public async Task<ActionResult<ApiResponse<StatusMenu>>> CreateAsync([FromBody] DTOStatusMenusCRequest statusMenu)
         {
             if (statusMenu == null)
             {
@@ -70,7 +70,7 @@ namespace APILayer.Controllers
         [Authorize(Roles = "Manager")]
         [EnableRateLimiting(NameRateLimitPolicies.Update)]
         [HttpPut(Name = "UpdateStatusMenu")]
-        public async Task<ActionResult<ApiResponse<DTOStatusMenus>>> UpdateAsync([FromBody] DTOStatusMenusURequest statusMenu)
+        public async Task<ActionResult<ApiResponse<StatusMenu>>> UpdateAsync([FromBody] DTOStatusMenusURequest statusMenu)
         {
             if (statusMenu == null)
             {
@@ -79,7 +79,7 @@ namespace APILayer.Controllers
 
 
             var dto = await _dataStatusMenus.UpdateStatusMenuAsync(statusMenu);
-            return CreateResponse<DTOStatusMenus>(dto!, StatusCodes.Status200OK, "Status Menu Updated Successfully!");
+            return CreateResponse<StatusMenu>(dto!, StatusCodes.Status200OK, "Status Menu Updated Successfully!");
 
         }
 

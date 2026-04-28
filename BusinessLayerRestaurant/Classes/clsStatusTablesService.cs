@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using BusinessLayerRestaurant.Interfaces;
 using DataLayerRestaurant.Interfaces;
-using ContractsLayerRestaurant.DTOs.StatusTables;
+using ContractsLayerRestaurant.DTORequest.StatusTables;
 
 
 
@@ -34,7 +34,7 @@ namespace BusinessLayerRestaurant.Classes
             _Logger = logger;
         }
 
-        public async Task<DTOStatusTables?> GetAsync(int ID)
+        public async Task<StatusTable?> GetAsync(int ID)
         {
             var result = await _Interface.IData.GetStatuTableAsync(ID);
             if (result == null)
@@ -46,7 +46,7 @@ namespace BusinessLayerRestaurant.Classes
             return result;
         }
 
-        public async Task<List<DTOStatusTables>> GetAllAsync(int page)
+        public async Task<List<StatusTable>> GetAllAsync(int page)
         {
             var result = await _Interface.IData.GetAllStatustablesAsync(page);
             if (result == null || result.Count == 0)
@@ -80,7 +80,7 @@ namespace BusinessLayerRestaurant.Classes
             _Logger = logger;
         }
 
-        public async Task<DTOStatusTables?> CreateAsync(DTOStatusTablesCRequest Request)
+        public async Task<StatusTable?> CreateAsync(DTOStatusTablesCRequest Request)
         {
 
             var dto = await _Interface.IData.AddStatusTableAsync(Request);
@@ -91,7 +91,7 @@ namespace BusinessLayerRestaurant.Classes
             }
             throw new InvalidOperationException("Not Created!");
         }
-        public async Task<DTOStatusTables?> UpdateAsync(DTOStatusTablesURequest Request)
+        public async Task<StatusTable?> UpdateAsync(DTOStatusTablesURequest Request)
         {
 
             var dto = await _Interface.IData.UpdateStatusTableAsync(Request);
@@ -128,12 +128,12 @@ namespace BusinessLayerRestaurant.Classes
             _IWrite = write;
         }
 
-        public async Task<List<DTOStatusTables>> GetAllStatusTablesAsync(int page)
+        public async Task<List<StatusTable>> GetAllStatusTablesAsync(int page)
         {
             return await _IRead.GetAllAsync(page);
         }
 
-        public async Task<DTOStatusTables?> GetStatusTableAsync(int ID)
+        public async Task<StatusTable?> GetStatusTableAsync(int ID)
         {
             return await _IRead.GetAsync(ID);
         }
@@ -144,11 +144,11 @@ namespace BusinessLayerRestaurant.Classes
         }
 
 
-        public async Task<DTOStatusTables?> AddStatusTableAsync(DTOStatusTablesCRequest Request)
+        public async Task<StatusTable?> AddStatusTableAsync(DTOStatusTablesCRequest Request)
         {
             return await _IWrite.CreateAsync(Request);
         }
-        public async Task<DTOStatusTables?> UpdateStatusTableAsync(DTOStatusTablesURequest Request)
+        public async Task<StatusTable?> UpdateStatusTableAsync(DTOStatusTablesURequest Request)
         {
             return await _IWrite.UpdateAsync(Request);
         }

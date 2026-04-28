@@ -1,5 +1,5 @@
-﻿using ContractsLayerRestaurant.DTOs.Employees;
-using ContractsLayerRestaurant.DTOs.Auth;
+﻿using ContractsLayerRestaurant.DTORequest.Employees;
+using ContractsLayerRestaurant.DTORequest.Auth;
 using DataLayerRestaurant.Interfaces;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Options;
@@ -10,7 +10,7 @@ namespace DataLayerRestaurant.Classes
 {
 
 
-    public class clsLoginRepositoryComposition : ICompositionDataBase<DTOLogin>
+    public class clsLoginRepositoryComposition : ICompositionDataBase<Auth>
     {
         protected readonly clsMySettings _Setting;
         public clsLoginRepositoryComposition(IOptions<clsMySettings> settings)
@@ -18,9 +18,9 @@ namespace DataLayerRestaurant.Classes
             _Setting = settings.Value;
         }
 
-        public DTOLogin GetDataFromDataBase(SqlDataReader reader)
+        public Auth GetDataFromDataBase(SqlDataReader reader)
         {
-            return new DTOLogin
+            return new Auth
             {
                 ID = reader.GetInt32(reader.GetOrdinal("ID")),
                 EmployeeID = reader.GetInt32(reader.GetOrdinal("EmployeeID")),
@@ -36,9 +36,9 @@ namespace DataLayerRestaurant.Classes
     {
         public clsLoginRepositoryReader(IOptions<clsMySettings> settings) : base(settings)
         { }
-        public async Task<DTOLogin?> GetDataAsync(string UserName)
+        public async Task<Auth?> GetDataAsync(string UserName)
         {
-            DTOLogin? Login = null;
+            Auth? Login = null;
             using (SqlConnection Connection = new SqlConnection(_Setting.ConnectionString))
             {
                 using (SqlCommand Command = new SqlCommand("EmployeeRefreshTokens.SP_GetToken", Connection))
@@ -64,7 +64,7 @@ namespace DataLayerRestaurant.Classes
         public clsLoginRepositoryWriter(IOptions<clsMySettings> settings) : base(settings)
         { }
 
-        public async Task<bool> CreateDataAsync(DTOLoginCURequest Request)
+        public async Task<bool> CreateDataAsync(DTOAuthCURequest Request)
         {
             bool Create = false;
             using (SqlConnection Connection = new SqlConnection(_Setting.ConnectionString))
@@ -100,7 +100,7 @@ namespace DataLayerRestaurant.Classes
             }
             return Update;
         }
-        public async Task<bool> UpdateDataAsync(DTOLoginCURequest Request)
+        public async Task<bool> UpdateDataAsync(DTOAuthCURequest Request)
         {
             bool Update = false;
             using (SqlConnection Connection = new SqlConnection(_Setting.ConnectionString))
@@ -130,7 +130,7 @@ namespace DataLayerRestaurant.Classes
             _reader = reader;
             _writer = writer;
         }
-        public async Task<bool> CreateDataAsync(DTOLoginCURequest Request)
+        public async Task<bool> CreateDataAsync(DTOAuthCURequest Request)
         {
             return await _writer.CreateDataAsync(Request);
         }
@@ -138,11 +138,11 @@ namespace DataLayerRestaurant.Classes
         {
             return await _writer.LogoutDataAsync(EmployeeID);
         }
-        public async Task<bool> UpdateDataAsync(DTOLoginCURequest Request)
+        public async Task<bool> UpdateDataAsync(DTOAuthCURequest Request)
         {
             return await _writer.UpdateDataAsync(Request);
         }
-        public async Task<DTOLogin?> GetDataAsync(string UserName)
+        public async Task<Auth?> GetDataAsync(string UserName)
         {
             return await _reader.GetDataAsync(UserName);
         }

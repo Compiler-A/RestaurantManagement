@@ -1,30 +1,30 @@
 ﻿using RestaurantDataLayer;
-using ContractsLayerRestaurant.DTOs.StatusMenus;
+using ContractsLayerRestaurant.DTORequest.StatusMenus;
 
 namespace DataLayerRestaurant.Interfaces
 {
 
-    public interface IStatusMenusRepositoryReader : IReadableDataBase<DTOStatusMenus>
+    public interface IStatusMenusRepositoryReader : IReadableDataBase<StatusMenu>
     {
 
     }
 
     public interface IStatusMenusRepositoryWriter 
-        : IWritableDataBase<DTOStatusMenus, DTOStatusMenusCRequest, DTOStatusMenusURequest>
+        : IWritableDataBase<StatusMenu, DTOStatusMenusCRequest, DTOStatusMenusURequest>
     {
 
     }
 
     public interface IStatusMenusRepositoryReadable
     {
-        Task<DTOStatusMenus?> GetStatusMenuAsync(int ID);
-        Task<List<DTOStatusMenus>> GetAllStatusMenusAsync(int Page);
+        Task<StatusMenu?> GetStatusMenuAsync(int ID);
+        Task<List<StatusMenu>> GetAllStatusMenusAsync(int Page);
     }
 
     public interface IStatusMenusRepositoryWritable
     {
-        Task<DTOStatusMenus?> AddStatusMenuAsync(DTOStatusMenusCRequest Request);
-        Task<DTOStatusMenus?> UpdateStatusMenuAsync(DTOStatusMenusURequest Request);
+        Task<StatusMenu?> AddStatusMenuAsync(DTOStatusMenusCRequest Request);
+        Task<StatusMenu?> UpdateStatusMenuAsync(DTOStatusMenusURequest Request);
         Task<bool> DeleteStatusMenuAsync(int id);
     }
 

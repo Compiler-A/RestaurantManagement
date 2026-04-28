@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using BusinessLayerRestaurant.Interfaces;
 using DataLayerRestaurant.Interfaces;
-using ContractsLayerRestaurant.DTOs.Settings;
+using ContractsLayerRestaurant.DTORequest.Settings;
 
 
 
@@ -36,7 +36,7 @@ namespace BusinessLayerRestaurant.Classes
             _Logger = logger;
         }
 
-        public async Task<List<DTOSettings>> GetAllAsync(int page)
+        public async Task<List<Setting>> GetAllAsync(int page)
         {
 
             var list = await _Interface.IData.GetAllSettingsAsync(page);
@@ -47,7 +47,7 @@ namespace BusinessLayerRestaurant.Classes
             _Logger.EventLogs($"Settings Found, Count: {list.Count}", EventLogEntryType.Information);
             return list;
         }
-        public async Task<DTOSettings?> GetAsync(int ID)
+        public async Task<Setting?> GetAsync(int ID)
         {
             var dto = await _Interface.IData.GetSettingAsync(ID);
             if (dto == null)
@@ -70,7 +70,7 @@ namespace BusinessLayerRestaurant.Classes
 
 
 
-        public async Task<DTOSettings?> CreateAsync(DTOSettingsCRequest setting)
+        public async Task<Setting?> CreateAsync(DTOSettingsCRequest setting)
         {
 
             var dto = await _Interface.IData.AddSettingAsync(setting);
@@ -81,7 +81,7 @@ namespace BusinessLayerRestaurant.Classes
             _Logger.EventLogs($"Setting Created, Name: {dto.Name}", EventLogEntryType.Information);
             return dto;
         }
-        public async Task<DTOSettings?> UpdateAsync(DTOSettingsURequest setting)
+        public async Task<Setting?> UpdateAsync(DTOSettingsURequest setting)
         {
            
             
@@ -122,22 +122,22 @@ namespace BusinessLayerRestaurant.Classes
         }
 
 
-        public async Task<List<DTOSettings>> GetAllSettingsAsync(int page)
+        public async Task<List<Setting>> GetAllSettingsAsync(int page)
         {
             return await _IRead.GetAllAsync(page);
         }
 
-        public async Task<DTOSettings?> GetSettingAsync(int ID)
+        public async Task<Setting?> GetSettingAsync(int ID)
         {
             return await _IRead.GetAsync(ID);
         }
 
 
-        public async Task<DTOSettings?> AddSettingAsync(DTOSettingsCRequest Request)
+        public async Task<Setting?> AddSettingAsync(DTOSettingsCRequest Request)
         {
             return await _IWrite.CreateAsync(Request);
         }
-        public async Task<DTOSettings?> UpdateSettingAsync(DTOSettingsURequest Request)
+        public async Task<Setting?> UpdateSettingAsync(DTOSettingsURequest Request)
         {
             return await _IWrite.UpdateAsync(Request);
         }

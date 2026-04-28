@@ -1,6 +1,6 @@
 ﻿using RestaurantDataLayer;
 using DataLayerRestaurant.Interfaces;
-using ContractsLayerRestaurant.DTOs.Settings;
+using ContractsLayerRestaurant.DTORequest.Settings;
 
 namespace BusinessLayerRestaurant.Interfaces
 {
@@ -8,20 +8,20 @@ namespace BusinessLayerRestaurant.Interfaces
     public interface ISettingsServiceContainer : IInterfaceBase<ISettingsRepository>
     { }
 
-    public interface ISettingsServiceReader : IReadableBusinessBase<DTOSettings>
+    public interface ISettingsServiceReader : IReadableBusinessBase<Setting>
     { }
-    public interface ISettingsServiceWriter : IWritableBusinessBase<DTOSettings, DTOSettingsCRequest, DTOSettingsURequest>
+    public interface ISettingsServiceWriter : IWritableBusinessBase<Setting, DTOSettingsCRequest, DTOSettingsURequest>
     { }
 
     public interface ISettingsServiceReadable
     {
-        Task<List<DTOSettings>> GetAllSettingsAsync(int page);
-        Task<DTOSettings?> GetSettingAsync(int ID);
+        Task<List<Setting>> GetAllSettingsAsync(int page);
+        Task<Setting?> GetSettingAsync(int ID);
     }
     public interface ISettingsServiceWritable
     {
-        Task<DTOSettings?> AddSettingAsync(DTOSettingsCRequest setting);
-        Task<DTOSettings?> UpdateSettingAsync(DTOSettingsURequest setting);
+        Task<Setting?> AddSettingAsync(DTOSettingsCRequest setting);
+        Task<Setting?> UpdateSettingAsync(DTOSettingsURequest setting);
         Task<bool> DeleteSettingAsync(int ID);
     }
     public interface ICRUDSettingsService : ISettingsServiceWritable, ISettingsServiceReadable

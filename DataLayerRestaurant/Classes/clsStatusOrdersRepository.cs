@@ -1,18 +1,18 @@
 ﻿using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Options;
 using RestaurantDataLayer;
-using ContractsLayerRestaurant.DTOs.StatusOrders;
+using ContractsLayerRestaurant.DTORequest.StatusOrders;
 using DataLayerRestaurant.Interfaces;
 
 
 namespace DataLayerRestaurant.Classes
 {    
 
-    public class  clsStatusOrdersRepositoryComposition : ICompositionDataBase<DTOStatusOrders>
+    public class  clsStatusOrdersRepositoryComposition : ICompositionDataBase<StatusOrder>
     {
-        public DTOStatusOrders GetDataFromDataBase(SqlDataReader reader)
+        public StatusOrder GetDataFromDataBase(SqlDataReader reader)
         {
-            return new DTOStatusOrders
+            return new StatusOrder
             {
                 ID = reader.GetInt32(reader.GetOrdinal("StatusOrderID")),
                 Name = reader.GetString(reader.GetOrdinal("Name"))
@@ -28,9 +28,9 @@ namespace DataLayerRestaurant.Classes
             _Settings = Settings.Value;
         }
 
-        public async Task<DTOStatusOrders?> GetDataAsync(int ID)
+        public async Task<StatusOrder?> GetDataAsync(int ID)
         {
-            DTOStatusOrders? statusOrder = null;
+            StatusOrder? statusOrder = null;
             using (SqlConnection Connection = new SqlConnection(_Settings.ConnectionString))
             {
                 using (SqlCommand Command = new SqlCommand("StatusOrders.SP_GetStatusOrderByID", Connection))
@@ -50,9 +50,9 @@ namespace DataLayerRestaurant.Classes
             }
             return statusOrder;
         }
-        public async Task<List<DTOStatusOrders>> GetAllDataAsync(int Page)
+        public async Task<List<StatusOrder>> GetAllDataAsync(int Page)
         {
-            List<DTOStatusOrders> List = new List<DTOStatusOrders>();
+            List<StatusOrder> List = new List<StatusOrder>();
 
             using (SqlConnection Connection = new SqlConnection(_Settings.ConnectionString))
             {
@@ -85,7 +85,7 @@ namespace DataLayerRestaurant.Classes
             _Settings = Settings.Value;
         }
 
-        public async Task<DTOStatusOrders?> CreateDataAsync(DTOStatusOrdersCRequest Request)
+        public async Task<StatusOrder?> CreateDataAsync(DTOStatusOrdersCRequest Request)
         {
 
             using (SqlConnection Connection = new SqlConnection(_Settings.ConnectionString))
@@ -110,7 +110,7 @@ namespace DataLayerRestaurant.Classes
 
             return null;
         }
-        public async Task<DTOStatusOrders?> UpdateDataAsync(DTOStatusOrdersURequest Request)
+        public async Task<StatusOrder?> UpdateDataAsync(DTOStatusOrdersURequest Request)
         {
             using (SqlConnection Connection = new SqlConnection(_Settings.ConnectionString))
             {
@@ -160,19 +160,19 @@ namespace DataLayerRestaurant.Classes
             _Write = Write;
         }
 
-        public async Task<DTOStatusOrders?> GetStatusOrderAsync(int id)
+        public async Task<StatusOrder?> GetStatusOrderAsync(int id)
         {
             return await _Read.GetDataAsync(id);
         }
-        public async Task<List<DTOStatusOrders>> GetAllStatusOrdersAsync(int page)
+        public async Task<List<StatusOrder>> GetAllStatusOrdersAsync(int page)
         {
             return await _Read.GetAllDataAsync(page);
         }
-        public async Task<DTOStatusOrders?> AddStatusOrderAsync(DTOStatusOrdersCRequest Request)
+        public async Task<StatusOrder?> AddStatusOrderAsync(DTOStatusOrdersCRequest Request)
         {
             return await _Write.CreateDataAsync(Request);
         }
-        public async Task<DTOStatusOrders?> UpdateStatusOrderAsync(DTOStatusOrdersURequest Request)
+        public async Task<StatusOrder?> UpdateStatusOrderAsync(DTOStatusOrdersURequest Request)
         {
             return await _Write.UpdateDataAsync(Request);
         }

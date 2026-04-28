@@ -2,18 +2,18 @@
 using Microsoft.Extensions.Options;
 using RestaurantDataLayer;
 using DataLayerRestaurant.Interfaces;
-using ContractsLayerRestaurant.DTOs.JobRoles;
+using ContractsLayerRestaurant.DTORequest.JobRoles;
 
 
 
 namespace DataLayerRestaurant.Classes
 { 
 
-    public class clsJobRolesRepositoryComposition : ICompositionDataBase<DTOJobRoles>
+    public class clsJobRolesRepositoryComposition : ICompositionDataBase<JobRole>
     {
-        public DTOJobRoles GetDataFromDataBase(SqlDataReader reader)
+        public JobRole GetDataFromDataBase(SqlDataReader reader)
         {
-            return new DTOJobRoles
+            return new JobRole
             {
                 ID = reader.GetInt32(reader.GetOrdinal("JobRoleID")),
                 Name = reader.GetString(reader.GetOrdinal("Name")),
@@ -32,9 +32,9 @@ namespace DataLayerRestaurant.Classes
             _Settings = mySettings.Value;
         }
 
-        public async Task<List<DTOJobRoles>> GetAllDataAsync(int page)
+        public async Task<List<JobRole>> GetAllDataAsync(int page)
         {
-            List<DTOJobRoles> result = new List<DTOJobRoles>();
+            List<JobRole> result = new List<JobRole>();
             using (SqlConnection Connection = new SqlConnection(_Settings.ConnectionString))
             {
                 using (SqlCommand Command = new SqlCommand("JobRoles.SP_GetAllJobRoles", Connection))
@@ -56,9 +56,9 @@ namespace DataLayerRestaurant.Classes
             return result;
         }
 
-        public async Task<DTOJobRoles?> GetDataAsync(int ID)
+        public async Task<JobRole?> GetDataAsync(int ID)
         {
-            DTOJobRoles? result = null;
+            JobRole? result = null;
             using (SqlConnection Connection = new SqlConnection(_Settings.ConnectionString))
             {
                 using (SqlCommand Command = new SqlCommand("JobRoles.SP_GetJobRoleByID", Connection))
@@ -88,7 +88,7 @@ namespace DataLayerRestaurant.Classes
             _Settings = mySettings.Value;
         }
 
-        public async Task<DTOJobRoles?> CreateDataAsync(DTOJobRolesCRequest DTO)
+        public async Task<JobRole?> CreateDataAsync(DTOJobRolesCRequest DTO)
         {
             using (SqlConnection Connection = new SqlConnection(_Settings.ConnectionString))
             {
@@ -111,7 +111,7 @@ namespace DataLayerRestaurant.Classes
             return null;
         }
 
-        public async Task<DTOJobRoles?> UpdateDataAsync(DTOJobRolesURequest DTO)
+        public async Task<JobRole?> UpdateDataAsync(DTOJobRolesURequest DTO)
         {
             using (SqlConnection Connection = new SqlConnection(_Settings.ConnectionString))
             {
@@ -166,23 +166,23 @@ namespace DataLayerRestaurant.Classes
             _IWrite = write;
         }
 
-        public async Task<List<DTOJobRoles>> GetAllJobRolesAsync(int page)
+        public async Task<List<JobRole>> GetAllJobRolesAsync(int page)
         {
            return await _IRead.GetAllDataAsync(page);
         }
 
 
-        public async Task<DTOJobRoles?> GetJobRoleAsync(int ID)
+        public async Task<JobRole?> GetJobRoleAsync(int ID)
         {
             return await _IRead.GetDataAsync(ID);
         }
 
-        public async Task<DTOJobRoles?> AddJobRoleAsync(DTOJobRolesCRequest DTO)
+        public async Task<JobRole?> AddJobRoleAsync(DTOJobRolesCRequest DTO)
         {
             return await _IWrite.CreateDataAsync(DTO);
         }
 
-        public async Task<DTOJobRoles?> UpdateJobRoleAsync(DTOJobRolesURequest DTO)
+        public async Task<JobRole?> UpdateJobRoleAsync(DTOJobRolesURequest DTO)
         {
             return await _IWrite.UpdateDataAsync(DTO);
         }

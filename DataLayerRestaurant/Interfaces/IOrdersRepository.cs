@@ -1,25 +1,25 @@
 ﻿using RestaurantDataLayer;
-using ContractsLayerRestaurant.DTOs.Orders;
+using ContractsLayerRestaurant.DTORequest.Orders;
 
 namespace DataLayerRestaurant.Interfaces
 {
-    public interface IOrdersRepositoryReader : IReadableDataBase<DTOOrders>
+    public interface IOrdersRepositoryReader : IReadableDataBase<Order>
     {
-        Task<List<DTOOrders>?> GetFilterDataAsync(DTOOrderFilterRequest OrderFilterRequest);
+        Task<List<Order>?> GetFilterDataAsync(DTOOrderFilterRequest OrderFilterRequest);
 
     }
-    public interface IOrdersRepositoryWriter : IWritableDataBase<DTOOrders,DTOOrderCRequest, DTOOrderURequest>
+    public interface IOrdersRepositoryWriter : IWritableDataBase<Order,DTOOrderCRequest, DTOOrderURequest>
     { }
     public interface IOrdersRepositoryReadable
     {
-        Task<List<DTOOrders>> GetAllOrdersAsync(int page);
-        Task<DTOOrders?> GetOrderAsync(int ID);
-        Task<List<DTOOrders>?> GetFilterOrderAsync(DTOOrderFilterRequest OrderFilterRequest);
+        Task<List<Order>> GetAllOrdersAsync(int page);
+        Task<Order?> GetOrderAsync(int ID);
+        Task<List<Order>?> GetFilterOrderAsync(DTOOrderFilterRequest OrderFilterRequest);
     }
     public interface IOrdersRepositoryWritable
     {
-        Task<DTOOrders?> AddOrderAsync(DTOOrderCRequest order);
-        Task<DTOOrders?> UpdateOrderAsync(DTOOrderURequest order);
+        Task<Order?> AddOrderAsync(DTOOrderCRequest order);
+        Task<Order?> UpdateOrderAsync(DTOOrderURequest order);
         Task<bool> DeleteOrderAsync(int id);
     }
     public interface IOrdersRepository : IOrdersRepositoryReadable, IOrdersRepositoryWritable

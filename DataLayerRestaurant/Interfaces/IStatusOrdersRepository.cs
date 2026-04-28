@@ -1,22 +1,22 @@
 ﻿using RestaurantDataLayer;
-using ContractsLayerRestaurant.DTOs.StatusOrders;
+using ContractsLayerRestaurant.DTORequest.StatusOrders;
 
 namespace DataLayerRestaurant.Interfaces
 {
-    public interface IStatusOrdersRepositoryReader : IReadableDataBase<DTOStatusOrders>
+    public interface IStatusOrdersRepositoryReader : IReadableDataBase<StatusOrder>
     { }
-    public interface IStatusOrdersRepositoryWriter : IWritableDataBase<DTOStatusOrders,DTOStatusOrdersCRequest, DTOStatusOrdersURequest>
+    public interface IStatusOrdersRepositoryWriter : IWritableDataBase<StatusOrder,DTOStatusOrdersCRequest, DTOStatusOrdersURequest>
     { }
 
     public interface IStatusOrdersRepositoryReadable
     {
-        Task<DTOStatusOrders?> GetStatusOrderAsync(int ID);
-        Task<List<DTOStatusOrders>> GetAllStatusOrdersAsync(int Page);
+        Task<StatusOrder?> GetStatusOrderAsync(int ID);
+        Task<List<StatusOrder>> GetAllStatusOrdersAsync(int Page);
     }
     public interface IStatusOrdersRepositoryWritable
     {
-        Task<DTOStatusOrders?> AddStatusOrderAsync(DTOStatusOrdersCRequest Request);
-        Task<DTOStatusOrders?> UpdateStatusOrderAsync(DTOStatusOrdersURequest Request);
+        Task<StatusOrder?> AddStatusOrderAsync(DTOStatusOrdersCRequest Request);
+        Task<StatusOrder?> UpdateStatusOrderAsync(DTOStatusOrdersURequest Request);
         Task<bool> DeleteStatusOrderAsync(int ID);
     }
     public interface IStatusOrdersRepository : IStatusOrdersRepositoryReadable, IStatusOrdersRepositoryWritable { }

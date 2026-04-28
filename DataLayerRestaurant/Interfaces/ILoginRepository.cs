@@ -1,5 +1,5 @@
-﻿using ContractsLayerRestaurant.DTOs.Employees;
-using ContractsLayerRestaurant.DTOs.Auth;
+﻿using ContractsLayerRestaurant.DTORequest.Employees;
+using ContractsLayerRestaurant.DTORequest.Auth;
 using RestaurantDataLayer;
 using System;
 using System.Collections.Generic;
@@ -11,12 +11,12 @@ namespace DataLayerRestaurant.Interfaces
 {
     public interface ILoginRepositoryReader
     {
-           Task<DTOLogin?> GetDataAsync(string UserName);
+           Task<Auth?> GetDataAsync(string UserName);
     }
     public interface ILoginRepositoryWriter
     {
-        Task<bool> UpdateDataAsync(DTOLoginCURequest Request);
-        Task<bool> CreateDataAsync(DTOLoginCURequest Request); 
+        Task<bool> UpdateDataAsync(DTOAuthCURequest Request);
+        Task<bool> CreateDataAsync(DTOAuthCURequest Request); 
         Task<bool> LogoutDataAsync(int ID);
     }
     public interface ILoginRepository : ILoginRepositoryReader, ILoginRepositoryWriter

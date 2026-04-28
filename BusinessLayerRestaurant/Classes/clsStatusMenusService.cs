@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using BusinessLayerRestaurant.Interfaces;
 using DataLayerRestaurant.Interfaces;
-using ContractsLayerRestaurant.DTOs.StatusMenus;
+using ContractsLayerRestaurant.DTORequest.StatusMenus;
 
 
 
@@ -34,7 +34,7 @@ namespace BusinessLayerRestaurant.Classes
             _Logger = logger;
         }
 
-        public async Task<DTOStatusMenus?> GetAsync(int ID)
+        public async Task<StatusMenu?> GetAsync(int ID)
         {
             var result = await _Interface.IData.GetStatusMenuAsync(ID);
             if (result == null)
@@ -46,7 +46,7 @@ namespace BusinessLayerRestaurant.Classes
             return result;
         }
 
-        public async Task<List<DTOStatusMenus>> GetAllAsync(int page)
+        public async Task<List<StatusMenu>> GetAllAsync(int page)
         {
             var list = await _Interface.IData.GetAllStatusMenusAsync(page);
             if (list == null || list.Count == 0)
@@ -81,7 +81,7 @@ namespace BusinessLayerRestaurant.Classes
             return result;
         }
 
-        public async Task<DTOStatusMenus?> UpdateAsync(DTOStatusMenusURequest Request)
+        public async Task<StatusMenu?> UpdateAsync(DTOStatusMenusURequest Request)
         {
             var result = await _Interface.IData.UpdateStatusMenuAsync(Request);
             if (result == null)
@@ -93,7 +93,7 @@ namespace BusinessLayerRestaurant.Classes
             return result;
         }
 
-        public async Task<DTOStatusMenus?> CreateAsync(DTOStatusMenusCRequest Request)
+        public async Task<StatusMenu?> CreateAsync(DTOStatusMenusCRequest Request)
         {
             var result = await _Interface.IData.AddStatusMenuAsync(Request);  
             if (result == null)
@@ -119,21 +119,21 @@ namespace BusinessLayerRestaurant.Classes
         }
 
 
-        public async Task<List<DTOStatusMenus>> GetAllStatusMenusAsync(int Page)
+        public async Task<List<StatusMenu>> GetAllStatusMenusAsync(int Page)
         {
             return await _IRead.GetAllAsync(Page);
         }
-        public async Task<DTOStatusMenus?> GetStatusMenuAsync(int Page)
+        public async Task<StatusMenu?> GetStatusMenuAsync(int Page)
         {
             return await _IRead.GetAsync(Page);
         }
 
-        public async Task<DTOStatusMenus?> AddStatusMenuAsync(DTOStatusMenusCRequest Request)
+        public async Task<StatusMenu?> AddStatusMenuAsync(DTOStatusMenusCRequest Request)
         {
             return await _IWrite.CreateAsync(Request);
         }
 
-        public async Task<DTOStatusMenus?> UpdateStatusMenuAsync(DTOStatusMenusURequest Request)
+        public async Task<StatusMenu?> UpdateStatusMenuAsync(DTOStatusMenusURequest Request)
         {
             return await _IWrite.UpdateAsync(Request);
         }

@@ -1,29 +1,29 @@
 ﻿using RestaurantDataLayer;
 using DataLayerRestaurant.Interfaces;
-using ContractsLayerRestaurant.DTOs.TypeItems;
+using ContractsLayerRestaurant.DTORequest.TypeItems;
 
 namespace BusinessLayerRestaurant.Interfaces
 {
     public interface ITypeItemsServiceContainer : IInterfaceBase<ITypeItemsRepository>
     { }
 
-    public interface ITypeItemsServiceReader : IReadableBusinessBase<DTOTypeItems>
+    public interface ITypeItemsServiceReader : IReadableBusinessBase<TypeItem>
     { }
 
     public interface ITypeItemsServiceWriter
-        : IWritableBusinessBase<DTOTypeItems,DTOTypeItemsCRequest, DTOTypeItemsURequest>
+        : IWritableBusinessBase<TypeItem,DTOTypeItemsCRequest, DTOTypeItemsURequest>
     { }
 
     public interface ITypeItemsServiceReadable
     {
-        Task<List<DTOTypeItems>> GetAllTypeItemsAsync(int page);
-        Task<DTOTypeItems?> GetTypeItemAsync(int id);
+        Task<List<TypeItem>> GetAllTypeItemsAsync(int page);
+        Task<TypeItem?> GetTypeItemAsync(int id);
     }
 
     public interface ITypeItemsServiceWritable
     {
-        Task<DTOTypeItems?> AddTypeItemAsync(DTOTypeItemsCRequest Request);
-        Task<DTOTypeItems?> UpdateTypeItemAsync(DTOTypeItemsURequest Request);
+        Task<TypeItem?> AddTypeItemAsync(DTOTypeItemsCRequest Request);
+        Task<TypeItem?> UpdateTypeItemAsync(DTOTypeItemsURequest Request);
         Task<bool> DeleteTypeItemAsync(int ID);
     }
 

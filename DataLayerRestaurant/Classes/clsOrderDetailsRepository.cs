@@ -1,4 +1,4 @@
-﻿using ContractsLayerRestaurant.DTOs.OrderDetails;
+﻿using ContractsLayerRestaurant.DTORequest.OrderDetails;
 using DataLayerRestaurant.Interfaces;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Options;
@@ -6,11 +6,11 @@ using RestaurantDataLayer;
 
 namespace DataLayerRestaurant.Classes
 {
-    public class clsOrderDetailsRepositoryComposition : ICompositionDataBase<DTOOrderDetails>
+    public class clsOrderDetailsRepositoryComposition : ICompositionDataBase<OrderDetail>
     {
-        public DTOOrderDetails GetDataFromDataBase(SqlDataReader reader)
+        public OrderDetail GetDataFromDataBase(SqlDataReader reader)
         {
-            return new DTOOrderDetails
+            return new OrderDetail
             {
                 ID = reader.GetInt32(reader.GetOrdinal("OrderDetailID")),
                 OrderID = reader.GetInt32(reader.GetOrdinal("OrderID")),
@@ -31,9 +31,9 @@ namespace DataLayerRestaurant.Classes
             _Settings = Settings.Value;
         }
 
-        public async Task<DTOOrderDetails?> GetDataAsync(int ID)
+        public async Task<OrderDetail?> GetDataAsync(int ID)
         {
-            DTOOrderDetails? result = null;
+            OrderDetail? result = null;
             using (SqlConnection Connection = new SqlConnection(_Settings.ConnectionString))
             {
                 using (SqlCommand Command = new SqlCommand("OrderDetails.SP_GetOrderDetailByID", Connection))
@@ -53,9 +53,9 @@ namespace DataLayerRestaurant.Classes
             }
             return result;
         }
-        public async Task<List<DTOOrderDetails>> GetAllDataAsync(int page)
+        public async Task<List<OrderDetail>> GetAllDataAsync(int page)
         {
-            List<DTOOrderDetails> result = new List<DTOOrderDetails>();
+            List<OrderDetail> result = new List<OrderDetail>();
             using (SqlConnection Connection = new SqlConnection(_Settings.ConnectionString))
             {
                 using (SqlCommand Command = new SqlCommand("OrderDetails.SP_GetAllOrderDetails", Connection))
@@ -76,9 +76,9 @@ namespace DataLayerRestaurant.Classes
             }
             return result;
         }
-        public async Task<List<DTOOrderDetails>> GetAllDataByOrderIDAsync(int orderID)
+        public async Task<List<OrderDetail>> GetAllDataByOrderIDAsync(int orderID)
         {
-            List<DTOOrderDetails> result = new List<DTOOrderDetails>();
+            List<OrderDetail> result = new List<OrderDetail>();
             using (SqlConnection Connection = new SqlConnection(_Settings.ConnectionString))
             {
                 using (SqlCommand Command = new SqlCommand("OrderDetails.SP_GetItemByOrderID", Connection))
@@ -124,7 +124,7 @@ namespace DataLayerRestaurant.Classes
                 return Delete;
             }
         }
-        public async Task<DTOOrderDetails?> CreateDataAsync(DTOOrderDetailsCRequest dto)
+        public async Task<OrderDetail?> CreateDataAsync(DTOOrderDetailsCRequest dto)
         {
             using (SqlConnection Connection = new SqlConnection(_Settings.ConnectionString))
             {
@@ -148,7 +148,7 @@ namespace DataLayerRestaurant.Classes
             return null;
         }
 
-        public async Task<DTOOrderDetails?> UpdateDataAsync(DTOOrderDetailsURequest dto)
+        public async Task<OrderDetail?> UpdateDataAsync(DTOOrderDetailsURequest dto)
         {
             using (SqlConnection Connection = new SqlConnection(_Settings.ConnectionString))
             {
@@ -186,26 +186,26 @@ namespace DataLayerRestaurant.Classes
             _Write = Write;
         }
 
-        public async Task<List<DTOOrderDetails>> GetAllOrderDetailsByOrderIDAsync(int orderID)
+        public async Task<List<OrderDetail>> GetAllOrderDetailsByOrderIDAsync(int orderID)
         {
             return await _Read.GetAllDataByOrderIDAsync(orderID);
         }
-        public async Task<List<DTOOrderDetails>> GetAllOrderDetailsAsync(int page)
+        public async Task<List<OrderDetail>> GetAllOrderDetailsAsync(int page)
         {
             return await _Read.GetAllDataAsync(page);
         }
 
-        public async Task<DTOOrderDetails?> GetOrderDetailAsync(int ID)
+        public async Task<OrderDetail?> GetOrderDetailAsync(int ID)
         {
             return await _Read.GetDataAsync(ID);
         }
 
-        public async Task<DTOOrderDetails?> AddOrderDetailAsync(DTOOrderDetailsCRequest Request)
+        public async Task<OrderDetail?> AddOrderDetailAsync(DTOOrderDetailsCRequest Request)
         {
             return await _Write.CreateDataAsync(Request);
         }
 
-        public async Task<DTOOrderDetails?> UpdateOrderDetailAsync(DTOOrderDetailsURequest Request)
+        public async Task<OrderDetail?> UpdateOrderDetailAsync(DTOOrderDetailsURequest Request)
         {
             return await _Write.UpdateDataAsync(Request);
         }

@@ -2,17 +2,17 @@
 using Microsoft.Extensions.Options;
 using RestaurantDataLayer;
 using DataLayerRestaurant.Interfaces;
-using ContractsLayerRestaurant.DTOs.MenuItems;
+using ContractsLayerRestaurant.DTORequest.MenuItems;
 
 
 namespace DataLayerRestaurant.Classes
 {
 
-    public class clsMenuItemsRepositoryCompositon : ICompositionDataBase<DTOMenuItems>
+    public class clsMenuItemsRepositoryCompositon : ICompositionDataBase<MenuItem>
     {
-        public DTOMenuItems GetDataFromDataBase(SqlDataReader reader)
+        public MenuItem GetDataFromDataBase(SqlDataReader reader)
         {
-            DTOMenuItems menuItem = new DTOMenuItems
+            MenuItem menuItem = new MenuItem
             {
                 ID = reader.GetInt32(reader.GetOrdinal("ItemID")),
                 Name = reader.GetString(reader.GetOrdinal("Name")),
@@ -34,9 +34,9 @@ namespace DataLayerRestaurant.Classes
         {
             _Settings = settings.Value;
         }
-        public async Task<DTOMenuItems?> GetDataAsync(int ID)
+        public async Task<MenuItem?> GetDataAsync(int ID)
         {
-            DTOMenuItems? menuItem = null;
+            MenuItem? menuItem = null;
             using (SqlConnection conn = new SqlConnection(_Settings.ConnectionString))
             using (SqlCommand cmd = new SqlCommand("MenuItems.SP_GetMenuItemByID", conn))
             {
@@ -53,9 +53,9 @@ namespace DataLayerRestaurant.Classes
             return menuItem;
         }
 
-        public async Task<List<DTOMenuItems>> GetAllDataAsync(int Page)
+        public async Task<List<MenuItem>> GetAllDataAsync(int Page)
         {
-            List<DTOMenuItems> menuItems = new List<DTOMenuItems>();
+            List<MenuItem> menuItems = new List<MenuItem>();
             using (SqlConnection conn = new SqlConnection(_Settings.ConnectionString))
             using (SqlCommand cmd = new SqlCommand("MenuItems.SP_GetAllMenuItems", conn))
             {
@@ -75,9 +75,9 @@ namespace DataLayerRestaurant.Classes
             return menuItems;
         }
 
-        public async Task<List<DTOMenuItems>> GetAllDataAvailablesAsync()
+        public async Task<List<MenuItem>> GetAllDataAvailablesAsync()
         {
-            List<DTOMenuItems> menuItems = new List<DTOMenuItems>();
+            List<MenuItem> menuItems = new List<MenuItem>();
             using (SqlConnection conn = new SqlConnection(_Settings.ConnectionString))
             using (SqlCommand cmd = new SqlCommand("MenuItems.SP_GetAllMenuItemsAvailables", conn))
             {
@@ -95,9 +95,9 @@ namespace DataLayerRestaurant.Classes
             return menuItems;
         }
 
-        public async Task<List<DTOMenuItems>> GetAllDataFiltersAsync(DTOMenuItemsFilterRequest Request)
+        public async Task<List<MenuItem>> GetAllDataFiltersAsync(DTOMenuItemsFilterRequest Request)
         {
-            List<DTOMenuItems> menuItems = new List<DTOMenuItems>();
+            List<MenuItem> menuItems = new List<MenuItem>();
             using (SqlConnection conn = new SqlConnection(_Settings.ConnectionString))
             using (SqlCommand cmd = new SqlCommand("MenuItems.SP_GetFilterTypeItemAndStatusMenuMenuItems", conn))
             {
@@ -128,7 +128,7 @@ namespace DataLayerRestaurant.Classes
             _Settings = settings.Value;
         }
 
-        public async Task<DTOMenuItems?> CreateDataAsync(DTOMenuItemsCRequest menuItem)
+        public async Task<MenuItem?> CreateDataAsync(DTOMenuItemsCRequest menuItem)
         {
 
             using (SqlConnection conn = new SqlConnection(_Settings.ConnectionString))
@@ -152,7 +152,7 @@ namespace DataLayerRestaurant.Classes
             return null;
         }
 
-        public async Task<DTOMenuItems?> UpdateDataAsync(DTOMenuItemsURequest menuItem)
+        public async Task<MenuItem?> UpdateDataAsync(DTOMenuItemsURequest menuItem)
         {
 
             using (SqlConnection conn = new SqlConnection(_Settings.ConnectionString))
@@ -205,33 +205,33 @@ namespace DataLayerRestaurant.Classes
             _IWrite = iWrite;
         }
 
-        public async Task<List<DTOMenuItems>> GetAllMenuItemsAvailablesAsync()
+        public async Task<List<MenuItem>> GetAllMenuItemsAvailablesAsync()
         {
             return await _IRead.GetAllDataAvailablesAsync();
         }
-        public async Task<List<DTOMenuItems>> GetAllMenuItemsAsync(int page)
+        public async Task<List<MenuItem>> GetAllMenuItemsAsync(int page)
         {
             return await _IRead.GetAllDataAsync(page);
         }
         
         
-        public async Task<List<DTOMenuItems>> GetAllMenuItemsFiltersAsync(DTOMenuItemsFilterRequest Request)
+        public async Task<List<MenuItem>> GetAllMenuItemsFiltersAsync(DTOMenuItemsFilterRequest Request)
         {
            return await _IRead.GetAllDataFiltersAsync(Request);
         }
 
 
-        public async Task<DTOMenuItems?> GetMenuItemAsync(int id)
+        public async Task<MenuItem?> GetMenuItemAsync(int id)
         {
             return await _IRead.GetDataAsync(id);
         }
 
-        public async Task<DTOMenuItems?> AddMenuItemAsync(DTOMenuItemsCRequest menuItem)
+        public async Task<MenuItem?> AddMenuItemAsync(DTOMenuItemsCRequest menuItem)
         {
             return await _IWrite.CreateDataAsync(menuItem);
         }
 
-        public async Task<DTOMenuItems?> UpdateMenuItemAsync(DTOMenuItemsURequest menuItem)
+        public async Task<MenuItem?> UpdateMenuItemAsync(DTOMenuItemsURequest menuItem)
         {
            return await _IWrite.UpdateDataAsync(menuItem);
         }

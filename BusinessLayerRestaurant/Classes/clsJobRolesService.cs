@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using BusinessLayerRestaurant.Interfaces;
 using DataLayerRestaurant.Interfaces;
-using ContractsLayerRestaurant.DTOs.JobRoles;
+using ContractsLayerRestaurant.DTORequest.JobRoles;
 
 
 namespace BusinessLayerRestaurant.Classes
@@ -36,7 +36,7 @@ namespace BusinessLayerRestaurant.Classes
             _Logger = myLogger;
         }
 
-        public async Task<List<DTOJobRoles>> GetAllAsync(int page)
+        public async Task<List<JobRole>> GetAllAsync(int page)
         {
             var list = await _Interface.IData.GetAllJobRolesAsync(page);
             if (list == null || list.Count == 0)
@@ -46,7 +46,7 @@ namespace BusinessLayerRestaurant.Classes
             _Logger.EventLogs($"Jobs Found, Count: {list.Count}", EventLogEntryType.Information);
             return list;
         }
-        public async Task<DTOJobRoles?> GetAsync(int ID)
+        public async Task<JobRole?> GetAsync(int ID)
         {
             var dto = await _Interface.IData.GetJobRoleAsync(ID);
             if (dto == null)
@@ -70,7 +70,7 @@ namespace BusinessLayerRestaurant.Classes
 
 
 
-        public async Task<DTOJobRoles?> CreateAsync(DTOJobRolesCRequest Request)
+        public async Task<JobRole?> CreateAsync(DTOJobRolesCRequest Request)
         {
 
             var dto = await _Interface.IData.AddJobRoleAsync(Request);
@@ -81,7 +81,7 @@ namespace BusinessLayerRestaurant.Classes
             _Logger.EventLogs($"Job Created, Name: {dto.Name}", EventLogEntryType.Information);
             return dto;
         }
-        public async Task<DTOJobRoles?> UpdateAsync(DTOJobRolesURequest Request)
+        public async Task<JobRole?> UpdateAsync(DTOJobRolesURequest Request)
         {
             var dto = await _Interface.IData.UpdateJobRoleAsync(Request);
             if (dto == null)
@@ -117,22 +117,22 @@ namespace BusinessLayerRestaurant.Classes
             _IWrite = iWrite;
         }
 
-        public async Task<List<DTOJobRoles>> GetAllJobRolesAsync(int page)
+        public async Task<List<JobRole>> GetAllJobRolesAsync(int page)
         {
             return await _IRead.GetAllAsync(page);
         }
 
-        public async Task<DTOJobRoles?> GetJobRoleAsync(int ID)
+        public async Task<JobRole?> GetJobRoleAsync(int ID)
         {
             return await _IRead.GetAsync(ID);
         }
 
 
-        public async Task<DTOJobRoles?> AddJobRoleAsync(DTOJobRolesCRequest Request)
+        public async Task<JobRole?> AddJobRoleAsync(DTOJobRolesCRequest Request)
         {
             return await _IWrite.CreateAsync(Request);
         }
-        public async Task<DTOJobRoles?> UpdateJobRoleAsync(DTOJobRolesURequest Request)
+        public async Task<JobRole?> UpdateJobRoleAsync(DTOJobRolesURequest Request)
         {
             return await _IWrite.UpdateAsync(Request);
         }

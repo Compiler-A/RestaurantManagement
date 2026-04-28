@@ -1,6 +1,6 @@
 ﻿using APILayer.Filters;
 using BusinessLayerRestaurant.Interfaces;
-using ContractsLayerRestaurant.DTOs.Tables;
+using ContractsLayerRestaurant.DTORequest.Tables;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
@@ -25,48 +25,48 @@ namespace APILayer.Controllers
         [AllowAnonymous]
         [EnableRateLimiting(NameRateLimitPolicies.GetAll)]
         [HttpGet("all-nopagination", Name = "GetAllTablesNoPagination")]
-        public async Task<ActionResult<ApiResponse<IEnumerable<DTOTables>>>> GetAllNoPaginationAsync()
+        public async Task<ActionResult<ApiResponse<IEnumerable<Table>>>> GetAllNoPaginationAsync()
         {
 
             var data = await dataTablesBusiness.GetAllTablesAsync();
-            return CreateResponse<IEnumerable<DTOTables>>(data, StatusCodes.Status200OK, $"Row: {data.Count}");
+            return CreateResponse<IEnumerable<Table>>(data, StatusCodes.Status200OK, $"Row: {data.Count}");
         }
 
         [AllowAnonymous]
         [EnableRateLimiting(NameRateLimitPolicies.GetAll)]
         [HttpGet(Name = "GetAllTables")]
-        public async Task<ActionResult<ApiResponse<IEnumerable<DTOTables>>>> GetAllAsync([FromQuery] int page = 1)
+        public async Task<ActionResult<ApiResponse<IEnumerable<Table>>>> GetAllAsync([FromQuery] int page = 1)
         {
             if (page <= 0)
             {
                 throw new ArgumentOutOfRangeException("Page must be greater than 0.");
             }
             var data = await dataTablesBusiness.GetAllTablesAsync(page);
-            return CreateResponse<IEnumerable<DTOTables>>(data, StatusCodes.Status200OK, $"Row: {data.Count}");
+            return CreateResponse<IEnumerable<Table>>(data, StatusCodes.Status200OK, $"Row: {data.Count}");
 
         }
 
         [AllowAnonymous]
         [EnableRateLimiting(NameRateLimitPolicies.GetAll)]
         [HttpGet("all-availables", Name = "GetAllTablesAvailables")]
-        public async Task<ActionResult<ApiResponse<IEnumerable<DTOTables>>>> GetAllAvailablesAsync()
+        public async Task<ActionResult<ApiResponse<IEnumerable<Table>>>> GetAllAvailablesAsync()
         {
             var data = await dataTablesBusiness.GetAllTablesAvailablesAsync();
-            return CreateResponse<IEnumerable<DTOTables>>(data, StatusCodes.Status200OK, $"Row: {data.Count}");
+            return CreateResponse<IEnumerable<Table>>(data, StatusCodes.Status200OK, $"Row: {data.Count}");
 
         }
 
         [AllowAnonymous]
         [EnableRateLimiting(NameRateLimitPolicies.GetAll)]
         [HttpGet("allfilter-seats", Name = "GetAllFilterSeats")]
-        public async Task<ActionResult<ApiResponse<IEnumerable<DTOTables>>>> GetlAllFilterSeatsAsync([FromQuery] DTOTablesFilterSeatTableRequest Request)
+        public async Task<ActionResult<ApiResponse<IEnumerable<Table>>>> GetlAllFilterSeatsAsync([FromQuery] DTOTablesFilterSeatTableRequest Request)
         {
             if (Request == null)
                 throw new ArgumentNullException("Request is null!");
 
             
             var list = await dataTablesBusiness.GetTablesFilter2Async(Request);
-            return CreateResponse<IEnumerable<DTOTables>>(list, StatusCodes.Status200OK, $"Row: {list.Count}");
+            return CreateResponse<IEnumerable<Table>>(list, StatusCodes.Status200OK, $"Row: {list.Count}");
 
         }
 
@@ -74,42 +74,42 @@ namespace APILayer.Controllers
         [AllowAnonymous]
         [EnableRateLimiting(NameRateLimitPolicies.GetAll)]
         [HttpGet("allfilter-statustables", Name = "GetAllMenuTables")]
-        public async Task<ActionResult<ApiResponse<IEnumerable<DTOTables>>>> GetAllFilterStatustablesAsync([FromQuery] DTOTablesFilterStatusTableRequest Request)
+        public async Task<ActionResult<ApiResponse<IEnumerable<Table>>>> GetAllFilterStatustablesAsync([FromQuery] DTOTablesFilterStatusTableRequest Request)
         {
             if (Request == null)
                 throw new ArgumentNullException("Request is null!");
 
 
             var list = await dataTablesBusiness.GetTablesFilter1Async(Request);
-            return CreateResponse<IEnumerable<DTOTables>>(list, StatusCodes.Status200OK, $"Row: {list.Count}");
+            return CreateResponse<IEnumerable<Table>>(list, StatusCodes.Status200OK, $"Row: {list.Count}");
 
         }
 
         [AllowAnonymous]
         [EnableRateLimiting(NameRateLimitPolicies.GetAll)]
         [HttpGet("allfilter-global", Name = "GetAllFilterSeatsStatusTables")]
-        public async Task<ActionResult<ApiResponse<IEnumerable<DTOTables>>>> GetAllFilterSeatsStatusTablesAsync([FromQuery] DTOTablesFilterStatusAndSeatTableRequest Request)
+        public async Task<ActionResult<ApiResponse<IEnumerable<Table>>>> GetAllFilterSeatsStatusTablesAsync([FromQuery] DTOTablesFilterStatusAndSeatTableRequest Request)
         {
             if (Request == null)
                 throw new ArgumentNullException("Request is null!");
 
 
             var list = await dataTablesBusiness.GetTablesFilter3Async(Request);
-            return CreateResponse<IEnumerable<DTOTables>>(list, StatusCodes.Status200OK, $"Row: {list.Count}");
+            return CreateResponse<IEnumerable<Table>>(list, StatusCodes.Status200OK, $"Row: {list.Count}");
 
         }
 
         [AllowAnonymous]
         [EnableRateLimiting(NameRateLimitPolicies.GetOne)]
         [HttpGet("table-name", Name = "GetTableByTableName")]
-        public async Task<ActionResult<ApiResponse<DTOTables>>> GetByTableNameAsync([FromQuery] string tableNumber = "")
+        public async Task<ActionResult<ApiResponse<Table>>> GetByTableNameAsync([FromQuery] string tableNumber = "")
         {
             if (!string.IsNullOrWhiteSpace(tableNumber))
             {
                 throw new ArgumentOutOfRangeException("Table Number is Empty!");
             }
             var list = await dataTablesBusiness.GetTableByNameAsync(tableNumber);
-            return CreateResponse<DTOTables>(list!, StatusCodes.Status200OK, $"Found Successfully!");
+            return CreateResponse<Table>(list!, StatusCodes.Status200OK, $"Found Successfully!");
 
         }
 
@@ -117,21 +117,21 @@ namespace APILayer.Controllers
         [AllowAnonymous]
         [EnableRateLimiting(NameRateLimitPolicies.GetOne)]
         [HttpGet("{ID}", Name = "GetTableByID")]
-        public async Task<ActionResult<ApiResponse<DTOTables>>> GetByIDAsync([FromRoute] int ID = 1)
+        public async Task<ActionResult<ApiResponse<Table>>> GetByIDAsync([FromRoute] int ID = 1)
         {
             if (ID <= 0)
             {
                 throw new ArgumentOutOfRangeException("ID must be greater than 0.");
             }
             var data = await dataTablesBusiness.GetTableAsync(ID);
-            return CreateResponse<DTOTables>(data!, StatusCodes.Status200OK, "Found Successfully!");
+            return CreateResponse<Table>(data!, StatusCodes.Status200OK, "Found Successfully!");
 
         }
 
         [Authorize(Roles = "Manager")]
         [EnableRateLimiting(NameRateLimitPolicies.Add)]
         [HttpPost(Name = "AddTable")]
-        public async Task<ActionResult<ApiResponse<DTOTables>>> CreateAsync(DTOTablesCRequest Table)
+        public async Task<ActionResult<ApiResponse<Table>>> CreateAsync(DTOTablesCRequest Table)
         {
 
             if (Table == null)
@@ -146,7 +146,7 @@ namespace APILayer.Controllers
         [Authorize(Roles = "Manager,Cleaner")]
         [EnableRateLimiting(NameRateLimitPolicies.Update)]
         [HttpPut(Name = "UpdateTable")]
-        public async Task<ActionResult<ApiResponse<DTOTables>>> UpdateAsync(DTOTablesURequest Table)
+        public async Task<ActionResult<ApiResponse<Table>>> UpdateAsync(DTOTablesURequest Table)
         {
 
             if (Table == null)
@@ -154,7 +154,7 @@ namespace APILayer.Controllers
 
 
             var dto = await dataTablesBusiness.UpdateTableAsync(Table);
-            return CreateResponse<DTOTables>(dto!, StatusCodes.Status200OK, "Table Updated Successfully!");
+            return CreateResponse<Table>(dto!, StatusCodes.Status200OK, "Table Updated Successfully!");
 
         }
 
