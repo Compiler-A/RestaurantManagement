@@ -18,21 +18,7 @@ namespace BusinessLayerRestaurant.Interfaces
     { }
 
 
-    public interface IStatusTablesServiceReadable
-    {
-        Task<List<StatusTable>> GetAllStatusTablesAsync(int page);
-        Task<StatusTable?> GetStatusTableAsync(int id);
-        Task<bool> isFindStatusTableAsync(int id);
-    }
-
-    public interface IStatusTablesServiceWritable
-    {
-        Task<StatusTable?> AddStatusTableAsync(DTOStatusTablesCRequest Request);
-        Task<StatusTable?> UpdateStatusTableAsync(DTOStatusTablesURequest Request);
-        Task<bool> DeleteStatusTableAsync(int ID);
-
-    }
-    public interface ICRUDStatusTablesService : IStatusTablesServiceWritable, IStatusTablesServiceReadable
+    public interface ICRUDStatusTablesService : IStatusTablesServiceWriter, IStatusTablesServiceReader
     { }
 
     public interface IStatusTablesService : ICRUDStatusTablesService

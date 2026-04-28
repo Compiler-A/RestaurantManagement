@@ -37,7 +37,7 @@ namespace BusinessLayerRestaurant.Classes
 
         public async Task<StatusTable?> GetAsync(int ID)
         {
-            var result = await _Interface.IData.GetStatuTableAsync(ID);
+            var result = await _Interface.IData.GetDataAsync(ID);
             if (result == null)
             {
                 throw new KeyNotFoundException("Not Found!");
@@ -49,7 +49,7 @@ namespace BusinessLayerRestaurant.Classes
 
         public async Task<List<StatusTable>> GetAllAsync(int page)
         {
-            var result = await _Interface.IData.GetAllStatustablesAsync(page);
+            var result = await _Interface.IData.GetAllDataAsync(page);
             if (result == null || result.Count == 0)
                 throw new KeyNotFoundException("Not Found!");
 
@@ -59,7 +59,7 @@ namespace BusinessLayerRestaurant.Classes
 
         public async Task<bool> isFindAsync(int ID)
         {
-            var result = await _Interface.IData.isFindAsync(ID);
+            var result = await _Interface.IData.isFindDataAsync(ID);
             if (!result)
             {
                 throw new KeyNotFoundException("Not Found!");
@@ -84,7 +84,7 @@ namespace BusinessLayerRestaurant.Classes
         public async Task<StatusTable?> CreateAsync(DTOStatusTablesCRequest Request)
         {
 
-            var dto = await _Interface.IData.AddStatusTableAsync(Request);
+            var dto = await _Interface.IData.CreateDataAsync(Request);
             if (dto != null)
             {
                 _Logger.EventLogs($"StatusTable Created, Name: {dto.Name}", EventLogEntryType.Information);
@@ -95,7 +95,7 @@ namespace BusinessLayerRestaurant.Classes
         public async Task<StatusTable?> UpdateAsync(DTOStatusTablesURequest Request)
         {
 
-            var dto = await _Interface.IData.UpdateStatusTableAsync(Request);
+            var dto = await _Interface.IData.UpdateDataAsync(Request);
             if (dto != null)
             {
                 _Logger.EventLogs($"StatusTable Updated, Name: {dto.Name}", EventLogEntryType.Information);
@@ -106,13 +106,13 @@ namespace BusinessLayerRestaurant.Classes
 
         public async Task<bool> DeleteAsync(int ID)
         {
-            var result = await _Interface.IData.DeleteStatusTableAsync(ID);
+            var result = await _Interface.IData.DeleteDataAsync(ID);
             if (!result)
             {
                 _Logger.EventLogs($"StatusTable Deleted, ID: {ID}", EventLogEntryType.Information);
                 throw new InvalidOperationException("Not Deleted!");
             }
-            return await _Interface.IData.DeleteStatusTableAsync(ID);
+            return result;
         }
     }
 
@@ -129,32 +129,32 @@ namespace BusinessLayerRestaurant.Classes
             _IWrite = write;
         }
 
-        public async Task<List<StatusTable>> GetAllStatusTablesAsync(int page)
+        public async Task<List<StatusTable>> GetAllAsync(int page)
         {
             return await _IRead.GetAllAsync(page);
         }
 
-        public async Task<StatusTable?> GetStatusTableAsync(int ID)
+        public async Task<StatusTable?> GetAsync(int ID)
         {
             return await _IRead.GetAsync(ID);
         }
 
-        public async Task<bool> isFindStatusTableAsync(int id)
+        public async Task<bool> isFindAsync(int id)
         {
             return await _IRead.isFindAsync(id);
         }
 
 
-        public async Task<StatusTable?> AddStatusTableAsync(DTOStatusTablesCRequest Request)
+        public async Task<StatusTable?> CreateAsync(DTOStatusTablesCRequest Request)
         {
             return await _IWrite.CreateAsync(Request);
         }
-        public async Task<StatusTable?> UpdateStatusTableAsync(DTOStatusTablesURequest Request)
+        public async Task<StatusTable?> UpdateAsync(DTOStatusTablesURequest Request)
         {
             return await _IWrite.UpdateAsync(Request);
         }
 
-        public async Task<bool> DeleteStatusTableAsync(int ID)
+        public async Task<bool> DeleteAsync(int ID)
         {
             return await _IWrite.DeleteAsync(ID);
         }

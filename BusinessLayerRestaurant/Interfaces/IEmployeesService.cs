@@ -27,29 +27,13 @@ namespace BusinessLayerRestaurant.Interfaces
         Task<Employee?> GetAsync(string UserName);
     }
 
-    public interface IEmployeesServiceReadable
-    {
-        Task<List<Employee>> GetAllEmployeesAsync(int page);
-        Task<Employee?> GetEmployeeAsync(int ID);
-        Task<Employee?> GetEmployeeAsync(string UserName);
-    }
-
     public interface IEmployeesServiceWriter 
         : IServiceWriter<Employee, DTOEmployeesCRequest, DTOEmployeesURequest>
     {
         Task<bool> ChangePasswordAsync(DTOEmployeesChangedPassword Changed);
 
     }
-
-    public interface IEmployeesServiceWritable
-    {
-        Task<Employee?> CreateEmployeeAsync(DTOEmployeesCRequest Request);
-        Task<Employee?> UpdateEmployeeAsync(DTOEmployeesURequest Request);
-        Task<bool> DeleteEmployeeAsync(int ID);
-        Task<bool> ChangePasswordAsync(DTOEmployeesChangedPassword Changed);
-    }
-
-    public interface ICRUDEmployeesService : IEmployeesServiceWritable, IEmployeesServiceReadable
+    public interface ICRUDEmployeesService : IEmployeesServiceReader, IEmployeesServiceWriter
     { }
 
     public interface IEmployeesService : ICRUDEmployeesService, IEmployeesServiceContainers

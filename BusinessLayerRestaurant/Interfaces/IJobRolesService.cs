@@ -15,20 +15,8 @@ namespace BusinessLayerRestaurant.Interfaces
     public interface IJobRolesServiceWriter : IServiceWriter<JobRole, DTOJobRolesCRequest, DTOJobRolesURequest>
     { }
 
-    public interface IJobRolesServiceReadable
-    {
-        Task<List<JobRole>> GetAllJobRolesAsync(int page);
-        Task<JobRole?> GetJobRoleAsync(int ID);
-    }
 
-    public interface IJobRolesServiceWritable
-    {
-        Task<JobRole?> AddJobRoleAsync(DTOJobRolesCRequest Request);
-        Task<JobRole?> UpdateJobRoleAsync(DTOJobRolesURequest Request);
-        Task<bool> DeleteJobRoleAsync(int ID);
-    }
-
-    public interface ICRUDJobRolesService : IJobRolesServiceReadable, IJobRolesServiceWritable
+    public interface ICRUDJobRolesService : IJobRolesServiceReader, IJobRolesServiceWriter
     { }
 
     public interface IJobRolesService : ICRUDJobRolesService

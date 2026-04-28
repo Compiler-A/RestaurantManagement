@@ -35,7 +35,7 @@ namespace BusinessLayerRestaurant.Classes
         }
         public async Task<List<StatusOrder>> GetAllAsync(int page)
         {
-            var list = await _Interface.IData.GetAllStatusOrdersAsync(page);
+            var list = await _Interface.IData.GetAllDataAsync(page);
             if (list == null || list.Count == 0)
             {
                 throw new KeyNotFoundException("Not Found!");
@@ -47,7 +47,7 @@ namespace BusinessLayerRestaurant.Classes
 
         public async Task<StatusOrder?> GetAsync(int ID)
         {
-            var dto = await _Interface.IData.GetStatusOrderAsync(ID);
+            var dto = await _Interface.IData.GetDataAsync(ID);
             if (dto == null)
             {
                 throw new KeyNotFoundException("Not Found!");
@@ -57,7 +57,7 @@ namespace BusinessLayerRestaurant.Classes
             return dto;
         }
     }
-    public class clsStatusOrdersWriter : IWritableBStatusOrders
+    public class clsStatusOrdersWriter : IStatusOrdersServiceWriter
     {
         private IStatusOrdersServiceContainer _Interface;
         private IMyLogger _Logger;
@@ -72,7 +72,7 @@ namespace BusinessLayerRestaurant.Classes
         public async Task<StatusOrder?> CreateAsync(DTOStatusOrdersCRequest Request)
         {
 
-            var dto = await _Interface.IData.AddStatusOrderAsync(Request);
+            var dto = await _Interface.IData.CreateDataAsync(Request);
             if (dto == null)
             {
                 throw new InvalidOperationException("Not Created!");
@@ -82,7 +82,7 @@ namespace BusinessLayerRestaurant.Classes
         }
         public async Task<StatusOrder?> UpdateAsync(DTOStatusOrdersURequest Request)
         {  
-            var dto = await _Interface.IData.UpdateStatusOrderAsync(Request);
+            var dto = await _Interface.IData.UpdateDataAsync(Request);
             if (dto == null)
             {
                 throw new InvalidOperationException("Not Updated!");
@@ -94,7 +94,7 @@ namespace BusinessLayerRestaurant.Classes
 
         public async Task<bool> DeleteAsync(int ID)
         {
-            var isDeleted = await _Interface.IData.DeleteStatusOrderAsync(ID);
+            var isDeleted = await _Interface.IData.DeleteDataAsync(ID);
             if (!isDeleted)
             {
                 throw new InvalidOperationException("Not Deleted!");
@@ -109,36 +109,36 @@ namespace BusinessLayerRestaurant.Classes
     public class clsStatusOrdersService : IStatusOrdersService
     {
         private IStatusOrdersServiceReader _IRead;
-        private IWritableBStatusOrders _IWrite;
+        private IStatusOrdersServiceWriter _IWrite;
 
-        public clsStatusOrdersService(IStatusOrdersServiceReader read, IWritableBStatusOrders write)
+        public clsStatusOrdersService(IStatusOrdersServiceReader read, IStatusOrdersServiceWriter write)
         {
             _IRead = read;
             _IWrite = write;
         }
 
 
-        public async Task<List<StatusOrder>> GetAllStatusOrdersAsync(int page)
+        public async Task<List<StatusOrder>> GetAllAsync(int page)
         {
             return await _IRead.GetAllAsync(page);
         }
 
-        public async Task<StatusOrder?> GetStatusOrdersAsync(int ID)
+        public async Task<StatusOrder?> GetAsync(int ID)
         {
             return await _IRead.GetAsync(ID);
         }
 
 
-        public async Task<StatusOrder?> AddStatusOrdersAsync(DTOStatusOrdersCRequest Request)
+        public async Task<StatusOrder?> CreateAsync(DTOStatusOrdersCRequest Request)
         {
             return await _IWrite.CreateAsync(Request);
         }
-        public async Task<StatusOrder?> UpdateStatusOrdersAsync(DTOStatusOrdersURequest Request)
+        public async Task<StatusOrder?> UpdateAsync(DTOStatusOrdersURequest Request)
         {
             return await _IWrite.UpdateAsync(Request);
         }
 
-        public async Task<bool> DeleteStatusOrdersAsync(int ID)
+        public async Task<bool> DeleteAsync(int ID)
         {
             return await _IWrite.DeleteAsync(ID);
         }

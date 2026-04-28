@@ -49,7 +49,7 @@ namespace BusinessLayerRestaurant.Classes
 
         public async Task LoadDataAsync(MenuItem item)
         {
-            item.TypeItems = await _BusinessTypeItem.GetTypeItemAsync(item.TypeItemID);
+            item.TypeItems = await _BusinessTypeItem.GetAsync(item.TypeItemID);
         }
     }
 
@@ -63,7 +63,7 @@ namespace BusinessLayerRestaurant.Classes
 
         public async Task LoadDataAsync(MenuItem item)
         {
-            item.StatusMenus = await _Business.GetStatusMenuAsync(item.StatusMenuID);
+            item.StatusMenus = await _Business.GetAsync(item.StatusMenuID);
         }
     }
 
@@ -99,7 +99,7 @@ namespace BusinessLayerRestaurant.Classes
 
         public async Task<MenuItem?> GetAsync(int ID)
         {
-            var dto = await _Interface.IData.GetMenuItemAsync(ID);
+            var dto = await _Interface.IData.GetDataAsync(ID);
             if (dto == null)
             {
                 throw new KeyNotFoundException("Not Found!");
@@ -112,7 +112,7 @@ namespace BusinessLayerRestaurant.Classes
 
         public async Task<List<MenuItem>> GetAllAsync(int Page)
         {
-            var list = await _Interface.IData.GetAllMenuItemsAsync(Page);
+            var list = await _Interface.IData.GetAllDataAsync(Page);
             if (list == null || list.Count == 0)
             {
                 throw new KeyNotFoundException("Not Found!");
@@ -128,7 +128,7 @@ namespace BusinessLayerRestaurant.Classes
 
         public async Task<List<MenuItem>> GetAllAvailablesAsync()
         {
-            var list = await _Interface.IData.GetAllMenuItemsAvailablesAsync();
+            var list = await _Interface.IData.GetAllDataAvailablesAsync();
             if (list == null || list.Count == 0)
             {
                 throw new KeyNotFoundException("Not Found!");
@@ -144,7 +144,7 @@ namespace BusinessLayerRestaurant.Classes
 
         public async Task<List<MenuItem>> GetAllFiltersAsync(DTOMenuItemsFilterRequest Request)
         {
-            var list = await _Interface.IData.GetAllMenuItemsFiltersAsync(Request);
+            var list = await _Interface.IData.GetAllDataFiltersAsync(Request);
             if (list == null || list.Count == 0)
             {
                 throw new KeyNotFoundException("Not Found!");
@@ -172,7 +172,7 @@ namespace BusinessLayerRestaurant.Classes
 
         public async Task<MenuItem?> CreateAsync(DTOMenuItemsCRequest Request)
         {
-            var dto  = await _Interface.IData.AddMenuItemAsync(Request);
+            var dto  = await _Interface.IData.CreateDataAsync(Request);
             if (dto == null)
             {
                 throw new InvalidOperationException("Not Created!");
@@ -185,7 +185,7 @@ namespace BusinessLayerRestaurant.Classes
         
         public async Task<MenuItem?> UpdateAsync(DTOMenuItemsURequest Request)
         {
-            var dto = await _Interface.IData.UpdateMenuItemAsync(Request);
+            var dto = await _Interface.IData.UpdateDataAsync(Request);
             if (dto == null)
             {
                 throw new InvalidOperationException("Not Updated!");
@@ -197,7 +197,7 @@ namespace BusinessLayerRestaurant.Classes
 
         public async Task<bool> DeleteAsync(int ID)
         {
-            var isDeleted = await _Interface.IData.DeleteMenuItemAsync(ID);
+            var isDeleted = await _Interface.IData.DeleteDataAsync(ID);
             if (!isDeleted)
             {
                     throw new InvalidOperationException("Not Deleted!");
@@ -234,36 +234,36 @@ namespace BusinessLayerRestaurant.Classes
             set => _Interface.IBusinessTypeItem = value;
         }
 
-        public async Task<MenuItem?> GetMenuItemAsync(int ID)
+        public async Task<MenuItem?> GetAsync(int ID)
         {
             return await _IRead.GetAsync(ID);
         }
-        public async Task<List<MenuItem>> GetAllMenuItemsAsync(int Page)
+        public async Task<List<MenuItem>> GetAllAsync(int Page)
         {
             return await _IRead.GetAllAsync(Page);
         }
 
-        public async Task<List<MenuItem>> GetAllMenuItemsAvailablesAsync()
+        public async Task<List<MenuItem>> GetAllAvailablesAsync()
         {
             return await _IRead.GetAllAvailablesAsync();
         }
 
-        public async Task<List<MenuItem>> GetAllMenuItemsFiltersAsync(DTOMenuItemsFilterRequest Request)
+        public async Task<List<MenuItem>> GetAllFiltersAsync(DTOMenuItemsFilterRequest Request)
         {
             return await _IRead.GetAllFiltersAsync(Request);
         }
 
-        public async Task<MenuItem?> AddMenuItemAsync(DTOMenuItemsCRequest Request)
+        public async Task<MenuItem?> CreateAsync(DTOMenuItemsCRequest Request)
         {
             return await _IWrite.CreateAsync(Request);
         }
 
-        public async Task<MenuItem?> UpdateMenuItemAsync(DTOMenuItemsURequest Request)
+        public async Task<MenuItem?> UpdateAsync(DTOMenuItemsURequest Request)
         {
             return await _IWrite.UpdateAsync(Request);
         }
 
-        public async Task<bool> DeleteMenuItemAsync(int ID)
+        public async Task<bool> DeleteAsync(int ID)
         {
             return await _IWrite.DeleteAsync(ID); 
         }

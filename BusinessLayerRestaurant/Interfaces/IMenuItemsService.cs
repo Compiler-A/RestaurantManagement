@@ -11,16 +11,6 @@ namespace BusinessLayerRestaurant.Interfaces
         ITypeItemsService IBusinessTypeItem { get; set; }
         IStatusMenusService IBusinessStatusMenu { get; set; }
     }
-
-    public interface IMenuItemsServiceReader : IServiceReader<MenuItem>
-    {
-        Task<List<MenuItem>> GetAllFiltersAsync(DTOMenuItemsFilterRequest Request);
-        Task<List<MenuItem>> GetAllAvailablesAsync();
-    }
-
-    public interface IMenuItemsServiceWriter 
-        : IServiceWriter<MenuItem, DTOMenuItemsCRequest, DTOMenuItemsURequest>
-    { }
     public interface IMenuItemsServiceComposition
     {
         Task LoadDataAsync(MenuItem item);
@@ -32,23 +22,17 @@ namespace BusinessLayerRestaurant.Interfaces
         IStatusMenusService IStatusMenu { get; set; }
     }
 
-
-    public interface IMenuItemsServiceReadable
+    public interface IMenuItemsServiceReader : IServiceReader<MenuItem>
     {
-        Task<List<MenuItem>> GetAllMenuItemsAsync(int page);
-        Task<MenuItem?> GetMenuItemAsync(int id);
-        Task<List<MenuItem>> GetAllMenuItemsFiltersAsync(DTOMenuItemsFilterRequest Request);
-        Task<List<MenuItem>> GetAllMenuItemsAvailablesAsync();
+        Task<List<MenuItem>> GetAllFiltersAsync(DTOMenuItemsFilterRequest Request);
+        Task<List<MenuItem>> GetAllAvailablesAsync();
     }
 
-    public interface IMenuItemsServiceWritable
-    {
-        Task<MenuItem?> AddMenuItemAsync(DTOMenuItemsCRequest Request);
-        Task<MenuItem?> UpdateMenuItemAsync(DTOMenuItemsURequest Request);
-        Task<bool> DeleteMenuItemAsync(int ID);
-    }
+    public interface IMenuItemsServiceWriter 
+        : IServiceWriter<MenuItem, DTOMenuItemsCRequest, DTOMenuItemsURequest>
+    { }
 
-    public interface ICRUDMenuItemsService : IMenuItemsServiceReadable , IMenuItemsServiceWritable
+    public interface ICRUDMenuItemsService : IMenuItemsServiceReader , IMenuItemsServiceWriter
     { }
 
     public interface IMenuItemsService : ICRUDMenuItemsService, IMenuItemsServiceContainers { }

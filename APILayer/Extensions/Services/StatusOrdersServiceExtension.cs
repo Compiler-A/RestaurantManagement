@@ -13,7 +13,7 @@ namespace APILayer.Extensions.Services
             Services.AddScoped<IStatusOrdersRepositoryWriter, clsStatusOrdersRepositoryWriter>();
             Services.AddScoped<IStatusOrdersRepository, clsStatusOrdersRepository>();
             Services.AddScoped<IStatusOrdersServiceReader, clsStatusOrdersReader>();
-            Services.AddScoped<IWritableBStatusOrders, clsStatusOrdersWriter>();
+            Services.AddScoped<IStatusOrdersServiceWriter, clsStatusOrdersWriter>();
             Services.AddScoped<IStatusOrdersServiceContainer, clsStatusOrdersContainer>();
             Services.AddScoped<IStatusOrdersService, clsStatusOrdersService>();
             return Services;

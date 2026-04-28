@@ -36,7 +36,7 @@ namespace BusinessLayerRestaurant.Classes
         }
         public async Task<TypeItem?> GetAsync(int ID)
         {
-            var result  = await _Interface.IData.GetTypeItemAsync(ID);
+            var result  = await _Interface.IData.GetDataAsync(ID);
             if (result == null)
             {
                 throw new KeyNotFoundException("Not Found!");
@@ -47,7 +47,7 @@ namespace BusinessLayerRestaurant.Classes
         }
         public async Task<List<TypeItem>> GetAllAsync(int page)
         {
-            var result = await _Interface.IData.GetAllTypeItemsAsync(page);
+            var result = await _Interface.IData.GetAllDataAsync(page);
             if (result == null || result.Count == 0)
             {
                 throw new KeyNotFoundException("Not Found!");
@@ -70,7 +70,7 @@ namespace BusinessLayerRestaurant.Classes
 
         public async Task<bool> DeleteAsync(int ID)
         {
-            var isDeleted = await _Interface.IData.DeleteTypeItemAsync(ID);
+            var isDeleted = await _Interface.IData.DeleteDataAsync(ID);
             if (!isDeleted)
             {
                 throw new InvalidOperationException("Not Deleted");
@@ -81,7 +81,7 @@ namespace BusinessLayerRestaurant.Classes
         }
         public async Task<TypeItem?> UpdateAsync(DTOTypeItemsURequest Request)
         { 
-            var result = await _Interface.IData.UpdateTypeItemAsync(Request);
+            var result = await _Interface.IData.UpdateDataAsync(Request);
             if (result == null)
             {
                 throw new InvalidOperationException("Not Updated!");
@@ -93,7 +93,7 @@ namespace BusinessLayerRestaurant.Classes
 
         public async Task<TypeItem?> CreateAsync(DTOTypeItemsCRequest Request)
         {
-            var result = await _Interface.IData.AddTypeItemAsync(Request);
+            var result = await _Interface.IData.CreateDataAsync(Request);
             if (result == null)
             {
                 throw new InvalidOperationException("Not Created!");
@@ -117,25 +117,25 @@ namespace BusinessLayerRestaurant.Classes
             _IRead = read;
         }
 
-        public async Task<TypeItem?> GetTypeItemAsync(int ID)
+        public async Task<TypeItem?> GetAsync(int ID)
         {
             return await _IRead.GetAsync(ID);
         }
-        public async Task<List<TypeItem>> GetAllTypeItemsAsync(int page)
+        public async Task<List<TypeItem>> GetAllAsync(int page)
         {
             return await _IRead.GetAllAsync(page);
         }
 
-        public async Task<TypeItem?> AddTypeItemAsync(DTOTypeItemsCRequest Request)
+        public async Task<TypeItem?> CreateAsync(DTOTypeItemsCRequest Request)
         {
             return await _IWrite.CreateAsync(Request);
         }
-        public async Task<TypeItem?> UpdateTypeItemAsync(DTOTypeItemsURequest Request)
+        public async Task<TypeItem?> UpdateAsync(DTOTypeItemsURequest Request)
         {
             return await _IWrite.UpdateAsync(Request);
         }
 
-        public async Task<bool> DeleteTypeItemAsync(int ID)
+        public async Task<bool> DeleteAsync(int ID)
         {
             return await _IWrite.DeleteAsync(ID);
         }

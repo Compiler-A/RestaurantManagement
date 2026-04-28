@@ -38,7 +38,7 @@ namespace BusinessLayerRestaurant.Classes
 
         public async Task<List<JobRole>> GetAllAsync(int page)
         {
-            var list = await _Interface.IData.GetAllJobRolesAsync(page);
+            var list = await _Interface.IData.GetAllDataAsync(page);
             if (list == null || list.Count == 0)
             {
                 throw new KeyNotFoundException("Not Found!");
@@ -48,7 +48,7 @@ namespace BusinessLayerRestaurant.Classes
         }
         public async Task<JobRole?> GetAsync(int ID)
         {
-            var dto = await _Interface.IData.GetJobRoleAsync(ID);
+            var dto = await _Interface.IData.GetDataAsync(ID);
             if (dto == null)
             {
                 throw new KeyNotFoundException("Not Found!");
@@ -73,7 +73,7 @@ namespace BusinessLayerRestaurant.Classes
         public async Task<JobRole?> CreateAsync(DTOJobRolesCRequest Request)
         {
 
-            var dto = await _Interface.IData.AddJobRoleAsync(Request);
+            var dto = await _Interface.IData.CreateDataAsync(Request);
             if (dto == null)
             {
                 throw new InvalidOperationException("Not Created!");
@@ -83,7 +83,7 @@ namespace BusinessLayerRestaurant.Classes
         }
         public async Task<JobRole?> UpdateAsync(DTOJobRolesURequest Request)
         {
-            var dto = await _Interface.IData.UpdateJobRoleAsync(Request);
+            var dto = await _Interface.IData.UpdateDataAsync(Request);
             if (dto == null)
             {
                 throw new InvalidOperationException("Not Update!");
@@ -94,7 +94,7 @@ namespace BusinessLayerRestaurant.Classes
 
         public async Task<bool> DeleteAsync(int ID)
         {
-            var result = await _Interface.IData.DeleteJobRoleAsync(ID);
+            var result = await _Interface.IData.DeleteDataAsync(ID);
             if (!result)
             {
                 throw new InvalidOperationException("Not Delete!");
@@ -117,27 +117,27 @@ namespace BusinessLayerRestaurant.Classes
             _IWrite = iWrite;
         }
 
-        public async Task<List<JobRole>> GetAllJobRolesAsync(int page)
+        public async Task<List<JobRole>> GetAllAsync(int page)
         {
             return await _IRead.GetAllAsync(page);
         }
 
-        public async Task<JobRole?> GetJobRoleAsync(int ID)
+        public async Task<JobRole?> GetAsync(int ID)
         {
             return await _IRead.GetAsync(ID);
         }
 
 
-        public async Task<JobRole?> AddJobRoleAsync(DTOJobRolesCRequest Request)
+        public async Task<JobRole?> CreateAsync(DTOJobRolesCRequest Request)
         {
             return await _IWrite.CreateAsync(Request);
         }
-        public async Task<JobRole?> UpdateJobRoleAsync(DTOJobRolesURequest Request)
+        public async Task<JobRole?> UpdateAsync(DTOJobRolesURequest Request)
         {
             return await _IWrite.UpdateAsync(Request);
         }
 
-        public async Task<bool> DeleteJobRoleAsync(int ID)
+        public async Task<bool> DeleteAsync(int ID)
         {
             return await _IWrite.DeleteAsync(ID);
         }

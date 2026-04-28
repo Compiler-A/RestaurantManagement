@@ -43,9 +43,8 @@ namespace BusinessLayerRestaurant.Classes
 
         public async Task LoadDataAsync(Employee item)
         {
-            item.JobRoles = await _IData.GetJobRoleAsync(item.JobID);
+            item.JobRoles = await _IData.GetAsync(item.JobID);
         }
-
     }
 
     public class clsCompositionEmployeeesLoader: IEmployeesServiceComposition
@@ -82,7 +81,7 @@ namespace BusinessLayerRestaurant.Classes
 
         public async Task<Employee?> GetAsync(int ID)
         {
-            var result = await _Interface.IData.GetEmployeeAsync(ID);
+            var result = await _Interface.IData.GetDataAsync(ID);
             if (result == null)
             {
                 throw new KeyNotFoundException("Not Found!");
@@ -95,7 +94,7 @@ namespace BusinessLayerRestaurant.Classes
 
         public async Task<Employee?> GetAsync(string UserName)
         {
-            var dto = await _Interface.IData.GetEmployeeAsync(UserName);
+            var dto = await _Interface.IData.GetDataAsync(UserName);
             if (dto == null)
             {
                 throw new KeyNotFoundException("Not Found!");
@@ -107,7 +106,7 @@ namespace BusinessLayerRestaurant.Classes
 
         public async Task<List<Employee>> GetAllAsync(int page)
         {
-            var result = await _Interface.IData.GetAllEmployeesAsync(page);
+            var result = await _Interface.IData.GetAllDataAsync(page);
 
             if (result == null || result.Count == 0)
             {
@@ -139,7 +138,7 @@ namespace BusinessLayerRestaurant.Classes
 
         public async Task<bool> ChangePasswordAsync(DTOEmployeesChangedPassword Request)
         {
-            var Data = await _Interface.IData.GetEmployeeAsync(Request.ID);
+            var Data = await _Interface.IData.GetDataAsync(Request.ID);
             if (Data == null)
             {
                 throw new KeyNotFoundException("Not Found!");
@@ -152,7 +151,7 @@ namespace BusinessLayerRestaurant.Classes
 
             Request.NewPassword = _HashingService.BCryptHashing(Request.NewPassword);
 
-            var result = await _Interface.IData.ChangedPasswordEmployeeAsync(Request);
+            var result = await _Interface.IData.ChangedDataPasswordAsync(Request);
             if (!result)
             {
                 throw new InvalidOperationException("Not Changed!");
@@ -165,7 +164,7 @@ namespace BusinessLayerRestaurant.Classes
         {
             request.Password = _HashingService.BCryptHashing(request.Password);
 
-            var result = await _Interface.IData.AddEmployeeAsync(request);
+            var result = await _Interface.IData.CreateDataAsync(request);
             if (result == null)
             {
                 throw new InvalidOperationException("Not Created!");
@@ -180,7 +179,7 @@ namespace BusinessLayerRestaurant.Classes
 
             request.Password = _HashingService.BCryptHashing(request.Password);
 
-            var result = await _Interface.IData.UpdateEmployeeAsync(request);
+            var result = await _Interface.IData.UpdateDataAsync(request);
             if (result == null)
             {
                 throw new InvalidOperationException("Not Updated!");
@@ -193,7 +192,7 @@ namespace BusinessLayerRestaurant.Classes
 
         public async Task<bool> DeleteAsync(int ID)
         {
-            var result = await _Interface.IData.DeleteEmployeeAsync(ID);
+            var result = await _Interface.IData.DeleteDataAsync(ID);
             if (!result)
             {
                 throw new InvalidOperationException("Not Deleted!");
@@ -229,32 +228,32 @@ namespace BusinessLayerRestaurant.Classes
         }
         
 
-        public async Task<Employee?> GetEmployeeAsync(int ID)
+        public async Task<Employee?> GetAsync(int ID)
         {
             return await _IRead.GetAsync(ID);
         }
 
-        public async Task<Employee?> GetEmployeeAsync(string Name)
+        public async Task<Employee?> GetAsync(string Name)
         {
             return await _IRead.GetAsync(Name);
         }
 
-        public async Task<List<Employee>> GetAllEmployeesAsync(int Page)
+        public async Task<List<Employee>> GetAllAsync(int Page)
         {
            return await _IRead.GetAllAsync(Page);
         }
 
-        public async Task<Employee?> CreateEmployeeAsync(DTOEmployeesCRequest request)
+        public async Task<Employee?> CreateAsync(DTOEmployeesCRequest request)
         {
             return await _IWrite.CreateAsync(request);
         }
 
-        public async Task<Employee?> UpdateEmployeeAsync(DTOEmployeesURequest request)
+        public async Task<Employee?> UpdateAsync(DTOEmployeesURequest request)
         {
             return await _IWrite.UpdateAsync(request);
         }
 
-        public async Task<bool> DeleteEmployeeAsync(int ID)
+        public async Task<bool> DeleteAsync(int ID)
         {
             return await _IWrite.DeleteAsync(ID);
         }

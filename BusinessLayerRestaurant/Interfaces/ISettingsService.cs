@@ -14,18 +14,7 @@ namespace BusinessLayerRestaurant.Interfaces
     public interface ISettingsServiceWriter : IServiceWriter<Setting, DTOSettingsCRequest, DTOSettingsURequest>
     { }
 
-    public interface ISettingsServiceReadable
-    {
-        Task<List<Setting>> GetAllSettingsAsync(int page);
-        Task<Setting?> GetSettingAsync(int ID);
-    }
-    public interface ISettingsServiceWritable
-    {
-        Task<Setting?> AddSettingAsync(DTOSettingsCRequest setting);
-        Task<Setting?> UpdateSettingAsync(DTOSettingsURequest setting);
-        Task<bool> DeleteSettingAsync(int ID);
-    }
-    public interface ICRUDSettingsService : ISettingsServiceWritable, ISettingsServiceReadable
+    public interface ICRUDSettingsService : ISettingsServiceWriter, ISettingsServiceReader
     { }
     public interface ISettingsService : ICRUDSettingsService
     {

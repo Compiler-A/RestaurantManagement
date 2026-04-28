@@ -43,7 +43,7 @@ namespace BusinessLayerRestaurant.Classes
 
         public async Task LoadDataAsync(Table item)
         {
-            item.StatusTable = await _IData.GetStatusTableAsync(item.StatusTableID);
+            item.StatusTable = await _IData.GetAsync(item.StatusTableID);
         }
     }
 
@@ -87,7 +87,7 @@ namespace BusinessLayerRestaurant.Classes
 
         public async Task<List<Table>> GetAllAsync(int page)
         {
-            var list = await _Interface.IData.GetAlltablesAsync(page);
+            var list = await _Interface.IData.GetAllDataAsync(page);
             if (list == null || list.Count == 0)
             {
                 throw new KeyNotFoundException("Not Found!");
@@ -97,7 +97,7 @@ namespace BusinessLayerRestaurant.Classes
 
         public async Task<Table?> GetAsync(int id)
         {
-            var dto = await _Interface.IData.GetTableAsync(id);
+            var dto = await _Interface.IData.GetDataAsync(id);
             if (dto == null)
             {
                 throw new KeyNotFoundException("Not Found!");
@@ -110,7 +110,7 @@ namespace BusinessLayerRestaurant.Classes
 
         public async Task<List<Table>> GetAllAsync()
         {
-            var list = await _Interface.IData.GetAlltablesAsync();
+            var list = await _Interface.IData.GetAllDataAsync();
             if (list == null || list.Count == 0)
             {
                 throw new KeyNotFoundException("Not Found!");
@@ -119,7 +119,7 @@ namespace BusinessLayerRestaurant.Classes
         }
         public async Task<List<Table>> GetFilter1Async(DTOTablesFilterStatusTableRequest Request)
         {
-            var list = await _Interface.IData.GetFilterStatusTablesAsync(Request);
+            var list = await _Interface.IData.GetFilterStatusDataAsync(Request);
             if (list == null || list.Count == 0)
             {
                 throw new KeyNotFoundException("Not Found!");
@@ -128,7 +128,7 @@ namespace BusinessLayerRestaurant.Classes
         }
         public async Task<List<Table>> GetFilter2Async(DTOTablesFilterSeatTableRequest Request)
         {
-            var list = await _Interface.IData.GetFilterSeatTablesAsync(Request);
+            var list = await _Interface.IData.GetFilterSeatDataAsync(Request);
             if (list == null || list.Count == 0)
             {
                 throw new KeyNotFoundException("Not Found!");
@@ -138,7 +138,7 @@ namespace BusinessLayerRestaurant.Classes
         }
         public async Task<Table?> GetByNameAsync(string tableNumber)
         {
-            var dto = await _Interface.IData.GetTableByNameAsync(tableNumber);
+            var dto = await _Interface.IData.GetDataByNameAsync(tableNumber);
             if (dto  == null)
             {
                 throw new KeyNotFoundException("Not Found!");
@@ -150,7 +150,7 @@ namespace BusinessLayerRestaurant.Classes
         }
         public async Task<List<Table>> GetFilter3Async(DTOTablesFilterStatusAndSeatTableRequest Request)
         {
-            var list = await _Interface.IData.GetFilterStatusAndSeatTablesAsync(Request);
+            var list = await _Interface.IData.GetFilterStatusAndSeatDataAsync(Request);
             if (list == null || list.Count == 0)
             {
                 throw new KeyNotFoundException("Not Found!");
@@ -159,7 +159,7 @@ namespace BusinessLayerRestaurant.Classes
         }
         public async Task<List<Table>> GetAllAvailablesAsync()
         {
-            var list = await _Interface.IData.GetAllTablesAvailablesAsync();
+            var list = await _Interface.IData.GetAllDataAvailablesAsync();
             if (list == null || list.Count == 0)
             {
                 throw new KeyNotFoundException("Not Found!");
@@ -181,7 +181,7 @@ namespace BusinessLayerRestaurant.Classes
         public async Task<Table?> CreateAsync(DTOTablesCRequest Request)
         {
 
-            var dto = await _Interfaces.IData.AddTableAsync(Request);
+            var dto = await _Interfaces.IData.CreateDataAsync(Request);
             if (dto != null)
             {
                 await LoadDataAsync(dto);
@@ -195,7 +195,7 @@ namespace BusinessLayerRestaurant.Classes
         public async Task<Table?> UpdateAsync(DTOTablesURequest Request)
         {
 
-            var dto = await _Interfaces.IData.UpdateTableAsync(Request);
+            var dto = await _Interfaces.IData.UpdateDataAsync(Request);
             if (dto != null)
             {
                 await LoadDataAsync(dto);
@@ -209,7 +209,7 @@ namespace BusinessLayerRestaurant.Classes
 
         public async Task<bool> DeleteAsync(int ID)
         {
-            var isDeleted = await _Interfaces.IData.DeleteTableAsync(ID);
+            var isDeleted = await _Interfaces.IData.DeleteDataAsync(ID);
             if (!isDeleted)
             {
                 throw new InvalidOperationException("Not Deleted!");
@@ -243,47 +243,47 @@ namespace BusinessLayerRestaurant.Classes
             set => _Interfaces.IBusinessStatusTable = value;
         }
 
-        public async Task<List<Table>> GetAllTablesAsync(int page)
+        public async Task<List<Table>> GetAllAsync(int page)
         {
             return await _IRead.GetAllAsync(page);
         }
-        public async Task<Table?> GetTableAsync(int id)
+        public async Task<Table?> GetAsync(int id)
         {
             return await _IRead.GetAsync(id);
         }
-        public async Task<List<Table>> GetAllTablesAsync()
+        public async Task<List<Table>> GetAllAsync()
         {
             return await _IRead.GetAllAsync();
         }
-        public async Task<List<Table>> GetTablesFilter1Async(DTOTablesFilterStatusTableRequest Request)
+        public async Task<List<Table>> GetFilter1Async(DTOTablesFilterStatusTableRequest Request)
         {
             return await _IRead.GetFilter1Async(Request);
         }
-        public async Task<List<Table>> GetTablesFilter2Async(DTOTablesFilterSeatTableRequest Request)
+        public async Task<List<Table>> GetFilter2Async(DTOTablesFilterSeatTableRequest Request)
         {
            return await _IRead.GetFilter2Async(Request);
         }
-        public async Task<Table?> GetTableByNameAsync(string tableNumber)
+        public async Task<Table?> GetByNameAsync(string tableNumber)
         {
             return await _IRead.GetByNameAsync(tableNumber);
         }
-        public async Task<List<Table>> GetTablesFilter3Async(DTOTablesFilterStatusAndSeatTableRequest Request)
+        public async Task<List<Table>> GetFilter3Async(DTOTablesFilterStatusAndSeatTableRequest Request)
         {
             return await _IRead.GetFilter3Async(Request);
         }
-        public async Task<List<Table>> GetAllTablesAvailablesAsync()
+        public async Task<List<Table>> GetAllAvailablesAsync()
         {
             return await _IRead.GetAllAvailablesAsync();
         }
-        public async Task<Table?> AddTableAsync(DTOTablesCRequest Request)
+        public async Task<Table?> CreateAsync(DTOTablesCRequest Request)
         {
             return await _IWrite.CreateAsync(Request);
         }
-        public async Task<Table?> UpdateTableAsync(DTOTablesURequest Request)
+        public async Task<Table?> UpdateAsync(DTOTablesURequest Request)
         {
             return await _IWrite.UpdateAsync(Request);
         }
-        public async Task<bool> DeleteTableAsync(int ID)
+        public async Task<bool> DeleteAsync(int ID)
         {
             return await _IWrite.DeleteAsync(ID);
         }

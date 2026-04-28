@@ -40,7 +40,7 @@ namespace BusinessLayerRestaurant.Classes
         public async Task<List<Setting>> GetAllAsync(int page)
         {
 
-            var list = await _Interface.IData.GetAllSettingsAsync(page);
+            var list = await _Interface.IData.GetAllDataAsync(page);
             if (list == null || list.Count == 0)
             {
                 throw new KeyNotFoundException("Not Found!");
@@ -50,7 +50,7 @@ namespace BusinessLayerRestaurant.Classes
         }
         public async Task<Setting?> GetAsync(int ID)
         {
-            var dto = await _Interface.IData.GetSettingAsync(ID);
+            var dto = await _Interface.IData.GetDataAsync(ID);
             if (dto == null)
             {
                 throw new KeyNotFoundException("Not Found!");   
@@ -74,7 +74,7 @@ namespace BusinessLayerRestaurant.Classes
         public async Task<Setting?> CreateAsync(DTOSettingsCRequest setting)
         {
 
-            var dto = await _Interface.IData.AddSettingAsync(setting);
+            var dto = await _Interface.IData.CreateDataAsync(setting);
             if (dto == null)
             {
                 throw new InvalidOperationException("Not Created!");
@@ -86,7 +86,7 @@ namespace BusinessLayerRestaurant.Classes
         {
            
             
-            var dto = await _Interface.IData.UpdateSettingAsync(setting);
+            var dto = await _Interface.IData.UpdateDataAsync(setting);
             if (dto == null)
             {
                 throw new InvalidOperationException("Not Updated!");
@@ -98,7 +98,7 @@ namespace BusinessLayerRestaurant.Classes
 
         public async Task<bool> DeleteAsync(int ID)
         {
-            var result = await _Interface.IData.DeleteSettingAsync(ID);
+            var result = await _Interface.IData.DeleteDataAsync(ID);
             if (!result)
             {
                 throw new InvalidOperationException("Not Deleted!");
@@ -123,27 +123,27 @@ namespace BusinessLayerRestaurant.Classes
         }
 
 
-        public async Task<List<Setting>> GetAllSettingsAsync(int page)
+        public async Task<List<Setting>> GetAllAsync(int page)
         {
             return await _IRead.GetAllAsync(page);
         }
 
-        public async Task<Setting?> GetSettingAsync(int ID)
+        public async Task<Setting?> GetAsync(int ID)
         {
             return await _IRead.GetAsync(ID);
         }
 
 
-        public async Task<Setting?> AddSettingAsync(DTOSettingsCRequest Request)
+        public async Task<Setting?> CreateAsync(DTOSettingsCRequest Request)
         {
             return await _IWrite.CreateAsync(Request);
         }
-        public async Task<Setting?> UpdateSettingAsync(DTOSettingsURequest Request)
+        public async Task<Setting?> UpdateAsync(DTOSettingsURequest Request)
         {
             return await _IWrite.UpdateAsync(Request);
         }
 
-        public async Task<bool> DeleteSettingAsync(int ID)
+        public async Task<bool> DeleteAsync(int ID)
         {
             return await _IWrite.DeleteAsync(ID);
         }

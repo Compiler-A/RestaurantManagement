@@ -56,7 +56,7 @@ namespace BusinessLayerRestaurant.Classes
 
         public async Task LoadDataAsync(Order item)
         {
-            item.statusOrders = await _Status.GetStatusOrdersAsync(item.StatusOrderID);
+            item.statusOrders = await _Status.GetAsync(item.StatusOrderID);
         }
     }
     public class clsEmployeeLoader : IOrdersServiceComposition 
@@ -67,7 +67,7 @@ namespace BusinessLayerRestaurant.Classes
             _Employee = Employee;
         }
         public async Task LoadDataAsync(Order item) {
-            item.employees = await _Employee.GetEmployeeAsync(item.EmployeeID);
+            item.employees = await _Employee.GetAsync(item.EmployeeID);
         }
     }
     public class clsTableLoader : IOrdersServiceComposition
@@ -79,7 +79,7 @@ namespace BusinessLayerRestaurant.Classes
         }
         public async Task LoadDataAsync(Order item)
         {
-            item.tables = await _Table.GetTableAsync(item.TableID);
+            item.tables = await _Table.GetAsync(item.TableID);
         }
     }
     public class clsCompositionOrdersLoader
@@ -112,7 +112,7 @@ namespace BusinessLayerRestaurant.Classes
 
         public async Task<List<Order>> GetAllAsync(int page)
         {
-            var ldto = await _Interfaces.IData.GetAllOrdersAsync(page);
+            var ldto = await _Interfaces.IData.GetAllDataAsync(page);
             if (ldto == null || ldto.Count == 0)
             {
                 throw new KeyNotFoundException("Not Found!");
@@ -130,7 +130,7 @@ namespace BusinessLayerRestaurant.Classes
 
         public async Task<Order?> GetAsync(int ID)
         {
-            var dto = await _Interfaces.IData.GetOrderAsync(ID);
+            var dto = await _Interfaces.IData.GetDataAsync(ID);
             if (dto == null)
             {
                 throw new KeyNotFoundException("Not Found!");
@@ -144,7 +144,7 @@ namespace BusinessLayerRestaurant.Classes
         public async Task<List<Order>?> GetFilterAsync
             (DTOOrderFilterRequest Request)
         {
-            var koko = await _Interfaces.IData.GetFilterOrderAsync(Request);
+            var koko = await _Interfaces.IData.GetFilterDataAsync(Request);
             if (koko == null || koko.Count == 0)
             {
                 throw new KeyNotFoundException("Not Found!");
@@ -173,7 +173,7 @@ namespace BusinessLayerRestaurant.Classes
         public async Task<Order?> CreateAsync(DTOOrderCRequest Request)
         {
 
-            var dto = await _Interfaces.IData.AddOrderAsync(Request);
+            var dto = await _Interfaces.IData.CreateDataAsync(Request);
             if (dto != null)
             {
                 await LoadDataAsync(dto);
@@ -185,7 +185,7 @@ namespace BusinessLayerRestaurant.Classes
 
         public async Task<Order?> UpdateAsync(DTOOrderURequest Request)
         {
-            var dto = await _Interfaces.IData.UpdateOrderAsync(Request);
+            var dto = await _Interfaces.IData.UpdateDataAsync(Request);
             if (dto != null)
             {
                 await LoadDataAsync(dto);
@@ -198,7 +198,7 @@ namespace BusinessLayerRestaurant.Classes
 
         public async Task<bool> DeleteAsync(int ID)
         {
-            var isDeleted = await _Interfaces.IData.DeleteOrderAsync(ID);
+            var isDeleted = await _Interfaces.IData.DeleteDataAsync(ID);
             if (!isDeleted)
             {
                 throw new InvalidOperationException("Not Deleted!");
@@ -243,30 +243,30 @@ namespace BusinessLayerRestaurant.Classes
             set => _Interface.IBusinessTable = value;
         }
 
-        public async Task<List<Order>> GetAllOrdersAsync(int page)
+        public async Task<List<Order>> GetAllAsync(int page)
         {
             return await _Read.GetAllAsync(page);
         }
 
-        public async Task<Order?> GetOrderAsync(int ID)
+        public async Task<Order?> GetAsync(int ID)
         {
             return await _Read.GetAsync(ID);
         }
 
-        public async Task<List<Order>?> GetFilterOrdersAsync(DTOOrderFilterRequest Request)
+        public async Task<List<Order>?> GetFilterAsync(DTOOrderFilterRequest Request)
         {
             return await _Read.GetFilterAsync(Request);
         }
-        public async Task<Order?> AddOrderAsync(DTOOrderCRequest Request)
+        public async Task<Order?> CreateAsync(DTOOrderCRequest Request)
         {
             return await _IWrite.CreateAsync(Request);
         }
-        public async Task<Order?> UpdateOrderAsync(DTOOrderURequest Request)
+        public async Task<Order?> UpdateAsync(DTOOrderURequest Request)
         {
             return await _IWrite.UpdateAsync(Request);
         }
 
-        public async Task<bool> DeleteOrderAsync(int ID)
+        public async Task<bool> DeleteAsync(int ID)
         {
             return await _IWrite.DeleteAsync(ID);
         }

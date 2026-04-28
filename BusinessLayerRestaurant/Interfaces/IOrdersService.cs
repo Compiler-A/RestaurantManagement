@@ -31,20 +31,9 @@ namespace BusinessLayerRestaurant.Interfaces
         IEmployeesService IEmployee { get; set; }
         ITablesService ITable { get; set; }
     }
-    public interface IOrdersServiceReadable
-    {
-        Task<List<Order>> GetAllOrdersAsync(int page);
-        Task<Order?> GetOrderAsync(int ID);
-        Task<List<Order>?> GetFilterOrdersAsync(DTOOrderFilterRequest Request);
-    }
-    public interface IOrdersServiceWritable
-    {
-        Task<Order?> AddOrderAsync(DTOOrderCRequest Request);
-        Task<Order?> UpdateOrderAsync(DTOOrderURequest Request);
-        Task<bool> DeleteOrderAsync(int ID);
-    }
 
-    public interface ICRUDOrdersService : IOrdersServiceWritable, IOrdersServiceReadable
+
+    public interface ICRUDOrdersService : IOrdersServiceWriter, IOrdersServiceReader
     { }
     public interface IOrdersService : ICRUDOrdersService, IOrdersServiceContainers
     { }

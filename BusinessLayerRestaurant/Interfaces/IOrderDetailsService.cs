@@ -32,19 +32,8 @@ namespace BusinessLayerRestaurant.Interfaces
        : IServiceWriter<OrderDetail, DTOOrderDetailsCRequest, DTOOrderDetailsURequest>
     { }
 
-    public interface IOrderDetailsServiceReadable
-    {
-        Task<List<OrderDetail>> GetAllOrderDetailsAsync(int page);
-        Task<List<OrderDetail>> GetAllOrderDetailsByOrderIDAsync(int orderID);
-        Task<OrderDetail?> GetOrderDetailAsync(int page);
-    }
-    public interface IOrderDetailsServiceWritable
-    {
-        Task<OrderDetail?> AddOrderDetailAsync(DTOOrderDetailsCRequest Request);
-        Task<OrderDetail?> UpdateOrderDetailAsync(DTOOrderDetailsURequest Request);
-        Task<bool> DeleteOrderDetailAsync(int ID);
-    }
-    public interface ICRUDOrderDetailsService : IOrderDetailsServiceWritable, IOrderDetailsServiceReadable
+
+    public interface ICRUDOrderDetailsService : IOrderDetailsServiceWriter, IOrderDetailsServiceReader
     { }
 
     public interface IOrderDetailsService : ICRUDOrderDetailsService, IOrderDetailsServiceContainers

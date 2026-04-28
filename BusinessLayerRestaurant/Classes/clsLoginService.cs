@@ -50,7 +50,7 @@ namespace BusinessLayerRestaurant.Classes
 
         public async Task LoadDataAsync(Auth item)
         {
-            item.Employees = await _IData.GetEmployeeAsync(item.EmployeeID);
+            item.Employees = await _IData.GetAsync(item.EmployeeID);
         }
 
     }
@@ -148,7 +148,7 @@ namespace BusinessLayerRestaurant.Classes
 
         public async Task<DTOTokenResponse> LoginAsync(DTOLoginRequest Request)
         {
-            var employee = await _Interface.IEmployee.GetEmployeeAsync(Request.UserName);
+            var employee = await _Interface.IEmployee.GetAsync(Request.UserName);
 
             if (employee == null)
                 throw new AuthenticationException("Invalid credentials");

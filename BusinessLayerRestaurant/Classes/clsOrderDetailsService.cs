@@ -50,7 +50,7 @@ namespace BusinessLayerRestaurant.Classes
         }
         public async Task LoadDataAsync(OrderDetail item)
         {
-            item.Order = await _Order.GetOrderAsync(item.OrderID);
+            item.Order = await _Order.GetAsync(item.OrderID);
         }
     }
     public class clsMenuItemLoader : IOrderDetailsServiceComposition
@@ -62,7 +62,7 @@ namespace BusinessLayerRestaurant.Classes
         }
         public async Task LoadDataAsync(OrderDetail item)
         {
-            item.Item = await _MenuItem.GetMenuItemAsync(item.ItemID);
+            item.Item = await _MenuItem.GetAsync(item.ItemID);
         }
     }
     public class clsCompositionOrderDetailsLoader : IOrderDetailsServiceComposition
@@ -95,7 +95,7 @@ namespace BusinessLayerRestaurant.Classes
         }
         public async Task<List<OrderDetail>> GetAllAsync(int page)
         {
-            var ldto = await _Interfaces.IData.GetAllOrderDetailsAsync(page);
+            var ldto = await _Interfaces.IData.GetAllDataAsync(page);
             if (ldto == null || ldto.Count == 0)
             {
                 throw new KeyNotFoundException("Not Found!");
@@ -109,7 +109,7 @@ namespace BusinessLayerRestaurant.Classes
         }
         public async Task<List<OrderDetail>> GetAllByOrderIDAsync(int orderID)
         {
-            var ldto = await _Interfaces.IData.GetAllOrderDetailsByOrderIDAsync(orderID);
+            var ldto = await _Interfaces.IData.GetAllDataByOrderIDAsync(orderID);
             if (ldto == null || ldto.Count == 0)
             {
                 throw new KeyNotFoundException("Not Found!");
@@ -125,7 +125,7 @@ namespace BusinessLayerRestaurant.Classes
 
         public async Task<OrderDetail?> GetAsync(int ID)
         {
-            var dto = await _Interfaces.IData.GetOrderDetailAsync(ID);
+            var dto = await _Interfaces.IData.GetDataAsync(ID);
             if (dto == null)
             {
                 throw new KeyNotFoundException("Not Found!");
@@ -150,7 +150,7 @@ namespace BusinessLayerRestaurant.Classes
         public async Task<OrderDetail?> CreateAsync(DTOOrderDetailsCRequest Request)
         {
 
-            var dto = await _Interfaces.IData.AddOrderDetailAsync(Request);
+            var dto = await _Interfaces.IData.CreateDataAsync(Request);
             if (dto != null)
             {
                 await LoadDataAsync(dto);
@@ -164,7 +164,7 @@ namespace BusinessLayerRestaurant.Classes
         public async Task<OrderDetail?> UpdateAsync(DTOOrderDetailsURequest Request)
         {
 
-            var dto = await _Interfaces.IData.UpdateOrderDetailAsync(Request);
+            var dto = await _Interfaces.IData.UpdateDataAsync(Request);
             if (dto != null)
             {
                 await LoadDataAsync(dto);
@@ -178,7 +178,7 @@ namespace BusinessLayerRestaurant.Classes
 
         public async Task<bool> DeleteAsync(int ID)
         {
-            var isDeleted = await _Interfaces.IData.DeleteOrderDetailAsync(ID);
+            var isDeleted = await _Interfaces.IData.DeleteDataAsync(ID);
             if (!isDeleted)
             {
                 throw new InvalidOperationException("Not Deleted!");
@@ -221,30 +221,30 @@ namespace BusinessLayerRestaurant.Classes
             set => _Interface.IBusinessOrder = value;
         }
 
-        public Task<List<OrderDetail>> GetAllOrderDetailsAsync(int page)
+        public Task<List<OrderDetail>> GetAllAsync(int page)
         {
             return _Read.GetAllAsync(page);
         }
 
-        public async Task<OrderDetail?> GetOrderDetailAsync(int ID)
+        public async Task<OrderDetail?> GetAsync(int ID)
         {
             return await _Read.GetAsync(ID);
         }
 
-        public async Task<List<OrderDetail>> GetAllOrderDetailsByOrderIDAsync(int OrderID) 
+        public async Task<List<OrderDetail>> GetAllByOrderIDAsync(int OrderID) 
         {
             return await _Read.GetAllByOrderIDAsync(OrderID);
         }
-        public async Task<OrderDetail?> AddOrderDetailAsync(DTOOrderDetailsCRequest Request)
+        public async Task<OrderDetail?> CreateAsync(DTOOrderDetailsCRequest Request)
         {
             return await _IWrite.CreateAsync(Request);
         }
-        public async Task<OrderDetail?> UpdateOrderDetailAsync(DTOOrderDetailsURequest Request)
+        public async Task<OrderDetail?> UpdateAsync(DTOOrderDetailsURequest Request)
         {
             return await _IWrite.UpdateAsync(Request);
         }
 
-        public async Task<bool> DeleteOrderDetailAsync(int ID)
+        public async Task<bool> DeleteAsync(int ID)
         {
             return await _IWrite.DeleteAsync(ID);
         }

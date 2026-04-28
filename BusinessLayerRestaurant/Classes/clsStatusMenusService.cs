@@ -37,7 +37,7 @@ namespace BusinessLayerRestaurant.Classes
 
         public async Task<StatusMenu?> GetAsync(int ID)
         {
-            var result = await _Interface.IData.GetStatusMenuAsync(ID);
+            var result = await _Interface.IData.GetDataAsync(ID);
             if (result == null)
             {
                 throw new KeyNotFoundException("Not Found!");
@@ -49,7 +49,7 @@ namespace BusinessLayerRestaurant.Classes
 
         public async Task<List<StatusMenu>> GetAllAsync(int page)
         {
-            var list = await _Interface.IData.GetAllStatusMenusAsync(page);
+            var list = await _Interface.IData.GetAllDataAsync(page);
             if (list == null || list.Count == 0)
             {
                 throw new KeyNotFoundException("Not Found!");
@@ -72,7 +72,7 @@ namespace BusinessLayerRestaurant.Classes
 
         public async Task<bool> DeleteAsync(int ID)
         {
-            var result = await _Interface.IData.DeleteStatusMenuAsync(ID);
+            var result = await _Interface.IData.DeleteDataAsync(ID);
             if (!result)
             {
                 throw new InvalidOperationException("Not Deleted!");
@@ -84,7 +84,7 @@ namespace BusinessLayerRestaurant.Classes
 
         public async Task<StatusMenu?> UpdateAsync(DTOStatusMenusURequest Request)
         {
-            var result = await _Interface.IData.UpdateStatusMenuAsync(Request);
+            var result = await _Interface.IData.UpdateDataAsync(Request);
             if (result == null)
             {
                 throw new InvalidOperationException("Not Updated!");
@@ -96,7 +96,7 @@ namespace BusinessLayerRestaurant.Classes
 
         public async Task<StatusMenu?> CreateAsync(DTOStatusMenusCRequest Request)
         {
-            var result = await _Interface.IData.AddStatusMenuAsync(Request);  
+            var result = await _Interface.IData.CreateDataAsync(Request);  
             if (result == null)
             {
                 throw new InvalidOperationException("Not Created!");
@@ -120,25 +120,25 @@ namespace BusinessLayerRestaurant.Classes
         }
 
 
-        public async Task<List<StatusMenu>> GetAllStatusMenusAsync(int Page)
+        public async Task<List<StatusMenu>> GetAllAsync(int Page)
         {
             return await _IRead.GetAllAsync(Page);
         }
-        public async Task<StatusMenu?> GetStatusMenuAsync(int Page)
+        public async Task<StatusMenu?> GetAsync(int Page)
         {
             return await _IRead.GetAsync(Page);
         }
 
-        public async Task<StatusMenu?> AddStatusMenuAsync(DTOStatusMenusCRequest Request)
+        public async Task<StatusMenu?> CreateAsync(DTOStatusMenusCRequest Request)
         {
             return await _IWrite.CreateAsync(Request);
         }
 
-        public async Task<StatusMenu?> UpdateStatusMenuAsync(DTOStatusMenusURequest Request)
+        public async Task<StatusMenu?> UpdateAsync(DTOStatusMenusURequest Request)
         {
             return await _IWrite.UpdateAsync(Request);
         }
-        public async Task<bool> DeleteStatusMenuAsync(int ID)
+        public async Task<bool> DeleteAsync(int ID)
         {
             return await _IWrite.DeleteAsync(ID);
         }

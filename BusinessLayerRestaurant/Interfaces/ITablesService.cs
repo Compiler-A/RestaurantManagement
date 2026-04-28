@@ -36,24 +36,7 @@ namespace BusinessLayerRestaurant.Interfaces
     {
     }
 
-    public interface ITablesServiceReadable
-    {
-        Task<List<Table>> GetAllTablesAsync(int page);
-        Task<Table?> GetTableAsync(int id);
-        Task<List<Table>> GetAllTablesAsync();
-        Task<List<Table>> GetTablesFilter1Async(DTOTablesFilterStatusTableRequest Request);
-        Task<List<Table>> GetTablesFilter2Async(DTOTablesFilterSeatTableRequest Request);
-        Task<Table?> GetTableByNameAsync(string tableNumber);
-        Task<List<Table>> GetTablesFilter3Async(DTOTablesFilterStatusAndSeatTableRequest Request);
-        Task<List<Table>> GetAllTablesAvailablesAsync();
-    }
-    public interface ITablesServiceWritable
-    {
-        Task<Table?> AddTableAsync(DTOTablesCRequest Request);
-        Task<Table?> UpdateTableAsync(DTOTablesURequest Request);
-        Task<bool> DeleteTableAsync(int ID);
-    }
-    public interface ICRUDTablesService : ITablesServiceReadable, ITablesServiceWritable
+    public interface ICRUDTablesService : ITablesServiceReader, ITablesServiceWriter
     { }
 
     public interface ITablesService : ICRUDTablesService, ITablesServiceContainers
