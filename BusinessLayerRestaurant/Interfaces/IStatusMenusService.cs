@@ -6,14 +6,14 @@ using DomainLayer.Entities;
 namespace BusinessLayerRestaurant.Interfaces
 {
 
-    public interface IStatusMenusServiceContainer : IInterfaceBase<IStatusMenusRepository>
+    public interface IStatusMenusServiceContainer : IServiceContainer<IStatusMenusRepository>
     { }
 
-    public interface IStatusMenusServiceReader : IReadableBusinessBase<StatusMenu>
+    public interface IStatusMenusServiceReader : IServiceReader<StatusMenu>
     { }
 
     public interface IStatusMenusServiceWriter 
-        : IWritableBusinessBase<StatusMenu, DTOStatusMenusCRequest, DTOStatusMenusURequest>
+        : IServiceWriter<StatusMenu, DTOStatusMenusCRequest, DTOStatusMenusURequest>
     { }
 
     public interface IStatusMenusServiceReadable

@@ -167,28 +167,28 @@ namespace DataLayerRestaurant.Classes
             _IWrite = write;
         }
 
-        public async Task<List<JobRole>> GetAllJobRolesAsync(int page)
+        public async Task<List<JobRole>> GetAllDataAsync(int page)
         {
            return await _IRead.GetAllDataAsync(page);
         }
 
 
-        public async Task<JobRole?> GetJobRoleAsync(int ID)
+        public async Task<JobRole?> GetDataAsync(int ID)
         {
             return await _IRead.GetDataAsync(ID);
         }
 
-        public async Task<JobRole?> AddJobRoleAsync(DTOJobRolesCRequest DTO)
+        public async Task<JobRole?> CreateDataAsync(DTOJobRolesCRequest DTO)
         {
             return await _IWrite.CreateDataAsync(DTO);
         }
 
-        public async Task<JobRole?> UpdateJobRoleAsync(DTOJobRolesURequest DTO)
+        public async Task<JobRole?> UpdateDataAsync(DTOJobRolesURequest DTO)
         {
             return await _IWrite.UpdateDataAsync(DTO);
         }
 
-        public async Task<bool> DeleteJobRoleAsync(int ID)
+        public async Task<bool> DeleteDataAsync(int ID)
         {
             return await _IWrite.DeleteDataAsync(ID);
         }

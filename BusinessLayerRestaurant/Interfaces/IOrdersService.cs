@@ -5,14 +5,14 @@ using DomainLayer.Entities;
 
 namespace BusinessLayerRestaurant.Interfaces
 {
-    public interface IOrdersServiceReader : IReadableBusinessBase<Order>
+    public interface IOrdersServiceReader : IServiceReader<Order>
     {
         Task<List<Order>?> GetFilterAsync(DTOOrderFilterRequest Request);
     }
-    public interface IOrdersServiceWriter : IWritableBusinessBase<Order, DTOOrderCRequest, DTOOrderURequest>
+    public interface IOrdersServiceWriter : IServiceWriter<Order, DTOOrderCRequest, DTOOrderURequest>
     { }
 
-    public interface IOrdersServiceContainer : IInterfaceBase<IOrdersRepository>
+    public interface IOrdersServiceContainer : IServiceContainer<IOrdersRepository>
     {
         IStatusOrdersService IBusinessStatusOrder { get; set; }
         IEmployeesService IBusinessEmployee { get; set; }

@@ -6,12 +6,12 @@ using DomainLayer.Entities;
 namespace BusinessLayerRestaurant.Interfaces
 {
 
-    public interface ISettingsServiceContainer : IInterfaceBase<ISettingsRepository>
+    public interface ISettingsServiceContainer : IServiceContainer<ISettingsRepository>
     { }
 
-    public interface ISettingsServiceReader : IReadableBusinessBase<Setting>
+    public interface ISettingsServiceReader : IServiceReader<Setting>
     { }
-    public interface ISettingsServiceWriter : IWritableBusinessBase<Setting, DTOSettingsCRequest, DTOSettingsURequest>
+    public interface ISettingsServiceWriter : IServiceWriter<Setting, DTOSettingsCRequest, DTOSettingsURequest>
     { }
 
     public interface ISettingsServiceReadable

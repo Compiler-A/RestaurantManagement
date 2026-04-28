@@ -6,7 +6,7 @@ using DomainLayer.Entities;
 namespace BusinessLayerRestaurant.Interfaces
 {
     
-    public interface IOrderDetailsServiceContainer : IInterfaceBase<IOrderDetailsRepository>
+    public interface IOrderDetailsServiceContainer : IServiceContainer<IOrderDetailsRepository>
     {
         IOrdersService IBusinessOrder { get; set; }
         IMenuItemsService IBusinessMenuItem { get; set; }
@@ -23,13 +23,13 @@ namespace BusinessLayerRestaurant.Interfaces
         IMenuItemsService IMenuItem { get; set; }
     }
 
-    public interface IOrderDetailsServiceReader : IReadableBusinessBase<OrderDetail>
+    public interface IOrderDetailsServiceReader : IServiceReader<OrderDetail>
     {
         Task<List<OrderDetail>> GetAllByOrderIDAsync(int orderID);
     }
 
     public interface IOrderDetailsServiceWriter
-       : IWritableBusinessBase<OrderDetail, DTOOrderDetailsCRequest, DTOOrderDetailsURequest>
+       : IServiceWriter<OrderDetail, DTOOrderDetailsCRequest, DTOOrderDetailsURequest>
     { }
 
     public interface IOrderDetailsServiceReadable

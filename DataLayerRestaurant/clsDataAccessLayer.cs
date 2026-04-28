@@ -3,24 +3,24 @@ using Microsoft.Data.SqlClient;
 
 namespace RestaurantDataLayer
 {
-    public interface IReadableDataBase <Tentity>
+    public interface IRepositoryReader <Tentity>
     {
         Task<List<Tentity>> GetAllDataAsync(int page);
         Task<Tentity?> GetDataAsync(int ID);
     }
-    public interface IWritableDataBase <DTO,DTOCreate, DTOUpdate>
+    public interface IRepositoryWriter <Entity,DTOCreate, DTOUpdate>
     {
-        Task<DTO?> CreateDataAsync(DTOCreate dto);
-        Task<DTO?> UpdateDataAsync(DTOUpdate dto);
+        Task<Entity?> CreateDataAsync(DTOCreate dto);
+        Task<Entity?> UpdateDataAsync(DTOUpdate dto);
         Task<bool> DeleteDataAsync(int id);
     }
 
-    public interface IReadableBusinessBase <Tentity>
+    public interface IServiceReader <Tentity>
     {
         Task<List<Tentity>> GetAllAsync(int page);
         Task<Tentity?> GetAsync(int ID);
     }
-    public interface IWritableBusinessBase <TDTO,DTOCreate, DTOUpdate>
+    public interface IServiceWriter <TDTO,DTOCreate, DTOUpdate>
     {
         Task<TDTO?> CreateAsync(DTOCreate dto);
         Task<TDTO?> UpdateAsync(DTOUpdate dto);
@@ -32,12 +32,7 @@ namespace RestaurantDataLayer
         DTO GetDataFromDataBase(SqlDataReader reader);
     }
 
-    public interface IDTOBase <DTOcreate, DTOupdate>
-    {
-        DTOcreate? CreateRequest {  get; set; }
-        DTOupdate? UpdateRequest { get; set; }
-    }
-    public interface IInterfaceBase <DataInterface>
+    public interface IServiceContainer <DataInterface>
     {
         DataInterface IData { get; set; }
     }

@@ -158,25 +158,25 @@ namespace DataLayerRestaurant.Classes
             _IWrite = Write;
         }
 
-        public async Task<TypeItem?> GetTypeItemAsync(int ID)
+        public async Task<TypeItem?> GetDataAsync(int ID)
         {
             return await _IRead.GetDataAsync(ID);
         }
-        public async Task<List<TypeItem>> GetAllTypeItemsAsync(int Page)
+        public async Task<List<TypeItem>> GetAllDataAsync(int Page)
         {
             return await _IRead.GetAllDataAsync(Page);
         }
 
-        public async Task<TypeItem?> AddTypeItemAsync(DTOTypeItemsCRequest Request)
+        public async Task<TypeItem?> CreateDataAsync(DTOTypeItemsCRequest Request)
         {
             return await _IWrite.CreateDataAsync(Request);
         }
-        public async Task<TypeItem?> UpdateTypeItemAsync(DTOTypeItemsURequest Request)
+        public async Task<TypeItem?> UpdateDataAsync(DTOTypeItemsURequest Request)
         {
             return await _IWrite.UpdateDataAsync(Request);
         }
 
-        public async Task<bool> DeleteTypeItemAsync(int ID)
+        public async Task<bool> DeleteDataAsync(int ID)
         {
             return await _IWrite.DeleteDataAsync(ID);
         }

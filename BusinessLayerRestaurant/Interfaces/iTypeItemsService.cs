@@ -5,14 +5,14 @@ using DomainLayer.Entities;
 
 namespace BusinessLayerRestaurant.Interfaces
 {
-    public interface ITypeItemsServiceContainer : IInterfaceBase<ITypeItemsRepository>
+    public interface ITypeItemsServiceContainer : IServiceContainer<ITypeItemsRepository>
     { }
 
-    public interface ITypeItemsServiceReader : IReadableBusinessBase<TypeItem>
+    public interface ITypeItemsServiceReader : IServiceReader<TypeItem>
     { }
 
     public interface ITypeItemsServiceWriter
-        : IWritableBusinessBase<TypeItem,DTOTypeItemsCRequest, DTOTypeItemsURequest>
+        : IServiceWriter<TypeItem,DTOTypeItemsCRequest, DTOTypeItemsURequest>
     { }
 
     public interface ITypeItemsServiceReadable

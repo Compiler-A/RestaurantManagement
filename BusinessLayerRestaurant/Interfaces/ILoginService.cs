@@ -6,7 +6,7 @@ using ContractsLayerRestaurant.DTOResponse;
 
 namespace BusinessLayerRestaurant.Interfaces
 {
-    public interface ILoginServiceContainer : IInterfaceBase<ILoginRepository>
+    public interface ILoginServiceContainer : IServiceContainer<ILoginRepository>
     {
         IEmployeesService IEmployee { get; set; }
     }

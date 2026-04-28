@@ -206,38 +206,38 @@ namespace DataLayerRestaurant.Classes
             _IWrite = iWrite;
         }
 
-        public async Task<List<MenuItem>> GetAllMenuItemsAvailablesAsync()
+        public async Task<List<MenuItem>> GetAllDataAvailablesAsync()
         {
             return await _IRead.GetAllDataAvailablesAsync();
         }
-        public async Task<List<MenuItem>> GetAllMenuItemsAsync(int page)
+        public async Task<List<MenuItem>> GetAllDataAsync(int page)
         {
             return await _IRead.GetAllDataAsync(page);
         }
         
         
-        public async Task<List<MenuItem>> GetAllMenuItemsFiltersAsync(DTOMenuItemsFilterRequest Request)
+        public async Task<List<MenuItem>> GetAllDataFiltersAsync(DTOMenuItemsFilterRequest Request)
         {
            return await _IRead.GetAllDataFiltersAsync(Request);
         }
 
 
-        public async Task<MenuItem?> GetMenuItemAsync(int id)
+        public async Task<MenuItem?> GetDataAsync(int id)
         {
             return await _IRead.GetDataAsync(id);
         }
 
-        public async Task<MenuItem?> AddMenuItemAsync(DTOMenuItemsCRequest menuItem)
+        public async Task<MenuItem?> CreateDataAsync(DTOMenuItemsCRequest menuItem)
         {
             return await _IWrite.CreateDataAsync(menuItem);
         }
 
-        public async Task<MenuItem?> UpdateMenuItemAsync(DTOMenuItemsURequest menuItem)
+        public async Task<MenuItem?> UpdateDataAsync(DTOMenuItemsURequest menuItem)
         {
            return await _IWrite.UpdateDataAsync(menuItem);
         }
 
-        public async Task<bool> DeleteMenuItemAsync(int id)
+        public async Task<bool> DeleteDataAsync(int id)
         {
             return await _IWrite.DeleteDataAsync(id);
         }

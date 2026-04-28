@@ -5,16 +5,16 @@ using DomainLayer.Entities;
 
 namespace BusinessLayerRestaurant.Interfaces
 {
-    public interface IStatusTablesServiceReader : IReadableBusinessBase<StatusTable>
+    public interface IStatusTablesServiceReader : IServiceReader<StatusTable>
     {   
         Task<bool> isFindAsync(int id);
     }
 
-    public interface IStatusTablesServiceWriter : IWritableBusinessBase<StatusTable, DTOStatusTablesCRequest, DTOStatusTablesURequest>
+    public interface IStatusTablesServiceWriter : IServiceWriter<StatusTable, DTOStatusTablesCRequest, DTOStatusTablesURequest>
     { }
 
 
-    public interface IStatusTablesServiceContainer : IInterfaceBase<IStatusTablesRepository>
+    public interface IStatusTablesServiceContainer : IServiceContainer<IStatusTablesRepository>
     { }
 
 

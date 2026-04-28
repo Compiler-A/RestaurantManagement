@@ -161,23 +161,23 @@ namespace DataLayerRestaurant.Classes
             _Write = Write;
         }
 
-        public async Task<StatusOrder?> GetStatusOrderAsync(int id)
+        public async Task<StatusOrder?> GetDataAsync(int id)
         {
             return await _Read.GetDataAsync(id);
         }
-        public async Task<List<StatusOrder>> GetAllStatusOrdersAsync(int page)
+        public async Task<List<StatusOrder>> GetAllDataAsync(int page)
         {
             return await _Read.GetAllDataAsync(page);
         }
-        public async Task<StatusOrder?> AddStatusOrderAsync(DTOStatusOrdersCRequest Request)
+        public async Task<StatusOrder?> CreateDataAsync(DTOStatusOrdersCRequest Request)
         {
             return await _Write.CreateDataAsync(Request);
         }
-        public async Task<StatusOrder?> UpdateStatusOrderAsync(DTOStatusOrdersURequest Request)
+        public async Task<StatusOrder?> UpdateDataAsync(DTOStatusOrdersURequest Request)
         {
             return await _Write.UpdateDataAsync(Request);
         }
-        public async Task<bool> DeleteStatusOrderAsync(int id)
+        public async Task<bool> DeleteDataAsync(int id)
         {
             return await _Write.DeleteDataAsync(id);
         }

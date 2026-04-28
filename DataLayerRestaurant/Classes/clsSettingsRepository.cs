@@ -159,29 +159,29 @@ namespace DataLayerRestaurant.Classes
             _Read = read;
         }
 
-        public async Task<List<Setting>> GetAllSettingsAsync(int page)
+        public async Task<List<Setting>> GetAllDataAsync(int page)
         {
             return await _Read.GetAllDataAsync(page);
         }
 
-        public async Task<Setting?> GetSettingAsync(int ID)
+        public async Task<Setting?> GetDataAsync(int ID)
         { 
             return await _Read.GetDataAsync(ID);
         }
 
-        public async Task<Setting?> AddSettingAsync(DTOSettingsCRequest DTO)
+        public async Task<Setting?> CreateDataAsync(DTOSettingsCRequest DTO)
         {
 
             return await _Write.CreateDataAsync(DTO);
         }
 
-        public async Task<Setting?> UpdateSettingAsync(DTOSettingsURequest DTO)
+        public async Task<Setting?> UpdateDataAsync(DTOSettingsURequest DTO)
         {
 
             return await _Write.UpdateDataAsync(DTO);
         }
 
-        public async Task<bool> DeleteSettingAsync(int ID)
+        public async Task<bool> DeleteDataAsync(int ID)
         { 
             return await _Write.DeleteDataAsync(ID);
         }

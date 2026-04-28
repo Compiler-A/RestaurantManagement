@@ -6,20 +6,20 @@ using DomainLayer.Entities;
 namespace BusinessLayerRestaurant.Interfaces
 {
 
-    public interface IMenuItemsServiceContainer : IInterfaceBase<IMenuItemsRepository>
+    public interface IMenuItemsServiceContainer : IServiceContainer<IMenuItemsRepository>
     {
         ITypeItemsService IBusinessTypeItem { get; set; }
         IStatusMenusService IBusinessStatusMenu { get; set; }
     }
 
-    public interface IMenuItemsServiceReader : IReadableBusinessBase<MenuItem>
+    public interface IMenuItemsServiceReader : IServiceReader<MenuItem>
     {
         Task<List<MenuItem>> GetAllFiltersAsync(DTOMenuItemsFilterRequest Request);
         Task<List<MenuItem>> GetAllAvailablesAsync();
     }
 
     public interface IMenuItemsServiceWriter 
-        : IWritableBusinessBase<MenuItem, DTOMenuItemsCRequest, DTOMenuItemsURequest>
+        : IServiceWriter<MenuItem, DTOMenuItemsCRequest, DTOMenuItemsURequest>
     { }
     public interface IMenuItemsServiceComposition
     {

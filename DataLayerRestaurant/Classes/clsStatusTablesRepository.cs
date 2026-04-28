@@ -192,24 +192,24 @@ namespace DataLayerRestaurant.Classes
             return await _IRead.isFindDataAsync(id);
 
         }
-        public async Task<StatusTable?> GetStatuTableAsync(int id)
+        public async Task<StatusTable?> GetDataAsync(int id)
         {
             return await _IRead.GetDataAsync(id);
         }
 
-        public async Task<List<StatusTable>> GetAllStatustablesAsync(int page)
+        public async Task<List<StatusTable>> GetAllDataAsync(int page)
         {
             return await _IRead.GetAllDataAsync(page);
         }
-        public async Task<StatusTable?> AddStatusTableAsync(DTOStatusTablesCRequest Request)
+        public async Task<StatusTable?> CreateDataAsync(DTOStatusTablesCRequest Request)
         {
             return await _IWrite.CreateDataAsync(Request);
         }
-        public async Task<StatusTable?> UpdateStatusTableAsync(DTOStatusTablesURequest Request)
+        public async Task<StatusTable?> UpdateDataAsync(DTOStatusTablesURequest Request)
         {
            return await _IWrite.UpdateDataAsync(Request);
         }
-        public async Task<bool> DeleteStatusTableAsync(int id)
+        public async Task<bool> DeleteDataAsync(int id)
         {
             return await _IWrite.DeleteDataAsync(id);
         }

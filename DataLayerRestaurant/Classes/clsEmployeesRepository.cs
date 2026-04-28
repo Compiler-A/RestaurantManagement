@@ -214,35 +214,35 @@ namespace DataLayerRestaurant.Classes
         }
 
 
-        public async Task<List<Employee>> GetAllEmployeesAsync(int Page)
+        public async Task<List<Employee>> GetAllDataAsync(int Page)
         {
             return await _IRead.GetAllDataAsync(Page);
         }
-        public async Task<Employee?> GetEmployeeAsync(int ID)
+        public async Task<Employee?> GetDataAsync(int ID)
         {
             return await _IRead.GetDataAsync(ID);
         }
 
-        public async Task<Employee?> GetEmployeeAsync(string Name)
+        public async Task<Employee?> GetDataAsync(string Name)
         {
             return await _IRead.GetDataAsync(Name);
         }
 
-        public async Task<bool> ChangedPasswordEmployeeAsync(DTOEmployeesChangedPassword Request)
+        public async Task<bool> ChangedDataPasswordAsync(DTOEmployeesChangedPassword Request)
         {
             return await _IWrite.ChangedDataPasswordAsync(Request);
         }
         
-        public async Task<Employee?> AddEmployeeAsync(DTOEmployeesCRequest Request)
+        public async Task<Employee?> CreateDataAsync(DTOEmployeesCRequest Request)
         {
             return await _IWrite.CreateDataAsync(Request);
         }
-        public async Task<Employee?> UpdateEmployeeAsync(DTOEmployeesURequest Request)
+        public async Task<Employee?> UpdateDataAsync(DTOEmployeesURequest Request)
         {
             return await _IWrite.UpdateDataAsync(Request);
         }
 
-        public async Task<bool> DeleteEmployeeAsync(int ID)
+        public async Task<bool> DeleteDataAsync(int ID)
         {
             return await _IWrite.DeleteDataAsync(ID);
         }

@@ -6,7 +6,7 @@ using DomainLayer.Entities;
 namespace BusinessLayerRestaurant.Interfaces
 {
 
-    public interface ITablesServiceContainer : IInterfaceBase<ITablesRepository>
+    public interface ITablesServiceContainer : IServiceContainer<ITablesRepository>
     {
         IStatusTablesService IBusinessStatusTable { get; set; }
     }
@@ -21,7 +21,7 @@ namespace BusinessLayerRestaurant.Interfaces
         IStatusTablesService IStatusTable { get; set; }
     }
 
-    public interface ITablesServiceReader : IReadableBusinessBase<Table>
+    public interface ITablesServiceReader : IServiceReader<Table>
     {
         Task<List<Table>> GetAllAsync();
         Task<List<Table>> GetFilter1Async(DTOTablesFilterStatusTableRequest Request);
@@ -32,7 +32,7 @@ namespace BusinessLayerRestaurant.Interfaces
     }
 
     public interface ITablesServiceWriter
-       : IWritableBusinessBase<Table, DTOTablesCRequest, DTOTablesURequest>
+       : IServiceWriter<Table, DTOTablesCRequest, DTOTablesURequest>
     {
     }
 

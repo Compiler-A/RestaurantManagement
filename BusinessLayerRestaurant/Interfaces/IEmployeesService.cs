@@ -6,7 +6,7 @@ using DomainLayer.Entities;
 
 namespace BusinessLayerRestaurant.Interfaces
 {
-    public interface IEmployeesServiceContainer : IInterfaceBase<IEmployeesRepository>
+    public interface IEmployeesServiceContainer : IServiceContainer<IEmployeesRepository>
     {
         IJobRolesService IBusinessJobRole { get; set; }
     }
@@ -22,7 +22,7 @@ namespace BusinessLayerRestaurant.Interfaces
         Task LoadDataAsync(Employee item);
     }
 
-    public interface IEmployeesServiceReader : IReadableBusinessBase<Employee>
+    public interface IEmployeesServiceReader : IServiceReader<Employee>
     {
         Task<Employee?> GetAsync(string UserName);
     }
@@ -35,7 +35,7 @@ namespace BusinessLayerRestaurant.Interfaces
     }
 
     public interface IEmployeesServiceWriter 
-        : IWritableBusinessBase<Employee, DTOEmployeesCRequest, DTOEmployeesURequest>
+        : IServiceWriter<Employee, DTOEmployeesCRequest, DTOEmployeesURequest>
     {
         Task<bool> ChangePasswordAsync(DTOEmployeesChangedPassword Changed);
 

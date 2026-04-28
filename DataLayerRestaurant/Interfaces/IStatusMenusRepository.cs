@@ -5,34 +5,13 @@ using DomainLayer.Entities;
 namespace DataLayerRestaurant.Interfaces
 {
 
-    public interface IStatusMenusRepositoryReader : IReadableDataBase<StatusMenu>
-    {
-
-    }
+    public interface IStatusMenusRepositoryReader : IRepositoryReader<StatusMenu>
+    { }
 
     public interface IStatusMenusRepositoryWriter 
-        : IWritableDataBase<StatusMenu, DTOStatusMenusCRequest, DTOStatusMenusURequest>
-    {
+        : IRepositoryWriter<StatusMenu, DTOStatusMenusCRequest, DTOStatusMenusURequest>
+    { }
 
-    }
-
-    public interface IStatusMenusRepositoryReadable
-    {
-        Task<StatusMenu?> GetStatusMenuAsync(int ID);
-        Task<List<StatusMenu>> GetAllStatusMenusAsync(int Page);
-    }
-
-    public interface IStatusMenusRepositoryWritable
-    {
-        Task<StatusMenu?> AddStatusMenuAsync(DTOStatusMenusCRequest Request);
-        Task<StatusMenu?> UpdateStatusMenuAsync(DTOStatusMenusURequest Request);
-        Task<bool> DeleteStatusMenuAsync(int id);
-    }
-
-
-
-    public interface IStatusMenusRepository : IStatusMenusRepositoryReadable, IStatusMenusRepositoryWritable
-    {
-        
-    }
+    public interface IStatusMenusRepository : IStatusMenusRepositoryReader, IStatusMenusRepositoryWriter
+    { }
 }

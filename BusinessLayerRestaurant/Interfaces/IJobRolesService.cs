@@ -7,12 +7,12 @@ namespace BusinessLayerRestaurant.Interfaces
 {
 
 
-    public interface IJobRolesServiceContainer : IInterfaceBase<IJobRolesRepository>
+    public interface IJobRolesServiceContainer : IServiceContainer<IJobRolesRepository>
     { }
 
-    public interface IJobRolesServiceReader : IReadableBusinessBase<JobRole> 
+    public interface IJobRolesServiceReader : IServiceReader<JobRole> 
     { }
-    public interface IJobRolesServiceWriter : IWritableBusinessBase<JobRole, DTOJobRolesCRequest, DTOJobRolesURequest>
+    public interface IJobRolesServiceWriter : IServiceWriter<JobRole, DTOJobRolesCRequest, DTOJobRolesURequest>
     { }
 
     public interface IJobRolesServiceReadable
