@@ -6,7 +6,7 @@ namespace DomainLayer.Entities
     {
         public int ID { get; set; }
         public int TableID { get; set; }
-        public int EmployerID { get; set; }
+        public int EmployeeID { get; set; }
         public int StatusOrderID { get; set; }
         public DateTime OrderDate { get; set; }
         public decimal? TotalAmount { get; set; }

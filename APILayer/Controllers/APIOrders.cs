@@ -76,7 +76,7 @@ namespace APILayer.Controllers
             {
                 throw new ArgumentNullException("Request is null!");
             }
-            var authResult = await authorizationService.AuthorizeAsync(User, dto.EmployerID, "WaiterOwnerOrAdmin");
+            var authResult = await authorizationService.AuthorizeAsync(User, dto.EmployeeID, "WaiterOwnerOrAdmin");
 
             if (!authResult.Succeeded)
                 throw new UnauthorizedAccessException("Access denied.");
@@ -95,7 +95,7 @@ namespace APILayer.Controllers
             {
                 throw new ArgumentNullException("Request is null!");
             }
-            var authResult = await authorizationService.AuthorizeAsync(User, dto.EmployerID, "WaiterOwnerOrAdmin");
+            var authResult = await authorizationService.AuthorizeAsync(User, dto.EmployeeID, "WaiterOwnerOrAdmin");
 
             if (!authResult.Succeeded)
                 throw new UnauthorizedAccessException("Access denied.");

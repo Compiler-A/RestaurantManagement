@@ -16,7 +16,7 @@ namespace DataLayerRestaurant.Classes
             {
                 ID = reader.GetInt32(reader.GetOrdinal("OrderID")),
                 TableID = reader.GetInt32(reader.GetOrdinal("TableID")),
-                EmployerID = reader.GetInt32(reader.GetOrdinal("EmployeeID")),
+                EmployeeID = reader.GetInt32(reader.GetOrdinal("EmployeeID")),
                 StatusOrderID = reader.GetInt32(reader.GetOrdinal("StatusOrderID")),
                 OrderDate = reader.GetDateTime(reader.GetOrdinal("OrderDate")),
                 TotalAmount = reader.IsDBNull(reader.GetOrdinal("TotalAmount"))
@@ -130,7 +130,7 @@ namespace DataLayerRestaurant.Classes
                 {
                     Command.CommandType = System.Data.CommandType.StoredProcedure;
                     Command.Parameters.AddWithValue("@TableID", order.TableID);
-                    Command.Parameters.AddWithValue("@EmployeeID", order.EmployerID);
+                    Command.Parameters.AddWithValue("@EmployeeID", order.EmployeeID);
                     Command.Parameters.AddWithValue("@Date", order.OrderDate);
                     Command.Parameters.AddWithValue("@StatusID", order.StatusOrderID);
                     Command.Parameters.AddWithValue("@Amount", (object?)order.TotalAmount ?? DBNull.Value);
@@ -159,7 +159,7 @@ namespace DataLayerRestaurant.Classes
                 {
                     Command.CommandType = System.Data.CommandType.StoredProcedure;
                     Command.Parameters.AddWithValue("@TableID", order.TableID);
-                    Command.Parameters.AddWithValue("@EmployeeID", order.EmployerID);
+                    Command.Parameters.AddWithValue("@EmployeeID", order.EmployeeID);
                     Command.Parameters.AddWithValue("@Date", order.OrderDate);
                     Command.Parameters.AddWithValue("@StatusID", order.StatusOrderID);
                     Command.Parameters.AddWithValue("@Amount", (object?)order.TotalAmount ?? DBNull.Value);

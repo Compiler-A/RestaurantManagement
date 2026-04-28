@@ -76,7 +76,7 @@ namespace APILayer.Controllers
                 throw new ArgumentNullException("Request is null!");
             }
             var order = await _businessOrderDetail.IOrder.GetOrderAsync(dto.OrderID);
-            var authResult = await authorizationService.AuthorizeAsync(User, order!.EmployerID, "WaiterOwnerOrAdmin");
+            var authResult = await authorizationService.AuthorizeAsync(User, order!.EmployeeID, "WaiterOwnerOrAdmin");
 
             if (!authResult.Succeeded)
                 throw new UnauthorizedAccessException("Access denied.");
@@ -98,7 +98,7 @@ namespace APILayer.Controllers
                 throw new ArgumentNullException("Request is null!");
             }
             var order = await _businessOrderDetail.IOrder.GetOrderAsync(dto.OrderID);
-            var authResult = await authorizationService.AuthorizeAsync(User, order!.EmployerID, "WaiterOwnerOrAdmin");
+            var authResult = await authorizationService.AuthorizeAsync(User, order!.EmployeeID, "WaiterOwnerOrAdmin");
             if (!authResult.Succeeded)
                 throw new UnauthorizedAccessException("Access denied.");
 

@@ -67,7 +67,7 @@ namespace BusinessLayerRestaurant.Classes
             _Employee = Employee;
         }
         public async Task LoadDataAsync(Order item) {
-            item.employees = await _Employee.GetEmployeeAsync(item.EmployerID);
+            item.employees = await _Employee.GetEmployeeAsync(item.EmployeeID);
         }
     }
     public class clsTableLoader : IOrdersServiceComposition
