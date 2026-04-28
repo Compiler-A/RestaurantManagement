@@ -32,7 +32,7 @@ namespace APILayer.Controllers
                 throw new ArgumentOutOfRangeException("Page number must be greater than 0.");
             }
 
-            var list = await _StatusOrder.GetAllStatusOrdersAsync(page);
+            var list = await _StatusOrder.GetAllAsync(page);
             return CreateResponse<IEnumerable<StatusOrder>>(list, StatusCodes.Status200OK, $"Row: {list.Count}");
 
         }
@@ -47,7 +47,7 @@ namespace APILayer.Controllers
                 throw new ArgumentOutOfRangeException("ID must be greater than 0.");
             }
 
-            var DTO = await _StatusOrder.GetStatusOrdersAsync(ID);
+            var DTO = await _StatusOrder.GetAsync(ID);
             return CreateResponse<StatusOrder>(DTO!, StatusCodes.Status200OK, "Found Successfully!");
         }
 
@@ -61,7 +61,7 @@ namespace APILayer.Controllers
                 throw new ArgumentNullException("Request is null!");
             }
 
-            var result = await _StatusOrder.AddStatusOrdersAsync(Request);
+            var result = await _StatusOrder.CreateAsync(Request);
             return CreatedAtRoute("GetStatusOrderByID", new { ID = result!.ID }, result);
 
         }
@@ -77,7 +77,7 @@ namespace APILayer.Controllers
             }
 
 
-            var result = await _StatusOrder.UpdateStatusOrdersAsync(Request);
+            var result = await _StatusOrder.UpdateAsync(Request);
             return CreateResponse<StatusOrder>(result!, StatusCodes.Status200OK, "Status Order Updated Successfully!");
 
         }
@@ -91,8 +91,8 @@ namespace APILayer.Controllers
             {
                 throw new ArgumentOutOfRangeException("ID must be greater than 0.");
             }
-            var result = await _StatusOrder.DeleteStatusOrdersAsync(ID);
-            return CreateResponse<bool>(true!, StatusCodes.Status200OK, "Status Order Deleted Successfully!");
+            var result = await _StatusOrder.DeleteAsync(ID);
+            return CreateResponse<bool>(result, StatusCodes.Status200OK, "Status Order Deleted Successfully!");
         }
     }
 }

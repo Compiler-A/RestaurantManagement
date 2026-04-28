@@ -34,7 +34,7 @@ namespace APILayer.Controllers
                 throw new ArgumentOutOfRangeException("Page number must be greater than 0.");
             }
 
-            var list = await employees.GetAllEmployeesAsync(page);
+            var list = await employees.GetAllAsync(page);
             return CreateResponse<IEnumerable<Employee>>(list, StatusCodes.Status200OK, $"Row: {list.Count}");
         }
 
@@ -55,7 +55,7 @@ namespace APILayer.Controllers
             if (!authResult.Succeeded)
                 throw new UnauthorizedAccessException("Access denied.");
 
-            var DTO = await employees.GetEmployeeAsync(ID);
+            var DTO = await employees.GetAsync(ID);
             return CreateResponse<Employee>(DTO!, StatusCodes.Status200OK, "Found Successfully!");
         }
 
@@ -70,7 +70,7 @@ namespace APILayer.Controllers
             }
             
 
-            var success = await this.employees.CreateEmployeeAsync(employee);
+            var success = await this.employees.CreateAsync(employee);
             return CreatedAtRoute("GetEmployeeByID", new { ID = success!.ID }, success);
         }
 
@@ -85,7 +85,7 @@ namespace APILayer.Controllers
             }
             
 
-            var dto = await this.employees.UpdateEmployeeAsync(employee);
+            var dto = await this.employees.UpdateAsync(employee);
             return CreateResponse<Employee>(dto!, StatusCodes.Status200OK, "Employee Updated Successfully!");
         }
 
@@ -99,7 +99,7 @@ namespace APILayer.Controllers
                 throw new ArgumentOutOfRangeException("ID must be greater than 0.");
             }
 
-            var success = await employees.DeleteEmployeeAsync(ID);
+            var success = await employees.DeleteAsync(ID);
             return CreateResponse<bool>(true, StatusCodes.Status200OK, "Employee Deleted Successfully!");
         }
 
@@ -142,7 +142,7 @@ namespace APILayer.Controllers
 
             if (!authResult.Succeeded)
                 throw new UnauthorizedAccessException("Access denied.");
-            var DTO = await employees.GetEmployeeAsync(userName);
+            var DTO = await employees.GetAsync(userName);
             return CreateResponse<Employee>(DTO!, StatusCodes.Status200OK, "Found Successfully!");
 
         }

@@ -33,7 +33,7 @@ namespace APILayer.Controllers
                 throw new ArgumentOutOfRangeException("Page number must be greater than 0.");
             }
 
-            var menuItems = await _BusinessMenuItem.GetAllMenuItemsAsync(page);
+            var menuItems = await _BusinessMenuItem.GetAllAsync(page);
             return CreateResponse(menuItems, StatusCodes.Status200OK, $"Row: {menuItems.Count}");
 
         }
@@ -43,7 +43,7 @@ namespace APILayer.Controllers
         [EnableRateLimiting(NameRateLimitPolicies.GetAll)]
         public async Task<ActionResult<ApiResponse<List<MenuItem>>>> GetAllAvailablesAsync()
         {
-            var menuItems = await _BusinessMenuItem.GetAllMenuItemsAvailablesAsync();
+            var menuItems = await _BusinessMenuItem.GetAllAvailablesAsync();
             return CreateResponse(menuItems, StatusCodes.Status200OK, $"Row: {menuItems.Count}");
         }
 
@@ -57,7 +57,7 @@ namespace APILayer.Controllers
                 throw new ArgumentNullException("Request is null!");
             }
 
-            var menuItems = await _BusinessMenuItem.GetAllMenuItemsFiltersAsync(Request);
+            var menuItems = await _BusinessMenuItem.GetAllFiltersAsync(Request);
             return CreateResponse<List<MenuItem>>(menuItems!, StatusCodes.Status200OK, $"Row: {menuItems.Count}");
 
         }
@@ -72,7 +72,7 @@ namespace APILayer.Controllers
                 throw new ArgumentOutOfRangeException("ID number must be greater than 0.");
             }
 
-            var menuItem = await _BusinessMenuItem.GetMenuItemAsync(ID);
+            var menuItem = await _BusinessMenuItem.GetAsync(ID);
             return CreateResponse<MenuItem>(menuItem!, StatusCodes.Status200OK, "Found Successfully!");
         }
 
@@ -87,7 +87,7 @@ namespace APILayer.Controllers
             }
 
 
-            var dto = await _BusinessMenuItem.AddMenuItemAsync(menuItem);
+            var dto = await _BusinessMenuItem.CreateAsync(menuItem);
             return CreatedAtRoute("GetMenuItemByID", new { ID = dto!.ID }, dto);
 
         }
@@ -104,7 +104,7 @@ namespace APILayer.Controllers
             }
 
 
-            var dto = await _BusinessMenuItem.UpdateMenuItemAsync(menuItem);
+            var dto = await _BusinessMenuItem.UpdateAsync(menuItem);
             return CreateResponse<MenuItem>(dto!, StatusCodes.Status200OK, "Menu Item Updated Successfully!");
 
 
@@ -120,7 +120,7 @@ namespace APILayer.Controllers
                 throw new ArgumentOutOfRangeException("ID number must be greater than 0.");
             }
 
-            bool isDeleted = await _BusinessMenuItem.DeleteMenuItemAsync(ID);
+            bool isDeleted = await _BusinessMenuItem.DeleteAsync(ID);
             return CreateResponse(isDeleted ,StatusCodes.Status200OK, "Menu Item Deleted Successfully!");
         }
     }

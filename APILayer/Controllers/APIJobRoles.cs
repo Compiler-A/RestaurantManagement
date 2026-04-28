@@ -31,7 +31,7 @@ namespace APILayer.Controllers
             {
                 throw new ArgumentOutOfRangeException("Page number must be greater than 0.");
             }
-            var list = await jobRoles.GetAllJobRolesAsync(page);
+            var list = await jobRoles.GetAllAsync(page);
             return CreateResponse<IEnumerable<JobRole>>(list, StatusCodes.Status200OK, $"Row: {list.Count}");
         }
 
@@ -44,7 +44,7 @@ namespace APILayer.Controllers
             {
                 throw new ArgumentOutOfRangeException("ID number must be greater than 0.");
             }
-            var DTO = await jobRoles.GetJobRoleAsync(ID);
+            var DTO = await jobRoles.GetAsync(ID);
             return CreateResponse<JobRole>(DTO!, StatusCodes.Status200OK, "Found Successfully!");
         }
 
@@ -58,7 +58,7 @@ namespace APILayer.Controllers
                 throw new ArgumentNullException("Request is null!");
             }
 
-            var result = await jobRoles.AddJobRoleAsync(JobRole);
+            var result = await jobRoles.CreateAsync(JobRole);
             return CreatedAtRoute("GetJobRoleByID", new { ID = result!.ID }, result);
         }
 
@@ -73,7 +73,7 @@ namespace APILayer.Controllers
             }
 
 
-            var result = await jobRoles.UpdateJobRoleAsync(Update);
+            var result = await jobRoles.UpdateAsync(Update);
             return CreateResponse<JobRole>(result!, StatusCodes.Status200OK, "Job Role Updated Successfully!");
 
            
@@ -88,7 +88,7 @@ namespace APILayer.Controllers
             {
                 throw new ArgumentOutOfRangeException("ID number must be greater than 0.");
             }
-            var result = await jobRoles.DeleteJobRoleAsync(id);
+            var result = await jobRoles.DeleteAsync(id);
             return CreateResponse<bool>(true!, StatusCodes.Status200OK, "Job Role Deleted Successfully!");
         }
     }

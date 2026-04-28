@@ -32,7 +32,7 @@ namespace APILayer.Controllers
             {
                 throw new ArgumentOutOfRangeException("Page number must be greater than 0.");
             }
-            var orders = await _businessOrders.GetAllOrdersAsync(page);
+            var orders = await _businessOrders.GetAllAsync(page);
             return CreateResponse<IEnumerable<Order>>(orders, StatusCodes.Status200OK, $"Row: {orders.Count}");
 
         }
@@ -46,7 +46,7 @@ namespace APILayer.Controllers
             {
                 throw new ArgumentOutOfRangeException("ID number must be greater than 0.");
             }
-            var order = await _businessOrders.GetOrderAsync(ID);
+            var order = await _businessOrders.GetAsync(ID);
             return CreateResponse<Order?>(order, StatusCodes.Status200OK, "Found Successfully!");
         }
 
@@ -62,7 +62,7 @@ namespace APILayer.Controllers
             }
 
 
-            var order = await _businessOrders.GetFilterOrdersAsync(Request);
+            var order = await _businessOrders.GetFilterAsync(Request);
             return CreateResponse<List<Order>?>(order, StatusCodes.Status200OK, "Found Successfully!");
         }
 
@@ -80,7 +80,7 @@ namespace APILayer.Controllers
 
             if (!authResult.Succeeded)
                 throw new UnauthorizedAccessException("Access denied.");
-            var result = await _businessOrders.AddOrderAsync(dto);
+            var result = await _businessOrders.CreateAsync(dto);
             return CreatedAtRoute("GetOrderByID", new { ID = result!.ID }, result);
 
         }
@@ -100,7 +100,7 @@ namespace APILayer.Controllers
             if (!authResult.Succeeded)
                 throw new UnauthorizedAccessException("Access denied.");
 
-            var result = await _businessOrders.UpdateOrderAsync(dto);
+            var result = await _businessOrders.UpdateAsync(dto);
             return CreateResponse<Order>(result!, StatusCodes.Status200OK, "Order Updated Successfully!");
 
         }
@@ -115,7 +115,7 @@ namespace APILayer.Controllers
                 throw new ArgumentOutOfRangeException("ID number must be greater than 0.");
             }
 
-            var result = await _businessOrders.DeleteOrderAsync(ID);
+            var result = await _businessOrders.DeleteAsync(ID);
             return CreateResponse(true, StatusCodes.Status200OK, "Order Deleted Successfully!");
 
         }

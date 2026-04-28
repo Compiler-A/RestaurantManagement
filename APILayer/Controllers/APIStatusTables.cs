@@ -33,7 +33,7 @@ namespace APILayer.Controllers
             {
                 throw new ArgumentOutOfRangeException("Page number must be greater than 0.");
             }
-            var list = await _businessStatusTables.GetAllStatusTablesAsync(Page);
+            var list = await _businessStatusTables.GetAllAsync(Page);
             return CreateResponse<IEnumerable<StatusTable>>(list!, StatusCodes.Status200OK, $"Row: {list.Count}");
 
         }
@@ -47,7 +47,7 @@ namespace APILayer.Controllers
             {
                 throw new ArgumentOutOfRangeException("ID number must be greater than 0.");
             }
-            var statusTable = await _businessStatusTables.GetStatusTableAsync(ID);
+            var statusTable = await _businessStatusTables.GetAsync(ID);
             return CreateResponse<StatusTable>(statusTable!, StatusCodes.Status200OK, "Found Successfully!");
 
         }
@@ -63,7 +63,7 @@ namespace APILayer.Controllers
                 throw new ArgumentNullException("Request is null!");
             }
 
-            var result = await _businessStatusTables.AddStatusTableAsync(Request);
+            var result = await _businessStatusTables.CreateAsync(Request);
             return CreatedAtRoute("GetStatusTableByID", new { ID = result!.ID }, result);
 
         }
@@ -80,7 +80,7 @@ namespace APILayer.Controllers
             }
 
 
-            var result = await _businessStatusTables.UpdateStatusTableAsync(Request);
+            var result = await _businessStatusTables.UpdateAsync(Request);
             return CreateResponse<StatusTable>(result!, StatusCodes.Status200OK, "Status Table Updated Successfully!");
             
         }
@@ -94,7 +94,7 @@ namespace APILayer.Controllers
             {
                 throw new ArgumentOutOfRangeException("ID number must be greater than 0.");
             }
-            var result = await _businessStatusTables.DeleteStatusTableAsync(ID);
+            var result = await _businessStatusTables.DeleteAsync(ID);
             return CreateResponse<bool>(true!, StatusCodes.Status200OK, "Status Table Deleted Successfully!");
         }
     }

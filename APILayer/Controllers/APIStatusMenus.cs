@@ -33,7 +33,7 @@ namespace APILayer.Controllers
                 throw new ArgumentOutOfRangeException("Page number must be greater than 0.");
             }
 
-            var list = await _dataStatusMenus.GetAllStatusMenusAsync(page);
+            var list = await _dataStatusMenus.GetAllAsync(page);
             return CreateResponse(list, StatusCodes.Status200OK, $"Row: {list.Count}");
 
         }
@@ -48,7 +48,7 @@ namespace APILayer.Controllers
                 throw new ArgumentOutOfRangeException("ID number must be greater than 0.");
             }
 
-            var resource = await _dataStatusMenus.GetStatusMenuAsync(ID);
+            var resource = await _dataStatusMenus.GetAsync(ID);
             return CreateResponse<StatusMenu>(resource!, StatusCodes.Status200OK, "Found Successfully!");
         }
 
@@ -63,7 +63,7 @@ namespace APILayer.Controllers
             }
 
 
-            var dto = await _dataStatusMenus.AddStatusMenuAsync(statusMenu);
+            var dto = await _dataStatusMenus.CreateAsync(statusMenu);
             return CreatedAtRoute("GetStatusMenuByID", new { ID = dto!.ID }, dto);
 
         }
@@ -79,7 +79,7 @@ namespace APILayer.Controllers
             }
 
 
-            var dto = await _dataStatusMenus.UpdateStatusMenuAsync(statusMenu);
+            var dto = await _dataStatusMenus.UpdateAsync(statusMenu);
             return CreateResponse<StatusMenu>(dto!, StatusCodes.Status200OK, "Status Menu Updated Successfully!");
 
         }
@@ -94,7 +94,7 @@ namespace APILayer.Controllers
                 throw new ArgumentOutOfRangeException("ID number must be greater than 0.");
             }
 
-            bool isDeleted = await _dataStatusMenus.DeleteStatusMenuAsync(ID);
+            bool isDeleted = await _dataStatusMenus.DeleteAsync(ID);
             return CreateResponse<bool>(isDeleted, StatusCodes.Status200OK, "Status Menu Deleted Successfully!");
 
 

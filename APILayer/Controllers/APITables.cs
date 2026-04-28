@@ -29,7 +29,7 @@ namespace APILayer.Controllers
         public async Task<ActionResult<ApiResponse<IEnumerable<Table>>>> GetAllNoPaginationAsync()
         {
 
-            var data = await dataTablesBusiness.GetAllTablesAsync();
+            var data = await dataTablesBusiness.GetAllAsync();
             return CreateResponse<IEnumerable<Table>>(data, StatusCodes.Status200OK, $"Row: {data.Count}");
         }
 
@@ -42,7 +42,7 @@ namespace APILayer.Controllers
             {
                 throw new ArgumentOutOfRangeException("Page must be greater than 0.");
             }
-            var data = await dataTablesBusiness.GetAllTablesAsync(page);
+            var data = await dataTablesBusiness.GetAllAsync(page);
             return CreateResponse<IEnumerable<Table>>(data, StatusCodes.Status200OK, $"Row: {data.Count}");
 
         }
@@ -52,7 +52,7 @@ namespace APILayer.Controllers
         [HttpGet("all-availables", Name = "GetAllTablesAvailables")]
         public async Task<ActionResult<ApiResponse<IEnumerable<Table>>>> GetAllAvailablesAsync()
         {
-            var data = await dataTablesBusiness.GetAllTablesAvailablesAsync();
+            var data = await dataTablesBusiness.GetAllAvailablesAsync();
             return CreateResponse<IEnumerable<Table>>(data, StatusCodes.Status200OK, $"Row: {data.Count}");
 
         }
@@ -66,7 +66,7 @@ namespace APILayer.Controllers
                 throw new ArgumentNullException("Request is null!");
 
             
-            var list = await dataTablesBusiness.GetTablesFilter2Async(Request);
+            var list = await dataTablesBusiness.GetFilter2Async(Request);
             return CreateResponse<IEnumerable<Table>>(list, StatusCodes.Status200OK, $"Row: {list.Count}");
 
         }
@@ -81,7 +81,7 @@ namespace APILayer.Controllers
                 throw new ArgumentNullException("Request is null!");
 
 
-            var list = await dataTablesBusiness.GetTablesFilter1Async(Request);
+            var list = await dataTablesBusiness.GetFilter1Async(Request);
             return CreateResponse<IEnumerable<Table>>(list, StatusCodes.Status200OK, $"Row: {list.Count}");
 
         }
@@ -95,7 +95,7 @@ namespace APILayer.Controllers
                 throw new ArgumentNullException("Request is null!");
 
 
-            var list = await dataTablesBusiness.GetTablesFilter3Async(Request);
+            var list = await dataTablesBusiness.GetFilter3Async(Request);
             return CreateResponse<IEnumerable<Table>>(list, StatusCodes.Status200OK, $"Row: {list.Count}");
 
         }
@@ -109,7 +109,7 @@ namespace APILayer.Controllers
             {
                 throw new ArgumentOutOfRangeException("Table Number is Empty!");
             }
-            var list = await dataTablesBusiness.GetTableByNameAsync(tableNumber);
+            var list = await dataTablesBusiness.GetByNameAsync(tableNumber);
             return CreateResponse<Table>(list!, StatusCodes.Status200OK, $"Found Successfully!");
 
         }
@@ -124,7 +124,7 @@ namespace APILayer.Controllers
             {
                 throw new ArgumentOutOfRangeException("ID must be greater than 0.");
             }
-            var data = await dataTablesBusiness.GetTableAsync(ID);
+            var data = await dataTablesBusiness.GetAsync(ID);
             return CreateResponse<Table>(data!, StatusCodes.Status200OK, "Found Successfully!");
 
         }
@@ -139,7 +139,7 @@ namespace APILayer.Controllers
                 throw new ArgumentNullException("Request is null!");
 
 
-            var dto = await dataTablesBusiness.AddTableAsync(Table);
+            var dto = await dataTablesBusiness.CreateAsync(Table);
             return CreatedAtRoute("GetTableByID", new { ID = dto!.ID }, dto);
 
         }
@@ -154,7 +154,7 @@ namespace APILayer.Controllers
                 throw new ArgumentNullException("Request is null!");
 
 
-            var dto = await dataTablesBusiness.UpdateTableAsync(Table);
+            var dto = await dataTablesBusiness.UpdateAsync(Table);
             return CreateResponse<Table>(dto!, StatusCodes.Status200OK, "Table Updated Successfully!");
 
         }
@@ -169,7 +169,7 @@ namespace APILayer.Controllers
                 throw new ArgumentOutOfRangeException("ID must be greater than 0.");
             }
 
-            var result = await dataTablesBusiness.DeleteTableAsync(ID);
+            var result = await dataTablesBusiness.DeleteAsync(ID);
             return CreateResponse<bool>(true!, StatusCodes.Status200OK, "Table Deleted Successfully!");
 
         }

@@ -30,7 +30,7 @@ namespace APILayer.Controllers
             {
                 throw new ArgumentOutOfRangeException("Page number must be greater than 0.");
             }
-            var typeItems = await _dataLayer.GetAllTypeItemsAsync(page);
+            var typeItems = await _dataLayer.GetAllAsync(page);
             return CreateResponse<IEnumerable<TypeItem>>(typeItems, StatusCodes.Status200OK, $"Row: {typeItems.Count}");
 
         }
@@ -44,7 +44,7 @@ namespace APILayer.Controllers
             {
                 throw new ArgumentOutOfRangeException("ID number must be greater than 0.");
             }
-            var typeItemDto = await _dataLayer.GetTypeItemAsync(ID);
+            var typeItemDto = await _dataLayer.GetAsync(ID);
             return CreateResponse(typeItemDto!, StatusCodes.Status200OK, "Found Successfully!");
 
         }
@@ -59,7 +59,7 @@ namespace APILayer.Controllers
 
 
 
-            var dto = await _dataLayer.AddTypeItemAsync(typeItem);
+            var dto = await _dataLayer.CreateAsync(typeItem);
             return CreatedAtRoute("GetTypeItemById", new { ID = dto!.ID }, dto);
 
         }
@@ -74,7 +74,7 @@ namespace APILayer.Controllers
 
 
 
-            var dto = await _dataLayer.UpdateTypeItemAsync(typeItem);
+            var dto = await _dataLayer.UpdateAsync(typeItem);
             return CreateResponse(dto!, StatusCodes.Status200OK, "Type Item Updated Successfully!");
 
         }
@@ -87,7 +87,7 @@ namespace APILayer.Controllers
             if (ID <= 0)
                 throw new ArgumentOutOfRangeException("ID number must be greater than 0.");
 
-            var typeItem = await _dataLayer.GetTypeItemAsync(ID);
+            var typeItem = await _dataLayer.DeleteAsync(ID);
             return CreateResponse<bool>(true, StatusCodes.Status200OK, "Type Item Deleted Successfully!");
         }
     }

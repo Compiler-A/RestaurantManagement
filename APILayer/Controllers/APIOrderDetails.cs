@@ -32,7 +32,7 @@ namespace APILayer.Controllers
             {
                 throw new ArgumentOutOfRangeException("Page number must be greater than 0.");
             }
-            var orders = await _businessOrderDetail.GetAllOrderDetailsAsync(page);
+            var orders = await _businessOrderDetail.GetAllAsync(page);
             return CreateResponse<IEnumerable<OrderDetail>>(orders, StatusCodes.Status200OK, $"Row: {orders.Count}");
         }
 
@@ -45,7 +45,7 @@ namespace APILayer.Controllers
             {
                 throw new ArgumentOutOfRangeException("Order ID must be greater than 0.");
             }
-            var orders = await _businessOrderDetail.GetAllOrderDetailsByOrderIDAsync(orderID);
+            var orders = await _businessOrderDetail.GetAllByOrderIDAsync(orderID);
 
             return CreateResponse<IEnumerable<OrderDetail>>(orders, StatusCodes.Status200OK, $"Row: {orders.Count}");
 
@@ -60,7 +60,7 @@ namespace APILayer.Controllers
             {
                 throw new ArgumentOutOfRangeException("ID must be greater than 0.");
             }
-            var order = await _businessOrderDetail.GetOrderDetailAsync(ID);
+            var order = await _businessOrderDetail.GetAsync(ID);
             return CreateResponse<OrderDetail?>(order, StatusCodes.Status200OK, "Found Successfully!");
 
         }
@@ -75,14 +75,14 @@ namespace APILayer.Controllers
             {
                 throw new ArgumentNullException("Request is null!");
             }
-            var order = await _businessOrderDetail.IOrder.GetOrderAsync(dto.OrderID);
+            var order = await _businessOrderDetail.IOrder.GetAsync(dto.OrderID);
             var authResult = await authorizationService.AuthorizeAsync(User, order!.EmployeeID, "WaiterOwnerOrAdmin");
 
             if (!authResult.Succeeded)
                 throw new UnauthorizedAccessException("Access denied.");
 
 
-            var result = await _businessOrderDetail.AddOrderDetailAsync(dto);
+            var result = await _businessOrderDetail.CreateAsync(dto);
             return CreatedAtRoute("GetOrderDetailByID", new { ID = result!.ID }, result);
 
         }
@@ -97,13 +97,13 @@ namespace APILayer.Controllers
             {
                 throw new ArgumentNullException("Request is null!");
             }
-            var order = await _businessOrderDetail.IOrder.GetOrderAsync(dto.OrderID);
+            var order = await _businessOrderDetail.IOrder.GetAsync(dto.OrderID);
             var authResult = await authorizationService.AuthorizeAsync(User, order!.EmployeeID, "WaiterOwnerOrAdmin");
             if (!authResult.Succeeded)
                 throw new UnauthorizedAccessException("Access denied.");
 
 
-            var result = await _businessOrderDetail.UpdateOrderDetailAsync(dto);
+            var result = await _businessOrderDetail.UpdateAsync(dto);
             return CreateResponse<OrderDetail>(result!, StatusCodes.Status200OK, "Order Detail Updated Successfully!");
 
         }
@@ -117,7 +117,7 @@ namespace APILayer.Controllers
             {
                 throw new ArgumentOutOfRangeException("ID number must be greater than 0.");
             }
-            var result = await _businessOrderDetail.DeleteOrderDetailAsync(ID);
+            var result = await _businessOrderDetail.DeleteAsync(ID);
             return CreateResponse(true, StatusCodes.Status200OK, "Order Detail Deleted Successfully!");
         }
     }

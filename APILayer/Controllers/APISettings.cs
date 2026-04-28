@@ -32,7 +32,7 @@ namespace APILayer.Controllers
             {
                 throw new ArgumentOutOfRangeException("Page number must be greater than 0.");
             }
-            var list = await _BusinessSettings.GetAllSettingsAsync(page);
+            var list = await _BusinessSettings.GetAllAsync(page);
             return CreateResponse<IEnumerable<Setting>>(list, StatusCodes.Status200OK, $"Row: {list.Count}");
         }
 
@@ -45,7 +45,7 @@ namespace APILayer.Controllers
             {
                 throw new ArgumentOutOfRangeException("ID must be greater than 0.");
             }
-            var DTO = await _BusinessSettings.GetSettingAsync(ID);
+            var DTO = await _BusinessSettings.GetAsync(ID);
             return CreateResponse<Setting>(DTO!, StatusCodes.Status200OK, "Found Successfully!");
         }
 
@@ -60,7 +60,7 @@ namespace APILayer.Controllers
             }
 
 
-            var success = await _BusinessSettings.AddSettingAsync(Setting);
+            var success = await _BusinessSettings.CreateAsync(Setting);
             return CreatedAtRoute("GetSettingByID", new { ID = success!.ID }, success);
 
         }
@@ -76,7 +76,7 @@ namespace APILayer.Controllers
             }
 
 
-            var success = await _BusinessSettings.UpdateSettingAsync(Setting);
+            var success = await _BusinessSettings.UpdateAsync(Setting);
             return CreateResponse<Setting>(success!, StatusCodes.Status200OK, "Setting Updated Successfully!");
 
         }
@@ -90,7 +90,7 @@ namespace APILayer.Controllers
             {
                 throw new ArgumentOutOfRangeException("ID must be greater than 0.");
             }
-            var success = await _BusinessSettings.DeleteSettingAsync(ID);
+            var success = await _BusinessSettings.DeleteAsync(ID);
             return CreateResponse<bool>(success, StatusCodes.Status200OK, "Setting Deleted Successfully!");
 
         }
