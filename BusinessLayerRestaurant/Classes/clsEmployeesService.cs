@@ -144,7 +144,7 @@ namespace BusinessLayerRestaurant.Classes
             {
                 throw new KeyNotFoundException("Not Found!");
             }
-            var Valid = _HashingService.ValidationBCrypt(Request.CurrentPassword, Data.Password);
+            var Valid = _HashingService.ValidationBCrypt(Request.CurrentPassword, Data.PasswordHashed);
             if (!Valid)
             {
                 throw new InvalidOperationException("Bad password!");

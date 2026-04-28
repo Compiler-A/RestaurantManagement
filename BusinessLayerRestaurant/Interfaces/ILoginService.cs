@@ -2,6 +2,7 @@
 using DataLayerRestaurant.Interfaces;
 using RestaurantDataLayer;
 using DomainLayer.Entities;
+using ContractsLayerRestaurant.DTOResponse;
 
 namespace BusinessLayerRestaurant.Interfaces
 {

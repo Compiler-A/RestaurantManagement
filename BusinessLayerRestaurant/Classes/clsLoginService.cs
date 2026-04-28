@@ -11,6 +11,7 @@ using System.Security.Cryptography;
 using System.Text;
 using Microsoft.Extensions.Options;
 using DomainLayer.Entities;
+using ContractsLayerRestaurant.DTOResponse;
 
 
 namespace BusinessLayerRestaurant.Classes
@@ -153,7 +154,7 @@ namespace BusinessLayerRestaurant.Classes
                 throw new AuthenticationException("Invalid credentials");
 
             bool isValidPassword =
-                BCrypt.Net.BCrypt.Verify(Request.Password, employee.Password);
+                BCrypt.Net.BCrypt.Verify(Request.Password, employee.PasswordHashed);
 
             if (!isValidPassword)
                 throw new AuthenticationException("Invalid credentials");

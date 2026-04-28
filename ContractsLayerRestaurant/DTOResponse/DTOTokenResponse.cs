@@ -1,4 +1,4 @@
-﻿namespace ContractsLayerRestaurant.DTORequest.Auth
+﻿namespace ContractsLayerRestaurant.DTOResponse
 {
     public class DTOTokenResponse
     {

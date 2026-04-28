@@ -17,7 +17,7 @@ namespace DataLayerRestaurant.Classes
                 Name = reader.GetString(reader.GetOrdinal("Name")),
                 JobID = reader.GetInt32(reader.GetOrdinal("JobRoleID")),
                 UserName = reader.GetString(reader.GetOrdinal("UserName")),
-                Password = reader.GetString(reader.GetOrdinal("Password"))
+                PasswordHashed = reader.GetString(reader.GetOrdinal("Password"))
             };
         }
     }
