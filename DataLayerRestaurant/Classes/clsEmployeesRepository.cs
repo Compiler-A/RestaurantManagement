@@ -2,10 +2,8 @@
 using RestaurantDataLayer;
 using ContractsLayerRestaurant.DTORequest.Employees;
 using DataLayerRestaurant.Interfaces;
-using System.Security.Cryptography;
-using System.Text;
+using DomainLayer.Entities;
 using Microsoft.Extensions.Options;
-
 namespace DataLayerRestaurant.Classes
 {
 

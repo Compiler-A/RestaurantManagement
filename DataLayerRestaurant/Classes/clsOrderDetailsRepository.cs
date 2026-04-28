@@ -3,6 +3,7 @@ using DataLayerRestaurant.Interfaces;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Options;
 using RestaurantDataLayer;
+using DomainLayer.Entities;
 
 namespace DataLayerRestaurant.Classes
 {

@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ContractsLayerRestaurant\ContractsLayerRestaurant.csproj" />
+    <ProjectReference Include="..\DomainLayer\DomainLayer.csproj" />
   </ItemGroup>
 
 </Project>

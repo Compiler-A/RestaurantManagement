@@ -3,6 +3,7 @@ using Microsoft.Extensions.Options;
 using RestaurantDataLayer;
 using ContractsLayerRestaurant.DTORequest.Settings;
 using DataLayerRestaurant.Interfaces;
+using DomainLayer.Entities;
 
 namespace DataLayerRestaurant.Classes
 {

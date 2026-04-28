@@ -1,9 +1,9 @@
-﻿using ContractsLayerRestaurant.DTORequest.Employees;
-using ContractsLayerRestaurant.DTORequest.Auth;
+﻿using ContractsLayerRestaurant.DTORequest.Auth;
 using DataLayerRestaurant.Interfaces;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Options;
 using RestaurantDataLayer;
+using DomainLayer.Entities;
 
 
 namespace DataLayerRestaurant.Classes

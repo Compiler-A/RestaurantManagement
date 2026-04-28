@@ -1,11 +1,9 @@
 ﻿using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Options;
 using RestaurantDataLayer;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using ContractsLayerRestaurant.DTORequest.StatusTables;
 using DataLayerRestaurant.Interfaces;
+using DomainLayer.Entities;
 
 namespace DataLayerRestaurant.Classes
 {

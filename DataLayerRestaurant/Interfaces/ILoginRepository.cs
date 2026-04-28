@@ -1,11 +1,6 @@
-﻿using ContractsLayerRestaurant.DTORequest.Employees;
-using ContractsLayerRestaurant.DTORequest.Auth;
-using RestaurantDataLayer;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ContractsLayerRestaurant.DTORequest.Auth;
+using DomainLayer.Entities;
+
 
 namespace DataLayerRestaurant.Interfaces
 {
