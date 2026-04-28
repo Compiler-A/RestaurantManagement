@@ -187,7 +187,7 @@ namespace DataLayerRestaurant.Classes
             _IWrite = Write;
         }
 
-        public async Task<bool> isFindAsync(int id)
+        public async Task<bool> isFindDataAsync(int id)
         {
             return await _IRead.isFindDataAsync(id);
 
