@@ -4,7 +4,7 @@ using ContractsLayerRestaurant.DTORequest.TypeItems;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+using DomainLayer.Entities;
 
 
 namespace APILayer.Controllers

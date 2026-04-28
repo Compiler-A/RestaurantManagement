@@ -622,6 +622,7 @@
         "dependencies": {
           "BCrypt.Net-Next": "4.1.0",
           "ContractsLayerRestaurant": "1.0.0",
+          "DomainLayer": "1.0.0",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "8.0.0",
           "Microsoft.Data.SqlClient": "7.0.0",
           "Microsoft.Extensions.Options": "10.0.5",
@@ -634,6 +635,16 @@
         },
         "runtime": {
           "bin/placeholder/DataLayerRestaurant.dll": {}
+        }
+      },
+      "DomainLayer/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v8.0",
+        "compile": {
+          "bin/placeholder/DomainLayer.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/DomainLayer.dll": {}
         }
       }
     }
@@ -1771,6 +1782,11 @@
       "type": "project",
       "path": "../DataLayerRestaurant/DataLayerRestaurant.csproj",
       "msbuildProject": "../DataLayerRestaurant/DataLayerRestaurant.csproj"
+    },
+    "DomainLayer/1.0.0": {
+      "type": "project",
+      "path": "../DomainLayer/DomainLayer.csproj",
+      "msbuildProject": "../DomainLayer/DomainLayer.csproj"
     }
   },
   "projectFileDependencyGroups": {

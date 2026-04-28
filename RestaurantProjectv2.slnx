@@ -3,4 +3,5 @@
   <Project Path="BusinessLayerRestaurant/BusinessLayerRestaurant.csproj" />
   <Project Path="ContractsLayerRestaurant/ContractsLayerRestaurant.csproj" Id="b9ded9e3-0721-4dc2-9de1-2ce7c893f839" />
   <Project Path="DataLayerRestaurant/DataLayerRestaurant.csproj" />
+  <Project Path="DomainLayer/DomainLayer.csproj" Id="0dbd4226-3086-49cc-9b16-10780e2ae57e" />
 </Solution>
