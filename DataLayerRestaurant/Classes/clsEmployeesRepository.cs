@@ -107,6 +107,7 @@ namespace DataLayerRestaurant.Classes
                     }
                 }
             }
+            await _Loader.LoadDataAsync(result);
             return result;
         }
 

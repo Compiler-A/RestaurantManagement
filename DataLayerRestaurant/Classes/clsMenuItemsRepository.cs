@@ -166,6 +166,7 @@ namespace DataLayerRestaurant.Classes
                     }
                 }
             }
+            await _Loader.LoadDataAsync(result);
             return result;
         }
         public async Task<List<MenuItem>> GetAllDataAsync(int Page)

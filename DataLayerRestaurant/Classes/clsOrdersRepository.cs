@@ -27,12 +27,115 @@ namespace DataLayerRestaurant.Classes
         }
     }
 
+    public class clsEmployeeBatchLoader : IRepositoryBatchsLoader<Order>
+    {
+        private readonly IEmployeesRepositoryReader _service;
+        public clsEmployeeBatchLoader(IEmployeesRepositoryReader service)
+        {
+            _service = service;
+        }
+
+        public async Task LoadDataAsync(List<Order> orders)
+        {
+            var employeeIDs = orders.Select(e => e.EmployeeID).Distinct().ToList();
+            if (!employeeIDs.Any())
+                return;
+            var roles = await _service.GetAllDataAsync(employeeIDs);
+            var dict = roles.ToDictionary(r => r.ID);
+            foreach (var emp in orders)
+            {
+                if (dict.TryGetValue(emp.EmployeeID, out var role))
+                {
+                    emp.employees = role;
+                }
+            }
+        }
+    }
+
+    public class clsTableBatchLoader : IRepositoryBatchsLoader<Order>
+    {
+        private readonly ITablesRepositoryReader _service;
+
+        public clsTableBatchLoader(ITablesRepositoryReader service)
+        {
+            _service = service;
+        }
+
+        public async Task LoadDataAsync(List<Order> orders)
+        {
+            var tableIDs = orders.Select(e => e.TableID).Distinct().ToList();
+
+            if (!tableIDs.Any())
+                return;
+
+            var roles = await _service.GetAllDataAsync(tableIDs);
+
+            var dict = roles.ToDictionary(r => r.ID);
+
+            foreach (var emp in orders)
+            {
+                if (dict.TryGetValue(emp.TableID, out var role))
+                {
+                    emp.tables = role;
+                }
+            }
+        }
+    }
+    public class clsStatusOrderBatchLoader : IRepositoryBatchsLoader<Order>
+    {
+        private readonly IStatusOrdersRepositoryReader _service;
+
+        public clsStatusOrderBatchLoader(IStatusOrdersRepositoryReader service)
+        {
+            _service = service;
+        }
+
+        public async Task LoadDataAsync(List<Order> orders)
+        {
+            var StatusOrderID = orders.Select(e => e.StatusOrderID).Distinct().ToList();
+
+            if (!StatusOrderID.Any())
+                return;
+
+            var roles = await _service.GetAllDataAsync(StatusOrderID);
+
+            var dict = roles.ToDictionary(r => r.ID);
+
+            foreach (var emp in orders)
+            {
+                if (dict.TryGetValue(emp.StatusOrderID, out var role))
+                {
+                    emp.statusOrders = role;
+                }
+            }
+        }
+    }
+
+
+    public class clsOrdersRepositoryLoader : IOrdersRepositoryLoader
+    {
+        private IEnumerable<IRepositoryBatchsLoader<Order>> _Loaders;
+        public clsOrdersRepositoryLoader(IEnumerable<IRepositoryBatchsLoader<Order>> Loader)
+        {
+            _Loaders = Loader;
+        }
+        public async Task LoadDataAsync(List<Order> item)
+        {
+            foreach (var item1 in _Loaders)
+            {
+                await item1.LoadDataAsync(item);
+            }
+        }
+    }
+
     public class clsOrdersRepositoryReader : clsOrdersRepositoryComposition, IOrdersRepositoryReader
     {
         private readonly clsMySettings _Settings;
-        public clsOrdersRepositoryReader(IOptions<clsMySettings> settings)
+        private IOrdersRepositoryLoader _Loader;
+        public clsOrdersRepositoryReader(IOptions<clsMySettings> settings, IOrdersRepositoryLoader loader)
         {
             _Settings = settings.Value;
+            _Loader = loader;
         }
 
         public async Task<List<Order>> GetAllDataAsync(List<int> Ids)
@@ -61,6 +164,7 @@ namespace DataLayerRestaurant.Classes
                     }
                 }
             }
+            await _Loader.LoadDataAsync(result);
             return result;
         }
 
@@ -86,6 +190,7 @@ namespace DataLayerRestaurant.Classes
                     }
                 }
             }
+            await _Loader.LoadDataAsync(result);
             return result;
         }
 
@@ -110,6 +215,11 @@ namespace DataLayerRestaurant.Classes
                     }
                 }
             }
+            if (result == null)
+            {
+                return null;
+            }
+            await _Loader.LoadDataAsync(new List<Order> { result });
             return result;
         }
 
@@ -139,6 +249,11 @@ namespace DataLayerRestaurant.Classes
                     }
                 }
             }
+            if (result == null)
+            {
+                return null;
+            }
+            await _Loader.LoadDataAsync(result);
             return result;
         }
     }
@@ -147,13 +262,17 @@ namespace DataLayerRestaurant.Classes
     {
 
         private readonly clsMySettings _Settings;
-        public clsOrdersRepositoryWriter(IOptions<clsMySettings> settings)
+        private IOrdersRepositoryLoader _Loader;
+        public clsOrdersRepositoryWriter(IOptions<clsMySettings> settings, IOrdersRepositoryLoader loader)
         {
             _Settings = settings.Value;
+            _Loader = loader;
         }
 
         public async Task<Order?> CreateDataAsync(DTOOrderCRequest order)
         {
+            Order? result = null;
+
             using (SqlConnection Connection = new SqlConnection(_Settings.ConnectionString))
             {
                 using (SqlCommand Command = new SqlCommand("Orders.SP_AddOrder", Connection))
@@ -171,18 +290,24 @@ namespace DataLayerRestaurant.Classes
                     {
                         if (await Reader.ReadAsync())
                         {
-                            return GetDataFromDataBase(Reader);
+                            result = GetDataFromDataBase(Reader);
                         }
                     }
 
                 }
             }
+            if (result == null)
+            {
+                return null;
+            }
+            await _Loader.LoadDataAsync(new List<Order> { result });
+            return result;
 
-            return null;
         }
 
         public async Task<Order?> UpdateDataAsync(DTOOrderURequest order)
         {
+            Order? result = null;
             using (SqlConnection Connection = new SqlConnection(_Settings.ConnectionString))
             {
                 using (SqlCommand Command = new SqlCommand("Orders.SP_UpdateOrder", Connection))
@@ -200,12 +325,18 @@ namespace DataLayerRestaurant.Classes
                     {
                         if (await Reader.ReadAsync())
                         {
-                            return GetDataFromDataBase(Reader);
+                            result = GetDataFromDataBase(Reader);
                         }
                     }
                 }
             }
-            return null;
+            if (result == null)
+            {
+                return null;
+            }
+            await _Loader.LoadDataAsync(new List<Order> { result });
+            return result;
+
         }
 
         public async Task<bool> DeleteDataAsync(int ID)

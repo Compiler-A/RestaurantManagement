@@ -4,6 +4,12 @@ using DomainLayer.Entities;
 
 namespace DataLayerRestaurant.Interfaces
 {
+
+    public interface IOrdersRepositoryLoader
+    {
+        Task LoadDataAsync(List<Order> items);
+    }
+
     public interface IOrdersRepositoryReader : IRepositoryReader<Order>
     {
         Task<List<Order>?> GetFilterDataAsync(DTOOrderFilterRequest OrderFilterRequest);

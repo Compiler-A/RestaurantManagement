@@ -2,6 +2,8 @@
 using BusinessLayerRestaurant.Classes;
 using DataLayerRestaurant.Interfaces;
 using DataLayerRestaurant.Classes;
+using RestaurantDataLayer;
+using DomainLayer.Entities;
 
 namespace APILayer.Extensions.Services
 {
@@ -9,15 +11,17 @@ namespace APILayer.Extensions.Services
     {
         public static IServiceCollection AddOrdersServices(this IServiceCollection Services)
         {
+            Services.AddScoped<IRepositoryBatchsLoader<Order>, clsStatusOrderBatchLoader>();
+            Services.AddScoped<IRepositoryBatchsLoader<Order>, clsEmployeeBatchLoader>();
+            Services.AddScoped<IRepositoryBatchsLoader<Order>, clsTableBatchLoader>();
+            Services.AddScoped<IOrdersRepositoryLoader, clsOrdersRepositoryLoader>();
+
             Services.AddScoped<IOrdersRepositoryWriter, clsOrdersRepositoryWriter>();
             Services.AddScoped<IOrdersRepositoryReader, clsOrdersRepositoryReader>();
             Services.AddScoped<IOrdersRepository, clsOrdersRepository>();
             Services.AddScoped<IOrdersServiceWriter, clsOrdersWriter>();
             Services.AddScoped<IOrdersServiceReader, clsOrdersReader>();
             Services.AddScoped<IOrdersServiceContainer, clsOrdersContainer>();
-            Services.AddScoped<IOrdersServiceComposition, clsStatusOrderLoader>();
-            Services.AddScoped<IOrdersServiceComposition, clsEmployeeLoader>();
-            Services.AddScoped<IOrdersServiceComposition, clsTableLoader>();
             Services.AddScoped<IOrdersService, clsOrdersService>();
             return Services;
         }

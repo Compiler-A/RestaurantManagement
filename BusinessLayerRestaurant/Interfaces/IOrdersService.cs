@@ -20,10 +20,7 @@ namespace BusinessLayerRestaurant.Interfaces
         ITablesService IBusinessTable { get; set; }
     }
 
-    public interface IOrdersServiceComposition
-    {
-        Task LoadDataAsync(Order item);
-    }
+
 
 
     public interface IOrdersServiceContainers
