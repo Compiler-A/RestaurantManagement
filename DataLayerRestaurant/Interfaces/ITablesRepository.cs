@@ -5,6 +5,12 @@ using DomainLayer.Entities;
 
 namespace DataLayerRestaurant.Interfaces
 {
+    public interface ITablesRepositoryLoader
+    {
+        Task LoadDataAsync(List<Table> items);
+    }
+
+
     public interface ITablesRepositoryReader : IRepositoryReader<Table>
     {
         Task<List<Table>> GetFilterStatusDataAsync(DTOTablesFilterStatusTableRequest Request);

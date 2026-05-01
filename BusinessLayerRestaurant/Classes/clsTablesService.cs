@@ -33,57 +33,19 @@ namespace BusinessLayerRestaurant.Classes
         }
     }
 
-    public class clsStatusTableLoader : ITablesServiceComposition
-    {
-        private IStatusTablesService _IData;
-        public clsStatusTableLoader(IStatusTablesService iData)
-        {
-            _IData = iData;
-        }
 
-        public async Task LoadDataAsync(Table item)
-        {
-            item.StatusTable = await _IData.GetAsync(item.StatusTableID);
-        }
-    }
 
-    public class clsCompositionTablesLoader : ITablesServiceComposition
-    {
-        private IEnumerable<ITablesServiceComposition> _loaders;
-        public clsCompositionTablesLoader
-            (IEnumerable<ITablesServiceComposition> loaders)
-        {
-            _loaders = loaders;
-        }
-        public async Task LoadDataAsync(Table item)
-        {
-            foreach (var item1 in _loaders)
-            {
-                await item1.LoadDataAsync(item);
-            }
-        }
-    }
 
-    public class clsTablesReader : clsCompositionTablesLoader, ITablesServiceReader
+    public class clsTablesReader :  ITablesServiceReader
     {
         private ITablesServiceContainer _Interface;
         private IMyLogger _Logger;
-        public clsTablesReader(ITablesServiceContainer @interface,IMyLogger Logger ,IEnumerable<ITablesServiceComposition> loaders)
-            : base(loaders)
+        public clsTablesReader(ITablesServiceContainer @interface,IMyLogger Logger)
         {
             _Interface = @interface;
             _Logger = Logger;
         }
 
-        private async Task<List<Table>> _LoadAsync(List<Table> list)
-        {
-            foreach (var item in list)
-            {
-                await LoadDataAsync(item);
-            }
-            _Logger.EventLogs($"Tables Found, Count: {list.Count}", EventLogEntryType.Information);
-            return list;
-        }
 
         public async Task<List<Table>> GetAllAsync(int page)
         {
@@ -92,7 +54,7 @@ namespace BusinessLayerRestaurant.Classes
             {
                 throw new KeyNotFoundException("Not Found!");
             }
-            return await _LoadAsync(list);
+            return list;
         }
 
         public async Task<Table?> GetAsync(int id)
@@ -104,7 +66,6 @@ namespace BusinessLayerRestaurant.Classes
             }
             _Logger.EventLogs($"Table Found, Name: {dto.Name}", EventLogEntryType.Information);
 
-            await LoadDataAsync(dto);
             return dto;
         }
 
@@ -115,7 +76,7 @@ namespace BusinessLayerRestaurant.Classes
             {
                 throw new KeyNotFoundException("Not Found!");
             }
-            return await _LoadAsync(list);
+            return list;
         }
         public async Task<List<Table>> GetFilter1Async(DTOTablesFilterStatusTableRequest Request)
         {
@@ -124,7 +85,7 @@ namespace BusinessLayerRestaurant.Classes
             {
                 throw new KeyNotFoundException("Not Found!");
             }
-            return await _LoadAsync(list);
+            return list;
         }
         public async Task<List<Table>> GetFilter2Async(DTOTablesFilterSeatTableRequest Request)
         {
@@ -133,7 +94,7 @@ namespace BusinessLayerRestaurant.Classes
             {
                 throw new KeyNotFoundException("Not Found!");
             }
-            return await _LoadAsync(list);
+            return list;
 
         }
         public async Task<Table?> GetByNameAsync(string tableNumber)
@@ -145,7 +106,6 @@ namespace BusinessLayerRestaurant.Classes
             }
             _Logger.EventLogs($"Table Found, Name: ${dto.Name}", EventLogEntryType.Information);
 
-            await LoadDataAsync(dto);
             return dto;
         }
         public async Task<List<Table>> GetFilter3Async(DTOTablesFilterStatusAndSeatTableRequest Request)
@@ -155,7 +115,7 @@ namespace BusinessLayerRestaurant.Classes
             {
                 throw new KeyNotFoundException("Not Found!");
             }
-            return await _LoadAsync(list);
+            return list;
         }
         public async Task<List<Table>> GetAllAvailablesAsync()
         {
@@ -164,16 +124,16 @@ namespace BusinessLayerRestaurant.Classes
             {
                 throw new KeyNotFoundException("Not Found!");
             }
-            return await _LoadAsync(list);
+            return list;
         }
     }
 
-    public class clsTablesWriter : clsCompositionTablesLoader , ITablesServiceWriter
+    public class clsTablesWriter : ITablesServiceWriter
     {
         private ITablesServiceContainer _Interfaces;
         private IMyLogger _Logger;
         public clsTablesWriter
-            (IMyLogger Logger, ITablesServiceContainer @interface, IEnumerable<ITablesServiceComposition> loader) : base(loader)
+            (IMyLogger Logger, ITablesServiceContainer @interface)
         {
             _Logger = Logger;
             _Interfaces = @interface;
@@ -184,7 +144,6 @@ namespace BusinessLayerRestaurant.Classes
             var dto = await _Interfaces.IData.CreateDataAsync(Request);
             if (dto != null)
             {
-                await LoadDataAsync(dto);
                 _Logger.EventLogs($"Table Created, Name: {dto.Name}", EventLogEntryType.Information);
 
                 return dto;
@@ -198,7 +157,6 @@ namespace BusinessLayerRestaurant.Classes
             var dto = await _Interfaces.IData.UpdateDataAsync(Request);
             if (dto != null)
             {
-                await LoadDataAsync(dto);
                 _Logger.EventLogs($"Table Updated, Name: {dto.Name}", EventLogEntryType.Information);
 
                 return dto;

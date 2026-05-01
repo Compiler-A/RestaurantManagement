@@ -23,13 +23,66 @@ namespace DataLayerRestaurant.Classes
         }
     }
 
+
+
+   
+    public class clsStatusTableBatchLoader : IRepositoryBatchsLoader<Table>
+    {
+        private readonly IStatusTablesRepositoryReader _service;
+
+        public clsStatusTableBatchLoader(IStatusTablesRepositoryReader service)
+        {
+            _service = service;
+        }
+
+        public async Task LoadDataAsync(List<Table> table)
+        {
+            var StatusTableID = table.Select(e => e.StatusTableID).Distinct().ToList();
+
+            if (!StatusTableID.Any())
+                return;
+
+            var roles = await _service.GetAllDataAsync(StatusTableID);
+
+            var dict = roles.ToDictionary(r => r.ID);
+
+            foreach (var emp in table)
+            {
+                if (dict.TryGetValue(emp.StatusTableID, out var role))
+                {
+                    emp.StatusTable = role;
+                }
+            }
+        }
+    }
+
+
+    public class clsTablesRepositoryLoader : ITablesRepositoryLoader
+    {
+        private IEnumerable<IRepositoryBatchsLoader<Table>> _Loaders;
+        public clsTablesRepositoryLoader(IEnumerable<IRepositoryBatchsLoader<Table>> Loader)
+        {
+            _Loaders = Loader;
+        }
+        public async Task LoadDataAsync(List<Table> item)
+        {
+            foreach (var item1 in _Loaders)
+            {
+                await item1.LoadDataAsync(item);
+            }
+        }
+    }
+
+
     public class clsTablesRepositoryReader : clsTablesRepositoryComposition ,ITablesRepositoryReader
     {
 
         private readonly clsMySettings _Settings;
-        public clsTablesRepositoryReader(IOptions<clsMySettings> settings)
+        private ITablesRepositoryLoader _Loader;
+        public clsTablesRepositoryReader(IOptions<clsMySettings> settings, ITablesRepositoryLoader loader)
         {
             _Settings = settings.Value;
+            _Loader = loader;
         }
 
         public async Task<List<Table>> GetAllDataAsync(List<int> Ids)
@@ -79,6 +132,7 @@ namespace DataLayerRestaurant.Classes
                     }
                 }
             }
+            await _Loader.LoadDataAsync(listTables);
             return listTables;
         }
         public async Task<List<Table>> GetAllDataAsync()
@@ -99,6 +153,7 @@ namespace DataLayerRestaurant.Classes
                     }
                 }
             }
+            await _Loader.LoadDataAsync(listTables);
             return listTables;
         }
         public async Task<Table?> GetDataAsync(int ID)
@@ -118,6 +173,11 @@ namespace DataLayerRestaurant.Classes
                     }
                 }
             }
+            if (table == null)
+            {
+                return null;
+            }
+            await _Loader.LoadDataAsync(new List<Table> { table });
             return table;
         }
 
@@ -138,6 +198,11 @@ namespace DataLayerRestaurant.Classes
                     }
                 }
             }
+            if (table == null)
+            {
+                return null;
+            }
+            await _Loader.LoadDataAsync(new List<Table> { table });
             return table;
         }
 
@@ -163,6 +228,7 @@ namespace DataLayerRestaurant.Classes
                     }
                 }
             }
+            await _Loader.LoadDataAsync(listTables);
             return listTables;
         }
         public async Task<List<Table>> GetAllDataAsync(int page)
@@ -185,6 +251,7 @@ namespace DataLayerRestaurant.Classes
                     }
                 }
             }
+            await _Loader.LoadDataAsync(listTables);
             return listTables;
         }
 
@@ -210,6 +277,8 @@ namespace DataLayerRestaurant.Classes
                 }
 
             }
+            await _Loader.LoadDataAsync(listTables);
+
             return listTables;
         }
 
@@ -235,6 +304,8 @@ namespace DataLayerRestaurant.Classes
                 }
 
             }
+            await _Loader.LoadDataAsync(listTables);
+
             return listTables;
         }
     }
@@ -243,14 +314,16 @@ namespace DataLayerRestaurant.Classes
     {
 
         private readonly clsMySettings _Settings;
-
-        public clsTablesRepositoryWriter(IOptions<clsMySettings> settings)
+        private ITablesRepositoryLoader _Loader;
+        public clsTablesRepositoryWriter(IOptions<clsMySettings> settings, ITablesRepositoryLoader loader)
         {
             _Settings = settings.Value;
+            _Loader = loader;
         }
 
         public async Task<Table?> CreateDataAsync(DTOTablesCRequest Tables)
         {
+            Table? create = null;
             using (SqlConnection Connection = new SqlConnection(_Settings.ConnectionString))
             {
                 using (SqlCommand Command = new SqlCommand("Tables.SP_AddTable", Connection))
@@ -264,15 +337,21 @@ namespace DataLayerRestaurant.Classes
                     {
                         if (await Reader.ReadAsync())
                         {
-                            return (GetDataFromDataBase(Reader));
+                            create = GetDataFromDataBase(Reader);
                         }
                     }
-                    return null;
                 }
             }
+            if (create == null)
+            {
+                return null;
+            }
+            await _Loader.LoadDataAsync(new List<Table> { create });
+            return create;
         }
         public async Task<Table?> UpdateDataAsync(DTOTablesURequest Table)
         {
+            Table? Update = null;
             using (SqlConnection Connection = new SqlConnection(_Settings.ConnectionString))
             {
                 using (SqlCommand Command = new SqlCommand("Tables.SP_UpdateTable", Connection))
@@ -287,12 +366,17 @@ namespace DataLayerRestaurant.Classes
                     {
                         if (await Reader.ReadAsync())
                         {
-                            return (GetDataFromDataBase(Reader));
+                            Update = (GetDataFromDataBase(Reader));
                         }
                     }
-                    return null;
                 }
             }
+            if (Update == null)
+            {
+                return null;
+            }
+            await _Loader.LoadDataAsync(new List<Table> { Update });
+            return Update;
         }
         public async Task<bool> DeleteDataAsync(int ID)
         {

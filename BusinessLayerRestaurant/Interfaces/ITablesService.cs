@@ -12,11 +12,6 @@ namespace BusinessLayerRestaurant.Interfaces
         IStatusTablesService IBusinessStatusTable { get; set; }
     }
 
-    public interface ITablesServiceComposition
-    {
-        Task LoadDataAsync(Table item);
-    }
-
     public interface ITablesServiceContainers
     {
         IStatusTablesService IStatusTable { get; set; }
