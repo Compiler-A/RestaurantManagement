@@ -12,10 +12,7 @@ namespace BusinessLayerRestaurant.Interfaces
         ITypeItemsService IBusinessTypeItem { get; set; }
         IStatusMenusService IBusinessStatusMenu { get; set; }
     }
-    public interface IMenuItemsServiceComposition
-    {
-        Task LoadDataAsync(MenuItem item);
-    }
+
 
     public interface IMenuItemsServiceContainers
     {

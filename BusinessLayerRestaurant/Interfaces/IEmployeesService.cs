@@ -18,10 +18,6 @@ namespace BusinessLayerRestaurant.Interfaces
     }
 
 
-    public interface IEmployeesServiceComposition
-    {
-        Task LoadDataAsync(Employee item);
-    }
 
     public interface IEmployeesServiceReader : IServiceReader<Employee>
     {

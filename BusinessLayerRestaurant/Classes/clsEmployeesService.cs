@@ -39,7 +39,7 @@ namespace BusinessLayerRestaurant.Classes
         private readonly IMyLogger _Logger;
         private readonly IHashingService _HashingService;
 
-        public clsEmployeesReader(IHashingService HashingService, IEmployeesServiceContainer Interface, IEnumerable<IEmployeesServiceComposition> Loaders, IMyLogger Logger) 
+        public clsEmployeesReader(IHashingService HashingService, IEmployeesServiceContainer Interface, IMyLogger Logger) 
         {
             _Interface = Interface;
             _HashingService = HashingService;
@@ -90,7 +90,7 @@ namespace BusinessLayerRestaurant.Classes
         private IEmployeesServiceContainer _Interface;
         private IHashingService _HashingService;
         private readonly IMyLogger _Logger;
-        public clsEmployeesWriter(IHashingService HashingService,IEmployeesServiceContainer Interface, IMyLogger Logger, IEnumerable<IEmployeesServiceComposition> Loaders)
+        public clsEmployeesWriter(IHashingService HashingService,IEmployeesServiceContainer Interface, IMyLogger Logger)
         {
             _Interface = Interface;
             _HashingService = HashingService;

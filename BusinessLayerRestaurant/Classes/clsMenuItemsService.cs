@@ -39,59 +39,12 @@ namespace BusinessLayerRestaurant.Classes
         }
     }
 
-    public class clsTypeItemLoader : IMenuItemsServiceComposition
-    {
-        private ITypeItemsService _BusinessTypeItem;
-        public clsTypeItemLoader(ITypeItemsService BusinessTypeItem)
-        {
-            _BusinessTypeItem = BusinessTypeItem;
-        }
 
-        public async Task LoadDataAsync(MenuItem item)
-        {
-            item.TypeItems = await _BusinessTypeItem.GetAsync(item.TypeItemID);
-        }
-    }
-
-    public class clsStatusMenuLoader : IMenuItemsServiceComposition
-    {
-        private IStatusMenusService _Business;
-        public clsStatusMenuLoader(IStatusMenusService Business)
-        {
-            _Business = Business;
-        }
-
-        public async Task LoadDataAsync(MenuItem item)
-        {
-            item.StatusMenus = await _Business.GetAsync(item.StatusMenuID);
-        }
-    }
-
-    public class clsCompositionMenuItemsLoader : IMenuItemsServiceComposition
-    {
-        IEnumerable<IMenuItemsServiceComposition> _Interface;
-
-        public clsCompositionMenuItemsLoader(IEnumerable<IMenuItemsServiceComposition> Interface)
-        {
-            _Interface = Interface;
-        }
-
-        public async Task LoadDataAsync(MenuItem Item)
-        {
-            foreach (var inter in _Interface)
-            {
-                await inter.LoadDataAsync(Item);
-            }
-        }
-
-    }
-
-    public class clsMenuItemsReader : clsCompositionMenuItemsLoader ,IMenuItemsServiceReader
+    public class clsMenuItemsReader : IMenuItemsServiceReader
     {
         IMenuItemsServiceContainer _Interface;
         private IMyLogger _Logger;
-        public clsMenuItemsReader(IMenuItemsServiceContainer Interface,IMyLogger Logger, IEnumerable<IMenuItemsServiceComposition> loader)
-            : base(loader)
+        public clsMenuItemsReader(IMenuItemsServiceContainer Interface,IMyLogger Logger)
         { 
             _Interface = Interface;
             _Logger = Logger;
@@ -106,7 +59,6 @@ namespace BusinessLayerRestaurant.Classes
             }
 
             _Logger.EventLogs($"MenuItem Found, Name: {dto.Name}", EventLogEntryType.Information);
-            await LoadDataAsync(dto);
             return dto;
         }
 
@@ -118,10 +70,6 @@ namespace BusinessLayerRestaurant.Classes
                 throw new KeyNotFoundException("Not Found!");
             }
 
-            foreach (var item in list)
-            {
-                await LoadDataAsync(item);
-            }
             _Logger.EventLogs($"MenuItems Found, Count: {list.Count}", EventLogEntryType.Information);
             return list;
         }
@@ -134,10 +82,6 @@ namespace BusinessLayerRestaurant.Classes
                 throw new KeyNotFoundException("Not Found!");
             }
 
-            foreach (var item in list)
-            {
-                await LoadDataAsync(item);
-            }
             _Logger.EventLogs($"MenuItems Found, Count: {list.Count}", EventLogEntryType.Information);
             return list;
         }
@@ -150,21 +94,17 @@ namespace BusinessLayerRestaurant.Classes
                 throw new KeyNotFoundException("Not Found!");
             }
 
-            foreach (var item in list)
-            {
-                await LoadDataAsync(item);
-            }
+
             _Logger.EventLogs($"MenuItems Found, Count: {list.Count}", EventLogEntryType.Information);
             return list;
         }
     }
 
-    public class clsMenuItemsWriter : clsCompositionMenuItemsLoader , IMenuItemsServiceWriter
+    public class clsMenuItemsWriter : IMenuItemsServiceWriter
     {
         IMenuItemsServiceContainer _Interface;
         private IMyLogger _Logger;
-        public clsMenuItemsWriter(IMenuItemsServiceContainer Interface,IMyLogger Logger, IEnumerable<IMenuItemsServiceComposition> loader)
-            : base(loader)
+        public clsMenuItemsWriter(IMenuItemsServiceContainer Interface,IMyLogger Logger)
         {
             _Interface = Interface;
             _Logger = Logger;
@@ -177,7 +117,6 @@ namespace BusinessLayerRestaurant.Classes
             {
                 throw new InvalidOperationException("Not Created!");
             }
-            await LoadDataAsync(dto);
             _Logger.EventLogs($"MenuItem Created, Name: {dto.Name}", EventLogEntryType.Information);
 
             return dto;
@@ -190,7 +129,6 @@ namespace BusinessLayerRestaurant.Classes
             {
                 throw new InvalidOperationException("Not Updated!");
             }
-            await LoadDataAsync(dto);
             _Logger.EventLogs($"MenuItem Updated, Name: {dto.Name}", EventLogEntryType.Information);
             return dto;
         }
