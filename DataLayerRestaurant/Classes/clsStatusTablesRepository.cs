@@ -1,9 +1,10 @@
-﻿using Microsoft.Data.SqlClient;
-using Microsoft.Extensions.Options;
-using RestaurantDataLayer;
-using ContractsLayerRestaurant.DTORequest.StatusTables;
+﻿using ContractsLayerRestaurant.DTORequest.StatusTables;
 using DataLayerRestaurant.Interfaces;
 using DomainLayer.Entities;
+using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Options;
+using RestaurantDataLayer;
+using System.Data;
 
 namespace DataLayerRestaurant.Classes
 {
@@ -29,6 +30,36 @@ namespace DataLayerRestaurant.Classes
         {
             _Settings = Settings.Value;
         }
+
+        public async Task<List<StatusTable>> GetAllDataAsync(List<int> Ids)
+        {
+            List<StatusTable> result = new List<StatusTable>();
+            using (SqlConnection Connection = new SqlConnection(_Settings.ConnectionString))
+            {
+                using (SqlCommand Command = new SqlCommand("StatusTables.SP_GetAllStatusTablesByIds", Connection))
+                {
+                    Command.CommandType = System.Data.CommandType.StoredProcedure;
+
+                    var param = new SqlParameter("@Ids", SqlDbType.Structured)
+                    {
+                        TypeName = "dbo.IntList",
+                        Value = CreateSqlRecords.CreateSqlRecord(Ids)
+                    };
+                    Command.Parameters.Add(param);
+
+                    await Connection.OpenAsync();
+                    using (SqlDataReader reader = await Command.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            result.Add(GetDataFromDataBase(reader));
+                        }
+                    }
+                }
+            }
+            return result;
+        }
+
 
         public async Task<bool> isFindDataAsync(int id)
         {
@@ -185,6 +216,11 @@ namespace DataLayerRestaurant.Classes
         {
             _IRead = Read;
             _IWrite = Write;
+        }
+
+        public async Task<List<StatusTable>> GetAllDataAsync(List<int> Ids)
+        {
+            return await _IRead.GetAllDataAsync(Ids);
         }
 
         public async Task<bool> isFindDataAsync(int id)

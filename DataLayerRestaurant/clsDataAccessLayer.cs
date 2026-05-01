@@ -3,8 +3,14 @@ using Microsoft.Data.SqlClient;
 
 namespace RestaurantDataLayer
 {
+    public interface IRepositoryBatchsLoader<TEntity>
+    {
+        Task LoadDataAsync(List<TEntity> items);
+    }
+
     public interface IRepositoryReader <Tentity>
     {
+        Task<List<Tentity>> GetAllDataAsync(List<int> ids);
         Task<List<Tentity>> GetAllDataAsync(int page);
         Task<Tentity?> GetDataAsync(int ID);
     }

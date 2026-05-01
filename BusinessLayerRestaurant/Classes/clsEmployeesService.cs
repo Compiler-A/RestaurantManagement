@@ -32,46 +32,14 @@ namespace BusinessLayerRestaurant.Classes
         }
     }
 
-    public class clsJobRoleLoader : IEmployeesServiceComposition
-    {
-        private IJobRolesService _IData;
 
-        public clsJobRoleLoader(IJobRolesService JobRole)
-        {
-            _IData = JobRole;
-        }
-
-        public async Task LoadDataAsync(Employee item)
-        {
-            item.JobRoles = await _IData.GetAsync(item.JobID);
-        }
-    }
-
-    public class clsCompositionEmployeeesLoader: IEmployeesServiceComposition
-    {
-        private IEnumerable<IEmployeesServiceComposition> _loaders;
-        public clsCompositionEmployeeesLoader
-            (IEnumerable<IEmployeesServiceComposition> loaders)
-        {
-            _loaders = loaders;
-        }
-        public async Task LoadDataAsync(Employee item)
-        {
-            foreach (var item1 in _loaders)
-            {
-                await item1.LoadDataAsync(item);
-            }
-        }
-    }
-
-    public class clsEmployeesReader :  clsCompositionEmployeeesLoader ,IEmployeesServiceReader
+    public class clsEmployeesReader :  IEmployeesServiceReader
     {
         private IEmployeesServiceContainer _Interface;
         private readonly IMyLogger _Logger;
         private readonly IHashingService _HashingService;
 
         public clsEmployeesReader(IHashingService HashingService, IEmployeesServiceContainer Interface, IEnumerable<IEmployeesServiceComposition> Loaders, IMyLogger Logger) 
-            : base(Loaders)
         {
             _Interface = Interface;
             _HashingService = HashingService;
@@ -86,7 +54,6 @@ namespace BusinessLayerRestaurant.Classes
             {
                 throw new KeyNotFoundException("Not Found!");
             }
-            await LoadDataAsync(result);
             _Logger.EventLogs($"Employee Found, UserName: {result.UserName}", EventLogEntryType.Information);
 
             return result;
@@ -99,7 +66,6 @@ namespace BusinessLayerRestaurant.Classes
             {
                 throw new KeyNotFoundException("Not Found!");
             }
-            await LoadDataAsync(dto);
             _Logger.EventLogs($"Employee Found, UserName: {dto.UserName}", EventLogEntryType.Information);
             return dto;
         }
@@ -112,10 +78,6 @@ namespace BusinessLayerRestaurant.Classes
             {
                 throw new KeyNotFoundException("Not Found!");
             }
-            foreach (var item in result)
-            {
-                await LoadDataAsync(item);
-            }
             _Logger.EventLogs($"Employees Found, Count: {result.Count}", EventLogEntryType.Information);
             return result;
 
@@ -123,13 +85,12 @@ namespace BusinessLayerRestaurant.Classes
 
     }
 
-    public class clsEmployeesWriter : clsCompositionEmployeeesLoader , IEmployeesServiceWriter
+    public class clsEmployeesWriter : IEmployeesServiceWriter
     {
         private IEmployeesServiceContainer _Interface;
         private IHashingService _HashingService;
         private readonly IMyLogger _Logger;
         public clsEmployeesWriter(IHashingService HashingService,IEmployeesServiceContainer Interface, IMyLogger Logger, IEnumerable<IEmployeesServiceComposition> Loaders)
-            : base(Loaders)
         {
             _Interface = Interface;
             _HashingService = HashingService;
@@ -169,7 +130,6 @@ namespace BusinessLayerRestaurant.Classes
             {
                 throw new InvalidOperationException("Not Created!");
             }
-            await LoadDataAsync(result);
             _Logger.EventLogs($"Employee Created, UserName: {result.UserName}", EventLogEntryType.Information);
             return result;
         }
@@ -186,7 +146,6 @@ namespace BusinessLayerRestaurant.Classes
             }
             _Logger.EventLogs($"Employees Updated, UserName: {result.UserName}", EventLogEntryType.Information);
 
-            await LoadDataAsync(result);
             return result;
         }
 

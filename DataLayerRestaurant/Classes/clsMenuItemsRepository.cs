@@ -1,9 +1,10 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using ContractsLayerRestaurant.DTORequest.MenuItems;
+using DataLayerRestaurant.Interfaces;
+using DomainLayer.Entities;
+using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Options;
 using RestaurantDataLayer;
-using DataLayerRestaurant.Interfaces;
-using ContractsLayerRestaurant.DTORequest.MenuItems;
-using DomainLayer.Entities;
+using System.Data;
 
 
 namespace DataLayerRestaurant.Classes
@@ -53,7 +54,34 @@ namespace DataLayerRestaurant.Classes
             }
             return menuItem;
         }
+        public async Task<List<MenuItem>> GetAllDataAsync(List<int> Ids)
+        {
+            List<MenuItem> result = new List<MenuItem>();
+            using (SqlConnection Connection = new SqlConnection(_Settings.ConnectionString))
+            {
+                using (SqlCommand Command = new SqlCommand("MenuItems.SP_GetAllMenuItemsByIds", Connection))
+                {
+                    Command.CommandType = System.Data.CommandType.StoredProcedure;
 
+                    var param = new SqlParameter("@Ids", SqlDbType.Structured)
+                    {
+                        TypeName = "dbo.IntList",
+                        Value = CreateSqlRecords.CreateSqlRecord(Ids)
+                    };
+                    Command.Parameters.Add(param);
+
+                    await Connection.OpenAsync();
+                    using (SqlDataReader reader = await Command.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            result.Add(GetDataFromDataBase(reader));
+                        }
+                    }
+                }
+            }
+            return result;
+        }
         public async Task<List<MenuItem>> GetAllDataAsync(int Page)
         {
             List<MenuItem> menuItems = new List<MenuItem>();
@@ -204,6 +232,11 @@ namespace DataLayerRestaurant.Classes
         {
             _IRead = iRead;
             _IWrite = iWrite;
+        }
+
+        public async Task<List<MenuItem>> GetAllDataAsync(List<int> Ids)
+        {
+            return await _IRead.GetAllDataAsync(Ids);
         }
 
         public async Task<List<MenuItem>> GetAllDataAvailablesAsync()

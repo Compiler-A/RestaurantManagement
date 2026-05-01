@@ -1,9 +1,10 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using ContractsLayerRestaurant.DTORequest.JobRoles;
+using DataLayerRestaurant.Interfaces;
+using DomainLayer.Entities;
+using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Options;
 using RestaurantDataLayer;
-using DataLayerRestaurant.Interfaces;
-using ContractsLayerRestaurant.DTORequest.JobRoles;
-using DomainLayer.Entities;
+using System.Data;
 
 
 
@@ -31,6 +32,36 @@ namespace DataLayerRestaurant.Classes
         public clsJobRolesRepositoryReader(IOptions<clsMySettings> mySettings)
         {
             _Settings = mySettings.Value;
+        }
+
+
+        public async Task<List<JobRole>> GetAllDataAsync(List<int> Ids)
+        {
+            List<JobRole> result = new List<JobRole>();
+            using (SqlConnection Connection = new SqlConnection(_Settings.ConnectionString))
+            {
+                using (SqlCommand Command = new SqlCommand("JobRoles.SP_GetAllJobRolesByIds", Connection))
+                {
+                    Command.CommandType = System.Data.CommandType.StoredProcedure;
+
+                    var param = new SqlParameter("@Ids", SqlDbType.Structured)
+                    {
+                        TypeName = "dbo.IntList",
+                        Value = CreateSqlRecords.CreateSqlRecord(Ids)
+                    };
+                    Command.Parameters.Add(param);
+
+                    await Connection.OpenAsync();
+                    using (SqlDataReader reader = await Command.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            result.Add(GetDataFromDataBase(reader));
+                        }
+                    }
+                }
+            }
+            return result;
         }
 
         public async Task<List<JobRole>> GetAllDataAsync(int page)
@@ -172,6 +203,10 @@ namespace DataLayerRestaurant.Classes
            return await _IRead.GetAllDataAsync(page);
         }
 
+        public async Task<List<JobRole>> GetAllDataAsync(List<int> Ids)
+        {
+            return await _IRead.GetAllDataAsync(Ids);
+        }
 
         public async Task<JobRole?> GetDataAsync(int ID)
         {

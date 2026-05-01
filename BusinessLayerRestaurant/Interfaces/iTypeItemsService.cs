@@ -1,5 +1,6 @@
 ﻿using RestaurantDataLayer;
 using DataLayerRestaurant.Interfaces;
+using ContractsLayerRestaurant.DTOResponse;
 using ContractsLayerRestaurant.DTORequest.TypeItems;
 using DomainLayer.Entities;
 
@@ -12,7 +13,7 @@ namespace BusinessLayerRestaurant.Interfaces
     { }
 
     public interface ITypeItemsServiceWriter
-        : IServiceWriter<TypeItem,DTOTypeItemsCRequest, DTOTypeItemsURequest>
+        : IServiceWriter<TypeItem, DTOTypeItemsCRequest, DTOTypeItemsURequest>
     { }
 
     public interface ICRUDTypeItemsService : ITypeItemsServiceWriter , ITypeItemsServiceReader

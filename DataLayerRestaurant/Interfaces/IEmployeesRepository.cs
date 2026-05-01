@@ -5,10 +5,16 @@ using DomainLayer.Entities;
 
 namespace DataLayerRestaurant.Interfaces
 {
+    
+
+    public interface IEmployeeRepositoryLoader
+    {
+        Task LoadDataAsync(List<Employee> items);
+    }
+
     public interface IEmployeesRepositoryReader : IRepositoryReader<Employee>
     {
         Task<Employee?> GetDataAsync(string UserName);
-
     }
 
     public interface IEmployeesRepositoryWriter 

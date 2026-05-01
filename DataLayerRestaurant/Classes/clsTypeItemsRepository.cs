@@ -1,9 +1,10 @@
-﻿using Microsoft.Data.SqlClient;
-using Microsoft.Extensions.Options;
-using RestaurantDataLayer;
-using ContractsLayerRestaurant.DTORequest.TypeItems;
+﻿using ContractsLayerRestaurant.DTORequest.TypeItems;
 using DataLayerRestaurant.Interfaces;
 using DomainLayer.Entities;
+using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Options;
+using RestaurantDataLayer;
+using System.Data;
 
 namespace DataLayerRestaurant.Classes
 {
@@ -32,6 +33,34 @@ namespace DataLayerRestaurant.Classes
             _Settings = Settings.Value;
         }
 
+        public async Task<List<TypeItem>> GetAllDataAsync(List<int> Ids)
+        {
+            List<TypeItem> result = new List<TypeItem>();
+            using (SqlConnection Connection = new SqlConnection(_Settings.ConnectionString))
+            {
+                using (SqlCommand Command = new SqlCommand("TypeItems.SP_GetAllTypeItemsByIds", Connection))
+                {
+                    Command.CommandType = System.Data.CommandType.StoredProcedure;
+
+                    var param = new SqlParameter("@Ids", SqlDbType.Structured)
+                    {
+                        TypeName = "dbo.IntList",
+                        Value = CreateSqlRecords.CreateSqlRecord(Ids)
+                    };
+                    Command.Parameters.Add(param);
+
+                    await Connection.OpenAsync();
+                    using (SqlDataReader reader = await Command.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            result.Add(GetDataFromDataBase(reader));
+                        }
+                    }
+                }
+            }
+            return result;
+        }
 
         public async Task<List<TypeItem>> GetAllDataAsync(int page)
         {
@@ -156,6 +185,11 @@ namespace DataLayerRestaurant.Classes
         {
             _IRead = Read;
             _IWrite = Write;
+        }
+
+        public async Task<List<TypeItem>> GetAllDataAsync(List<int> Ids)
+        {
+            return await _IRead.GetAllDataAsync(Ids);
         }
 
         public async Task<TypeItem?> GetDataAsync(int ID)

@@ -1,9 +1,11 @@
-﻿using Microsoft.Data.SqlClient;
-using RestaurantDataLayer;
-using ContractsLayerRestaurant.DTORequest.Employees;
+﻿using ContractsLayerRestaurant.DTORequest.Employees;
 using DataLayerRestaurant.Interfaces;
 using DomainLayer.Entities;
+using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Options;
+using RestaurantDataLayer;
+using System.Data;
+using System.Runtime;
 namespace DataLayerRestaurant.Classes
 {
 
@@ -22,13 +24,90 @@ namespace DataLayerRestaurant.Classes
         }
     }
 
+    public class clsJobRoleBatchLoader : IRepositoryBatchsLoader<Employee>
+    {
+        private readonly IJobRolesRepositoryReader _service;
+
+        public clsJobRoleBatchLoader(IJobRolesRepositoryReader service)
+        {
+            _service = service;
+        }
+
+        public async Task LoadDataAsync(List<Employee> employees)
+        {
+            var jobIds = employees.Select(e => e.JobID).Distinct().ToList();
+
+            if (!jobIds.Any())
+                return;
+
+            var roles = await _service.GetAllDataAsync(jobIds);
+
+            var dict = roles.ToDictionary(r => r.ID);
+
+            foreach (var emp in employees)
+            {
+                if (dict.TryGetValue(emp.JobID, out var role))
+                {
+                    emp.JobRoles = role;
+                }
+            }
+        }
+    }
+
+
+    public class clsEmployeesRepositoryLoader : IEmployeeRepositoryLoader
+    {
+        private IEnumerable<IRepositoryBatchsLoader<Employee>> _Loaders;
+        public clsEmployeesRepositoryLoader(IEnumerable<IRepositoryBatchsLoader<Employee>> Loader)
+        {
+            _Loaders = Loader;
+        }
+        public async Task LoadDataAsync(List<Employee> item)
+        {
+            foreach (var item1 in _Loaders)
+            {
+                await item1.LoadDataAsync(item);
+            }
+        }
+    }
+
 
     public class clsEmployeesRepositoryReader :clsEmployeesRepositoryComposition ,IEmployeesRepositoryReader
     {
         private readonly clsMySettings _Setting;
-        public clsEmployeesRepositoryReader(IOptions<clsMySettings> settings)
+        private IEmployeeRepositoryLoader _Loader;
+        public clsEmployeesRepositoryReader(IEmployeeRepositoryLoader Loader,IOptions<clsMySettings> settings)
         {
             _Setting = settings.Value;
+            _Loader = Loader;
+        }
+        public async Task<List<Employee>> GetAllDataAsync(List<int> Ids)
+        {
+            List<Employee> result = new List<Employee>();
+            using (SqlConnection Connection = new SqlConnection(_Setting.ConnectionString))
+            {
+                using (SqlCommand Command = new SqlCommand("Employees.SP_GetAllEmployeesByIds", Connection))
+                {
+                    Command.CommandType = System.Data.CommandType.StoredProcedure;
+
+                    var param = new SqlParameter("@Ids", SqlDbType.Structured)
+                    {
+                        TypeName = "dbo.IntList",
+                        Value = CreateSqlRecords.CreateSqlRecord(Ids)
+                    };
+                    Command.Parameters.Add(param);
+
+                    await Connection.OpenAsync();
+                    using (SqlDataReader reader = await Command.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            result.Add(GetDataFromDataBase(reader));
+                        }
+                    }
+                }
+            }
+            return result;
         }
 
         public async Task<Employee?> GetDataAsync(string UserName)
@@ -50,6 +129,11 @@ namespace DataLayerRestaurant.Classes
                     }
                 }
             }
+            if (employee == null)
+            {
+                return null;
+            }
+            await _Loader.LoadDataAsync(new List<Employee> { employee });
             return employee;
         }
 
@@ -76,7 +160,7 @@ namespace DataLayerRestaurant.Classes
                     }
                 }
             }
-
+            await _Loader.LoadDataAsync(employees);
             return employees;
         }
 
@@ -99,6 +183,11 @@ namespace DataLayerRestaurant.Classes
                     }
                 }
             }
+            if (employee == null)
+            {
+                return null;
+            }
+            await _Loader.LoadDataAsync(new List<Employee> { employee });
             return employee;
         }
     }
@@ -107,9 +196,11 @@ namespace DataLayerRestaurant.Classes
     public class clsEmployeesRepositoryWriter: clsEmployeesRepositoryComposition , IEmployeesRepositoryWriter
     {
         private readonly clsMySettings _Setting;
-        public clsEmployeesRepositoryWriter(IOptions<clsMySettings> settings)
+        private IEmployeeRepositoryLoader _Loader;
+        public clsEmployeesRepositoryWriter(IEmployeeRepositoryLoader Loader,IOptions<clsMySettings> settings)
         {
             _Setting = settings.Value;
+            _Loader = Loader;
         }
 
         public async Task<bool> ChangedDataPasswordAsync(DTOEmployeesChangedPassword clsChanged)
@@ -133,6 +224,7 @@ namespace DataLayerRestaurant.Classes
 
         public async Task<Employee?> CreateDataAsync(DTOEmployeesCRequest employee)
         {
+            Employee? New = null;
             using (SqlConnection Connection = new SqlConnection(_Setting.ConnectionString))
             {
                 using (SqlCommand Command = new SqlCommand("Employees.SP_AddEmployee", Connection))
@@ -148,17 +240,22 @@ namespace DataLayerRestaurant.Classes
                     {
                         if (await reader.ReadAsync())
                         {
-                            return GetDataFromDataBase(reader);
+                            New = GetDataFromDataBase(reader);
                         }
                     }
                 }
             }
-
-            return null;
+            if (New == null)
+            {
+                return null;
+            }
+            await _Loader.LoadDataAsync(new List<Employee> { New });
+            return New;
         }
 
         public async Task<Employee?> UpdateDataAsync(DTOEmployeesURequest employee)
         {
+            Employee? Update = null;
             using (SqlConnection Connection = new SqlConnection(_Setting.ConnectionString))
             {
                 using (SqlCommand Command = new SqlCommand("Employees.SP_UpdateEmployee", Connection))
@@ -174,12 +271,17 @@ namespace DataLayerRestaurant.Classes
                     {
                         if (await reader.ReadAsync())
                         {
-                            return GetDataFromDataBase(reader);
+                            Update = GetDataFromDataBase(reader);
                         }
                     }
                 }
             }
-            return null;
+            if (Update == null)
+            {
+                return null;
+            }
+            await _Loader.LoadDataAsync(new List<Employee> { Update });
+            return Update;
         }
 
         public async Task<bool> DeleteDataAsync(int ID)
@@ -213,6 +315,11 @@ namespace DataLayerRestaurant.Classes
             _IWrite = Write;
         }
 
+
+        public async Task<List<Employee>> GetAllDataAsync(List<int> Ids)
+        {
+            return await _IRead.GetAllDataAsync(Ids);
+        }
 
         public async Task<List<Employee>> GetAllDataAsync(int Page)
         {

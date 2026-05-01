@@ -1,9 +1,10 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using ContractsLayerRestaurant.DTORequest.Orders;
+using DataLayerRestaurant.Interfaces;
+using DomainLayer.Entities;
+using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Options;
 using RestaurantDataLayer;
-using DataLayerRestaurant.Interfaces;
-using ContractsLayerRestaurant.DTORequest.Orders;
-using DomainLayer.Entities;
+using System.Data;
 
 namespace DataLayerRestaurant.Classes
 {
@@ -32,6 +33,35 @@ namespace DataLayerRestaurant.Classes
         public clsOrdersRepositoryReader(IOptions<clsMySettings> settings)
         {
             _Settings = settings.Value;
+        }
+
+        public async Task<List<Order>> GetAllDataAsync(List<int> Ids)
+        {
+            List<Order> result = new List<Order>();
+            using (SqlConnection Connection = new SqlConnection(_Settings.ConnectionString))
+            {
+                using (SqlCommand Command = new SqlCommand("Orders.SP_GetAllOrdersByIds", Connection))
+                {
+                    Command.CommandType = System.Data.CommandType.StoredProcedure;
+
+                    var param = new SqlParameter("@Ids", SqlDbType.Structured)
+                    {
+                        TypeName = "dbo.IntList",
+                        Value = CreateSqlRecords.CreateSqlRecord(Ids)
+                    };
+                    Command.Parameters.Add(param);
+
+                    await Connection.OpenAsync();
+                    using (SqlDataReader reader = await Command.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            result.Add(GetDataFromDataBase(reader));
+                        }
+                    }
+                }
+            }
+            return result;
         }
 
         public async Task<List<Order>> GetAllDataAsync(int page)
@@ -206,6 +236,11 @@ namespace DataLayerRestaurant.Classes
         {
             _Write = write;
             _Read = read;
+        }
+
+        public async Task<List<Order>> GetAllDataAsync(List<int> Ids)
+        {
+            return await _Read.GetAllDataAsync(Ids);
         }
 
         public async Task<List<Order>> GetAllDataAsync(int page)

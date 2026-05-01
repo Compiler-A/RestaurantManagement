@@ -1,5 +1,6 @@
 ﻿using RestaurantDataLayer;
 using DataLayerRestaurant.Interfaces;
+using ContractsLayerRestaurant.DTOResponse;
 using ContractsLayerRestaurant.DTORequest.OrderDetails;
 using DomainLayer.Entities;
 

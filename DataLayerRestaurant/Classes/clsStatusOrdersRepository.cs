@@ -1,9 +1,10 @@
-﻿using Microsoft.Data.SqlClient;
-using Microsoft.Extensions.Options;
-using RestaurantDataLayer;
-using ContractsLayerRestaurant.DTORequest.StatusOrders;
+﻿using ContractsLayerRestaurant.DTORequest.StatusOrders;
 using DataLayerRestaurant.Interfaces;
 using DomainLayer.Entities;
+using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Options;
+using RestaurantDataLayer;
+using System.Data;
 
 
 namespace DataLayerRestaurant.Classes
@@ -28,6 +29,36 @@ namespace DataLayerRestaurant.Classes
         {
             _Settings = Settings.Value;
         }
+
+        public async Task<List<StatusOrder>> GetAllDataAsync(List<int> Ids)
+        {
+            List<StatusOrder> result = new List<StatusOrder>();
+            using (SqlConnection Connection = new SqlConnection(_Settings.ConnectionString))
+            {
+                using (SqlCommand Command = new SqlCommand("StatusOrders.SP_GetAllStatusOrdersByIds", Connection))
+                {
+                    Command.CommandType = System.Data.CommandType.StoredProcedure;
+
+                    var param = new SqlParameter("@Ids", SqlDbType.Structured)
+                    {
+                        TypeName = "dbo.IntList",
+                        Value = CreateSqlRecords.CreateSqlRecord(Ids)
+                    };
+                    Command.Parameters.Add(param);
+
+                    await Connection.OpenAsync();
+                    using (SqlDataReader reader = await Command.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            result.Add(GetDataFromDataBase(reader));
+                        }
+                    }
+                }
+            }
+            return result;
+        }
+
 
         public async Task<StatusOrder?> GetDataAsync(int ID)
         {
@@ -159,6 +190,11 @@ namespace DataLayerRestaurant.Classes
         {
             _Read = Read;
             _Write = Write;
+        }
+
+        public async Task<List<StatusOrder>> GetAllDataAsync(List<int> Ids)
+        {
+            return await _Read.GetAllDataAsync(Ids);
         }
 
         public async Task<StatusOrder?> GetDataAsync(int id)

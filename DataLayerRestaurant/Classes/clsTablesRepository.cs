@@ -1,9 +1,10 @@
-﻿using Microsoft.Data.SqlClient;
-using Microsoft.Extensions.Options;
-using RestaurantDataLayer;
-using ContractsLayerRestaurant.DTORequest.Tables;
+﻿using ContractsLayerRestaurant.DTORequest.Tables;
 using DataLayerRestaurant.Interfaces;
 using DomainLayer.Entities;
+using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Options;
+using RestaurantDataLayer;
+using System.Data;
 
 namespace DataLayerRestaurant.Classes
 {
@@ -29,6 +30,35 @@ namespace DataLayerRestaurant.Classes
         public clsTablesRepositoryReader(IOptions<clsMySettings> settings)
         {
             _Settings = settings.Value;
+        }
+
+        public async Task<List<Table>> GetAllDataAsync(List<int> Ids)
+        {
+            List<Table> result = new List<Table>();
+            using (SqlConnection Connection = new SqlConnection(_Settings.ConnectionString))
+            {
+                using (SqlCommand Command = new SqlCommand("Tables.SP_GetAllTablesByIds", Connection))
+                {
+                    Command.CommandType = System.Data.CommandType.StoredProcedure;
+
+                    var param = new SqlParameter("@Ids", SqlDbType.Structured)
+                    {
+                        TypeName = "dbo.IntList",
+                        Value = CreateSqlRecords.CreateSqlRecord(Ids)
+                    };
+                    Command.Parameters.Add(param);
+
+                    await Connection.OpenAsync();
+                    using (SqlDataReader reader = await Command.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            result.Add(GetDataFromDataBase(reader));
+                        }
+                    }
+                }
+            }
+            return result;
         }
 
         public async Task<List<Table>> GetAllDataAvailablesAsync()
@@ -292,6 +322,10 @@ namespace DataLayerRestaurant.Classes
             _IRead = read;
         }
 
+        public async Task<List<Table>> GetAllDataAsync(List<int> Ids)
+        {
+            return await _IRead.GetAllDataAsync(Ids);
+        }
 
         public async Task<List<Table>> GetAllDataAvailablesAsync()
         {
