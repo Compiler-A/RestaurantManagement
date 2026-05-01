@@ -39,46 +39,13 @@ namespace BusinessLayerRestaurant.Classes
         }
     }
 
-    public class clsEmployeeLoaderByLogin : ILoginServiceComposition
-    {
-        private IEmployeesService _IData;
 
-        public clsEmployeeLoaderByLogin(IEmployeesService Employee)
-        {
-            _IData = Employee;
-        }
-
-        public async Task LoadDataAsync(Auth item)
-        {
-            item.Employees = await _IData.GetAsync(item.EmployeeID);
-        }
-
-    }
-
-    public class clsCompositionLoginLoader : ILoginServiceComposition
-    {
-        private IEnumerable<ILoginServiceComposition> _loaders;
-        public clsCompositionLoginLoader
-            (IEnumerable<ILoginServiceComposition> loaders)
-        {
-            _loaders = loaders;
-        }
-        public async Task LoadDataAsync(Auth item)
-        {
-            foreach (var item1 in _loaders)
-            {
-                await item1.LoadDataAsync(item);
-            }
-        }
-    }
-
-    public class clsLoginReader : clsCompositionLoginLoader, ILoginServiceReader
+    public class clsLoginReader : ILoginServiceReader
     {
         private ILoginServiceContainer _Interface;
         private readonly IMyLogger _Logger;
 
-        public clsLoginReader(ILoginServiceContainer Interface, IMyLogger Logger, IEnumerable<ILoginServiceComposition> loaders)
-            : base(loaders)
+        public clsLoginReader(ILoginServiceContainer Interface, IMyLogger Logger)
         {
             _Interface = Interface;
             _Logger = Logger;
@@ -91,20 +58,18 @@ namespace BusinessLayerRestaurant.Classes
             {
                 throw new KeyNotFoundException("Not Found!");
             }
-            await LoadDataAsync(Data);
             _Logger.EventLogs($"Token Found, UserName: {UserName}", EventLogEntryType.Information);
             return Data;
         }
     }
 
-    public class clsLoginWriter : clsCompositionLoginLoader , ILoginServiceWriter
+    public class clsLoginWriter : ILoginServiceWriter
     {
         private ILoginServiceContainer _Interface;
         private ILoginServiceReader _Reader;
         private IOptions<JwtSettings> _Options;
 
-        public clsLoginWriter(IOptions<JwtSettings> Options,ILoginServiceContainer Interface,ILoginServiceReader Reader, IEnumerable<ILoginServiceComposition> loaders)
-            : base(loaders)
+        public clsLoginWriter(IOptions<JwtSettings> Options,ILoginServiceContainer Interface,ILoginServiceReader Reader)
         {
             _Interface = Interface;
             _Reader = Reader;

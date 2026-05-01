@@ -11,10 +11,6 @@ namespace BusinessLayerRestaurant.Interfaces
         IEmployeesService IEmployee { get; set; }
     }
 
-    public interface ILoginServiceComposition
-    {
-        Task LoadDataAsync(Auth item);
-    }
 
     public interface ILoginServiceReader 
     {

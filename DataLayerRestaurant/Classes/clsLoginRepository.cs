@@ -32,10 +32,55 @@ namespace DataLayerRestaurant.Classes
         }
     }
 
+
+    public class clsEmployeeBatchLoaderByAuth : IRepositoryBatchsLoader<Auth>
+    {
+        private readonly IEmployeesRepositoryReader _service;
+        public clsEmployeeBatchLoaderByAuth(IEmployeesRepositoryReader service)
+        {
+            _service = service;
+        }
+
+        public async Task LoadDataAsync(List<Auth> auths)
+        {
+            var employeeIDs = auths.Select(e => e.EmployeeID).Distinct().ToList();
+            if (!employeeIDs.Any())
+                return;
+            var roles = await _service.GetAllDataAsync(employeeIDs);
+            var dict = roles.ToDictionary(r => r.ID);
+            foreach (var emp in auths)
+            {
+                if (dict.TryGetValue(emp.EmployeeID, out var role))
+                {
+                    emp.Employees = role;
+                }
+            }
+        }
+    }
+    public class clsAuthsRepositoryLoader : IAuthsRepositoryLoader
+    {
+        private IEnumerable<IRepositoryBatchsLoader<Auth>> _Loaders;
+        public clsAuthsRepositoryLoader(IEnumerable<IRepositoryBatchsLoader<Auth>> Loader)
+        {
+            _Loaders = Loader;
+        }
+        public async Task LoadDataAsync(List<Auth> item)
+        {
+            foreach (var item1 in _Loaders)
+            {
+                await item1.LoadDataAsync(item);
+            }
+        }
+    }
+
     public class clsLoginRepositoryReader : clsLoginRepositoryComposition,ILoginRepositoryReader
     {
-        public clsLoginRepositoryReader(IOptions<clsMySettings> settings) : base(settings)
-        { }
+        private readonly IAuthsRepositoryLoader _Loader;
+
+        public clsLoginRepositoryReader(IOptions<clsMySettings> settings, IAuthsRepositoryLoader loader) : base(settings)
+        {
+            _Loader = loader;
+        }
         public async Task<Auth?> GetDataAsync(string UserName)
         {
             Auth? Login = null;
@@ -54,6 +99,10 @@ namespace DataLayerRestaurant.Classes
                         }
                     }
                 }
+            }
+            if (Login != null)
+            {
+                await _Loader.LoadDataAsync(new List<Auth> { Login });
             }
             return Login;
         }

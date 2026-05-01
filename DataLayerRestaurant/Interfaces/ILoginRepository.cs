@@ -14,6 +14,12 @@ namespace DataLayerRestaurant.Interfaces
         Task<bool> CreateDataAsync(DTOAuthCURequest Request); 
         Task<bool> LogoutDataAsync(int ID);
     }
+
+    public interface IAuthsRepositoryLoader
+    {
+        Task LoadDataAsync(List<Auth> items);
+    }
+
     public interface ILoginRepository : ILoginRepositoryReader, ILoginRepositoryWriter
     { }
 
