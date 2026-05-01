@@ -4,6 +4,11 @@ using DomainLayer.Entities;
 
 namespace DataLayerRestaurant.Interfaces
 {
+    public interface IOrderDetailsRepositoryLoader
+    {
+        Task LoadDataAsync(List<OrderDetail> items);
+    }
+
     public interface IOrderDetailsRepositoryReader : IRepositoryReader<OrderDetail>
     {
         Task<List<OrderDetail>> GetAllDataByOrderIDAsync(int orderID);

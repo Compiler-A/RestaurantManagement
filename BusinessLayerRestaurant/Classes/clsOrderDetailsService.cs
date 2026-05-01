@@ -41,54 +41,12 @@ namespace BusinessLayerRestaurant.Classes
     }
 
 
-    public class clsOrderLoader : IOrderDetailsServiceComposition
-    {
-        IOrdersService _Order;
-        public clsOrderLoader(IOrdersService order)
-        { 
-            _Order = order;
-        }
-        public async Task LoadDataAsync(OrderDetail item)
-        {
-            item.Order = await _Order.GetAsync(item.OrderID);
-        }
-    }
-    public class clsMenuItemLoader : IOrderDetailsServiceComposition
-    {
-        IMenuItemsService _MenuItem;
-        public clsMenuItemLoader(IMenuItemsService menuItem)
-        {
-            _MenuItem = menuItem;
-        }
-        public async Task LoadDataAsync(OrderDetail item)
-        {
-            item.Item = await _MenuItem.GetAsync(item.ItemID);
-        }
-    }
-    public class clsCompositionOrderDetailsLoader : IOrderDetailsServiceComposition
-    {
-        private IEnumerable<IOrderDetailsServiceComposition> _loaders;
-        public clsCompositionOrderDetailsLoader
-            (IEnumerable<IOrderDetailsServiceComposition> loaders)
-        {
-            _loaders = loaders;
-        }
-        public async Task LoadDataAsync(OrderDetail item)
-        {
-            foreach (var item1 in _loaders)
-            {
-                await item1.LoadDataAsync(item);
-            }
-        }
-    }
-
-
-    public class clsOrderDetailsReader : clsCompositionOrderDetailsLoader, IOrderDetailsServiceReader
+    public class clsOrderDetailsReader : IOrderDetailsServiceReader
     {
         private IOrderDetailsServiceContainer _Interfaces;
         private IMyLogger _Logger;
         public clsOrderDetailsReader
-            (IOrderDetailsServiceContainer Interfaces, IEnumerable<IOrderDetailsServiceComposition> loaders, IMyLogger logger) : base(loaders)
+            (IOrderDetailsServiceContainer Interfaces,  IMyLogger logger) 
         {
             _Interfaces = Interfaces;
             _Logger = logger;
@@ -100,10 +58,6 @@ namespace BusinessLayerRestaurant.Classes
             {
                 throw new KeyNotFoundException("Not Found!");
             }
-            foreach (var item in ldto)
-            {
-                await LoadDataAsync(item);
-            }
             _Logger.EventLogs($"OrderDetails Found, Count: {ldto.Count}", EventLogEntryType.Information);
             return ldto;
         }
@@ -114,10 +68,7 @@ namespace BusinessLayerRestaurant.Classes
             {
                 throw new KeyNotFoundException("Not Found!");
             }
-            foreach (var item in ldto)
-            {
-                await LoadDataAsync(item);
-            }
+
             _Logger.EventLogs($"OrderDetails By OrderID Found, Count: {ldto.Count}", EventLogEntryType.Information);
 
             return ldto;
@@ -132,17 +83,16 @@ namespace BusinessLayerRestaurant.Classes
             }
             _Logger.EventLogs($"OrderDetail Found, ID: {dto.ID}", EventLogEntryType.Information);
 
-            await LoadDataAsync(dto);
             return dto;
         }
     }
 
-    public class clsOrderDetailsWriter : clsCompositionOrderDetailsLoader, IOrderDetailsServiceWriter
+    public class clsOrderDetailsWriter : IOrderDetailsServiceWriter
     {
         private IOrderDetailsServiceContainer _Interfaces;
         private IMyLogger _Logger;
         public clsOrderDetailsWriter
-            (IMyLogger Logger ,IOrderDetailsServiceContainer @interface, IEnumerable<IOrderDetailsServiceComposition> loader) : base(loader)
+            (IMyLogger Logger ,IOrderDetailsServiceContainer @interface) 
         {
             _Interfaces = @interface;
             _Logger = Logger;
@@ -153,7 +103,6 @@ namespace BusinessLayerRestaurant.Classes
             var dto = await _Interfaces.IData.CreateDataAsync(Request);
             if (dto != null)
             {
-                await LoadDataAsync(dto);
                 _Logger.EventLogs($"OrderDetail Created, ID: {dto.ID}", EventLogEntryType.Information);
                 return dto;
             }
@@ -167,7 +116,6 @@ namespace BusinessLayerRestaurant.Classes
             var dto = await _Interfaces.IData.UpdateDataAsync(Request);
             if (dto != null)
             {
-                await LoadDataAsync(dto);
                 _Logger.EventLogs($"OrderDetail Updated, ID: {dto.ID}", EventLogEntryType.Information);
                 return dto;
             }
