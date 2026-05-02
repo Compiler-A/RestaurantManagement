@@ -15,7 +15,6 @@ namespace BusinessLayerRestaurant.Mapper
                 ID = table.ID,
                 Name = table.Name,
                 Seats = table.Seats,
-                StatusTableID = table.StatusTableID,
                 StatusTable = table.StatusTable?.ToResponse()
             };
         }
