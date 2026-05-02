@@ -37,7 +37,7 @@ namespace APILayer.Controllers
 
             var menuItems = await _BusinessMenuItem.GetAllAsync(page);
             var listResponse = menuItems.Select(m => m.ToResponse()).ToList();
-            return CreateResponse(listResponse, StatusCodes.Status200OK, $"Row: {menuItems.Count}");
+            return CreateResponse(listResponse, StatusCodes.Status200OK, $"Row: {listResponse.Count}");
 
         }
 
@@ -48,7 +48,7 @@ namespace APILayer.Controllers
         {
             var menuItems = await _BusinessMenuItem.GetAllAvailablesAsync();
             var listResponse = menuItems.Select(m => m.ToResponse()).ToList();
-            return CreateResponse(listResponse, StatusCodes.Status200OK, $"Row: {menuItems.Count}");
+            return CreateResponse(listResponse, StatusCodes.Status200OK, $"Row: {listResponse.Count}");
         }
 
         [AllowAnonymous]
@@ -63,7 +63,7 @@ namespace APILayer.Controllers
 
             var menuItems = await _BusinessMenuItem.GetAllFiltersAsync(Request);
             var listResponse = menuItems.Select(m => m.ToResponse()).ToList();
-            return CreateResponse<List<DTOMenuItemResponse>>(listResponse, StatusCodes.Status200OK, $"Row: {menuItems.Count}");
+            return CreateResponse<List<DTOMenuItemResponse>>(listResponse, StatusCodes.Status200OK, $"Row: {listResponse.Count}");
 
         }
 

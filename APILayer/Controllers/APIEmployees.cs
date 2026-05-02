@@ -38,7 +38,7 @@ namespace APILayer.Controllers
 
             var list = await employees.GetAllAsync(page);
             var listResponse = list.Select(e => e.ToResponse()).ToList();
-            return CreateResponse<IEnumerable<DTOEmployeeResponse>>(listResponse, StatusCodes.Status200OK, $"Row: {list.Count}");
+            return CreateResponse<IEnumerable<DTOEmployeeResponse>>(listResponse, StatusCodes.Status200OK, $"Row: {listResponse.Count}");
         }
 
         [HttpGet("{ID}", Name = "GetEmployeeByID")]

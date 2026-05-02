@@ -50,7 +50,7 @@ namespace APILayer.Controllers
             }
             var orders = await _businessOrderDetail.GetAllByOrderIDAsync(orderID);
             var listResponse = orders.Select(o => o.ToResponse()).ToList();
-            return CreateResponse<IEnumerable<DTOOrderDetailResponse>>(listResponse, StatusCodes.Status200OK, $"Row: {orders.Count}");
+            return CreateResponse<IEnumerable<DTOOrderDetailResponse>>(listResponse, StatusCodes.Status200OK, $"Row: {listResponse.Count}");
 
         }
 

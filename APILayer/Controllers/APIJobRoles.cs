@@ -35,7 +35,7 @@ namespace APILayer.Controllers
             }
             var list = await jobRoles.GetAllAsync(page);
             var listResponse = list.Select(j => j.ToResponse()).ToList();
-            return CreateResponse<IEnumerable<DTOJobRoleResponse>>(listResponse, StatusCodes.Status200OK, $"Row: {list.Count}");
+            return CreateResponse<IEnumerable<DTOJobRoleResponse>>(listResponse, StatusCodes.Status200OK, $"Row: {listResponse.Count}");
         }
 
         [AllowAnonymous]

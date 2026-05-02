@@ -37,7 +37,7 @@ namespace APILayer.Controllers
             }
             var list = await _businessStatusTables.GetAllAsync(Page);
             var listResponse = list.Select(x => x.ToResponse()).ToList();
-            return CreateResponse<IEnumerable<DTOStatusTableResponse>>(listResponse, StatusCodes.Status200OK, $"Row: {list.Count}");
+            return CreateResponse<IEnumerable<DTOStatusTableResponse>>(listResponse, StatusCodes.Status200OK, $"Row: {listResponse.Count}");
         }
 
         [AllowAnonymous]

@@ -36,7 +36,7 @@ namespace APILayer.Controllers
 
             var list = await _StatusOrder.GetAllAsync(page);
             var listResponse = list.Select(x => x.ToResponse()).ToList();
-            return CreateResponse<IEnumerable<DTOStatusOrderResponse>>(listResponse, StatusCodes.Status200OK, $"Row: {list.Count}");
+            return CreateResponse<IEnumerable<DTOStatusOrderResponse>>(listResponse, StatusCodes.Status200OK, $"Row: {listResponse.Count}");
 
         }
 

@@ -36,7 +36,7 @@ namespace APILayer.Controllers
             }
             var list = await _BusinessSettings.GetAllAsync(page);
             var listResponse = list.Select(s => s.ToResponse()).ToList();
-            return CreateResponse<IEnumerable<DTOSettingResponse>>(listResponse, StatusCodes.Status200OK, $"Row: {list.Count}");
+            return CreateResponse<IEnumerable<DTOSettingResponse>>(listResponse, StatusCodes.Status200OK, $"Row: {listResponse.Count}");
         }
 
         [Authorize(Roles = "Manager")]

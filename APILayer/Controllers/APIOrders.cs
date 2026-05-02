@@ -36,7 +36,7 @@ namespace APILayer.Controllers
             }
             var orders = await _businessOrders.GetAllAsync(page);
             var listReponse = orders.Select(o => o.ToResponse()).ToList();
-            return CreateResponse<IEnumerable<DTOOrderResponse>>(listReponse, StatusCodes.Status200OK, $"Row: {orders.Count}");
+            return CreateResponse<IEnumerable<DTOOrderResponse>>(listReponse, StatusCodes.Status200OK, $"Row: {listReponse.Count}");
 
         }
 
