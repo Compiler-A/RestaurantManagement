@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 using DomainLayer.Entities;
+using ContractsLayerRestaurant.DTOResponse;
+using BusinessLayerRestaurant.Mapper;
 
 
 namespace APILayer.Controllers
@@ -24,35 +26,36 @@ namespace APILayer.Controllers
         [AllowAnonymous]
         [EnableRateLimiting(NameRateLimitPolicies.GetAll)]
         [HttpGet(Name = "GetAllTypeItems")]
-        public async Task<ActionResult<ApiResponse<IEnumerable<TypeItem>>>> GetAllAsync([FromQuery] int page = 1)
+        public async Task<ActionResult<ApiResponse<IEnumerable<DTOTypeItemResponse>>>> GetAllAsync([FromQuery] int page = 1)
         {
             if (page <= 0)
             {
                 throw new ArgumentOutOfRangeException("Page number must be greater than 0.");
             }
             var typeItems = await _dataLayer.GetAllAsync(page);
-            return CreateResponse<IEnumerable<TypeItem>>(typeItems, StatusCodes.Status200OK, $"Row: {typeItems.Count}");
+            var listResponse = typeItems.Select(x => x.ToResponse()).ToList();
+            return CreateResponse<IEnumerable<DTOTypeItemResponse>>(listResponse, StatusCodes.Status200OK, $"Row: {listResponse.Count}");
 
         }
 
         [AllowAnonymous]
         [EnableRateLimiting(NameRateLimitPolicies.GetOne)]
         [HttpGet("{ID}", Name = "GetTypeItemById")]
-        public async Task<ActionResult<ApiResponse<TypeItem>>> GetByIDAsync([FromRoute] int ID)
+        public async Task<ActionResult<ApiResponse<DTOTypeItemResponse>>> GetByIDAsync([FromRoute] int ID)
         {
             if (ID <= 0)
             {
                 throw new ArgumentOutOfRangeException("ID number must be greater than 0.");
             }
             var typeItemDto = await _dataLayer.GetAsync(ID);
-            return CreateResponse(typeItemDto!, StatusCodes.Status200OK, "Found Successfully!");
+            return CreateResponse<DTOTypeItemResponse>(typeItemDto!.ToResponse(), StatusCodes.Status200OK, "Found Successfully!");
 
         }
 
         [Authorize(Roles = "Manager")]
         [EnableRateLimiting(NameRateLimitPolicies.Add)]
         [HttpPost(Name = "AddTypeItem")]
-        public async Task<ActionResult<ApiResponse<TypeItem>>> CreateAsync([FromBody] DTOTypeItemsCRequest typeItem)
+        public async Task<ActionResult<ApiResponse<DTOTypeItemResponse>>> CreateAsync([FromBody] DTOTypeItemsCRequest typeItem)
         {
             if (typeItem == null)
                 throw new ArgumentNullException("Request is null!");
@@ -60,22 +63,20 @@ namespace APILayer.Controllers
 
 
             var dto = await _dataLayer.CreateAsync(typeItem);
-            return CreatedAtRoute("GetTypeItemById", new { ID = dto!.ID }, dto);
+            return CreatedAtRoute("GetTypeItemById", new { ID = dto!.ID }, dto.ToResponse());
 
         }
 
         [Authorize(Roles = "Manager")]
         [EnableRateLimiting(NameRateLimitPolicies.Update)]
         [HttpPut(Name = "UpdateTypeItem")]
-        public async Task<ActionResult<ApiResponse<TypeItem>>> UpdateAsync([FromBody] DTOTypeItemsURequest typeItem)
+        public async Task<ActionResult<ApiResponse<DTOTypeItemResponse>>> UpdateAsync([FromBody] DTOTypeItemsURequest typeItem)
         {
             if (typeItem == null)
                 throw new ArgumentNullException("Request is null!");
 
-
-
             var dto = await _dataLayer.UpdateAsync(typeItem);
-            return CreateResponse(dto!, StatusCodes.Status200OK, "Type Item Updated Successfully!");
+            return CreateResponse<DTOTypeItemResponse>(dto!.ToResponse(), StatusCodes.Status200OK, "Type Item Updated Successfully!");
 
         }
 
@@ -88,7 +89,7 @@ namespace APILayer.Controllers
                 throw new ArgumentOutOfRangeException("ID number must be greater than 0.");
 
             var typeItem = await _dataLayer.DeleteAsync(ID);
-            return CreateResponse<bool>(true, StatusCodes.Status200OK, "Type Item Deleted Successfully!");
+            return CreateResponse<bool>(typeItem, StatusCodes.Status200OK, "Type Item Deleted Successfully!");
         }
     }
 }
