@@ -15,8 +15,6 @@ namespace BusinessLayerRestaurant.Mapper
                 Name = menuItem.Name,
                 Description = menuItem.Description,
                 Price = menuItem.Price,
-                TypeItemID = menuItem.TypeItemID,
-                StatusMenuID = menuItem.StatusMenuID,
                 Image = menuItem.Image,
                 TypeItems = menuItem.TypeItems?.ToResponse(),
                 StatusMenus = menuItem.StatusMenus?.ToResponse()

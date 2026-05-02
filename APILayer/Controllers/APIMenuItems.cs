@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 using DomainLayer.Entities;
+using ContractsLayerRestaurant.DTOResponse;
+using BusinessLayerRestaurant.Mapper;
 
 
 
@@ -26,7 +28,7 @@ namespace APILayer.Controllers
         [AllowAnonymous]
         [HttpGet(Name ="GetAllMenuItems")]
         [EnableRateLimiting(NameRateLimitPolicies.GetAll)]
-        public async Task<ActionResult<ApiResponse<List<MenuItem>>>> GetAllAsync([FromQuery] int page = 1)
+        public async Task<ActionResult<ApiResponse<List<DTOMenuItemResponse>>>> GetAllAsync([FromQuery] int page = 1)
         {
             if (page <= 0)
             {
@@ -34,23 +36,25 @@ namespace APILayer.Controllers
             }
 
             var menuItems = await _BusinessMenuItem.GetAllAsync(page);
-            return CreateResponse(menuItems, StatusCodes.Status200OK, $"Row: {menuItems.Count}");
+            var listResponse = menuItems.Select(m => m.ToResponse()).ToList();
+            return CreateResponse(listResponse, StatusCodes.Status200OK, $"Row: {menuItems.Count}");
 
         }
 
         [AllowAnonymous]
         [HttpGet("all-availables")]
         [EnableRateLimiting(NameRateLimitPolicies.GetAll)]
-        public async Task<ActionResult<ApiResponse<List<MenuItem>>>> GetAllAvailablesAsync()
+        public async Task<ActionResult<ApiResponse<List<DTOMenuItemResponse>>>> GetAllAvailablesAsync()
         {
             var menuItems = await _BusinessMenuItem.GetAllAvailablesAsync();
-            return CreateResponse(menuItems, StatusCodes.Status200OK, $"Row: {menuItems.Count}");
+            var listResponse = menuItems.Select(m => m.ToResponse()).ToList();
+            return CreateResponse(listResponse, StatusCodes.Status200OK, $"Row: {menuItems.Count}");
         }
 
         [AllowAnonymous]
         [HttpGet("all-filters")]
         [EnableRateLimiting(NameRateLimitPolicies.GetAll)]
-        public async Task<ActionResult<ApiResponse<List<MenuItem>>>> GetAllFiltersAsync([FromQuery] DTOMenuItemsFilterRequest Request)
+        public async Task<ActionResult<ApiResponse<List<DTOMenuItemResponse>>>> GetAllFiltersAsync([FromQuery] DTOMenuItemsFilterRequest Request)
         {
             if (Request == null)
             {
@@ -58,14 +62,15 @@ namespace APILayer.Controllers
             }
 
             var menuItems = await _BusinessMenuItem.GetAllFiltersAsync(Request);
-            return CreateResponse<List<MenuItem>>(menuItems!, StatusCodes.Status200OK, $"Row: {menuItems.Count}");
+            var listResponse = menuItems.Select(m => m.ToResponse()).ToList();
+            return CreateResponse<List<DTOMenuItemResponse>>(listResponse, StatusCodes.Status200OK, $"Row: {menuItems.Count}");
 
         }
 
         [AllowAnonymous]
         [EnableRateLimiting(NameRateLimitPolicies.GetOne)]
         [HttpGet("{ID}", Name ="GetMenuItemByID")]
-        public async Task<ActionResult<ApiResponse<MenuItem>>> GetByIDAsync([FromRoute] int ID)
+        public async Task<ActionResult<ApiResponse<DTOMenuItemResponse>>> GetByIDAsync([FromRoute] int ID)
         {
             if (ID <= 0)
             {
@@ -73,13 +78,13 @@ namespace APILayer.Controllers
             }
 
             var menuItem = await _BusinessMenuItem.GetAsync(ID);
-            return CreateResponse<MenuItem>(menuItem!, StatusCodes.Status200OK, "Found Successfully!");
+            return CreateResponse<DTOMenuItemResponse>(menuItem!.ToResponse(), StatusCodes.Status200OK, "Found Successfully!");
         }
 
         [Authorize(Roles = "Manager,Chef")]
         [EnableRateLimiting(NameRateLimitPolicies.Add)]
         [HttpPost(Name ="AddMenuItem")]
-        public async Task<ActionResult<ApiResponse<MenuItem>>> CreateAsync([FromBody] DTOMenuItemsCRequest menuItem)
+        public async Task<ActionResult<ApiResponse<DTOMenuItemResponse>>> CreateAsync([FromBody] DTOMenuItemsCRequest menuItem)
         {
             if (menuItem == null)
             {
@@ -88,7 +93,7 @@ namespace APILayer.Controllers
 
 
             var dto = await _BusinessMenuItem.CreateAsync(menuItem);
-            return CreatedAtRoute("GetMenuItemByID", new { ID = dto!.ID }, dto);
+            return CreatedAtRoute("GetMenuItemByID", new { ID = dto!.ID }, dto.ToResponse());
 
         }
 
@@ -96,7 +101,7 @@ namespace APILayer.Controllers
         [Authorize(Roles = "Manager,Chef,Sous Chef")]
         [EnableRateLimiting(NameRateLimitPolicies.Update)]
         [HttpPut(Name ="UpdateMenuItem")]
-        public async Task<ActionResult<ApiResponse<MenuItem>>> UpdateAsync([FromBody] DTOMenuItemsURequest menuItem)
+        public async Task<ActionResult<ApiResponse<DTOMenuItemResponse>>> UpdateAsync([FromBody] DTOMenuItemsURequest menuItem)
         {
             if (menuItem == null)
             {
@@ -105,9 +110,7 @@ namespace APILayer.Controllers
 
 
             var dto = await _BusinessMenuItem.UpdateAsync(menuItem);
-            return CreateResponse<MenuItem>(dto!, StatusCodes.Status200OK, "Menu Item Updated Successfully!");
-
-
+            return CreateResponse<DTOMenuItemResponse>(dto!.ToResponse(), StatusCodes.Status200OK, "Menu Item Updated Successfully!");
         }
 
         [Authorize(Roles = "Manager,Chef")]
