@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 using DomainLayer.Entities;
+using ContractsLayerRestaurant.DTOResponse;
+using BusinessLayerRestaurant.Mapper;
 
 
 namespace APILayer.Controllers
@@ -26,49 +28,49 @@ namespace APILayer.Controllers
         [Authorize(Roles = "Manager,Chef,Sous Chef,Waiter")]
         [HttpGet(Name = "GetAllOrderDetails")]
         [EnableRateLimiting(NameRateLimitPolicies.GetAll)]
-        public async Task<ActionResult<ApiResponse<IEnumerable<OrderDetail>>>> GetAllAsync([FromQuery] int page = 1)
+        public async Task<ActionResult<ApiResponse<IEnumerable<DTOOrderDetailResponse>>>> GetAllAsync([FromQuery] int page = 1)
         {
             if(page <= 0)
             {
                 throw new ArgumentOutOfRangeException("Page number must be greater than 0.");
             }
             var orders = await _businessOrderDetail.GetAllAsync(page);
-            return CreateResponse<IEnumerable<OrderDetail>>(orders, StatusCodes.Status200OK, $"Row: {orders.Count}");
+            var listResponse = orders.Select(o => o.ToResponse()).ToList();
+            return CreateResponse<IEnumerable<DTOOrderDetailResponse>>(listResponse, StatusCodes.Status200OK, $"Row: {listResponse.Count}");
         }
 
         [Authorize(Roles = "Manager,Chef,Sous Chef,Waiter")]
         [HttpGet("all-orderid/{orderID}", Name = "GetAllOrderDetailsByOrderID")]
         [EnableRateLimiting(NameRateLimitPolicies.GetAll)]
-        public async Task<ActionResult<ApiResponse<IEnumerable<OrderDetail>>>> GetAllByOrderIDAsync(int orderID)
+        public async Task<ActionResult<ApiResponse<IEnumerable<DTOOrderDetailResponse>>>> GetAllByOrderIDAsync(int orderID)
         {
             if(orderID <= 0)
             {
                 throw new ArgumentOutOfRangeException("Order ID must be greater than 0.");
             }
             var orders = await _businessOrderDetail.GetAllByOrderIDAsync(orderID);
-
-            return CreateResponse<IEnumerable<OrderDetail>>(orders, StatusCodes.Status200OK, $"Row: {orders.Count}");
+            var listResponse = orders.Select(o => o.ToResponse()).ToList();
+            return CreateResponse<IEnumerable<DTOOrderDetailResponse>>(listResponse, StatusCodes.Status200OK, $"Row: {orders.Count}");
 
         }
 
         [Authorize(Roles = "Manager,Chef,Sous Chef,Waiter")]
         [EnableRateLimiting(NameRateLimitPolicies.GetOne)]
         [HttpGet("{ID}", Name = "GetOrderDetailByID")]
-        public async Task<ActionResult<ApiResponse<OrderDetail?>>> GetByIDAsync(int ID)
+        public async Task<ActionResult<ApiResponse<DTOOrderDetailResponse>>> GetByIDAsync(int ID)
         {
             if (ID <= 0)
             {
                 throw new ArgumentOutOfRangeException("ID must be greater than 0.");
             }
             var order = await _businessOrderDetail.GetAsync(ID);
-            return CreateResponse<OrderDetail?>(order, StatusCodes.Status200OK, "Found Successfully!");
-
+            return CreateResponse<DTOOrderDetailResponse>(order!.ToResponse(), StatusCodes.Status200OK, "Found Successfully!");
         }
 
         [Authorize(Roles = "Manager,Waiter")]
         [EnableRateLimiting(NameRateLimitPolicies.Add)]
         [HttpPost(Name = "AddNewOrderDetail")]
-        public async Task<ActionResult<ApiResponse<OrderDetail>>> CreateAsync
+        public async Task<ActionResult<ApiResponse<DTOOrderDetailResponse>>> CreateAsync
             ([FromBody] DTOOrderDetailsCRequest dto, [FromServices] IAuthorizationService authorizationService)
         {
             if (dto == null)
@@ -83,14 +85,14 @@ namespace APILayer.Controllers
 
 
             var result = await _businessOrderDetail.CreateAsync(dto);
-            return CreatedAtRoute("GetOrderDetailByID", new { ID = result!.ID }, result);
+            return CreatedAtRoute("GetOrderDetailByID", new { ID = result!.ID }, result.ToResponse());
 
         }
 
         [Authorize(Roles = "Manager,Chef,Sous Chef,Waiter")]
         [EnableRateLimiting(NameRateLimitPolicies.Update)]
         [HttpPut(Name = "UpdateOrderDetail")]
-        public async Task<ActionResult<ApiResponse<OrderDetail>>> UpdateAsync
+        public async Task<ActionResult<ApiResponse<DTOOrderDetailResponse>>> UpdateAsync
             ([FromBody] DTOOrderDetailsURequest dto, [FromServices] IAuthorizationService authorizationService)
         {
             if (dto == null)
@@ -104,7 +106,7 @@ namespace APILayer.Controllers
 
 
             var result = await _businessOrderDetail.UpdateAsync(dto);
-            return CreateResponse<OrderDetail>(result!, StatusCodes.Status200OK, "Order Detail Updated Successfully!");
+            return CreateResponse<DTOOrderDetailResponse>(result!.ToResponse(), StatusCodes.Status200OK, "Order Detail Updated Successfully!");
 
         }
 
@@ -118,7 +120,7 @@ namespace APILayer.Controllers
                 throw new ArgumentOutOfRangeException("ID number must be greater than 0.");
             }
             var result = await _businessOrderDetail.DeleteAsync(ID);
-            return CreateResponse(true, StatusCodes.Status200OK, "Order Detail Deleted Successfully!");
+            return CreateResponse(result, StatusCodes.Status200OK, "Order Detail Deleted Successfully!");
         }
     }
 }

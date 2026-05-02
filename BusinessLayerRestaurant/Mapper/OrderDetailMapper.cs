@@ -18,8 +18,6 @@ namespace BusinessLayerRestaurant.Mapper
             return new DTOOrderDetailResponse
             {
                 ID = orderDetail.ID,
-                OrderID = orderDetail.OrderID,
-                ItemID = orderDetail.ItemID,
                 Quantity = orderDetail.Quantity,
                 SubTotal = orderDetail.SubTotal,
                 Order = orderDetail.Order?.ToResponse(),
