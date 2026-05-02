@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.RateLimiting;
 using System.Security.Authentication;
 using System.Security.Claims;
 using DomainLayer.Entities;
+using ContractsLayerRestaurant.DTOResponse;
+using BusinessLayerRestaurant.Mapper;
 
 
 namespace APILayer.Controllers
@@ -27,7 +29,7 @@ namespace APILayer.Controllers
         [Authorize(Roles = "Manager")]
         [HttpGet(Name = "GetAllEmployeesAsync")]
         [EnableRateLimiting(NameRateLimitPolicies.GetAll)]
-        public async Task<ActionResult<ApiResponse<IEnumerable<Employee>>>> GetAllAsync([FromQuery] int page = 1)
+        public async Task<ActionResult<ApiResponse<IEnumerable<DTOEmployeeResponse>>>> GetAllAsync([FromQuery] int page = 1)
         {
             if (page <= 0)
             {
@@ -35,12 +37,13 @@ namespace APILayer.Controllers
             }
 
             var list = await employees.GetAllAsync(page);
-            return CreateResponse<IEnumerable<Employee>>(list, StatusCodes.Status200OK, $"Row: {list.Count}");
+            var listResponse = list.Select(e => e.ToResponse()).ToList();
+            return CreateResponse<IEnumerable<DTOEmployeeResponse>>(listResponse, StatusCodes.Status200OK, $"Row: {list.Count}");
         }
 
         [HttpGet("{ID}", Name = "GetEmployeeByID")]
         [EnableRateLimiting(NameRateLimitPolicies.GetOne)]
-        public async Task<ActionResult<ApiResponse<Employee>>> GetByIDAsync
+        public async Task<ActionResult<ApiResponse<DTOEmployeeResponse>>> GetByIDAsync
             ([FromRoute] int ID , [FromServices] IAuthorizationService authorizationService)
         {
             if (ID <= 0)
@@ -56,13 +59,13 @@ namespace APILayer.Controllers
                 throw new UnauthorizedAccessException("Access denied.");
 
             var DTO = await employees.GetAsync(ID);
-            return CreateResponse<Employee>(DTO!, StatusCodes.Status200OK, "Found Successfully!");
+            return CreateResponse<DTOEmployeeResponse>(DTO!.ToResponse(), StatusCodes.Status200OK, "Found Successfully!");
         }
 
         [Authorize(Roles = "Manager")]
         [HttpPost(Name = "AddEmployee")]
         [EnableRateLimiting(NameRateLimitPolicies.Add)]
-        public async Task<ActionResult<ApiResponse<Employee>>> CreateAsync([FromBody] DTOEmployeesCRequest employee)
+        public async Task<ActionResult<ApiResponse<DTOEmployeeResponse>>> CreateAsync([FromBody] DTOEmployeesCRequest employee)
         {
             if (employee == null)
             {
@@ -71,13 +74,13 @@ namespace APILayer.Controllers
             
 
             var success = await this.employees.CreateAsync(employee);
-            return CreatedAtRoute("GetEmployeeByID", new { ID = success!.ID }, success);
+            return CreatedAtRoute("GetEmployeeByID", new { ID = success!.ID }, success.ToResponse());
         }
 
         [Authorize(Roles = "Manager")]
         [EnableRateLimiting(NameRateLimitPolicies.Update)]
         [HttpPut(Name = "UpdateEmployee")]
-        public async Task<ActionResult<ApiResponse<Employee>>> UpdateAsync([FromBody] DTOEmployeesURequest employee)
+        public async Task<ActionResult<ApiResponse<DTOEmployeeResponse>>> UpdateAsync([FromBody] DTOEmployeesURequest employee)
         {
             if (employee == null)
             {
@@ -86,7 +89,7 @@ namespace APILayer.Controllers
             
 
             var dto = await this.employees.UpdateAsync(employee);
-            return CreateResponse<Employee>(dto!, StatusCodes.Status200OK, "Employee Updated Successfully!");
+            return CreateResponse<DTOEmployeeResponse>(dto!.ToResponse(), StatusCodes.Status200OK, "Employee Updated Successfully!");
         }
 
         [Authorize(Roles = "Manager")]
@@ -100,7 +103,7 @@ namespace APILayer.Controllers
             }
 
             var success = await employees.DeleteAsync(ID);
-            return CreateResponse<bool>(true, StatusCodes.Status200OK, "Employee Deleted Successfully!");
+            return CreateResponse<bool>(success, StatusCodes.Status200OK, "Employee Deleted Successfully!");
         }
 
 
@@ -121,13 +124,13 @@ namespace APILayer.Controllers
                 throw new AuthenticationException("Invalid credentials");
             }
             var success = await employees.ChangePasswordAsync(Changed);
-            return CreateResponse<bool>(true, StatusCodes.Status200OK, "Password Changed Successfully!");
+            return CreateResponse<bool>(success, StatusCodes.Status200OK, "Password Changed Successfully!");
         }
 
         [Authorize]
         [EnableRateLimiting(NameRateLimitPolicies.GetOne)]
         [HttpGet("user-name/{userName}", Name = "GetEmployeeByUserName")]
-        public async Task<ActionResult<ApiResponse<Employee>>> GetByUserNameAsync
+        public async Task<ActionResult<ApiResponse<DTOEmployeeResponse>>> GetByUserNameAsync
             ([FromRoute] string userName, [FromServices] IAuthorizationService authorizationService)
         {
             if (string.IsNullOrWhiteSpace(userName))
@@ -143,7 +146,7 @@ namespace APILayer.Controllers
             if (!authResult.Succeeded)
                 throw new UnauthorizedAccessException("Access denied.");
             var DTO = await employees.GetAsync(userName);
-            return CreateResponse<Employee>(DTO!, StatusCodes.Status200OK, "Found Successfully!");
+            return CreateResponse<DTOEmployeeResponse>(DTO!.ToResponse(), StatusCodes.Status200OK, "Found Successfully!");
 
         }
 
