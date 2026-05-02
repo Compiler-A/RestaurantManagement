@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 using DomainLayer.Entities;
+using ContractsLayerRestaurant.DTOResponse;
+using BusinessLayerRestaurant.Mapper;
 
 
 
@@ -27,35 +29,35 @@ namespace APILayer.Controllers
         [AllowAnonymous]
         [HttpGet(Name = "GetAllStatusTables")]
         [EnableRateLimiting(NameRateLimitPolicies.GetAll)]
-        public async Task<ActionResult<ApiResponse<IEnumerable<StatusTable>>>> GetAllAsync([FromQuery] int Page)
+        public async Task<ActionResult<ApiResponse<IEnumerable<DTOStatusTableResponse>>>> GetAllAsync([FromQuery] int Page)
         {
             if (Page <= 0)
             {
                 throw new ArgumentOutOfRangeException("Page number must be greater than 0.");
             }
             var list = await _businessStatusTables.GetAllAsync(Page);
-            return CreateResponse<IEnumerable<StatusTable>>(list!, StatusCodes.Status200OK, $"Row: {list.Count}");
-
+            var listResponse = list.Select(x => x.ToResponse()).ToList();
+            return CreateResponse<IEnumerable<DTOStatusTableResponse>>(listResponse, StatusCodes.Status200OK, $"Row: {list.Count}");
         }
 
         [AllowAnonymous]
         [EnableRateLimiting(NameRateLimitPolicies.GetOne)]
         [HttpGet("{ID}", Name = "GetStatusTableByID")]
-        public async Task<ActionResult<ApiResponse<StatusTable>>> GetByIDAsync([FromRoute] int ID)
+        public async Task<ActionResult<ApiResponse<DTOStatusTableResponse>>> GetByIDAsync([FromRoute] int ID)
         {
             if (ID <= 0)
             {
                 throw new ArgumentOutOfRangeException("ID number must be greater than 0.");
             }
             var statusTable = await _businessStatusTables.GetAsync(ID);
-            return CreateResponse<StatusTable>(statusTable!, StatusCodes.Status200OK, "Found Successfully!");
+            return CreateResponse<DTOStatusTableResponse>(statusTable!.ToResponse(), StatusCodes.Status200OK, "Found Successfully!");
 
         }
 
         [Authorize(Roles = "Manager")]
         [EnableRateLimiting(NameRateLimitPolicies.Add)]
         [HttpPost(Name = "AddStatusTable")]
-        public async Task<ActionResult<ApiResponse<StatusTable>>> CreateAsync([FromBody] DTOStatusTablesCRequest Request)
+        public async Task<ActionResult<ApiResponse<DTOStatusTableResponse>>> CreateAsync([FromBody] DTOStatusTablesCRequest Request)
         {
 
             if (Request == null)
@@ -64,7 +66,7 @@ namespace APILayer.Controllers
             }
 
             var result = await _businessStatusTables.CreateAsync(Request);
-            return CreatedAtRoute("GetStatusTableByID", new { ID = result!.ID }, result);
+            return CreatedAtRoute("GetStatusTableByID", new { ID = result!.ID }, result.ToResponse());
 
         }
 
@@ -72,7 +74,7 @@ namespace APILayer.Controllers
         [Authorize(Roles = "Manager")]
         [EnableRateLimiting(NameRateLimitPolicies.Update)]
         [HttpPut(Name = "UpdateStatusTable")]
-        public async Task<ActionResult<ApiResponse<StatusTable>>> UpdateAsync([FromBody] DTOStatusTablesURequest Request)
+        public async Task<ActionResult<ApiResponse<DTOStatusTableResponse>>> UpdateAsync([FromBody] DTOStatusTablesURequest Request)
         {
             if (Request == null)
             {
@@ -81,7 +83,7 @@ namespace APILayer.Controllers
 
 
             var result = await _businessStatusTables.UpdateAsync(Request);
-            return CreateResponse<StatusTable>(result!, StatusCodes.Status200OK, "Status Table Updated Successfully!");
+            return CreateResponse<DTOStatusTableResponse>(result!.ToResponse(), StatusCodes.Status200OK, "Status Table Updated Successfully!");
             
         }
 
@@ -95,7 +97,7 @@ namespace APILayer.Controllers
                 throw new ArgumentOutOfRangeException("ID number must be greater than 0.");
             }
             var result = await _businessStatusTables.DeleteAsync(ID);
-            return CreateResponse<bool>(true!, StatusCodes.Status200OK, "Status Table Deleted Successfully!");
+            return CreateResponse<bool>(result, StatusCodes.Status200OK, "Status Table Deleted Successfully!");
         }
     }
 }

@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 using DomainLayer.Entities;
+using ContractsLayerRestaurant.DTOResponse;
+using BusinessLayerRestaurant.Mapper;
 
 
 namespace APILayer.Controllers
@@ -25,7 +27,7 @@ namespace APILayer.Controllers
         [AllowAnonymous]
         [HttpGet( Name = "GetAllStatusOrders")]
         [EnableRateLimiting(NameRateLimitPolicies.GetAll)]
-        public async Task<ActionResult<ApiResponse<IEnumerable<StatusOrder>>>> GetAllAsync([FromQuery] int page = 1)
+        public async Task<ActionResult<ApiResponse<IEnumerable<DTOStatusOrderResponse>>>> GetAllAsync([FromQuery] int page = 1)
         {
             if (page <= 0)
             {
@@ -33,14 +35,15 @@ namespace APILayer.Controllers
             }
 
             var list = await _StatusOrder.GetAllAsync(page);
-            return CreateResponse<IEnumerable<StatusOrder>>(list, StatusCodes.Status200OK, $"Row: {list.Count}");
+            var listResponse = list.Select(x => x.ToResponse()).ToList();
+            return CreateResponse<IEnumerable<DTOStatusOrderResponse>>(listResponse, StatusCodes.Status200OK, $"Row: {list.Count}");
 
         }
 
         [AllowAnonymous]
         [EnableRateLimiting(NameRateLimitPolicies.GetOne)]
         [HttpGet("{ID}", Name = "GetStatusOrderByID")]
-        public async Task<ActionResult<ApiResponse<StatusOrder>>> GetByIDAsync([FromRoute] int ID = 1)
+        public async Task<ActionResult<ApiResponse<DTOStatusOrderResponse>>> GetByIDAsync([FromRoute] int ID = 1)
         {
             if (ID <= 0)
             {
@@ -48,13 +51,13 @@ namespace APILayer.Controllers
             }
 
             var DTO = await _StatusOrder.GetAsync(ID);
-            return CreateResponse<StatusOrder>(DTO!, StatusCodes.Status200OK, "Found Successfully!");
+            return CreateResponse<DTOStatusOrderResponse>(DTO!.ToResponse(), StatusCodes.Status200OK, "Found Successfully!");
         }
 
         [Authorize(Roles = "Manager")]
         [EnableRateLimiting(NameRateLimitPolicies.Add)]
         [HttpPost(Name = "AddStatusOrder")]
-        public async Task<ActionResult<ApiResponse<StatusOrder>>> CreateAsync([FromBody] DTOStatusOrdersCRequest Request)
+        public async Task<ActionResult<ApiResponse<DTOStatusOrderResponse>>> CreateAsync([FromBody] DTOStatusOrdersCRequest Request)
         {
             if (Request == null)
             {
@@ -62,14 +65,14 @@ namespace APILayer.Controllers
             }
 
             var result = await _StatusOrder.CreateAsync(Request);
-            return CreatedAtRoute("GetStatusOrderByID", new { ID = result!.ID }, result);
+            return CreatedAtRoute("GetStatusOrderByID", new { ID = result!.ID }, result.ToResponse());
 
         }
 
         [Authorize(Roles = "Manager")]
         [EnableRateLimiting(NameRateLimitPolicies.Update)]
         [HttpPut(Name = "UpdateStatusOrder")]
-        public async Task<ActionResult<ApiResponse<StatusOrder>>> UpdateAsync([FromBody] DTOStatusOrdersURequest Request)
+        public async Task<ActionResult<ApiResponse<DTOStatusOrderResponse>>> UpdateAsync([FromBody] DTOStatusOrdersURequest Request)
         {
             if (Request == null)
             {
@@ -78,8 +81,7 @@ namespace APILayer.Controllers
 
 
             var result = await _StatusOrder.UpdateAsync(Request);
-            return CreateResponse<StatusOrder>(result!, StatusCodes.Status200OK, "Status Order Updated Successfully!");
-
+            return CreateResponse<DTOStatusOrderResponse>(result!.ToResponse(), StatusCodes.Status200OK, "Status Order Updated Successfully!");
         }
 
         [Authorize(Roles = "Manager")]

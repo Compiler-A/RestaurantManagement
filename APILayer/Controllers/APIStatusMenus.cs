@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 
 using DomainLayer.Entities;
+using ContractsLayerRestaurant.DTOResponse;
+using BusinessLayerRestaurant.Mapper;
 
 
 namespace APILayer.Controllers
@@ -26,7 +28,7 @@ namespace APILayer.Controllers
         [AllowAnonymous]
         [HttpGet(Name = "GetAllStatusMenus")]
         [EnableRateLimiting(NameRateLimitPolicies.GetAll)]
-        public async Task<ActionResult<ApiResponse<List<StatusMenu>>>> GetAllAsync([FromQuery] int page = 1)
+        public async Task<ActionResult<ApiResponse<IEnumerable<DTOStatusMenuResponse>>>> GetAllAsync([FromQuery] int page = 1)
         {
             if (page <= 0)
             {
@@ -34,14 +36,15 @@ namespace APILayer.Controllers
             }
 
             var list = await _dataStatusMenus.GetAllAsync(page);
-            return CreateResponse(list, StatusCodes.Status200OK, $"Row: {list.Count}");
+            var listResponse = list.Select(x => x.ToResponse()).ToList();
+            return CreateResponse<IEnumerable<DTOStatusMenuResponse>>(listResponse, StatusCodes.Status200OK, $"Row: {list.Count}");
 
         }
 
         [AllowAnonymous]
         [EnableRateLimiting(NameRateLimitPolicies.GetOne)]
         [HttpGet("{ID}", Name = "GetStatusMenuByID")]
-        public async Task<ActionResult<ApiResponse<StatusMenu>>> GetByIDAsync(int ID)
+        public async Task<ActionResult<ApiResponse<DTOStatusMenuResponse>>> GetByIDAsync(int ID)
         {
             if (ID <= 0)
             {
@@ -49,13 +52,13 @@ namespace APILayer.Controllers
             }
 
             var resource = await _dataStatusMenus.GetAsync(ID);
-            return CreateResponse<StatusMenu>(resource!, StatusCodes.Status200OK, "Found Successfully!");
+            return CreateResponse<DTOStatusMenuResponse>(resource!.ToResponse(), StatusCodes.Status200OK, "Found Successfully!");
         }
 
         [AllowAnonymous]
         [EnableRateLimiting(NameRateLimitPolicies.Add)]
         [HttpPost(Name = "AddStatusMenu")]
-        public async Task<ActionResult<ApiResponse<StatusMenu>>> CreateAsync([FromBody] DTOStatusMenusCRequest statusMenu)
+        public async Task<ActionResult<ApiResponse<DTOStatusMenuResponse>>> CreateAsync([FromBody] DTOStatusMenusCRequest statusMenu)
         {
             if (statusMenu == null)
             {
@@ -64,14 +67,14 @@ namespace APILayer.Controllers
 
 
             var dto = await _dataStatusMenus.CreateAsync(statusMenu);
-            return CreatedAtRoute("GetStatusMenuByID", new { ID = dto!.ID }, dto);
+            return CreatedAtRoute("GetStatusMenuByID", new { ID = dto!.ID }, dto.ToResponse());
 
         }
 
         [Authorize(Roles = "Manager")]
         [EnableRateLimiting(NameRateLimitPolicies.Update)]
         [HttpPut(Name = "UpdateStatusMenu")]
-        public async Task<ActionResult<ApiResponse<StatusMenu>>> UpdateAsync([FromBody] DTOStatusMenusURequest statusMenu)
+        public async Task<ActionResult<ApiResponse<DTOStatusMenuResponse>>> UpdateAsync([FromBody] DTOStatusMenusURequest statusMenu)
         {
             if (statusMenu == null)
             {
@@ -80,7 +83,7 @@ namespace APILayer.Controllers
 
 
             var dto = await _dataStatusMenus.UpdateAsync(statusMenu);
-            return CreateResponse<StatusMenu>(dto!, StatusCodes.Status200OK, "Status Menu Updated Successfully!");
+            return CreateResponse<DTOStatusMenuResponse>(dto!.ToResponse(), StatusCodes.Status200OK, "Status Menu Updated Successfully!");
 
         }
 
@@ -96,8 +99,6 @@ namespace APILayer.Controllers
 
             bool isDeleted = await _dataStatusMenus.DeleteAsync(ID);
             return CreateResponse<bool>(isDeleted, StatusCodes.Status200OK, "Status Menu Deleted Successfully!");
-
-
         }
     }
 }

@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 using DomainLayer.Entities;
+using ContractsLayerRestaurant.DTOResponse;
+using BusinessLayerRestaurant.Mapper;
 
 
 namespace APILayer.Controllers
@@ -25,7 +27,7 @@ namespace APILayer.Controllers
         [Authorize(Roles = "Manager")]
         [HttpGet(Name = "GetAllSettings")]
         [EnableRateLimiting(NameRateLimitPolicies.GetAll)]
-        public async Task<ActionResult<ApiResponse<IEnumerable<Setting>>>> GetAllAsync([FromQuery] int page = 1)
+        public async Task<ActionResult<ApiResponse<IEnumerable<DTOSettingResponse>>>> GetAllAsync([FromQuery] int page = 1)
         {
 
             if (page <= 0)
@@ -33,26 +35,27 @@ namespace APILayer.Controllers
                 throw new ArgumentOutOfRangeException("Page number must be greater than 0.");
             }
             var list = await _BusinessSettings.GetAllAsync(page);
-            return CreateResponse<IEnumerable<Setting>>(list, StatusCodes.Status200OK, $"Row: {list.Count}");
+            var listResponse = list.Select(s => s.ToResponse()).ToList();
+            return CreateResponse<IEnumerable<DTOSettingResponse>>(listResponse, StatusCodes.Status200OK, $"Row: {list.Count}");
         }
 
         [Authorize(Roles = "Manager")]
         [EnableRateLimiting(NameRateLimitPolicies.GetOne)]
         [HttpGet("{ID}", Name = "GetSettingByID")]
-        public async Task<ActionResult<ApiResponse<Setting>>> GetByIDAsync([FromRoute] int ID = 1)
+        public async Task<ActionResult<ApiResponse<DTOSettingResponse>>> GetByIDAsync([FromRoute] int ID = 1)
         {
             if (ID <= 0)
             {
                 throw new ArgumentOutOfRangeException("ID must be greater than 0.");
             }
             var DTO = await _BusinessSettings.GetAsync(ID);
-            return CreateResponse<Setting>(DTO!, StatusCodes.Status200OK, "Found Successfully!");
+            return CreateResponse<DTOSettingResponse>(DTO!.ToResponse(), StatusCodes.Status200OK, "Found Successfully!");
         }
 
         [Authorize(Roles = "Manager")]
         [EnableRateLimiting(NameRateLimitPolicies.Add)]
         [HttpPost(Name = "AddSetting")]
-        public async Task<ActionResult<ApiResponse<Setting>>> CreateAsync([FromBody] DTOSettingsCRequest Setting)
+        public async Task<ActionResult<ApiResponse<DTOSettingResponse>>> CreateAsync([FromBody] DTOSettingsCRequest Setting)
         {
             if (Setting == null)
             {
@@ -61,14 +64,14 @@ namespace APILayer.Controllers
 
 
             var success = await _BusinessSettings.CreateAsync(Setting);
-            return CreatedAtRoute("GetSettingByID", new { ID = success!.ID }, success);
+            return CreatedAtRoute("GetSettingByID", new { ID = success!.ID }, success.ToResponse());
 
         }
 
         [Authorize(Roles = "Manager")]
         [EnableRateLimiting(NameRateLimitPolicies.Update)]
         [HttpPut(Name = "UpdateSetting")]
-        public async Task<ActionResult<ApiResponse<Setting>>> UpdateAsync([FromBody] DTOSettingsURequest Setting)
+        public async Task<ActionResult<ApiResponse<DTOSettingResponse>>> UpdateAsync([FromBody] DTOSettingsURequest Setting)
         {
             if (Setting == null)
             {
@@ -77,7 +80,7 @@ namespace APILayer.Controllers
 
 
             var success = await _BusinessSettings.UpdateAsync(Setting);
-            return CreateResponse<Setting>(success!, StatusCodes.Status200OK, "Setting Updated Successfully!");
+            return CreateResponse<DTOSettingResponse>(success!.ToResponse(), StatusCodes.Status200OK, "Setting Updated Successfully!");
 
         }
 
