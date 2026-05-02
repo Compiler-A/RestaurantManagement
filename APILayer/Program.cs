@@ -10,7 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddMySettingsConfiguration(builder.Configuration);
 builder.Services.AddJwtSettingConfiguration(builder.Configuration);
 
-builder.Services.AddAuthenticationExtension();
+builder.Services.AddAuthenticationExtension(builder.Configuration);
 builder.Services.AddAuthorizationExtension();
 builder.Services.AddRateLimitingExtension();
 
@@ -30,7 +30,7 @@ builder.Services.AddSwaggerGenExtension();
 
 builder.Services.AddServicesExtensions();
 
-builder.Services.AddCorsSecurityExtension();
+builder.Services.AddCorsSecurityExtension(builder.Configuration);
 
 
 var app = builder.Build();

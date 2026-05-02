@@ -7,6 +7,12 @@ namespace APILayer.Extensions.Configuration
         public static IServiceCollection AddJwtSettingConfiguration(this IServiceCollection Services, IConfiguration Configuration)
         {
             var secretKey = Configuration["JWT_SECRET_KEY"];
+            var jwtSettingsSection = Configuration.GetSection("Jwt").Get<JwtSettings>();
+            if (jwtSettingsSection == null)
+            {
+                throw new InvalidOperationException(
+                    "jwt Setting Section is Null");
+            }
 
             if (string.IsNullOrWhiteSpace(secretKey))
             {
@@ -16,9 +22,9 @@ namespace APILayer.Extensions.Configuration
             Services.Configure<JwtSettings>(options =>
             {
                 options.SecretKey = secretKey;
-                options.Issuer = "RMAPI";
-                options.Audience = "RMAPIEmployees";
-                options.ExpirationMinutes = 10;
+                options.Issuer = jwtSettingsSection.Issuer;
+                options.Audience = jwtSettingsSection.Audience;
+                options.ExpirationMinutes = jwtSettingsSection.ExpirationMinutes;
             });
             return Services;
         }

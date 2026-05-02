@@ -9,10 +9,21 @@ namespace APILayer.Extensions.Security
     public static class AuthenticationSecurityExtension
     {
         
-        public static IServiceCollection AddAuthenticationExtension(this IServiceCollection services)
+        public static IServiceCollection AddAuthenticationExtension(this IServiceCollection services , IConfiguration Configuration)
         {
-            var provider = services.BuildServiceProvider();
-            var jwtSettings = provider.GetRequiredService<IOptions<JwtSettings>>().Value;
+            var secretKey = Configuration["JWT_SECRET_KEY"];
+            var jwtSettingsSection = Configuration.GetSection("Jwt").Get<JwtSettings>();
+            if (jwtSettingsSection == null)
+            {
+                throw new InvalidOperationException(
+                    "jwt Setting Section is Null");
+            }
+
+            if (string.IsNullOrWhiteSpace(secretKey))
+            {
+                throw new InvalidOperationException(
+                    "JWT_SECRET_KEY is missing or empty in environment variables.");
+            }
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>
@@ -24,10 +35,10 @@ namespace APILayer.Extensions.Security
                     ValidateAudience = true,
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
-                    ValidIssuer = jwtSettings.Issuer,
-                    ValidAudience = jwtSettings.Audience,
+                    ValidIssuer = jwtSettingsSection.Issuer,
+                    ValidAudience = jwtSettingsSection.Audience,
                     IssuerSigningKey = new SymmetricSecurityKey(
-                    Encoding.UTF8.GetBytes(jwtSettings.SecretKey))
+                    Encoding.UTF8.GetBytes(secretKey))
                 };
             });
             return services;
