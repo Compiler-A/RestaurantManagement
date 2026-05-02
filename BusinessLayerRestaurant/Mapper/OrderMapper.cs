@@ -14,10 +14,7 @@ namespace BusinessLayerRestaurant.Mapper
             return new DTOOrderResponse
             {
                 ID = order.ID,
-                EmployeeID = order.EmployeeID,
-                TableID = order.TableID,
                 TotalAmount = order.TotalAmount,
-                StatusOrderID = order.StatusOrderID,
                 OrderDate = order.OrderDate,
                 employees = order.employees?.ToResponse(),
                 tables = order.tables?.ToResponse(),
