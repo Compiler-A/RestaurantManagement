@@ -1,5 +1,6 @@
 ﻿using ContractsLayerRestaurant.DTORequest.Settings;
 using DataLayerRestaurant.Interfaces;
+using DataLayerRestaurant.Mapper;
 using DomainLayer.Entities;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Options;
@@ -8,20 +9,8 @@ using System.Data;
 
 namespace DataLayerRestaurant.Classes
 {
-    public class clsSettingsRepositoryComposition : ICompositionDataBase <Setting>
-    {
-        public Setting GetDataFromDataBase(SqlDataReader reader)
-        {
-            return new Setting
-            {
-                ID = reader.GetInt32(reader.GetOrdinal("SettingID")),
-                Name = reader.GetString(reader.GetOrdinal("Name")),
-                Value = reader.GetDecimal(reader.GetOrdinal("Value"))
-            };
-        }
-    }
 
-    public class clsSettingsRepositoryReader : clsSettingsRepositoryComposition , ISettingsRepositoryReader
+    public class clsSettingsRepositoryReader : ISettingsRepositoryReader
     {
 
         private readonly clsMySettings _Settings;
@@ -51,7 +40,7 @@ namespace DataLayerRestaurant.Classes
                     {
                         while (await reader.ReadAsync())
                         {
-                            result.Add(GetDataFromDataBase(reader));
+                            result.Add(SettingMapper.ReaderToEntity(reader));
                         }
                     }
                 }
@@ -75,7 +64,7 @@ namespace DataLayerRestaurant.Classes
                     {
                         while (await reader.ReadAsync())
                         {
-                            result.Add(GetDataFromDataBase(reader));
+                            result.Add(SettingMapper.ReaderToEntity(reader));
                         }
                     }
                 }
@@ -98,7 +87,7 @@ namespace DataLayerRestaurant.Classes
                     {
                         if (await reader.ReadAsync())
                         {
-                            result = (GetDataFromDataBase(reader));
+                            result = (SettingMapper.ReaderToEntity(reader));
                         }
                     }
                 }
@@ -106,7 +95,7 @@ namespace DataLayerRestaurant.Classes
             return result;
         }
     }
-    public class clsSettingsRepositoryWriter : clsSettingsRepositoryComposition , ISettingsRepositoryWriter
+    public class clsSettingsRepositoryWriter : ISettingsRepositoryWriter
     {
 
         private readonly clsMySettings _Settings;
@@ -130,7 +119,7 @@ namespace DataLayerRestaurant.Classes
                     {
                         if (await reader.ReadAsync())
                         {
-                            return (GetDataFromDataBase(reader));
+                            return (SettingMapper.ReaderToEntity(reader));
                         }
                     }
                 }
@@ -152,7 +141,7 @@ namespace DataLayerRestaurant.Classes
                     {
                         if (await reader.ReadAsync())
                         {
-                            return (GetDataFromDataBase(reader));
+                            return (SettingMapper.ReaderToEntity(reader));
                         }
                     }
                 }
