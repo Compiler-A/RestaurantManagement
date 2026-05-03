@@ -1,5 +1,6 @@
 ﻿using ContractsLayerRestaurant.DTORequest.StatusMenus;
 using DataLayerRestaurant.Interfaces;
+using DataLayerRestaurant.Mapper;
 using DomainLayer.Entities;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Options;
@@ -8,22 +9,8 @@ using System.Data;
 
 namespace DataLayerRestaurant.Classes
 { 
-    public class clsStatusMenusRepositoryComposition : ICompositionDataBase<StatusMenu>
-    {
-        public StatusMenu GetDataFromDataBase(SqlDataReader reader)
-        {
-            return new StatusMenu
-            {
-                ID = reader.GetInt32(reader.GetOrdinal("StatusMenuID")),
-                Name = reader.GetString(reader.GetOrdinal("Name")),
-                Description = reader.IsDBNull(reader.GetOrdinal("Description"))
-                    ? null
-                    : reader.GetString(reader.GetOrdinal("Description"))
-            };
-        }
-    }
 
-    public class clsStatusMenusRepositoryReader : clsStatusMenusRepositoryComposition, IStatusMenusRepositoryReader
+    public class clsStatusMenusRepositoryReader : IStatusMenusRepositoryReader
     {
         private readonly clsMySettings _Settings;
 
@@ -53,7 +40,7 @@ namespace DataLayerRestaurant.Classes
                     {
                         while (await reader.ReadAsync())
                         {
-                            result.Add(GetDataFromDataBase(reader));
+                            result.Add(StatusMenuMapper.ReaderToEntity(reader));
                         }
                     }
                 }
@@ -74,7 +61,7 @@ namespace DataLayerRestaurant.Classes
             using var reader = await command.ExecuteReaderAsync();
             if (await reader.ReadAsync())
             {
-                return GetDataFromDataBase(reader);
+                return StatusMenuMapper.ReaderToEntity(reader);
             }
             return null;
         }
@@ -94,13 +81,13 @@ namespace DataLayerRestaurant.Classes
             using var reader = await command.ExecuteReaderAsync();
             while (await reader.ReadAsync())
             {
-                list.Add(GetDataFromDataBase(reader));
+                list.Add(StatusMenuMapper.ReaderToEntity(reader));
             }
             return list;
         }
     }
     
-    public class clsStatusMenusRepositoryWriter : clsStatusMenusRepositoryComposition , IStatusMenusRepositoryWriter
+    public class clsStatusMenusRepositoryWriter : IStatusMenusRepositoryWriter
     {
         private readonly clsMySettings _Settings;
 
@@ -123,7 +110,7 @@ namespace DataLayerRestaurant.Classes
             {
                 if (await reader.ReadAsync())
                 {
-                    return GetDataFromDataBase(reader);
+                    return StatusMenuMapper.ReaderToEntity(reader);
                 }
             }
 
@@ -146,7 +133,7 @@ namespace DataLayerRestaurant.Classes
             {
                 if (await reader.ReadAsync())
                 {
-                    return GetDataFromDataBase(reader);
+                    return StatusMenuMapper.ReaderToEntity(reader);
                 }
             }
 
