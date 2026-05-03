@@ -11,9 +11,6 @@ namespace APILayer.Extensions.Services
     {
         public static IServiceCollection AddMenuItemsServices(this IServiceCollection Services)
         {
-            Services.AddScoped<IRepositoryBatchsLoader<MenuItem>, clsTypeItemBatchLoader>();
-            Services.AddScoped<IRepositoryBatchsLoader<MenuItem>, clsStatusMenuBatchLoader>();
-            Services.AddScoped<IMenuItemsRepositoryLoader, clsMenuItemsRepositoryLoader>();
             Services.AddScoped<IMenuItemsRepositoryReader, clsMenuItemsRepositoryReader>();
             Services.AddScoped<IMenuItemsRepositoryWriter, clsMenuItemsRepositoryWriter>();
             Services.AddScoped<IMenuItemsRepository, clsMenuItemsRepository>();

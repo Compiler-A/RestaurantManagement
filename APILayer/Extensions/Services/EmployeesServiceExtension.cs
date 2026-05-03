@@ -11,8 +11,7 @@ namespace APILayer.Extensions.Services
     {
         public static IServiceCollection AddEmployeesServices(this IServiceCollection Services)
         {
-            Services.AddScoped<IRepositoryBatchsLoader<Employee>, clsJobRoleBatchLoader>();
-            Services.AddScoped<IEmployeeRepositoryLoader, clsEmployeesRepositoryLoader>();
+
             Services.AddScoped<IEmployeesRepositoryReader, clsEmployeesRepositoryReader>();
             Services.AddScoped<IEmployeesRepositoryWriter, clsEmployeesRepositoryWriter>();
             Services.AddScoped<IEmployeesRepository, clsEmployeesRepository>();

@@ -11,9 +11,7 @@ namespace APILayer.Extensions.Services
     {
         public static IServiceCollection AddOrderDetailsServices(this IServiceCollection Services)
         {
-            Services.AddScoped<IRepositoryBatchsLoader<OrderDetail>, clsOrderBatchLoader>();
-            Services.AddScoped<IRepositoryBatchsLoader<OrderDetail>, clsMenuItemBatchLoader>();
-            Services.AddScoped<IOrderDetailsRepositoryLoader, clsOrderDetailsRepositoryLoader>();
+
             Services.AddScoped<IOrderDetailsRepositoryReader, clsOrderDetailsRepositoryReader>();
             Services.AddScoped<IOrderDetailsRepositoryWriter, clsOrderDetailsRepositoryWriter>();
             Services.AddScoped<IOrderDetailsRepository, clsOrderDetailsRepository>();

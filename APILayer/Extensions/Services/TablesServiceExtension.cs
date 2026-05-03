@@ -11,9 +11,6 @@ namespace APILayer.Extensions.Services
     {
         public static IServiceCollection AddTablesServices(this IServiceCollection Services)
         {
-            Services.AddScoped<IRepositoryBatchsLoader<Table>, clsStatusTableBatchLoader>();
-            Services.AddScoped<ITablesRepositoryLoader, clsTablesRepositoryLoader>();
-
             Services.AddScoped<ITablesRepositoryReader, clsTablesRepositoryReader>();
             Services.AddScoped<ITablesRepositoryWriter, clsTablesRepositoryWriter>();
             Services.AddScoped<ITablesRepository, clsTablesRepository>();

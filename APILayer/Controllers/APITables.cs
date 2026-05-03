@@ -114,7 +114,7 @@ namespace APILayer.Controllers
         [HttpGet("table-name", Name = "GetTableByTableName")]
         public async Task<ActionResult<ApiResponse<DTOTableResponse>>> GetByTableNameAsync([FromQuery] string tableNumber = "")
         {
-            if (!string.IsNullOrWhiteSpace(tableNumber))
+            if (string.IsNullOrWhiteSpace(tableNumber))
             {
                 throw new ArgumentOutOfRangeException("Table Number is Empty!");
             }
