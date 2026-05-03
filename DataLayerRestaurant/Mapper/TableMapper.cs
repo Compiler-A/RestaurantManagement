@@ -21,5 +21,19 @@ namespace DataLayerRestaurant.Mapper
                 StatusTableID = Reader.GetInt32(Reader.GetOrdinal("StatusTableID"))
             };
         }
+
+        public static Table ReaderToEntityResult(SqlDataReader Reader)
+        {
+            return new Table
+            {
+                ID = Reader.GetInt32(Reader.GetOrdinal("TableID")),
+                Name = Reader.GetString(Reader.GetOrdinal("TableNumber")),
+                Seats = Reader.GetInt32(Reader.GetOrdinal("Seats")),
+                StatusTable = new StatusTable
+                {
+                    Name = Reader.GetString(Reader.GetOrdinal("StatusTableName")),
+                }
+            };
+        }
     }
 }

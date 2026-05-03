@@ -15,7 +15,7 @@ namespace DataLayerRestaurant.Mapper
             return new TypeItem
             {
                 ID = reader.GetInt32(reader.GetOrdinal("TypeItemID")),
-                Name = reader.GetString(reader.GetOrdinal("TypeItemName")),
+                Name = reader.GetString(reader.GetOrdinal("TypeName")),
                 Description = reader.IsDBNull(reader.GetOrdinal("TypeDescription"))
                     ? null
                     : reader.GetString(reader.GetOrdinal("TypeDescription"))

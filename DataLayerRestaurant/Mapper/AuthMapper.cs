@@ -15,8 +15,16 @@ namespace DataLayerRestaurant.Mapper
         {
             return new Auth
             {
-                ID = reader.GetInt32(reader.GetOrdinal("ID")),
-                EmployeeID = reader.GetInt32(reader.GetOrdinal("EmployeeID")),
+                Employees = new Employee
+                {
+                    ID = reader.GetInt32(reader.GetOrdinal("EmployeeID")),
+                    UserName = reader.GetString(reader.GetOrdinal("Username")),
+                    JobRoles = new JobRole
+                    {
+                        Name = reader.GetString(reader.GetOrdinal("JobName"))
+                    }
+                },
+
                 RefreshTokenHash = reader.GetString(reader.GetOrdinal("RefreshTokenHash")),
                 RefreshTokenExpiresAt = reader.GetDateTime(reader.GetOrdinal("RefreshTokenExpiresAt")),
                 RefreshTokenRevokedAt = reader.IsDBNull(reader.GetOrdinal("RefreshTokenRevokedAt"))
@@ -24,5 +32,21 @@ namespace DataLayerRestaurant.Mapper
             };
         }
 
+        public static Auth ReaderToEntityLogin(SqlDataReader reader)
+        {
+            return new Auth
+            {
+                Employees = new Employee
+                {
+                    ID = reader.GetInt32(reader.GetOrdinal("EmployeeID")),
+                    PasswordHashed = reader.GetString(reader.GetOrdinal("Password")),
+                    UserName = reader.GetString(reader.GetOrdinal("UserName")),
+                    JobRoles = new JobRole
+                    {
+                        Name = reader.GetString(reader.GetOrdinal("JobName"))
+                    }
+                }
+            };
+        }
     }
 }

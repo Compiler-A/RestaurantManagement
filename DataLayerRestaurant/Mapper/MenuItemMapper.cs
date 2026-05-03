@@ -25,5 +25,25 @@ namespace DataLayerRestaurant.Mapper
             };
             return menuItem;
         }
+
+        public static MenuItem ReaderToEntityResult(SqlDataReader reader)
+        {
+            MenuItem menuItem = new MenuItem
+            {
+                ID = reader.GetInt32(reader.GetOrdinal("ItemID")),
+                Name = reader.GetString(reader.GetOrdinal("ItemName")),
+                Price = reader.GetDecimal(reader.GetOrdinal("Price")),
+                Image = reader.IsDBNull(reader.GetOrdinal("Image")) ? null : reader.GetString(reader.GetOrdinal("Image")),
+                TypeItems = new TypeItem
+                {
+                    Name = reader.GetString(reader.GetOrdinal("TypeName"))
+                },
+                StatusMenus = new StatusMenu
+                {
+                    Name = reader.GetString(reader.GetOrdinal("StatusMenuName"))
+                }
+            };
+            return menuItem;
+        }
     }
 }

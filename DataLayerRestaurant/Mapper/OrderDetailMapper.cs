@@ -21,5 +21,23 @@ namespace DataLayerRestaurant.Mapper
                 SubTotal = reader.GetDecimal(reader.GetOrdinal("SubTotal"))
             };
         }
+
+        public static OrderDetail ReaderToEntityResult(SqlDataReader reader)
+        {
+            return new OrderDetail
+            {
+                ID = reader.GetInt32(reader.GetOrdinal("OrderDetailID")),
+                Order = new Order
+                {
+                    ID = reader.GetInt32(reader.GetOrdinal("OrderID")),
+                },
+                Item = new MenuItem
+                {
+                    Name = reader.GetString(reader.GetOrdinal("ItemName")),
+                },
+                Quantity = reader.GetInt32(reader.GetOrdinal("Quantity")),
+                SubTotal = reader.GetDecimal(reader.GetOrdinal("SubTotal"))
+            };
+        }   
     }
 }
