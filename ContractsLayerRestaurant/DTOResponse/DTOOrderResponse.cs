@@ -9,8 +9,10 @@ namespace ContractsLayerRestaurant.DTOResponse
         public int ID { get; set; }
         public DateTime OrderDate { get; set; }
         public decimal? TotalAmount { get; set; }
-        public DTOTableResponse? tables { get; set; }
-        public DTOEmployeeResponse? employees { get; set; }
-        public DTOStatusOrderResponse? statusOrders { get; set; }
+        public string tableNumber { get; set; } = string.Empty;
+        public string UserName { get; set; } = string.Empty;
+        public string statusOrderName { get; set; } = string.Empty;
+
+        public List<DTOOrderDetailResponse> Details { get; set; }
     }
 }

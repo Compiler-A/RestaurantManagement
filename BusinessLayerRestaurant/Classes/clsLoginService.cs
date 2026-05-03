@@ -113,28 +113,28 @@ namespace BusinessLayerRestaurant.Classes
 
         public async Task<DTOTokenResponse> LoginAsync(DTOLoginRequest Request)
         {
-            var employee = await _Interface.IEmployee.GetAsync(Request.UserName);
+            var auth = await _Interface.IData.LoginAsync(Request.UserName);
 
-            if (employee == null)
+            if (auth == null || auth.Employees == null)
                 throw new AuthenticationException("Invalid credentials");
 
             bool isValidPassword =
-                BCrypt.Net.BCrypt.Verify(Request.Password, employee.PasswordHashed);
+                BCrypt.Net.BCrypt.Verify(Request.Password, auth.Employees.PasswordHashed);
 
             if (!isValidPassword)
                 throw new AuthenticationException("Invalid credentials");
 
-            if (employee.JobRoles == null)
+            if (auth.Employees.JobRoles == null)
             {
                 throw new InvalidOperationException("Not Found Job Role");
             }
 
-            var accessToken = _GetAccessToken(employee.ID, employee.UserName, employee.JobRoles.Name);
+            var accessToken = _GetAccessToken(auth.Employees.ID, auth.Employees.UserName, auth.Employees.JobRoles.Name);
             var refreshToken = GenerateRefreshToken();
 
             var request = new DTOAuthCURequest
             {
-                EmployeeID = employee.ID,
+                EmployeeID = auth.Employees.ID,
                 RefreshTokenHash = BCrypt.Net.BCrypt.HashPassword(refreshToken),
                 RefreshTokenExpiresAt = DateTime.UtcNow.AddDays(7)
             };
@@ -154,33 +154,33 @@ namespace BusinessLayerRestaurant.Classes
 
         public async Task<DTOTokenResponse> RefrehTokenAsync(DTORefreshRequest Request)
         {
-            var employee = await _Reader.GetAsync(Request.UserName);
+            var auth = await _Reader.GetAsync(Request.UserName);
 
-            if (employee == null)
+            if (auth == null)
                 throw new AuthenticationException("Invalid refresh request");
 
-            if (employee.RefreshTokenRevokedAt != null)
+            if (auth.RefreshTokenRevokedAt != null)
                 throw new AuthenticationException("Refresh token is revoked");
 
-            if (employee.RefreshTokenExpiresAt == null || employee.RefreshTokenExpiresAt <= DateTime.UtcNow)
+            if (auth.RefreshTokenExpiresAt == null || auth.RefreshTokenExpiresAt <= DateTime.UtcNow)
                 throw new AuthenticationException("Refresh token expired");
 
-            bool refreshValid = BCrypt.Net.BCrypt.Verify(Request.RefreshToken, employee.RefreshTokenHash);
+            bool refreshValid = BCrypt.Net.BCrypt.Verify(Request.RefreshToken, auth.RefreshTokenHash);
             if (!refreshValid)
                 throw new AuthenticationException("Invalid refresh token");
 
-            if (employee.Employees == null || employee.Employees.JobRoles ==null)
+            if (auth.Employees == null || auth.Employees.JobRoles ==null)
             {
                 throw new InvalidOperationException("Not Found Job Role or Employee");
             }
 
-            var newAccessToken = _GetAccessToken(employee.EmployeeID, employee.Employees.UserName, employee.Employees.JobRoles.Name);
+            var newAccessToken = _GetAccessToken(auth.Employees.ID, auth.Employees.UserName, auth.Employees.JobRoles.Name);
 
             // Rotation: replace refresh token
             var newRefreshToken = GenerateRefreshToken();
             var request = new DTOAuthCURequest
             {
-                EmployeeID = employee.EmployeeID,
+                EmployeeID = auth.Employees.ID,
                 RefreshTokenHash = BCrypt.Net.BCrypt.HashPassword(newRefreshToken),
                 RefreshTokenExpiresAt = DateTime.UtcNow.AddDays(7)
             };

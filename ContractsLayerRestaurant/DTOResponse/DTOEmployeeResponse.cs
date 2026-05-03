@@ -7,6 +7,6 @@ namespace ContractsLayerRestaurant.DTOResponse
         public int ID { get; set; }
         public string Name { get; set; } = string.Empty;
         public string UserName { get; set; } = string.Empty;
-        public DTOJobRoleResponse? JobRoles { get; set; }
+        public string JobName { get; set; } = string.Empty;
     }
 }

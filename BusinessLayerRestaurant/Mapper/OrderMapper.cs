@@ -16,9 +16,10 @@ namespace BusinessLayerRestaurant.Mapper
                 ID = order.ID,
                 TotalAmount = order.TotalAmount,
                 OrderDate = order.OrderDate,
-                employees = order.employees?.ToResponse(),
-                tables = order.tables?.ToResponse(),
-                statusOrders = order.statusOrders?.ToResponse()
+                UserName = order.employees?.UserName ?? string.Empty,
+                tableNumber = order.tables?.Name ?? string.Empty,
+                statusOrderName = order.statusOrders?.Name ?? string.Empty,
+                Details = order.Details?.Select(d => d.ToResponse()).ToList() ?? new List<DTOOrderDetailResponse>()
             };
         }
     }

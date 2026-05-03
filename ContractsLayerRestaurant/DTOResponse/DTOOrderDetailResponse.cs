@@ -7,7 +7,7 @@ namespace ContractsLayerRestaurant.DTOResponse
         public int ID { get; set; }
         public int Quantity { get; set; }
         public decimal SubTotal { get; set; }
-        public DTOOrderResponse? Order { get; set; }
-        public DTOMenuItemResponse? Item { get; set; }
+        public int OrderID { get; set; }
+        public string ItemName { get; set; } = string.Empty;
     }
 }

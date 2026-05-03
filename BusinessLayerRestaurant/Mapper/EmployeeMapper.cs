@@ -16,7 +16,7 @@ namespace BusinessLayerRestaurant.Mapper
                 ID = employee.ID,
                 Name = employee.Name,
                 UserName = employee.UserName,
-                JobRoles = employee.JobRoles?.ToResponse()
+                JobName = employee.JobRoles?.Name ?? string.Empty
             };
         }
     }

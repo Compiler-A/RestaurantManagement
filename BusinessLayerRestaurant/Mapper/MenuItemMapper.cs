@@ -13,11 +13,10 @@ namespace BusinessLayerRestaurant.Mapper
             {
                 ID = menuItem.ID,
                 Name = menuItem.Name,
-                Description = menuItem.Description,
                 Price = menuItem.Price,
                 Image = menuItem.Image,
-                TypeItems = menuItem.TypeItems?.ToResponse(),
-                StatusMenus = menuItem.StatusMenus?.ToResponse()
+                TypeName = menuItem.TypeItems?.Name ?? string.Empty,
+                StatusMenuName = menuItem.StatusMenus?.Name ?? string.Empty
             };
         }
     }

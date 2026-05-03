@@ -6,10 +6,9 @@ namespace ContractsLayerRestaurant.DTOResponse
     {
         public int ID { get; set; }
         public string Name { get; set; }
-        public string? Description { get; set; }
         public decimal Price { get; set; }
         public string? Image { get; set; }
-        public DTOTypeItemResponse? TypeItems { get; set; }
-        public DTOStatusMenuResponse? StatusMenus { get; set; }
+        public string TypeName { get; set; } = string.Empty;
+        public string StatusMenuName { get; set; } = string.Empty;
     }
 }

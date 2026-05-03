@@ -20,8 +20,8 @@ namespace BusinessLayerRestaurant.Mapper
                 ID = orderDetail.ID,
                 Quantity = orderDetail.Quantity,
                 SubTotal = orderDetail.SubTotal,
-                Order = orderDetail.Order?.ToResponse(),
-                Item = orderDetail.Item?.ToResponse()
+                OrderID = orderDetail.Order!.ID,
+                ItemName = orderDetail.Item!.Name
             };
         }
     }
