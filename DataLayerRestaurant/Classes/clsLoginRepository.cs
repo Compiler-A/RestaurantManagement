@@ -4,83 +4,43 @@ using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Options;
 using RestaurantDataLayer;
 using DomainLayer.Entities;
+using DataLayerRestaurant.Mapper;
 
 
 namespace DataLayerRestaurant.Classes
 {
 
 
-    public class clsLoginRepositoryComposition : ICompositionDataBase<Auth>
+    public class clsLoginRepositoryReader : ILoginRepositoryReader
     {
         protected readonly clsMySettings _Setting;
-        public clsLoginRepositoryComposition(IOptions<clsMySettings> settings)
+        public clsLoginRepositoryReader(IOptions<clsMySettings> Setting) 
         {
-            _Setting = settings.Value;
+            _Setting = Setting.Value;
         }
 
-        public Auth GetDataFromDataBase(SqlDataReader reader)
+        public async Task<Auth?> LoginAsync(string UserName)
         {
-            return new Auth
+            Auth? Login = null;
+            using (SqlConnection Connection = new SqlConnection(_Setting.ConnectionString))
             {
-                ID = reader.GetInt32(reader.GetOrdinal("ID")),
-                EmployeeID = reader.GetInt32(reader.GetOrdinal("EmployeeID")),
-                RefreshTokenHash = reader.GetString(reader.GetOrdinal("RefreshTokenHash")),
-                RefreshTokenExpiresAt = reader.GetDateTime(reader.GetOrdinal("RefreshTokenExpiresAt")),
-                RefreshTokenRevokedAt = reader.IsDBNull(reader.GetOrdinal("RefreshTokenRevokedAt")) 
-                    ? null : reader.GetDateTime(reader.GetOrdinal("RefreshTokenRevokedAt"))
-            };
-        }
-    }
-
-
-    public class clsEmployeeBatchLoaderByAuth : IRepositoryBatchsLoader<Auth>
-    {
-        private readonly IEmployeesRepositoryReader _service;
-        public clsEmployeeBatchLoaderByAuth(IEmployeesRepositoryReader service)
-        {
-            _service = service;
-        }
-
-        public async Task LoadDataAsync(List<Auth> auths)
-        {
-            var employeeIDs = auths.Select(e => e.EmployeeID).Distinct().ToList();
-            if (!employeeIDs.Any())
-                return;
-            var roles = await _service.GetAllDataAsync(employeeIDs);
-            var dict = roles.ToDictionary(r => r.ID);
-            foreach (var emp in auths)
-            {
-                if (dict.TryGetValue(emp.EmployeeID, out var role))
+                using (SqlCommand Command = new SqlCommand("EmployeeRefreshTokens.Login", Connection))
                 {
-                    emp.Employees = role;
+                    Command.CommandType = System.Data.CommandType.StoredProcedure;
+                    Command.Parameters.AddWithValue("@UserName", UserName);
+                    await Connection.OpenAsync();
+                    using (SqlDataReader reader = await Command.ExecuteReaderAsync())
+                    {
+                        if (await reader.ReadAsync())
+                        {
+                            Login = AuthMapper.ReaderToEntityLogin(reader);
+                        }
+                    }
                 }
             }
+            return Login;
         }
-    }
-    public class clsAuthsRepositoryLoader : IAuthsRepositoryLoader
-    {
-        private IEnumerable<IRepositoryBatchsLoader<Auth>> _Loaders;
-        public clsAuthsRepositoryLoader(IEnumerable<IRepositoryBatchsLoader<Auth>> Loader)
-        {
-            _Loaders = Loader;
-        }
-        public async Task LoadDataAsync(List<Auth> item)
-        {
-            foreach (var item1 in _Loaders)
-            {
-                await item1.LoadDataAsync(item);
-            }
-        }
-    }
 
-    public class clsLoginRepositoryReader : clsLoginRepositoryComposition,ILoginRepositoryReader
-    {
-        private readonly IAuthsRepositoryLoader _Loader;
-
-        public clsLoginRepositoryReader(IOptions<clsMySettings> settings, IAuthsRepositoryLoader loader) : base(settings)
-        {
-            _Loader = loader;
-        }
         public async Task<Auth?> GetDataAsync(string UserName)
         {
             Auth? Login = null;
@@ -95,23 +55,22 @@ namespace DataLayerRestaurant.Classes
                     {
                         if (await reader.ReadAsync())
                         {
-                            Login = GetDataFromDataBase(reader);
+                            Login = AuthMapper.ReaderToEntity(reader);
                         }
                     }
                 }
-            }
-            if (Login != null)
-            {
-                await _Loader.LoadDataAsync(new List<Auth> { Login });
             }
             return Login;
         }
     }
 
-    public class clsLoginRepositoryWriter : clsLoginRepositoryComposition, ILoginRepositoryWriter
+    public class clsLoginRepositoryWriter : ILoginRepositoryWriter
     {
-        public clsLoginRepositoryWriter(IOptions<clsMySettings> settings) : base(settings)
-        { }
+        private readonly clsMySettings _Setting;
+        public clsLoginRepositoryWriter(IOptions<clsMySettings> settings)
+        {
+            _Setting = settings.Value;
+        }
 
         public async Task<bool> CreateDataAsync(DTOAuthCURequest Request)
         {
@@ -179,6 +138,12 @@ namespace DataLayerRestaurant.Classes
             _reader = reader;
             _writer = writer;
         }
+
+        public async Task<Auth?> LoginAsync(string UserName)
+        {
+            return await _reader.LoginAsync(UserName);
+        }
+
         public async Task<bool> CreateDataAsync(DTOAuthCURequest Request)
         {
             return await _writer.CreateDataAsync(Request);

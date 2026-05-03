@@ -1,5 +1,6 @@
 ﻿using ContractsLayerRestaurant.DTORequest.MenuItems;
 using DataLayerRestaurant.Interfaces;
+using DataLayerRestaurant.Mapper;
 using DomainLayer.Entities;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Options;
@@ -10,112 +11,14 @@ using System.Data;
 namespace DataLayerRestaurant.Classes
 {
 
-    public class clsMenuItemsRepositoryCompositon : ICompositionDataBase<MenuItem>
-    {
-        public MenuItem GetDataFromDataBase(SqlDataReader reader)
-        {
-            MenuItem menuItem = new MenuItem
-            {
-                ID = reader.GetInt32(reader.GetOrdinal("ItemID")),
-                Name = reader.GetString(reader.GetOrdinal("Name")),
-                Description = reader.IsDBNull(reader.GetOrdinal("Description")) ? null : reader.GetString(reader.GetOrdinal("Description")),
-                Price = reader.GetDecimal(reader.GetOrdinal("Price")),
-                TypeItemID = reader.GetInt32(reader.GetOrdinal("TypeItemID")),
-                StatusMenuID = reader.GetInt32(reader.GetOrdinal("StatusMenuID")),
-                Image = reader.IsDBNull(reader.GetOrdinal("Image")) ? null : reader.GetString(reader.GetOrdinal("Image"))
-            };
-            return menuItem;
-        }
-    }
 
-
-    public class clsTypeItemBatchLoader : IRepositoryBatchsLoader<MenuItem>
-    {
-        private readonly ITypeItemsRepositoryReader _service;
-
-        public clsTypeItemBatchLoader(ITypeItemsRepositoryReader service)
-        {
-            _service = service;
-        }
-
-        public async Task LoadDataAsync(List<MenuItem> menuItem)
-        {
-            var TypeItemID = menuItem.Select(e => e.TypeItemID).Distinct().ToList();
-
-            if (!TypeItemID.Any())
-                return;
-
-            var roles = await _service.GetAllDataAsync(TypeItemID);
-
-            var dict = roles.ToDictionary(r => r.ID);
-
-            foreach (var emp in menuItem)
-            {
-                if (dict.TryGetValue(emp.TypeItemID, out var role))
-                {
-                    emp.TypeItems = role;
-                }
-            }
-        }
-    }
-    public class clsStatusMenuBatchLoader : IRepositoryBatchsLoader<MenuItem>
-    {
-        private readonly IStatusMenusRepositoryReader _service;
-
-        public clsStatusMenuBatchLoader(IStatusMenusRepositoryReader service)
-        {
-            _service = service;
-        }
-
-        public async Task LoadDataAsync(List<MenuItem> menuItem)
-        {
-            var StatusMenuID = menuItem.Select(e => e.StatusMenuID).Distinct().ToList();
-
-            if (!StatusMenuID.Any())
-                return;
-
-            var roles = await _service.GetAllDataAsync(StatusMenuID);
-
-            var dict = roles.ToDictionary(r => r.ID);
-
-            foreach (var emp in menuItem)
-            {
-                if (dict.TryGetValue(emp.StatusMenuID, out var role))
-                {
-                    emp.StatusMenus = role;
-                }
-            }
-        }
-    }
-
-
-    public class clsMenuItemsRepositoryLoader : IMenuItemsRepositoryLoader
-    {
-        private IEnumerable<IRepositoryBatchsLoader<MenuItem>> _Loaders;
-        public clsMenuItemsRepositoryLoader(IEnumerable<IRepositoryBatchsLoader<MenuItem>> Loader)
-        {
-            _Loaders = Loader;
-        }
-        public async Task LoadDataAsync(List<MenuItem> item)
-        {
-            foreach (var item1 in _Loaders)
-            {
-                await item1.LoadDataAsync(item);
-            }
-        }
-    }
-
-
-
-    public class clsMenuItemsRepositoryReader : clsMenuItemsRepositoryCompositon ,IMenuItemsRepositoryReader
+    public class clsMenuItemsRepositoryReader :  IMenuItemsRepositoryReader
     {
         private readonly clsMySettings _Settings;
-        private IMenuItemsRepositoryLoader _Loader;
 
-        public clsMenuItemsRepositoryReader(IOptions<clsMySettings> settings, IMenuItemsRepositoryLoader Loader)
-        {
+        public clsMenuItemsRepositoryReader(IOptions<clsMySettings> settings)
+        { 
             _Settings = settings.Value;
-            _Loader = Loader;
         }
         public async Task<MenuItem?> GetDataAsync(int ID)
         {
@@ -130,14 +33,10 @@ namespace DataLayerRestaurant.Classes
                 using (SqlDataReader reader = await cmd.ExecuteReaderAsync())
                 {
                     if (await reader.ReadAsync())
-                        menuItem = GetDataFromDataBase(reader);
+                        menuItem = MenuItemMapper.ReaderToEntityResult(reader);
                 }
             }
-            if (menuItem == null)
-            {
-                return null;
-            }
-            await _Loader.LoadDataAsync(new List<MenuItem> { menuItem });
+
             return menuItem;
         }
         public async Task<List<MenuItem>> GetAllDataAsync(List<int> Ids)
@@ -161,12 +60,12 @@ namespace DataLayerRestaurant.Classes
                     {
                         while (await reader.ReadAsync())
                         {
-                            result.Add(GetDataFromDataBase(reader));
+                            result.Add(MenuItemMapper.ReaderToEntityResult(reader));
                         }
                     }
                 }
             }
-            await _Loader.LoadDataAsync(result);
+
             return result;
         }
         public async Task<List<MenuItem>> GetAllDataAsync(int Page)
@@ -184,11 +83,10 @@ namespace DataLayerRestaurant.Classes
                 {
                     while (await reader.ReadAsync())
                     {
-                        menuItems.Add(GetDataFromDataBase(reader));
+                        menuItems.Add(MenuItemMapper.ReaderToEntityResult(reader));
                     }
                 }
             }
-            await _Loader.LoadDataAsync(menuItems);
             return menuItems;
         }
 
@@ -205,12 +103,11 @@ namespace DataLayerRestaurant.Classes
                 {
                     while (await reader.ReadAsync())
                     {
-                        menuItems.Add(GetDataFromDataBase(reader));
+                        menuItems.Add(MenuItemMapper.ReaderToEntityResult(reader));
                     }
                 }
             }
            
-            await _Loader.LoadDataAsync(menuItems);
             return menuItems;
         }
 
@@ -230,24 +127,21 @@ namespace DataLayerRestaurant.Classes
                 {
                     while (await reader.ReadAsync())
                     {
-                        menuItems.Add(GetDataFromDataBase(reader));
+                        menuItems.Add(MenuItemMapper.ReaderToEntityResult(reader));
                     }
                 }
             }
-            await _Loader.LoadDataAsync(menuItems);
             return menuItems;
         }
 
     }
 
-    public class clsMenuItemsRepositoryWriter : clsMenuItemsRepositoryCompositon ,IMenuItemsRepositoryWriter
+    public class clsMenuItemsRepositoryWriter : IMenuItemsRepositoryWriter
     {
         private readonly clsMySettings _Settings;
-        private IMenuItemsRepositoryLoader _Loader;
-        public clsMenuItemsRepositoryWriter(IOptions<clsMySettings> settings, IMenuItemsRepositoryLoader loader)
+        public clsMenuItemsRepositoryWriter(IOptions<clsMySettings> settings)
         {
             _Settings = settings.Value;
-            _Loader = loader;
         }
 
         public async Task<MenuItem?> CreateDataAsync(DTOMenuItemsCRequest menuItem)
@@ -268,14 +162,13 @@ namespace DataLayerRestaurant.Classes
                 using (SqlDataReader reader = await cmd.ExecuteReaderAsync())
                 {
                     if (await reader.ReadAsync())
-                       createdMenuItem =  GetDataFromDataBase(reader);
+                       createdMenuItem = MenuItemMapper.ReaderToEntityResult(reader);
                 }
             }
             if (createdMenuItem == null)
             {
                 return null;
             }
-            await _Loader.LoadDataAsync(new List<MenuItem> { createdMenuItem });
             return createdMenuItem;
         }
 
@@ -298,14 +191,13 @@ namespace DataLayerRestaurant.Classes
                 using (SqlDataReader reader = await cmd.ExecuteReaderAsync())
                 {
                     if (await reader.ReadAsync())
-                        updatedMenuItem = GetDataFromDataBase(reader);
+                        updatedMenuItem = MenuItemMapper.ReaderToEntityResult(reader);
                 }
 
                 if (updatedMenuItem == null)
                 {
                     return null;
                 }
-                await _Loader.LoadDataAsync(new List<MenuItem> { updatedMenuItem });
                 return updatedMenuItem;
             }
         }

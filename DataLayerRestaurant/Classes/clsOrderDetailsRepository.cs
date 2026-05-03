@@ -1,5 +1,6 @@
 ﻿using ContractsLayerRestaurant.DTORequest.OrderDetails;
 using DataLayerRestaurant.Interfaces;
+using DataLayerRestaurant.Mapper;
 using DomainLayer.Entities;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Options;
@@ -8,111 +9,43 @@ using System.Data;
 
 namespace DataLayerRestaurant.Classes
 {
-    public class clsOrderDetailsRepositoryComposition : ICompositionDataBase<OrderDetail>
-    {
-        public OrderDetail GetDataFromDataBase(SqlDataReader reader)
-        {
-            return new OrderDetail
-            {
-                ID = reader.GetInt32(reader.GetOrdinal("OrderDetailID")),
-                OrderID = reader.GetInt32(reader.GetOrdinal("OrderID")),
-                ItemID = reader.GetInt32(reader.GetOrdinal("ItemID")),
-                Quantity = reader.GetInt32(reader.GetOrdinal("Quantity")),
-                SubTotal = reader.GetDecimal(reader.GetOrdinal("SubTotal"))
-            };
-        }
-    }
 
-
-
-
-    public class clsMenuItemBatchLoader : IRepositoryBatchsLoader<OrderDetail>
-    {
-        private readonly IMenuItemsRepositoryReader _service;
-
-        public clsMenuItemBatchLoader(IMenuItemsRepositoryReader service)
-        {
-            _service = service;
-        }
-
-        public async Task LoadDataAsync(List<OrderDetail> orders)
-        {
-            var menuItemIDs = orders.Select(e => e.ItemID).Distinct().ToList();
-
-            if (!menuItemIDs.Any())
-                return;
-
-            var roles = await _service.GetAllDataAsync(menuItemIDs);
-
-            var dict = roles.ToDictionary(r => r.ID);
-
-            foreach (var emp in orders)
-            {
-                if (dict.TryGetValue(emp.ItemID, out var role))
-                {
-                    emp.Item = role;
-                }
-            }
-        }
-    }
-    public class clsOrderBatchLoader : IRepositoryBatchsLoader<OrderDetail>
-    {
-        private readonly IOrdersRepositoryReader _service;
-
-        public clsOrderBatchLoader(IOrdersRepositoryReader service)
-        {
-            _service = service;
-        }
-
-        public async Task LoadDataAsync(List<OrderDetail> orders)
-        {
-            var OrderIDs = orders.Select(e => e.OrderID).Distinct().ToList();
-
-            if (!OrderIDs.Any())
-                return;
-
-            var roles = await _service.GetAllDataAsync(OrderIDs);
-
-            var dict = roles.ToDictionary(r => r.ID);
-
-            foreach (var emp in orders)
-            {
-                if (dict.TryGetValue(emp.OrderID, out var role))
-                {
-                    emp.Order = role;
-                }
-            }
-        }
-    }
-
-
-    public class clsOrderDetailsRepositoryLoader : IOrderDetailsRepositoryLoader
-    {
-        private IEnumerable<IRepositoryBatchsLoader<OrderDetail>> _Loaders;
-        public clsOrderDetailsRepositoryLoader(IEnumerable<IRepositoryBatchsLoader<OrderDetail>> Loader)
-        {
-            _Loaders = Loader;
-        }
-        public async Task LoadDataAsync(List<OrderDetail> item)
-        {
-            foreach (var item1 in _Loaders)
-            {
-                await item1.LoadDataAsync(item);
-            }
-        }
-    }
-
-    public class clsOrderDetailsRepositoryReader : clsOrderDetailsRepositoryComposition ,IOrderDetailsRepositoryReader
+    public class clsOrderDetailsRepositoryReader : IOrderDetailsRepositoryReader
     {
 
         private readonly clsMySettings _Settings;
-        private IOrderDetailsRepositoryLoader _Loader;
-        public clsOrderDetailsRepositoryReader(IOptions<clsMySettings> Settings, IOrderDetailsRepositoryLoader Loader)
+        public clsOrderDetailsRepositoryReader(IOptions<clsMySettings> Settings)
         {
             _Settings = Settings.Value;
-            _Loader = Loader;
         }
+        public async Task<List<OrderDetail>> GetAllDataByOrderIdsAsync(List<int> Ids)
+        {
+            List<OrderDetail> result = new List<OrderDetail>();
+            using (SqlConnection Connection = new SqlConnection(_Settings.ConnectionString))
+            {
+                using (SqlCommand Command = new SqlCommand("OrderDetails.SP_GetAllOrderDetailsByOrderIds", Connection))
+                {
+                    Command.CommandType = System.Data.CommandType.StoredProcedure;
 
+                    var param = new SqlParameter("@Ids", SqlDbType.Structured)
+                    {
+                        TypeName = "dbo.IntList",
+                        Value = CreateSqlRecords.CreateSqlRecord(Ids)
+                    };
+                    Command.Parameters.Add(param);
+
+                    await Connection.OpenAsync();
+                    using (SqlDataReader reader = await Command.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            result.Add(OrderDetailMapper.ReaderToEntityResult(reader));
+                        }
+                    }
+                }
+            }
+            return result;
+        }
         public async Task<List<OrderDetail>> GetAllDataAsync(List<int> Ids)
         {
             List<OrderDetail> result = new List<OrderDetail>();
@@ -134,12 +67,11 @@ namespace DataLayerRestaurant.Classes
                     {
                         while (await reader.ReadAsync())
                         {
-                            result.Add(GetDataFromDataBase(reader));
+                            result.Add(OrderDetailMapper.ReaderToEntityResult(reader));
                         }
                     }
                 }
             }
-            await _Loader.LoadDataAsync(result);
             return result;
         }
 
@@ -158,7 +90,7 @@ namespace DataLayerRestaurant.Classes
                     {
                         if (await Reader.ReadAsync())
                         {
-                            result = (GetDataFromDataBase(Reader));
+                            result = (OrderDetailMapper.ReaderToEntityResult(Reader));
                         }
                     }
                 }
@@ -167,7 +99,6 @@ namespace DataLayerRestaurant.Classes
             {
                 return null;
             }
-            await _Loader.LoadDataAsync(new List<OrderDetail> { result });
             return result;
         }
         public async Task<List<OrderDetail>> GetAllDataAsync(int page)
@@ -186,13 +117,12 @@ namespace DataLayerRestaurant.Classes
                     {
                         while (await Reader.ReadAsync())
                         {
-                            result.Add(GetDataFromDataBase(Reader));
+                            result.Add(OrderDetailMapper.ReaderToEntityResult(Reader));
                         }
                     }
                 }
             }
-            await _Loader.LoadDataAsync(result);
-            return result;
+             return result;
         }
         public async Task<List<OrderDetail>> GetAllDataByOrderIDAsync(int orderID)
         {
@@ -208,24 +138,21 @@ namespace DataLayerRestaurant.Classes
                     {
                         while (await Reader.ReadAsync())
                         {
-                            result.Add(GetDataFromDataBase(Reader));
+                            result.Add(OrderDetailMapper.ReaderToEntityResult(Reader));
                         }
                     }
                 }
             }
-            await _Loader.LoadDataAsync(result);
-            return result;
+             return result;
         }
     }
 
-    public class clsOrderDetailsRepositoryWriter : clsOrderDetailsRepositoryComposition,IOrderDetailsRepositoryWriter
+    public class clsOrderDetailsRepositoryWriter : IOrderDetailsRepositoryWriter
     {
         private readonly clsMySettings _Settings;
-        private IOrderDetailsRepositoryLoader _Loader;
-        public clsOrderDetailsRepositoryWriter(IOptions<clsMySettings> settings, IOrderDetailsRepositoryLoader loader)
+        public clsOrderDetailsRepositoryWriter(IOptions<clsMySettings> settings)
         {
             _Settings = settings.Value; 
-            _Loader = loader;
         }
 
         public async Task<bool> DeleteDataAsync(int id)
@@ -262,7 +189,7 @@ namespace DataLayerRestaurant.Classes
                     {
                         if (await Reader.ReadAsync())
                         {
-                            result = GetDataFromDataBase(Reader);
+                            result = OrderDetailMapper.ReaderToEntityResult(Reader);
                         }
                     }
                 }
@@ -272,8 +199,7 @@ namespace DataLayerRestaurant.Classes
                 return null;
             }
 
-            await _Loader.LoadDataAsync(new List<OrderDetail> { result });
-            return result;
+             return result;
         }
 
         public async Task<OrderDetail?> UpdateDataAsync(DTOOrderDetailsURequest dto)
@@ -294,7 +220,7 @@ namespace DataLayerRestaurant.Classes
                     {
                         if (await Reader.ReadAsync())
                         {
-                            result = GetDataFromDataBase(Reader);
+                            result = OrderDetailMapper.ReaderToEntityResult(Reader);
                         }
                     }
                 }
@@ -304,8 +230,7 @@ namespace DataLayerRestaurant.Classes
                 return null;
             }
 
-            await _Loader.LoadDataAsync(new List<OrderDetail> { result });
-            return result;
+             return result;
         }
     }
 
@@ -320,6 +245,10 @@ namespace DataLayerRestaurant.Classes
             _Write = Write;
         }
 
+        public async Task<List<OrderDetail>> GetAllDataByOrderIdsAsync(List<int> Ids)
+        {
+            return await _Read.GetAllDataByOrderIdsAsync(Ids);
+        }
         public async Task<List<OrderDetail>> GetAllDataAsync(List<int> Ids)
         {
             return await _Read.GetAllDataAsync(Ids);
