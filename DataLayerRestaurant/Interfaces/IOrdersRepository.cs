@@ -4,10 +4,9 @@ using DomainLayer.Entities;
 
 namespace DataLayerRestaurant.Interfaces
 {
-
-    public interface IOrdersRepositoryLoader
+    public interface IOrderDetailBatchLoader
     {
-        Task LoadDataAsync(List<Order> items);
+        Task LoadBatchAsync(List<Order> orders);
     }
 
     public interface IOrdersRepositoryReader : IRepositoryReader<Order>

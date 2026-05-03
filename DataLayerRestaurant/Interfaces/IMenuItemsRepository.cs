@@ -4,12 +4,6 @@ using DomainLayer.Entities;
 
 namespace DataLayerRestaurant.Interfaces
 {
-    public interface IMenuItemsRepositoryLoader
-    {
-        Task LoadDataAsync(List<MenuItem> items);
-    }
-
-
     public interface IMenuItemsRepositoryReader : IRepositoryReader<MenuItem>
     {
         Task<List<MenuItem>> GetAllDataAvailablesAsync();

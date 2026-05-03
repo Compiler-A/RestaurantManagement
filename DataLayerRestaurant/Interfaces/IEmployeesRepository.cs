@@ -1,16 +1,11 @@
 ﻿using ContractsLayerRestaurant.DTORequest.Employees;
 using RestaurantDataLayer;
 using DomainLayer.Entities;
+using Microsoft.Data.SqlClient;
 
 
 namespace DataLayerRestaurant.Interfaces
 {
-    
-
-    public interface IEmployeeRepositoryLoader
-    {
-        Task LoadDataAsync(List<Employee> items);
-    }
 
     public interface IEmployeesRepositoryReader : IRepositoryReader<Employee>
     {

@@ -6,7 +6,8 @@ namespace DataLayerRestaurant.Interfaces
 {
     public interface ILoginRepositoryReader
     {
-           Task<Auth?> GetDataAsync(string UserName);
+        Task<Auth?> LoginAsync(string UserName);
+        Task<Auth?> GetDataAsync(string UserName);
     }
     public interface ILoginRepositoryWriter
     {
@@ -15,10 +16,6 @@ namespace DataLayerRestaurant.Interfaces
         Task<bool> LogoutDataAsync(int ID);
     }
 
-    public interface IAuthsRepositoryLoader
-    {
-        Task LoadDataAsync(List<Auth> items);
-    }
 
     public interface ILoginRepository : ILoginRepositoryReader, ILoginRepositoryWriter
     { }
