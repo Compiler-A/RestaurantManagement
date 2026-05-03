@@ -1,5 +1,6 @@
 ﻿using ContractsLayerRestaurant.DTORequest.StatusTables;
 using DataLayerRestaurant.Interfaces;
+using DataLayerRestaurant.Mapper;
 using DomainLayer.Entities;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Options;
@@ -9,19 +10,8 @@ using System.Data;
 namespace DataLayerRestaurant.Classes
 {
 
-    public class clsStatusTablesRepositoryComposition : ICompositionDataBase<StatusTable>
-    {
-        public StatusTable GetDataFromDataBase(SqlDataReader reader)
-        {
-            return new StatusTable
-            {
-                ID = reader.GetInt32(reader.GetOrdinal("StatusTableID")),
-                Name = reader.GetString(reader.GetOrdinal("Name"))
-            };
-        }
-    }
 
-    public class clsStatusTablesRepositoryReader : clsStatusTablesRepositoryComposition, IStatusTablesRepositoryReader
+    public class clsStatusTablesRepositoryReader : IStatusTablesRepositoryReader
     {
 
         private readonly clsMySettings _Settings;
@@ -52,7 +42,7 @@ namespace DataLayerRestaurant.Classes
                     {
                         while (await reader.ReadAsync())
                         {
-                            result.Add(GetDataFromDataBase(reader));
+                            result.Add(StatusTableMapper.ReaderToEntity(reader));
                         }
                     }
                 }
@@ -94,7 +84,7 @@ namespace DataLayerRestaurant.Classes
                     {
                         if (await Reader.ReadAsync())
                         {
-                            return GetDataFromDataBase(Reader);
+                            return StatusTableMapper.ReaderToEntity(Reader);
                         }
                     }
                 }
@@ -118,7 +108,7 @@ namespace DataLayerRestaurant.Classes
                     {
                         while (await Reader.ReadAsync())
                         {
-                            StatusTable menuItem = GetDataFromDataBase(Reader);
+                            StatusTable menuItem = StatusTableMapper.ReaderToEntity(Reader);
                             L.Add(menuItem);
                         }
                     }
@@ -130,7 +120,7 @@ namespace DataLayerRestaurant.Classes
     }
 
 
-    public class clsStatusTablesRepositoryWriter : clsStatusTablesRepositoryComposition, IStatusTablesRepositoryWriter
+    public class clsStatusTablesRepositoryWriter : IStatusTablesRepositoryWriter
     {
 
 
@@ -160,7 +150,7 @@ namespace DataLayerRestaurant.Classes
                     {
                         if (await Reader.ReadAsync())
                         {
-                            return GetDataFromDataBase(Reader);
+                            return StatusTableMapper.ReaderToEntity(Reader);
                         }
                     }
                     return null;
@@ -184,7 +174,7 @@ namespace DataLayerRestaurant.Classes
                     {
                         if (await Reader.ReadAsync())
                         {
-                            return GetDataFromDataBase(Reader);
+                            return StatusTableMapper.ReaderToEntity(Reader);
                         }
                     }
                     return null;
