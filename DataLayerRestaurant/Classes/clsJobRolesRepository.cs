@@ -1,5 +1,6 @@
 ﻿using ContractsLayerRestaurant.DTORequest.JobRoles;
 using DataLayerRestaurant.Interfaces;
+using DataLayerRestaurant.Mapper;
 using DomainLayer.Entities;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Options;
@@ -11,29 +12,14 @@ using System.Data;
 namespace DataLayerRestaurant.Classes
 { 
 
-    public class clsJobRolesRepositoryComposition : ICompositionDataBase<JobRole>
-    {
-        public JobRole GetDataFromDataBase(SqlDataReader reader)
-        {
-            return new JobRole
-            {
-                ID = reader.GetInt32(reader.GetOrdinal("JobRoleID")),
-                Name = reader.GetString(reader.GetOrdinal("Name")),
-                Description = reader.IsDBNull(reader.GetOrdinal("Description"))
-                    ? null
-                    : reader.GetString(reader.GetOrdinal("Description"))
-            };
-        }
-    }
-
-    public class clsJobRolesRepositoryReader: clsJobRolesRepositoryComposition ,IJobRolesRepositoryReader
+    public class clsJobRolesRepositoryReader: IJobRolesRepositoryReader
     {
         private readonly clsMySettings _Settings;
         public clsJobRolesRepositoryReader(IOptions<clsMySettings> mySettings)
         {
             _Settings = mySettings.Value;
         }
-
+        
 
         public async Task<List<JobRole>> GetAllDataAsync(List<int> Ids)
         {
@@ -56,7 +42,7 @@ namespace DataLayerRestaurant.Classes
                     {
                         while (await reader.ReadAsync())
                         {
-                            result.Add(GetDataFromDataBase(reader));
+                            result.Add(JobRoleMapper.ReaderToEntity(reader));
                         }
                     }
                 }
@@ -80,7 +66,7 @@ namespace DataLayerRestaurant.Classes
                     {
                         while (await reader.ReadAsync())
                         {
-                            result.Add(GetDataFromDataBase(reader));
+                            result.Add(JobRoleMapper.ReaderToEntity(reader));
                         }
                     }
                 }
@@ -103,7 +89,7 @@ namespace DataLayerRestaurant.Classes
                     {
                         if (await reader.ReadAsync())
                         {
-                            result = (GetDataFromDataBase(reader));
+                            result = (JobRoleMapper.ReaderToEntity(reader));
                         }
                     }
                 }
@@ -112,7 +98,7 @@ namespace DataLayerRestaurant.Classes
         }
     }
     
-    public class clsJobRolesRepositoryWriter : clsJobRolesRepositoryComposition , IJobRolesRepositoryWriter
+    public class clsJobRolesRepositoryWriter : IJobRolesRepositoryWriter
     {
         private readonly clsMySettings _Settings;
         public clsJobRolesRepositoryWriter(IOptions<clsMySettings> mySettings)
@@ -135,7 +121,7 @@ namespace DataLayerRestaurant.Classes
                     {
                         if (await reader.ReadAsync())
                         {
-                            return (GetDataFromDataBase(reader));
+                            return (JobRoleMapper.ReaderToEntity(reader));
                         }
                     }
                 }
@@ -159,7 +145,7 @@ namespace DataLayerRestaurant.Classes
                     {
                         if (await reader.ReadAsync())
                         {
-                            return (GetDataFromDataBase(reader));
+                            return (JobRoleMapper.ReaderToEntity(reader));
                         }
                     }
                 }

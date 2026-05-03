@@ -1,5 +1,6 @@
 ﻿using ContractsLayerRestaurant.DTORequest.TypeItems;
 using DataLayerRestaurant.Interfaces;
+using DataLayerRestaurant.Mapper;
 using DomainLayer.Entities;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Options;
@@ -9,22 +10,7 @@ using System.Data;
 namespace DataLayerRestaurant.Classes
 {
 
-    public class clsTypeItemsRepositoryComposition : ICompositionDataBase<TypeItem>
-    {
-        public TypeItem GetDataFromDataBase(SqlDataReader reader)
-        {
-            return new TypeItem
-            {
-                ID = reader.GetInt32(reader.GetOrdinal("TypeItemID")),
-                Name = reader.GetString(reader.GetOrdinal("Name")),
-                Description = reader.IsDBNull(reader.GetOrdinal("Description"))
-                    ? null
-                    : reader.GetString(reader.GetOrdinal("Description"))
-            };
-        }
-    }
-
-    public class clsTypeItemsRepositoryReader : clsTypeItemsRepositoryComposition, ITypeItemsRepositoryReader
+    public class clsTypeItemsRepositoryReader : ITypeItemsRepositoryReader
     {
         private readonly clsMySettings _Settings;
 
@@ -54,7 +40,7 @@ namespace DataLayerRestaurant.Classes
                     {
                         while (await reader.ReadAsync())
                         {
-                            result.Add(GetDataFromDataBase(reader));
+                            result.Add(TypeItemMapper.ReaderToEntity(reader));
                         }
                     }
                 }
@@ -80,7 +66,7 @@ namespace DataLayerRestaurant.Classes
             using SqlDataReader reader = await command.ExecuteReaderAsync();
             while (await reader.ReadAsync())
             {
-                list.Add(GetDataFromDataBase(reader));
+                list.Add(TypeItemMapper.ReaderToEntity(reader));
             }
 
             return list;
@@ -101,13 +87,13 @@ namespace DataLayerRestaurant.Classes
             using SqlDataReader reader = await command.ExecuteReaderAsync();
             if (await reader.ReadAsync())
             {
-                typeItem = GetDataFromDataBase(reader);
+                typeItem = TypeItemMapper.ReaderToEntity(reader);
             }
             return typeItem;
         }
     }
 
-    public class clsTypeItemsRepositoryWriter : clsTypeItemsRepositoryComposition , ITypeItemsRepositoryWriter
+    public class clsTypeItemsRepositoryWriter : ITypeItemsRepositoryWriter
     {
         private readonly clsMySettings _Settings;
 
@@ -131,7 +117,7 @@ namespace DataLayerRestaurant.Classes
             using SqlDataReader reader = await command.ExecuteReaderAsync();
             if (await reader.ReadAsync())
             {
-                return GetDataFromDataBase(reader);
+                return TypeItemMapper.ReaderToEntity(reader);
             }
             return null;
         }
@@ -153,7 +139,7 @@ namespace DataLayerRestaurant.Classes
             using SqlDataReader reader = await command.ExecuteReaderAsync();
             if (await reader.ReadAsync())
             {
-                return GetDataFromDataBase(reader);
+                return TypeItemMapper.ReaderToEntity(reader);
             }
             return null;
         }
