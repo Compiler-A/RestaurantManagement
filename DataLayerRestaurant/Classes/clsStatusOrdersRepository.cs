@@ -1,5 +1,6 @@
 ﻿using ContractsLayerRestaurant.DTORequest.StatusOrders;
 using DataLayerRestaurant.Interfaces;
+using DataLayerRestaurant.Mapper;
 using DomainLayer.Entities;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Options;
@@ -10,18 +11,8 @@ using System.Data;
 namespace DataLayerRestaurant.Classes
 {    
 
-    public class  clsStatusOrdersRepositoryComposition : ICompositionDataBase<StatusOrder>
-    {
-        public StatusOrder GetDataFromDataBase(SqlDataReader reader)
-        {
-            return new StatusOrder
-            {
-                ID = reader.GetInt32(reader.GetOrdinal("StatusOrderID")),
-                Name = reader.GetString(reader.GetOrdinal("Name"))
-            };
-        }
-    }
-    public class clsStatusOrdersRepositoryReader : clsStatusOrdersRepositoryComposition, IStatusOrdersRepositoryReader
+
+    public class clsStatusOrdersRepositoryReader : IStatusOrdersRepositoryReader
     {
         public readonly clsMySettings _Settings;
 
@@ -51,7 +42,7 @@ namespace DataLayerRestaurant.Classes
                     {
                         while (await reader.ReadAsync())
                         {
-                            result.Add(GetDataFromDataBase(reader));
+                            result.Add(StatusOrderMapper.ReaderToEntity(reader));
                         }
                     }
                 }
@@ -75,7 +66,7 @@ namespace DataLayerRestaurant.Classes
                     {
                         if (await Reader.ReadAsync())
                         {
-                            statusOrder = GetDataFromDataBase(Reader);
+                            statusOrder = StatusOrderMapper.ReaderToEntity(Reader);
                         }
                     }
                 }
@@ -99,7 +90,7 @@ namespace DataLayerRestaurant.Classes
                     {
                         while (await Reader.ReadAsync())
                         {
-                            List.Add(GetDataFromDataBase(Reader));
+                            List.Add(StatusOrderMapper.ReaderToEntity(Reader));
                         }
                     }
                 }
@@ -107,7 +98,7 @@ namespace DataLayerRestaurant.Classes
             return List;
         }
     }
-    public class clsStatusOrdersRepositoryWriter : clsStatusOrdersRepositoryComposition, IStatusOrdersRepositoryWriter
+    public class clsStatusOrdersRepositoryWriter : IStatusOrdersRepositoryWriter
     {
 
         private readonly clsMySettings _Settings;
@@ -134,7 +125,7 @@ namespace DataLayerRestaurant.Classes
                     {
                         if (await Reader.ReadAsync())
                         {
-                            return GetDataFromDataBase(Reader);
+                            return StatusOrderMapper.ReaderToEntity(Reader);
                         }
                     }
                 }
@@ -157,7 +148,7 @@ namespace DataLayerRestaurant.Classes
                     {
                         if (await Reader.ReadAsync())
                         {
-                            return GetDataFromDataBase(Reader);
+                            return StatusOrderMapper.ReaderToEntity(Reader);
                         }
                     }
                 }
