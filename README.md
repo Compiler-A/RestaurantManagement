@@ -1,25 +1,28 @@
-# 🍽️ Restaurant Management System — Backend API
+# 🍽️ Restaurant Management — Backend API
 
-A production-ready RESTful backend API for managing full restaurant operations, built with **ASP.NET Core 8** and **SQL Server**. The system implements a clean **N-Layer architecture** with JWT authentication, role-based authorization, rate limiting, BCrypt hashing, and comprehensive separation of concerns.
+> **Portfolio Project** | A full-featured RESTful backend API built to demonstrate practical skills in backend architecture, security, and clean code design using **C# / ASP.NET Core 8 / SQL Server**.
 
-> **Platform:** Windows only — uses Windows Event Log for logging.
+[![.NET](https://img.shields.io/badge/.NET-8.0-512BD4?logo=dotnet)](https://dotnet.microsoft.com/)
+[![C#](https://img.shields.io/badge/C%23-Latest-239120?logo=csharp)](https://docs.microsoft.com/en-us/dotnet/csharp/)
+[![SQL Server](https://img.shields.io/badge/SQL_Server-2019+-CC2927?logo=microsoftsqlserver)](https://www.microsoft.com/sql-server)
+[![Platform](https://img.shields.io/badge/Platform-Windows-0078D6?logo=windows)](https://www.microsoft.com/)
 
 ---
 
-## 📋 Table of Contents
+## 💡 About This Project
 
-- [Tech Stack](#-tech-stack)
-- [Architecture Overview](#-architecture-overview)
-- [Design Patterns](#-design-patterns)
-- [Security Features](#-security-features)
-- [API Endpoints Reference](#-api-endpoints-reference)
-- [Role-Based Access Control](#-role-based-access-control)
-- [Unified Response Format](#-unified-response-format)
-- [Error Handling](#-error-handling)
-- [Rate Limiting](#-rate-limiting)
-- [Setup & Installation](#-setup--installation)
-- [Project Structure](#-project-structure)
-- [Version History](#-version-history)
+This project is a **backend API for a restaurant management system**, built from scratch as a learning and portfolio exercise. The goal was to design and implement a real-world-scale API that goes beyond basic CRUD — applying proper architectural patterns, a full security layer, and professional code organization the same way they would appear in a production codebase.
+
+The system covers the full lifecycle of restaurant operations:
+
+- **Employee management** with role-based access
+- **Menu management** with filtering and availability tracking
+- **Table management** with multi-filter search
+- **Order and order-detail management** with status tracking
+- **JWT authentication** with refresh token rotation
+- **Reference data management** (job roles, item types, statuses)
+
+> **Platform Note:** Windows only — the logging system uses the Windows Event Log via the `System.Diagnostics` API.
 
 ---
 
@@ -29,150 +32,164 @@ A production-ready RESTful backend API for managing full restaurant operations, 
 |---|---|
 | Language | C# (.NET 8) |
 | Framework | ASP.NET Core Web API |
-| Database | SQL Server (Stored Procedures only) |
-| Authentication | JWT Bearer Tokens |
-| Password Hashing | BCrypt.Net (with salt) |
-| API Documentation | Swagger / OpenAPI (with JWT support) |
-| Logging | Windows Event Log |
+| Database | Microsoft SQL Server |
+| ORM / Data Access | Raw ADO.NET — Stored Procedures only (no ORM) |
+| Authentication | JWT Bearer Tokens (HMAC-SHA256) |
+| Password Hashing | BCrypt.Net (salted) |
+| API Documentation | Swagger / OpenAPI with JWT support |
+| Logging | Windows Event Log (`System.Diagnostics`) |
 | Platform | Windows |
 
 ---
 
 ## 🏗️ Architecture Overview
 
-The solution is organized into **four independent projects**, each with a single, clearly defined responsibility. Layers only communicate with the layer directly below through **interfaces**, ensuring loose coupling and easy testability.
+The solution is split into **five independent projects**, each with a single, clearly defined responsibility. Layers only communicate with the layer directly below — always through an **interface**, never through a concrete class. This enforces loose coupling and makes each layer independently replaceable.
 
 ```
 RestaurantManagement/
 │
-├── APILayer/                       ← Presentation Layer
-│   ├── Controllers/                   HTTP endpoints (12 controllers)
-│   ├── Authorization/                 Custom policy handlers
-│   ├── Extensions/
-│   │   ├── Configuration/             JWT & app settings setup
-│   │   └── Security/                  Auth, CORS, Rate Limiting, Swagger
-│   ├── Filters/                       Model validation, Swagger filters
-│   ├── Middleware/                    Global exception handler
-│   └── Program.cs                     App bootstrap
-│
+├── APILayer/                       ← Presentation Layer (HTTP)
 ├── BusinessLayerRestaurant/        ← Business Logic Layer
-│   ├── Classes/                       Service implementations
-│   └── Interfaces/                    Service contracts
-│
-├── ContractsLayerRestaurant/       ← Contracts Layer (Shared DTOs)
-│   └── DTOs/                          All request/response objects
-│       ├── Auth/
-│       ├── Employees/
-│       ├── Orders/
-│       ├── MenuItems/
-│       ├── Tables/
-│       └── ...
-│
-└── DataLayerRestaurant/            ← Data Access Layer
-    ├── Classes/                       Repository implementations
-    └── Interfaces/                    Repository contracts
+├── ContractsLayerRestaurant/       ← Shared DTOs & Contracts
+├── DataLayerRestaurant/            ← Data Access Layer (Repositories)
+└── DomainLayer/                    ← Domain Entities
 ```
 
-### Layer Communication Flow
+### Request Flow
 
 ```
 HTTP Request
     │
     ▼
-[APILayer — Controller]
-    │  calls interface
-    ▼
-[BusinessLayerRestaurant — Service]
-    │  calls interface
-    ▼
-[DataLayerRestaurant — Repository]
-    │  executes stored procedure
-    ▼
+[APILayer] — Controller receives and validates the request
+    │ calls interface ↓
+[BusinessLayerRestaurant] — Service applies business rules, hashing, authorization
+    │ calls interface ↓
+[DataLayerRestaurant] — Repository executes a Stored Procedure
+    │ SQL ↓
 [SQL Server Database]
+    │ result ↑
+[DataLayerRestaurant] — Maps SqlDataReader → Domain Entity
+    │ ↑
+[BusinessLayerRestaurant] — Applies business logic on entity
+    │ ↑
+[APILayer] — Maps entity → DTO Response → Wrapped in ApiResponse<T>
+    │
+    ▼
+HTTP Response (JSON)
 ```
 
 ---
 
-## 🧩 Design Patterns
+## 🧩 Design Patterns Applied
 
 ### Repository Pattern
-Every entity has its own repository class that handles all direct database operations. The repository is the **only** place in the codebase that talks to SQL Server. Each repository is accessed via an interface, keeping the business layer completely database-agnostic.
+Every entity has its own dedicated repository class that is the **only** place in the entire codebase that executes SQL. The business layer has zero awareness of SQL Server — it only knows the repository interface. Swapping the database engine would require changing only the repository classes.
 
 ### Reader / Writer Separation
-Each repository and service is split into two distinct classes:
-- **Reader** — handles all `GET` operations (read-only queries)
-- **Writer** — handles all `POST`, `PUT`, `DELETE` operations (mutations)
+Every repository and every service class is split into **two distinct classes**:
 
-Both implement a shared interface that is exposed to the layer above. This enforces a clean separation between read and write responsibilities.
+- `Reader` — handles all read operations (`GET`, `SELECT`)
+- `Writer` — handles all mutation operations (`POST`, `PUT`, `DELETE`)
+
+Both expose a single combined interface to the layer above. This enforces the **Single Responsibility Principle** at the class level — a reader class can never accidentally modify data.
+
+```
+clsEmployeesRepository
+    ├── clsEmployeesRepositoryReader  (GetDataAsync, GetAllDataAsync)
+    └── clsEmployeesRepositoryWriter  (CreateDataAsync, UpdateDataAsync, DeleteDataAsync)
+```
 
 ### Composition Pattern
-Related data loading is handled via composable loader classes. For example, when fetching an `Order`, a `CompositionLoader` automatically triggers loaders for `Employee`, `Table`, and `StatusOrder` — loading each related object into the DTO without the repository needing to know about any of it. New loaders can be added without changing existing code.
+Related data loading (navigation properties) is handled through composable loader classes rather than SQL JOINs. When fetching an `Order`, a composition loader independently fetches and attaches the related `Employee`, `Table`, and `StatusOrder` objects. New relationships can be added without modifying existing SQL or repository code.
 
 ```
 clsOrdersService
-    └── clsCompositionOrdersLoader
-            ├── clsEmployeeLoader
-            ├── clsTableLoader
-            └── clsStatusOrderLoader
+    └── Composition Loader
+            ├── Employee Loader
+            ├── Table Loader
+            └── StatusOrder Loader
 ```
 
+### Container / Facade Pattern
+Each service and repository exposes a **Container class** that holds references to both the Reader and Writer. The layer above receives one clean interface without needing to know how reading and writing are internally separated.
+
 ### Dependency Injection via Extension Methods
-All service and repository registrations are extracted from `Program.cs` into dedicated Extension Method files under `Extensions/Services/`. Each entity has its own file (e.g. `EmployeesServiceExtension.cs`), keeping `Program.cs` clean and minimal.
+All DI registrations are extracted out of `Program.cs` into dedicated Extension Method classes under `Extensions/Services/`. Each entity has its own file. `Program.cs` stays minimal and readable — it only wires things together at a high level.
+
+### Base Controller
+All controllers inherit from `BaseController`, which provides a generic `CreateResponse<T>()` helper that produces the unified JSON envelope for every response.
 
 ---
 
-## 🔒 Security Features
+## 🔒 Security Layer
 
 ### JWT Authentication
 - Bearer token authentication using `Microsoft.AspNetCore.Authentication.JwtBearer`
-- Tokens are signed with HMAC-SHA256
-- Tokens carry claims: `NameIdentifier` (employee ID), `Name` (username), `Role`
-- Configurable via `appsettings.json`: issuer, audience, secret key, expiration
+- Tokens signed with **HMAC-SHA256**
+- Each token carries three claims: `NameIdentifier` (employee ID), `Name` (username), `Role` (job role)
+- Expiration time, issuer, and audience are configurable via `appsettings.json`
+- The secret key is loaded from an **environment variable** — it is never stored in source code or config files
 
-### Refresh Token System
-- On login, both an **access token** (short-lived) and a **refresh token** (7-day) are issued
-- Refresh tokens are stored as **BCrypt hashes** in the database — the raw token is never stored
-- Token **rotation** is enforced: each `/refresh` call issues a brand new refresh token and invalidates the old one
-- Logout revokes the refresh token by recording a `RevokedAt` timestamp
+### Refresh Token System with Rotation
+- On login, the API issues **two tokens**: a short-lived access token and a 7-day refresh token
+- The raw refresh token is **never stored** — only its BCrypt hash is persisted in the database
+- Every `/refresh` call issues a **brand new refresh token** and invalidates the previous one (rotation), preventing replay attacks
+- Logout revokes the token by recording a `RevokedAt` timestamp
 
-### Role-Based Authorization
-Endpoints are protected using `[Authorize(Roles = "...")]`. The system supports the following roles:
+### Role-Based Authorization (RBAC)
+The system defines four roles with distinct permission levels:
 
 | Role | Description |
 |---|---|
-| `Manager` | Full administrative access |
-| `Chef` | Kitchen-level access |
+| `Manager` | Full administrative access across all resources |
+| `Chef` | Kitchen-level access — menu and order management |
 | `Sous Chef` | Assistant kitchen access |
-| `Waiter` | Table and order access |
+| `Waiter` | Table and order access, limited to own records |
 
-### Custom Authorization Policies
-Beyond roles, the API enforces **resource-level ownership** through three custom `IAuthorizationHandler` policies:
+### Custom Resource-Level Authorization Policies
+Beyond role checks, three custom `IAuthorizationHandler` implementations enforce **ownership-level access control**:
 
-| Policy | Rule |
+| Policy Name | Rule |
 |---|---|
-| `EmployeeOwnerOrAdmin` | Manager can access any employee record; others can only access their own |
-| `EmployeeByUserNameOwnerOrAdmin` | Same rule but scoped to username-based lookups |
-| `WaiterOwnerOrAdmin` | Manager, Chef, Sous Chef can manage any order; Waiters can only manage orders they created |
+| `EmployeeOwnerOrAdmin` | A Manager can access any employee record. Any other role can only access their own record. |
+| `EmployeeByUserNameOwnerOrAdmin` | Same ownership rule, applied to username-based lookups. |
+| `WaiterOwnerOrAdmin` | Managers, Chefs, and Sous Chefs can manage any order. A Waiter can only create or update orders they personally created. |
 
 ### BCrypt Password Hashing
-All passwords and refresh tokens are hashed using BCrypt, which automatically handles salt generation and stores it as part of the hash. Verification uses `BCrypt.Verify()`.
+All passwords (and refresh token hashes) use BCrypt, which generates a unique salt per hash automatically. Plain SHA-256 hashing is also available in `clsHashingService` but is not used for authentication — BCrypt is the active standard. Verification uses `BCrypt.Verify()` — the raw password is never compared directly.
+
+### Rate Limiting (Per IP, Fixed Window)
+Every endpoint is assigned a rate limit policy. Limits are scoped per client IP address:
+
+| Policy | Limit | Window |
+|---|---|---|
+| `Auth` — login, refresh | 5 requests | 1 minute |
+| `GetAll` — paginated list endpoints | 30 requests | 1 minute |
+| `GetOne` — single record endpoints | 60 requests | 1 minute |
+| `Add` — POST endpoints | 10 requests | 1 minute |
+| `Update` — PUT endpoints | 15 requests | 1 minute |
+| `Delete` — DELETE endpoints | 5 requests | 1 minute |
+
+Returns `HTTP 429 Too Many Requests` when exceeded.
 
 ### CORS Policy
-A named CORS policy (`RMApiCorsPolicy`) restricts API access to allowed origins, configured in `CorsSecurityExtension.cs`.
+A named CORS policy (`RMApiCorsPolicy`) restricts cross-origin requests to a configured list of allowed origins, preventing unauthorized frontends from consuming the API.
 
 ---
 
-## 📡 API Endpoints Reference
+## 📡 API Endpoints
 
-> All endpoints require a valid JWT Bearer token unless marked **Public**.
+> All endpoints require a valid `Authorization: Bearer <token>` header unless marked as **Public**.
 
-### 🔑 Auth — `/api/Auth`
+### 🔑 Authentication — `/api/Auth`
 
 | Method | Route | Access | Description |
 |---|---|---|---|
-| POST | `/login` | Public | Authenticate and receive access + refresh tokens |
-| POST | `/refresh` | Public | Rotate refresh token and get new access token |
-| POST | `/logout` | Authenticated | Revoke refresh token |
+| POST | `/login` | Public | Authenticate with username + password. Returns access token + refresh token. |
+| POST | `/refresh` | Public | Exchange a valid refresh token for a new access + refresh token pair. |
+| POST | `/logout` | Authenticated | Revoke the current refresh token. |
 
 ### 👤 Employees — `/api/Employees`
 
@@ -184,7 +201,7 @@ A named CORS policy (`RMApiCorsPolicy`) restricts API access to allowed origins,
 | POST | `/` | Manager | Create new employee |
 | PUT | `/` | Manager | Update employee |
 | DELETE | `/{ID}` | Manager | Delete employee |
-| POST | `/changed-password` | Self only | Change own password |
+| POST | `/changed-password` | Self only | Change own password (validates current password first) |
 
 ### 📦 Orders — `/api/Orders`
 
@@ -193,7 +210,7 @@ A named CORS policy (`RMApiCorsPolicy`) restricts API access to allowed origins,
 | GET | `/` | Manager, Chef, Sous Chef, Waiter | Get all orders (paginated) |
 | GET | `/{ID}` | Manager, Chef, Sous Chef, Waiter | Get order by ID |
 | GET | `/filter` | Manager, Chef, Sous Chef, Waiter | Filter orders by table, employee, or status |
-| POST | `/` | Manager, Waiter (own orders) | Create new order |
+| POST | `/` | Manager, Waiter (own orders only) | Create new order |
 | PUT | `/` | Manager, Chef, Sous Chef, Waiter (own orders) | Update order |
 | DELETE | `/{ID}` | Manager, Chef, Sous Chef | Delete order |
 
@@ -206,7 +223,7 @@ A named CORS policy (`RMApiCorsPolicy`) restricts API access to allowed origins,
 | GET | `/all-orderid/{orderID}` | Authenticated | Get all items for a specific order |
 | POST | `/` | Authenticated | Add item to an order |
 | PUT | `/` | Authenticated | Update order detail |
-| DELETE | `/{ID}` | Authenticated | Remove item from order |
+| DELETE | `/{ID}` | Authenticated | Remove item from an order |
 
 ### 🍕 Menu Items — `/api/MenuItems`
 
@@ -215,10 +232,10 @@ A named CORS policy (`RMApiCorsPolicy`) restricts API access to allowed origins,
 | GET | `/` | **Public** | Get all menu items (paginated) |
 | GET | `/{ID}` | **Public** | Get menu item by ID |
 | GET | `/all-availables` | **Public** | Get all currently available items |
-| GET | `/all-filters` | **Public** | Filter menu items by type, status, price range |
-| POST | `/` | Authenticated | Add new menu item |
-| PUT | `/` | Authenticated | Update menu item |
-| DELETE | `/{ID}` | Authenticated | Delete menu item |
+| GET | `/all-filters` | **Public** | Filter by type, availability status, price range |
+| POST | `/` | Manager, Chef | Add new menu item |
+| PUT | `/` | Manager, Chef, Sous Chef | Update menu item |
+| DELETE | `/{ID}` | Manager, Chef | Delete menu item |
 
 ### 🪑 Tables — `/api/Tables`
 
@@ -227,47 +244,52 @@ A named CORS policy (`RMApiCorsPolicy`) restricts API access to allowed origins,
 | GET | `/` | **Public** | Get all tables (paginated) |
 | GET | `/{ID}` | **Public** | Get table by ID |
 | GET | `/all-nopagination` | **Public** | Get all tables (no pagination) |
-| GET | `/all-availables` | **Public** | Get all available tables |
-| GET | `/table-name` | **Public** | Find table by name |
+| GET | `/all-availables` | **Public** | Get all currently available tables |
+| GET | `/table-name` | **Public** | Find a table by its name/number |
 | GET | `/allfilter-seats` | **Public** | Filter tables by seat count |
 | GET | `/allfilter-statustables` | **Public** | Filter tables by status |
-| GET | `/allfilter-global` | **Public** | Filter tables by status and seat count |
-| POST | `/` | Authenticated | Add new table |
-| PUT | `/` | Authenticated | Update table |
-| DELETE | `/{ID}` | Authenticated | Delete table |
+| GET | `/allfilter-global` | **Public** | Filter tables by status AND seat count combined |
+| POST | `/` | Manager | Add new table |
+| PUT | `/` | Manager, Cleaner | Update table |
+| DELETE | `/{ID}` | Manager | Delete table |
 
-### 🔧 Lookup / Reference Endpoints
+### 🔧 Reference / Lookup Data
 
 | Base Route | Description |
 |---|---|
-| `/api/JobRoles` | Full CRUD for employee job roles |
+| `/api/JobRoles` | Full CRUD for employee job roles (Manager, Chef, Waiter, etc.) |
 | `/api/TypeItems` | Full CRUD for menu item categories |
-| `/api/StatusOrders` | Full CRUD for order status values |
-| `/api/StatusMenus` | Full CRUD for menu availability statuses |
-| `/api/StatusTables` | Full CRUD for table status values |
-| `/api/Settings` | Manage system settings (e.g. rows per page) |
+| `/api/StatusOrders` | Full CRUD for order status values (e.g. Pending, Preparing, Delivered) |
+| `/api/StatusMenus` | Full CRUD for menu item availability statuses |
+| `/api/StatusTables` | Full CRUD for table statuses (Available, Occupied, Reserved, etc.) |
+| `/api/Settings` | System settings management (e.g. rows per page for pagination) |
 
 ---
 
-## 🎭 Role-Based Access Control
+## 🎭 Role-Based Access Summary
 
 | Action | Manager | Chef | Sous Chef | Waiter |
 |---|:---:|:---:|:---:|:---:|
 | View all employees | ✅ | ❌ | ❌ | ❌ |
-| Manage employees | ✅ | ❌ | ❌ | ❌ |
+| Manage employees (create/update/delete) | ✅ | ❌ | ❌ | ❌ |
 | View own profile | ✅ | ✅ | ✅ | ✅ |
+| Change own password | ✅ | ✅ | ✅ | ✅ |
 | View all orders | ✅ | ✅ | ✅ | ✅ |
-| Create/update own order | ✅ | ❌ | ❌ | ✅ |
-| Delete orders | ✅ | ✅ | ✅ | ❌ |
-| Manage menu items | ✅ | ✅ | ✅ | ✅ |
-| Browse menu (public) | — | — | — | — |
+| Create order | ✅ | ❌ | ❌ | ✅ (own only) |
+| Update order | ✅ | ✅ | ✅ | ✅ (own only) |
+| Delete order | ✅ | ✅ | ✅ | ❌ |
+| Add/delete menu items | ✅ | ✅ | ❌ | ❌ |
+| Update menu items | ✅ | ✅ | ✅ | ❌ |
+| Manage tables | ✅ | ❌ | ❌ | ❌ |
+| Browse menu & tables (no login needed) | — | — | — | — |
 
 ---
 
 ## 📐 Unified Response Format
 
-Every endpoint returns the same JSON envelope, making it simple for any frontend or client to handle responses consistently:
+Every endpoint — success or failure — returns the same JSON envelope. No endpoint returns a bare object or an inconsistent shape.
 
+**Success:**
 ```json
 {
   "statusCode": 200,
@@ -276,7 +298,7 @@ Every endpoint returns the same JSON envelope, making it simple for any frontend
 }
 ```
 
-For list responses:
+**List response:**
 ```json
 {
   "statusCode": 200,
@@ -285,23 +307,32 @@ For list responses:
 }
 ```
 
-For auth responses:
+**Auth response:**
 ```json
 {
   "statusCode": 200,
   "message": "Login Successfully!",
   "data": {
     "accessToken": "eyJhbGciOiJIUzI1NiIs...",
-    "refreshToken": "aGFzaGVkUmVmcmVzaFRva2Vu..."
+    "refreshToken": "randomly-generated-64-byte-token..."
   }
+}
+```
+
+**Error:**
+```json
+{
+  "statusCode": 404,
+  "message": "Not Found!",
+  "data": null
 }
 ```
 
 ---
 
-## 🚨 Error Handling
+## 🚨 Global Exception Handling
 
-A `GlobalExceptionMiddleware` catches all unhandled exceptions across the entire application and maps them to the appropriate HTTP status code before returning them in the unified response format. No stack traces are leaked to the client.
+`GlobalExceptionMiddleware` wraps the entire request pipeline. Every unhandled exception is caught here, mapped to the correct HTTP status code, and returned in the unified JSON format. No raw stack traces are ever exposed to the client. All exceptions are also written to the Windows Event Log via `IMyLogger`.
 
 | Exception Type | HTTP Status |
 |---|---|
@@ -313,28 +344,9 @@ A `GlobalExceptionMiddleware` catches all unhandled exceptions across the entire
 | `UnauthorizedAccessException` | 403 Forbidden |
 | `KeyNotFoundException` | 404 Not Found |
 | `InvalidOperationException` | 409 Conflict |
-| Any other exception | 500 Internal Server Error |
+| Any unrecognized exception | 500 Internal Server Error |
 
-All exceptions are also written to the **Windows Event Log** via `IMyLogger`.
-
-Model validation errors are caught before the action even executes by a `ValidateModelAttribute` action filter, returning a 400 with a descriptive error message for every failing field.
-
----
-
-## ⏱️ Rate Limiting
-
-All endpoints are protected by a **fixed-window rate limiter** scoped per client IP address. Different operation types have different limits to protect sensitive endpoints while keeping read-heavy routes performant:
-
-| Policy | Permit Limit | Window |
-|---|---|---|
-| `Auth` (login/refresh) | 5 requests | 1 minute |
-| `GetAll` (list endpoints) | 30 requests | 1 minute |
-| `GetOne` (single record) | 60 requests | 1 minute |
-| `Add` (POST) | 10 requests | 1 minute |
-| `Update` (PUT) | 15 requests | 1 minute |
-| `Delete` (DELETE) | 5 requests | 1 minute |
-
-Exceeding any limit returns `HTTP 429 Too Many Requests`.
+Model validation errors are caught even earlier — by the `ValidateModelAttribute` action filter — before the controller action runs. The response includes a descriptive message for every failing field.
 
 ---
 
@@ -344,7 +356,7 @@ Exceeding any limit returns `HTTP 429 Too Many Requests`.
 
 - [Visual Studio 2022+](https://visualstudio.microsoft.com/)
 - [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)
-- SQL Server (any edition)
+- SQL Server (any edition — Express works fine)
 - Windows OS
 
 ### Steps
@@ -358,41 +370,53 @@ git clone https://github.com/Compiler-A/RestaurantManagement.git
 
 Open `RestaurantProjectv2.slnx` in Visual Studio 2022.
 
-**3. Configure the database connection**
+**3. Configure the database**
 
-Edit `APILayer/appsettings.json`:
+Edit `APILayer/appsettings.json` and update the connection string:
 ```json
 {
   "MySettings": {
     "ConnectionString": "Server=.;Database=RestaurantManager;User Id=sa;Password=YOUR_PASSWORD;Encrypt=False;TrustServerCertificate=True;",
     "RowsPerPage": 12
   },
-  "JwtSettings": {
-    "SecretKey": "YOUR_SECRET_KEY_MIN_32_CHARS",
-    "Issuer": "RestaurantManagementAPI",
-    "Audience": "RestaurantManagementClient",
-    "ExpirationMinutes": 60
+  "Jwt": {
+    "Issuer": "RMAPI",
+    "Audience": "RMAPIEmployees",
+    "ExpirationMinutes": 10
+  },
+  "CORS": {
+    "Web1": "https://localhost:7292",
+    "Web2": "http://localhost:5223"
   }
 }
 ```
 
-**4. Set up the database**
+**4. Set the JWT secret key as an environment variable**
 
-Run the SQL scripts to create the database schema and all stored procedures on your SQL Server instance.
+The secret key is **not stored in any file** — it must be set as a system environment variable named `JWT_SECRET_KEY`. It must be at least 32 characters long.
 
-**5. Run the project**
+```powershell
+# PowerShell (run as Administrator)
+[System.Environment]::SetEnvironmentVariable("JWT_SECRET_KEY", "your-very-secure-secret-key-here", "Machine")
+```
 
-Press `F5` in Visual Studio. Swagger UI will be available at:
+**5. Run the database scripts**
+
+Execute the SQL scripts to create the database schema, tables, stored procedures, and initial seed data on your SQL Server instance.
+
+**6. Run the project**
+
+Press `F5` in Visual Studio. Swagger UI is available at:
 ```
 https://localhost:{port}/swagger
 ```
 
-**6. Authenticate in Swagger**
+**7. Authenticate in Swagger**
 
 1. Call `POST /api/Auth/login` with valid credentials
-2. Copy the `accessToken` from the response
+2. Copy the `accessToken` from the response `data` field
 3. Click **Authorize** in Swagger UI and enter: `Bearer <your_token>`
-4. All protected endpoints are now accessible
+4. All protected endpoints are now accessible for the duration of the token
 
 ---
 
@@ -401,10 +425,10 @@ https://localhost:{port}/swagger
 ```
 RestaurantManagement/
 │
-├── APILayer/
+├── APILayer/                                    ← ASP.NET Core Web API project
 │   ├── Controllers/
-│   │   ├── BaseController.cs                  ← Shared CreateResponse<T> helper
-│   │   ├── AuthController.cs                  ← Login, Refresh, Logout
+│   │   ├── BaseController.cs                   ← Generic CreateResponse<T>() helper
+│   │   ├── AuthController.cs                   ← Login, Refresh, Logout
 │   │   ├── APIEmployees.cs
 │   │   ├── APIOrders.cs
 │   │   ├── APIOrderDetails.cs
@@ -419,79 +443,119 @@ RestaurantManagement/
 │   │
 │   ├── Authorization/
 │   │   ├── Employee/
-│   │   │   ├── EmployeeOwnerOrAdminHandler.cs
 │   │   │   ├── EmployeeOwnerOrAdminRequirement.cs
-│   │   │   ├── EmployeeUserNameOwnerOrAdminHandler.cs
-│   │   │   └── EmployeeUserNameOwnerOrAdminRequirement.cs
+│   │   │   ├── EmployeeOwnerOrAdminHandler.cs
+│   │   │   ├── EmployeeUserNameOwnerOrAdminRequirement.cs
+│   │   │   └── EmployeeUserNameOwnerOrAdminHandler.cs
 │   │   └── Order/
-│   │       ├── WaiterOwnerOrAdminHandler.cs
-│   │       └── WaiterOwnerOrAdminRequirement.cs
+│   │       ├── WaiterOwnerOrAdminRequirement.cs
+│   │       └── WaiterOwnerOrAdminHandler.cs
 │   │
 │   ├── Extensions/
 │   │   ├── Configuration/
 │   │   │   ├── JwtSettingConfigurationExtension.cs
 │   │   │   └── MySettingConfigurationExtension.cs
 │   │   └── Security/
-│   │       ├── AuthenticationSecurityExtension.cs
-│   │       ├── AuthorizationSecurityExtension.cs
+│   │       ├── AuthenticationSecurityExtension.cs  ← JWT Bearer setup
+│   │       ├── AuthorizationSecurityExtension.cs   ← Policy registration
 │   │       ├── CorsSecurityExtension.cs
 │   │       ├── RateLimitingSecurityExtension.cs
 │   │       └── SwaggerGenSecurityExtension.cs
 │   │
 │   ├── Filters/
-│   │   ├── ValidateModelAttribute.cs          ← Model validation action filter
-│   │   ├── DefaultResponsesOperationFilter.cs ← Swagger response docs
-│   │   └── NameRateLimitPolicies.cs           ← Rate limit policy name constants
+│   │   ├── ValidateModelAttribute.cs              ← Model validation action filter
+│   │   ├── DefaultResponsesOperationFilter.cs     ← Swagger standard response docs
+│   │   └── NameRateLimitPolicies.cs               ← Rate limit policy name constants
 │   │
 │   ├── Middleware/
 │   │   └── GlobalExceptionMiddleware.cs
 │   │
-│   ├── ApiResponse.cs                         ← Generic wrapper: { statusCode, message, data }
-│   └── Program.cs
+│   ├── ApiResponse.cs                             ← Generic wrapper { statusCode, message, data }
+│   └── Program.cs                                 ← App bootstrap (minimal, clean)
 │
-├── BusinessLayerRestaurant/
+├── BusinessLayerRestaurant/                       ← Business logic project
 │   ├── Classes/
-│   │   ├── JwtSettings.cs                     ← JWT config model
-│   │   ├── clsHashingService.cs               ← BCrypt + SHA256 implementations
-│   │   ├── clsMyLogger.cs                     ← Windows Event Log writer
-│   │   ├── clsLoginService.cs                 ← Auth, token generation, refresh rotation
-│   │   ├── clsEmployeesService.cs
+│   │   ├── JwtSettings.cs                         ← JWT config model
+│   │   ├── clsHashingService.cs                   ← BCrypt + SHA256 hashing
+│   │   ├── clsMyLogger.cs                         ← Windows Event Log writer
+│   │   ├── clsLoginService.cs                     ← Token generation, refresh rotation, logout
+│   │   ├── clsEmployeesService.cs                 ← Employee business logic + password hashing
 │   │   ├── clsOrdersService.cs
 │   │   ├── clsMenuItemsService.cs
-│   │   └── ... (one service class per entity)
-│   │
+│   │   ├── clsTablesService.cs
+│   │   └── ... (one service class per entity, each split into Reader + Writer)
 │   └── Interfaces/
 │       ├── IHashingService.cs
 │       ├── ILoginService.cs
 │       ├── IEmployeesService.cs
 │       └── ... (one interface per service)
 │
-├── ContractsLayerRestaurant/
-│   └── DTOs/
-│       ├── Auth/         DTOLoginRequest, DTOTokenResponse, DTORefreshRequest, DTOLogoutRequest
-│       ├── Employees/    DTOEmployees, DTOEmployeesCRequest, DTOEmployeesURequest, DTOEmployeesChangedPassword
-│       ├── Orders/       DTOOrders, DTOOrderCRequest, DTOOrderURequest, DTOOrderFilterRequest
-│       ├── MenuItems/    DTOMenuItems, DTOMenuItemsCRequest, DTOMenuItemsURequest, DTOMenuItemsFilterRequest
-│       ├── Tables/       DTOTables + multiple filter request DTOs
-│       └── ...
+├── ContractsLayerRestaurant/                      ← Shared DTOs project
+│   ├── DTORequest/
+│   │   ├── Auth/       DTOLoginRequest, DTORefreshRequest, DTOLogoutRequest, DTOAuthCURequest
+│   │   ├── Employees/  DTOEmployeesCRequest, DTOEmployeesURequest, DTOEmployeesChangedPassword
+│   │   ├── Orders/     DTOOrderCRequest, DTOOrderURequest, DTOOrderFilterRequest
+│   │   ├── MenuItems/  DTOMenuItemsCRequest, DTOMenuItemsURequest, DTOMenuItemsFilterRequest
+│   │   ├── Tables/     DTOTablesCRequest, DTOTablesURequest + 3 filter request DTOs
+│   │   └── ...
+│   └── DTOResponse/
+│       ├── DTOTokenResponse.cs
+│       ├── DTOEmployeeResponse.cs
+│       ├── DTOOrderResponse.cs
+│       └── ... (one response DTO per entity)
 │
-└── DataLayerRestaurant/
-    ├── clsDataAccessLayer.cs                  ← Base interfaces: IReadable, IWritable, IComposition
-    ├── clsMySettings.cs                       ← Connection string + RowsPerPage config model
-    ├── Classes/
-    │   ├── clsOrdersRepository.cs             ← Reader + Writer + Repository (facade)
-    │   ├── clsEmployeesRepository.cs
-    │   └── ... (one repository per entity)
-    └── Interfaces/
-        └── ... (one interface per repository)
+├── DataLayerRestaurant/                           ← Data access project
+│   ├── clsDataAccessLayer.cs                      ← Base generic interfaces (IRepositoryReader, IRepositoryWriter, ICompositionDataBase)
+│   ├── clsMySettings.cs                           ← Config model: ConnectionString + RowsPerPage
+│   ├── Classes/
+│   │   ├── clsEmployeesRepository.cs              ← Reader + Writer + Repository facade
+│   │   ├── clsOrdersRepository.cs
+│   │   ├── clsLoginRepository.cs
+│   │   └── ... (one repository per entity)
+│   ├── Interfaces/
+│   │   └── ... (one interface per repository)
+│   └── Mapper/
+│       └── ... (SqlDataReader → Entity mappers, one per entity)
+│
+└── DomainLayer/                                   ← Domain entities project
+    └── Entities/
+        ├── Employee.cs
+        ├── Order.cs
+        ├── OrderDetail.cs
+        ├── MenuItem.cs
+        ├── Table.cs
+        ├── JobRole.cs
+        └── ... (one entity per database table)
 ```
+
+---
+
+## 🧠 Key Technical Decisions
+
+**Why Raw ADO.NET instead of Entity Framework?**
+The choice to use raw SQL with Stored Procedures was deliberate — to understand what ORMs abstract away, to have full control over query performance, and to practice writing structured data access code without relying on code generation.
+
+**Why separate Reader and Writer classes?**
+Following the Single Responsibility Principle at the class level ensures that a class that reads data cannot accidentally write, and vice versa. It also makes each class smaller, more focused, and easier to reason about independently.
+
+**Why a dedicated Contracts layer?**
+Keeping all DTOs in a separate project (`ContractsLayerRestaurant`) means neither the Business Layer nor the Data Layer are coupled to each other's types — they only share the contract types. This also makes the contracts reusable if a second consumer (e.g. a frontend BFF or a gRPC service) were ever added.
+
+**Why BCrypt for refresh token storage?**
+Even though refresh tokens are randomly generated (not user-chosen passwords), storing them hashed means that a database breach does not expose live tokens. The same security principle that applies to passwords applies to any secret stored at rest.
 
 ---
 
 ## 📜 Version History
 
-| Version | Highlights |
+| Version | Changes |
 |---|---|
-| **v1.0** | Initial release — N-Layer architecture, full CRUD, async/await, Stored Procedures only |
-| **v2.0** | BCrypt password hashing with salt, hashing logic moved to Business Layer, fixed naming conventions (I-prefix interfaces), standardized API response messages |
-| **v3.0** | JWT authentication, refresh token with rotation, BCrypt-hashed refresh tokens, role-based authorization, custom resource-level authorization policies (Owner or Admin), rate limiting per IP per action type, CORS policy, Swagger with JWT support, Windows Event Log logging integrated throughout |
+| **v1.0** | Initial build — N-Layer architecture, full CRUD for all entities, async/await throughout, Stored Procedures only |
+| **v2.0** | Migrated password hashing from SHA-256 to BCrypt, moved hashing logic to Business Layer, fixed interface naming convention (capital `I` prefix), standardized response messages |
+| **v3.0** | Full JWT authentication with refresh token rotation, BCrypt-hashed refresh token storage, role-based authorization, custom resource-level authorization policies (Owner or Admin), per-IP rate limiting, CORS policy, Swagger with JWT support, Windows Event Log integration |
+
+---
+
+## 👨‍💻 Author
+
+Built by [Compiler-A](https://github.com/Compiler-A) as a backend portfolio project.
