@@ -4,8 +4,6 @@ using ContractsLayerRestaurant.DTORequest.StatusMenus;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
-
-using DomainLayer.Entities;
 using ContractsLayerRestaurant.DTOResponse;
 using BusinessLayerRestaurant.Mapper;
 

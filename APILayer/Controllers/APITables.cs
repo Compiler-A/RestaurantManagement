@@ -3,11 +3,9 @@ using BusinessLayerRestaurant.Interfaces;
 using BusinessLayerRestaurant.Mapper;
 using ContractsLayerRestaurant.DTORequest.Tables;
 using ContractsLayerRestaurant.DTOResponse;
-using DomainLayer.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 
 

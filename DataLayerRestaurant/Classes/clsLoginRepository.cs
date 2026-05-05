@@ -2,7 +2,6 @@
 using DataLayerRestaurant.Interfaces;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Options;
-using RestaurantDataLayer;
 using DomainLayer.Entities;
 using DataLayerRestaurant.Mapper;
 

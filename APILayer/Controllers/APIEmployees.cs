@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 using System.Security.Authentication;
 using System.Security.Claims;
-using DomainLayer.Entities;
 using ContractsLayerRestaurant.DTOResponse;
 using BusinessLayerRestaurant.Mapper;
 

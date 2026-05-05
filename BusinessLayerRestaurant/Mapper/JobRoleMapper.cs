@@ -1,6 +1,5 @@
 ﻿
 
-using ContractsLayerRestaurant.DTORequest.JobRoles;
 using ContractsLayerRestaurant.DTOResponse;
 using DomainLayer.Entities;
 

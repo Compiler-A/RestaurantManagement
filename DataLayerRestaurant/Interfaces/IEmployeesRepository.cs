@@ -1,7 +1,6 @@
 ﻿using ContractsLayerRestaurant.DTORequest.Employees;
 using RestaurantDataLayer;
 using DomainLayer.Entities;
-using Microsoft.Data.SqlClient;
 
 
 namespace DataLayerRestaurant.Interfaces

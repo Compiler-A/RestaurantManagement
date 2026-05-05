@@ -1,7 +1,6 @@
 ﻿using RestaurantDataLayer;
 using DataLayerRestaurant.Interfaces;
 using ContractsLayerRestaurant.DTORequest.StatusOrders;
-using ContractsLayerRestaurant.DTOResponse;
 using DomainLayer.Entities;
 
 

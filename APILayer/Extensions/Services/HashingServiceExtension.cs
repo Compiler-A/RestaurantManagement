@@ -1,7 +1,6 @@
 ﻿using BusinessLayerRestaurant.Classes;
 using BusinessLayerRestaurant.Interfaces;
-using DataLayerRestaurant.Classes;
-using DataLayerRestaurant.Interfaces;
+
 
 namespace APILayer.Extensions.Services
 {

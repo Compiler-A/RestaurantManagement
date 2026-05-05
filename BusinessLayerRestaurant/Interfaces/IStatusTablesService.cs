@@ -1,7 +1,6 @@
 ﻿using RestaurantDataLayer;
 using DataLayerRestaurant.Interfaces;
 using ContractsLayerRestaurant.DTORequest.StatusTables;
-using ContractsLayerRestaurant.DTOResponse;
 using DomainLayer.Entities;
 
 namespace BusinessLayerRestaurant.Interfaces

@@ -2,8 +2,7 @@
 using BusinessLayerRestaurant.Classes;
 using DataLayerRestaurant.Interfaces;
 using DataLayerRestaurant.Classes;
-using DomainLayer.Entities;
-using RestaurantDataLayer;
+
 
 namespace APILayer.Extensions.Services
 {

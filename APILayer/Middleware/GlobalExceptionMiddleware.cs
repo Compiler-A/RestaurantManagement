@@ -1,7 +1,4 @@
-﻿using System.Net;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Hosting;
-using System.Security.Authentication;
+﻿using System.Security.Authentication;
 using System.Text.Json;
 using BusinessLayerRestaurant.Interfaces;
 using System.Diagnostics;

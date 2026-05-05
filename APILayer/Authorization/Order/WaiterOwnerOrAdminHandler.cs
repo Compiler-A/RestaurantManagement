@@ -1,5 +1,4 @@
-﻿using APILayer.Authorization.Employee;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 
 namespace APILayer.Authorization.Order

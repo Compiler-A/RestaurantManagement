@@ -1,7 +1,4 @@
-﻿
-
-using ContractsLayerRestaurant.DTORequest.StatusMenus;
-using ContractsLayerRestaurant.DTOResponse;
+﻿using ContractsLayerRestaurant.DTOResponse;
 using DomainLayer.Entities;
 
 namespace BusinessLayerRestaurant.Mapper

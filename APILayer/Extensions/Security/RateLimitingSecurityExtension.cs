@@ -1,7 +1,6 @@
 ﻿using APILayer.Filters;
 using ContractsLayerRestaurant.DTORequest.Auth;
 using Microsoft.AspNetCore.RateLimiting;
-using Microsoft.Extensions.Options;
 using System.Threading.RateLimiting;
 
 namespace APILayer.Extensions.Security

@@ -4,10 +4,8 @@ using DataLayerRestaurant.Mapper;
 using DomainLayer.Entities;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
-using RestaurantDataLayer;
 using System.Data;
-using System.Runtime;
+
 namespace DataLayerRestaurant.Classes
 {
 

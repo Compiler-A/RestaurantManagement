@@ -1,5 +1,4 @@
-﻿using ContractsLayerRestaurant.DTORequest.Settings;
-using ContractsLayerRestaurant.DTOResponse;
+﻿using ContractsLayerRestaurant.DTOResponse;
 using DomainLayer.Entities;
 
 
