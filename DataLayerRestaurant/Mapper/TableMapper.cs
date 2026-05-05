@@ -29,8 +29,10 @@ namespace DataLayerRestaurant.Mapper
                 ID = Reader.GetInt32(Reader.GetOrdinal("TableID")),
                 Name = Reader.GetString(Reader.GetOrdinal("TableNumber")),
                 Seats = Reader.GetInt32(Reader.GetOrdinal("Seats")),
+                StatusTableID = Reader.GetInt32(Reader.GetOrdinal("StatusTableID")),
                 StatusTable = new StatusTable
                 {
+                    ID = Reader.GetInt32(Reader.GetOrdinal("StatusTableID")),
                     Name = Reader.GetString(Reader.GetOrdinal("StatusTableName")),
                 }
             };

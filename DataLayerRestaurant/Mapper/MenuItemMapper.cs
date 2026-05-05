@@ -34,12 +34,16 @@ namespace DataLayerRestaurant.Mapper
                 Name = reader.GetString(reader.GetOrdinal("ItemName")),
                 Price = reader.GetDecimal(reader.GetOrdinal("Price")),
                 Image = reader.IsDBNull(reader.GetOrdinal("Image")) ? null : reader.GetString(reader.GetOrdinal("Image")),
+                TypeItemID = reader.GetInt32(reader.GetOrdinal("TypeItemID")),
+                StatusMenuID = reader.GetInt32(reader.GetOrdinal("StatusMenuID")),
                 TypeItems = new TypeItem
                 {
+                    ID = reader.GetInt32(reader.GetOrdinal("TypeItemID")),
                     Name = reader.GetString(reader.GetOrdinal("TypeName"))
                 },
                 StatusMenus = new StatusMenu
                 {
+                    ID = reader.GetInt32(reader.GetOrdinal("StatusMenuID")),
                     Name = reader.GetString(reader.GetOrdinal("StatusMenuName"))
                 }
             };

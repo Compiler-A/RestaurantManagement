@@ -26,22 +26,29 @@ namespace DataLayerRestaurant.Mapper
             return new Order
             {
                 ID = reader.GetInt32(reader.GetOrdinal("OrderID")),
+                TableID = reader.GetInt32(reader.GetOrdinal("TableID")),
+                EmployeeID = reader.GetInt32(reader.GetOrdinal("EmployeeID")),
+                StatusOrderID = reader.GetInt32(reader.GetOrdinal("StatusOrderID")),
+                OrderDate = reader.GetDateTime(reader.GetOrdinal("OrderDate")),
+                TotalAmount = reader.IsDBNull(reader.GetOrdinal("TotalAmount"))
+                    ? null
+                    : reader.GetDecimal(reader.GetOrdinal("TotalAmount")),
                 employees = new Employee
                 {
+                    ID = reader.GetInt32(reader.GetOrdinal("EmployeeID")),
                     UserName = reader.GetString(reader.GetOrdinal("username"))
                 },
                 tables = new Table
                 {
+                    ID = reader.GetInt32(reader.GetOrdinal("TableID")),
                     Name = reader.GetString(reader.GetOrdinal("TableNumber"))
                 },
                 statusOrders = new StatusOrder
                 {
+                    ID = reader.GetInt32(reader.GetOrdinal("StatusOrderID")),
                     Name = reader.GetString(reader.GetOrdinal("StatusOrderName"))
-                },
-                OrderDate = reader.GetDateTime(reader.GetOrdinal("OrderDate")),
-                TotalAmount = reader.IsDBNull(reader.GetOrdinal("TotalAmount"))
-                    ? null
-                    : reader.GetDecimal(reader.GetOrdinal("TotalAmount"))
+                }
+                
             };
         }
     }
