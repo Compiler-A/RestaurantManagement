@@ -11,10 +11,10 @@ using System.Data;
 namespace DataLayerRestaurant.Classes
 { 
 
-    public class clsJobRolesRepositoryReader: IJobRolesRepositoryReader
+    public class JobRolesRepositoryReader: IJobRolesRepositoryReader
     {
         private readonly clsMySettings _Settings;
-        public clsJobRolesRepositoryReader(IOptions<clsMySettings> mySettings)
+        public JobRolesRepositoryReader(IOptions<clsMySettings> mySettings)
         {
             _Settings = mySettings.Value;
         }
@@ -97,10 +97,10 @@ namespace DataLayerRestaurant.Classes
         }
     }
     
-    public class clsJobRolesRepositoryWriter : IJobRolesRepositoryWriter
+    public class JobRolesRepositoryWriter : IJobRolesRepositoryWriter
     {
         private readonly clsMySettings _Settings;
-        public clsJobRolesRepositoryWriter(IOptions<clsMySettings> mySettings)
+        public JobRolesRepositoryWriter(IOptions<clsMySettings> mySettings)
         {
             _Settings = mySettings.Value;
         }
@@ -172,12 +172,12 @@ namespace DataLayerRestaurant.Classes
         }
     }
 
-    public class clsJobRolesRepository : IJobRolesRepository
+    public class JobRolesRepository : IJobRolesRepository
     {
         IJobRolesRepositoryWriter _IWrite;
         IJobRolesRepositoryReader _IRead;
 
-        public clsJobRolesRepository(IJobRolesRepositoryWriter write,  IJobRolesRepositoryReader read)
+        public JobRolesRepository(IJobRolesRepositoryWriter write,  IJobRolesRepositoryReader read)
         {
             _IRead = read;
             _IWrite = write;

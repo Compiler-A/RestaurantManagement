@@ -9,7 +9,7 @@ namespace BusinessLayerRestaurant.Classes
 {
     
 
-    public class clsJobRolesContainer : IJobRolesServiceContainer
+    public class JobRolesContainer : IJobRolesServiceContainer
     {
         private IJobRolesRepository _IJobRole;
         public IJobRolesRepository IData
@@ -18,7 +18,7 @@ namespace BusinessLayerRestaurant.Classes
             set => _IJobRole = value;
         }
 
-        public clsJobRolesContainer(IJobRolesRepository IJobRole)
+        public JobRolesContainer(IJobRolesRepository IJobRole)
         {
             _IJobRole = IJobRole;
         }
@@ -26,11 +26,11 @@ namespace BusinessLayerRestaurant.Classes
     }
 
 
-    public class clsJobRolesReader : IJobRolesServiceReader
+    public class JobRolesReader : IJobRolesServiceReader
     {
         private IJobRolesServiceContainer _Interface;
         private IMyLogger _Logger;
-        public clsJobRolesReader(IJobRolesServiceContainer setting, IMyLogger myLogger)
+        public JobRolesReader(IJobRolesServiceContainer setting, IMyLogger myLogger)
         {
             _Interface = setting;
             _Logger = myLogger;
@@ -58,11 +58,11 @@ namespace BusinessLayerRestaurant.Classes
         }
     }
 
-    public class clsJobRolesWriter :  IJobRolesServiceWriter
+    public class JobRolesWriter :  IJobRolesServiceWriter
     {
         private IJobRolesServiceContainer _Interface;
         private IMyLogger _Logger;
-        public clsJobRolesWriter(IJobRolesServiceContainer jobrole, IMyLogger logger)
+        public JobRolesWriter(IJobRolesServiceContainer jobrole, IMyLogger logger)
         {
             _Interface = jobrole;
             _Logger = logger;
@@ -106,12 +106,12 @@ namespace BusinessLayerRestaurant.Classes
 
    
 
-    public class clsJobRolesService : IJobRolesService
+    public class JobRolesService : IJobRolesService
     {
 
         IJobRolesServiceReader _IRead;
         IJobRolesServiceWriter _IWrite;
-        public clsJobRolesService( IJobRolesServiceReader iRead, IJobRolesServiceWriter iWrite)
+        public JobRolesService( IJobRolesServiceReader iRead, IJobRolesServiceWriter iWrite)
         {
             _IRead = iRead;
             _IWrite = iWrite;

@@ -10,13 +10,13 @@ namespace APILayer.Extensions.Services
         public static IServiceCollection AddJobRolesServices(this IServiceCollection Services)
         {
 
-            Services.AddScoped<IJobRolesRepositoryReader, clsJobRolesRepositoryReader>();
-            Services.AddScoped<IJobRolesRepositoryWriter, clsJobRolesRepositoryWriter>();
-            Services.AddScoped<IJobRolesRepository, clsJobRolesRepository>();
-            Services.AddScoped<IJobRolesServiceWriter, clsJobRolesWriter>();
-            Services.AddScoped<IJobRolesServiceReader, clsJobRolesReader>();
-            Services.AddScoped<IJobRolesServiceContainer, clsJobRolesContainer>();
-            Services.AddScoped<IJobRolesService, clsJobRolesService>();
+            Services.AddScoped<IJobRolesRepositoryReader, JobRolesRepositoryReader>();
+            Services.AddScoped<IJobRolesRepositoryWriter, JobRolesRepositoryWriter>();
+            Services.AddScoped<IJobRolesRepository, JobRolesRepository>();
+            Services.AddScoped<IJobRolesServiceWriter, JobRolesWriter>();
+            Services.AddScoped<IJobRolesServiceReader, JobRolesReader>();
+            Services.AddScoped<IJobRolesServiceContainer, JobRolesContainer>();
+            Services.AddScoped<IJobRolesService, JobRolesService>();
             return Services;
         }
     }
