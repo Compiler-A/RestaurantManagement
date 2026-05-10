@@ -10,7 +10,7 @@ namespace BusinessLayerRestaurant.Classes
 {
 
 
-    public class clsTypeItemsContainer : ITypeItemsServiceContainer
+    public class TypeItemsContainer : ITypeItemsServiceContainer
     {
         private ITypeItemsRepository _IDataTypeItem;
         public ITypeItemsRepository IData
@@ -19,17 +19,17 @@ namespace BusinessLayerRestaurant.Classes
             set => _IDataTypeItem = value;
         }
 
-        public clsTypeItemsContainer(ITypeItemsRepository Data)
+        public TypeItemsContainer(ITypeItemsRepository Data)
         {
             _IDataTypeItem = Data;
         }
     }
 
-    public class clsTypeItemsReader : ITypeItemsServiceReader
+    public class TypeItemsReader : ITypeItemsServiceReader
     {
         private ITypeItemsServiceContainer _Interface;
         private IMyLogger _Logger;
-        public clsTypeItemsReader(ITypeItemsServiceContainer Interface, IMyLogger logger)
+        public TypeItemsReader(ITypeItemsServiceContainer Interface, IMyLogger logger)
         {
             _Interface = Interface;
             _Logger = logger;
@@ -58,11 +58,11 @@ namespace BusinessLayerRestaurant.Classes
         }
     }
 
-    public class clsTypeItemsWriter : ITypeItemsServiceWriter
+    public class TypeItemsWriter : ITypeItemsServiceWriter
     {
         private ITypeItemsServiceContainer _Interface;
         private IMyLogger _Logger;
-        public clsTypeItemsWriter(ITypeItemsServiceContainer @interface, IMyLogger logger)
+        public TypeItemsWriter(ITypeItemsServiceContainer @interface, IMyLogger logger)
         {
             _Interface = @interface;
             _Logger = logger;
@@ -106,12 +106,12 @@ namespace BusinessLayerRestaurant.Classes
 
 
 
-    public class clsTypeItemsService : ITypeItemsService
+    public class TypeItemsService : ITypeItemsService
     {
         ITypeItemsServiceWriter _IWrite;
         ITypeItemsServiceReader _IRead;
 
-        public clsTypeItemsService( ITypeItemsServiceWriter write,  ITypeItemsServiceReader read)
+        public TypeItemsService( ITypeItemsServiceWriter write,  ITypeItemsServiceReader read)
         {
             _IWrite = write;
             _IRead = read;

@@ -9,11 +9,11 @@ using System.Data;
 namespace DataLayerRestaurant.Classes
 {
 
-    public class clsTypeItemsRepositoryReader : ITypeItemsRepositoryReader
+    public class TypeItemsRepositoryReader : ITypeItemsRepositoryReader
     {
         private readonly clsMySettings _Settings;
 
-        public clsTypeItemsRepositoryReader(IOptions<clsMySettings> Settings)
+        public TypeItemsRepositoryReader(IOptions<clsMySettings> Settings)
         {
             _Settings = Settings.Value;
         }
@@ -92,11 +92,11 @@ namespace DataLayerRestaurant.Classes
         }
     }
 
-    public class clsTypeItemsRepositoryWriter : ITypeItemsRepositoryWriter
+    public class TypeItemsRepositoryWriter : ITypeItemsRepositoryWriter
     {
         private readonly clsMySettings _Settings;
 
-        public clsTypeItemsRepositoryWriter(IOptions<clsMySettings> Settings)
+        public TypeItemsRepositoryWriter(IOptions<clsMySettings> Settings)
         {
             _Settings = Settings.Value;
         }   
@@ -161,12 +161,12 @@ namespace DataLayerRestaurant.Classes
 
 
 
-    public class clsTypeItemsRepository : ITypeItemsRepository
+    public class TypeItemsRepository : ITypeItemsRepository
     {
         ITypeItemsRepositoryReader _IRead;
         ITypeItemsRepositoryWriter _IWrite;
 
-        public clsTypeItemsRepository(ITypeItemsRepositoryReader Read, ITypeItemsRepositoryWriter Write)
+        public TypeItemsRepository(ITypeItemsRepositoryReader Read, ITypeItemsRepositoryWriter Write)
         {
             _IRead = Read;
             _IWrite = Write;
