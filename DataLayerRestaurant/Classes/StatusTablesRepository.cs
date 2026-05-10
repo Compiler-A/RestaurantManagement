@@ -10,12 +10,12 @@ namespace DataLayerRestaurant.Classes
 {
 
 
-    public class clsStatusTablesRepositoryReader : IStatusTablesRepositoryReader
+    public class StatusTablesRepositoryReader : IStatusTablesRepositoryReader
     {
 
         private readonly clsMySettings _Settings;
 
-        public clsStatusTablesRepositoryReader(IOptions<clsMySettings> Settings)
+        public StatusTablesRepositoryReader(IOptions<clsMySettings> Settings)
         {
             _Settings = Settings.Value;
         }
@@ -119,13 +119,13 @@ namespace DataLayerRestaurant.Classes
     }
 
 
-    public class clsStatusTablesRepositoryWriter : IStatusTablesRepositoryWriter
+    public class StatusTablesRepositoryWriter : IStatusTablesRepositoryWriter
     {
 
 
         readonly private clsMySettings _Settings;
 
-        public clsStatusTablesRepositoryWriter(IOptions<clsMySettings> Settings)
+        public StatusTablesRepositoryWriter(IOptions<clsMySettings> Settings)
         {
             _Settings = Settings.Value;
         }
@@ -197,11 +197,11 @@ namespace DataLayerRestaurant.Classes
         }
     }
 
-    public class clsStatusTablesRepository : IStatusTablesRepository
+    public class StatusTablesRepository : IStatusTablesRepository
     {
         private IStatusTablesRepositoryReader _IRead;
         private IStatusTablesRepositoryWriter _IWrite;
-        public clsStatusTablesRepository(IStatusTablesRepositoryReader Read, IStatusTablesRepositoryWriter Write) 
+        public StatusTablesRepository(IStatusTablesRepositoryReader Read, IStatusTablesRepositoryWriter Write) 
         {
             _IRead = Read;
             _IWrite = Write;

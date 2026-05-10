@@ -11,7 +11,7 @@ namespace BusinessLayerRestaurant.Classes
 {
 
 
-    public class clsStatusTablesContainer : IStatusTablesServiceContainer
+    public class StatusTablesContainer : IStatusTablesServiceContainer
     {
         private IStatusTablesRepository _IStatusTable;
         public IStatusTablesRepository IData
@@ -19,17 +19,17 @@ namespace BusinessLayerRestaurant.Classes
             get => _IStatusTable;
             set => _IStatusTable = value;
         }
-        public clsStatusTablesContainer(IStatusTablesRepository iStatusTable)
+        public StatusTablesContainer(IStatusTablesRepository iStatusTable)
         {
             _IStatusTable = iStatusTable;
         }
     }
 
-    public class clsStatusTablesReader : IStatusTablesServiceReader
+    public class StatusTablesReader : IStatusTablesServiceReader
     {
         private IStatusTablesServiceContainer _Interface;
         private IMyLogger _Logger;
-        public clsStatusTablesReader(IStatusTablesServiceContainer iInterface, IMyLogger logger)
+        public StatusTablesReader(IStatusTablesServiceContainer iInterface, IMyLogger logger)
         {
             _Interface = iInterface;
             _Logger = logger;
@@ -71,11 +71,11 @@ namespace BusinessLayerRestaurant.Classes
 
     }
 
-    public class clsStatusTablesWriter : IStatusTablesServiceWriter
+    public class StatusTablesWriter : IStatusTablesServiceWriter
     {
         private IStatusTablesServiceContainer _Interface;
         private IMyLogger _Logger;
-        public clsStatusTablesWriter(IStatusTablesServiceContainer setting, IMyLogger logger)
+        public StatusTablesWriter(IStatusTablesServiceContainer setting, IMyLogger logger)
         {
             _Interface = setting;
             _Logger = logger;
@@ -118,12 +118,12 @@ namespace BusinessLayerRestaurant.Classes
 
 
 
-    public class clsStatusTablesService : IStatusTablesService
+    public class StatusTablesService : IStatusTablesService
     {
         private IStatusTablesServiceReader _IRead;
         private IStatusTablesServiceWriter _IWrite;
 
-        public clsStatusTablesService(IStatusTablesServiceReader read, IStatusTablesServiceWriter write)
+        public StatusTablesService(IStatusTablesServiceReader read, IStatusTablesServiceWriter write)
         {
             _IRead = read;
             _IWrite = write;
