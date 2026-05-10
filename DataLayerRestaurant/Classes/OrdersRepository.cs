@@ -9,10 +9,10 @@ using System.Data;
 namespace DataLayerRestaurant.Classes
 {
 
-    public class clsOrderDetailBatchLoader : IOrderDetailBatchLoader
+    public class OrderDetailBatchLoader : IOrderDetailBatchLoader
     {
         private readonly IOrderDetailsRepositoryReader _OrderDetail;
-        public clsOrderDetailBatchLoader(IOrderDetailsRepositoryReader orderDetail)
+        public OrderDetailBatchLoader(IOrderDetailsRepositoryReader orderDetail)
         {
             _OrderDetail = orderDetail;
         }
@@ -35,12 +35,12 @@ namespace DataLayerRestaurant.Classes
         }
     }
 
-    public class clsOrdersRepositoryReader : IOrdersRepositoryReader
+    public class OrdersRepositoryReader : IOrdersRepositoryReader
     {
         private readonly clsMySettings _Settings;
         private readonly IOrderDetailBatchLoader _BatchLoader;
 
-        public clsOrdersRepositoryReader(IOptions<clsMySettings> settings, IOrderDetailBatchLoader batchLoader)
+        public OrdersRepositoryReader(IOptions<clsMySettings> settings, IOrderDetailBatchLoader batchLoader)
         {
             _Settings = settings.Value;
             _BatchLoader = batchLoader;
@@ -163,12 +163,12 @@ namespace DataLayerRestaurant.Classes
         }
     }
 
-    public class clsOrdersRepositoryWriter : IOrdersRepositoryWriter
+    public class OrdersRepositoryWriter : IOrdersRepositoryWriter
     {
 
         private readonly clsMySettings _Settings;
         private readonly IOrderDetailBatchLoader _BatchLoader;
-        public clsOrdersRepositoryWriter(IOptions<clsMySettings> settings, IOrderDetailBatchLoader BatchLoader)
+        public OrdersRepositoryWriter(IOptions<clsMySettings> settings, IOrderDetailBatchLoader BatchLoader)
         {
             _Settings = settings.Value;
             _BatchLoader = BatchLoader;
@@ -263,12 +263,12 @@ namespace DataLayerRestaurant.Classes
         }
     }
 
-    public class clsOrdersRepository : IOrdersRepository
+    public class OrdersRepository : IOrdersRepository
     {
         IOrdersRepositoryWriter _Write;
         IOrdersRepositoryReader _Read;
 
-        public clsOrdersRepository(IOrdersRepositoryWriter write, IOrdersRepositoryReader read)
+        public OrdersRepository(IOrdersRepositoryWriter write, IOrdersRepositoryReader read)
         {
             _Write = write;
             _Read = read;

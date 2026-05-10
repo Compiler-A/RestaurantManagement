@@ -9,15 +9,15 @@ namespace APILayer.Extensions.Services
     {
         public static IServiceCollection AddOrdersServices(this IServiceCollection Services)
         {
-            Services.AddScoped<IOrderDetailBatchLoader, clsOrderDetailBatchLoader>();
+            Services.AddScoped<IOrderDetailBatchLoader, OrderDetailBatchLoader>();
 
-            Services.AddScoped<IOrdersRepositoryWriter, clsOrdersRepositoryWriter>();
-            Services.AddScoped<IOrdersRepositoryReader, clsOrdersRepositoryReader>();
-            Services.AddScoped<IOrdersRepository, clsOrdersRepository>();
-            Services.AddScoped<IOrdersServiceWriter, clsOrdersWriter>();
-            Services.AddScoped<IOrdersServiceReader, clsOrdersReader>();
-            Services.AddScoped<IOrdersServiceContainer, clsOrdersContainer>();
-            Services.AddScoped<IOrdersService, clsOrdersService>();
+            Services.AddScoped<IOrdersRepositoryWriter, OrdersRepositoryWriter>();
+            Services.AddScoped<IOrdersRepositoryReader, OrdersRepositoryReader>();
+            Services.AddScoped<IOrdersRepository, OrdersRepository>();
+            Services.AddScoped<IOrdersServiceWriter, OrdersWriter>();
+            Services.AddScoped<IOrdersServiceReader, OrdersReader>();
+            Services.AddScoped<IOrdersServiceContainer, OrdersContainer>();
+            Services.AddScoped<IOrdersService, OrdersService>();
             return Services;
         }
     }

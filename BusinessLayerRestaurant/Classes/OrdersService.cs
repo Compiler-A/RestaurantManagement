@@ -10,7 +10,7 @@ using DomainLayer.Entities;
 namespace BusinessLayerRestaurant.Classes
 {
 
-    public class clsOrdersContainer : IOrdersServiceContainer
+    public class OrdersContainer : IOrdersServiceContainer
     {
         private IOrdersRepository _Iorder;
         private IStatusOrdersService _IStatusOrder;
@@ -36,7 +36,7 @@ namespace BusinessLayerRestaurant.Classes
             get => _IBusinessTable;
             set => _IBusinessTable = value;
         }
-        public clsOrdersContainer
+        public OrdersContainer
             (IOrdersRepository Order, IEmployeesService Business, IStatusOrdersService StatusOrder, ITablesService Table)
         {
             _IStatusOrder = StatusOrder;
@@ -47,11 +47,11 @@ namespace BusinessLayerRestaurant.Classes
     }
 
 
-    public class clsOrdersReader : IOrdersServiceReader
+    public class OrdersReader : IOrdersServiceReader
     {
         private IOrdersServiceContainer _Interfaces;
         private IMyLogger _Logger;
-        public clsOrdersReader
+        public OrdersReader
             (IOrdersServiceContainer Interfaces, IMyLogger logger) 
         {
             _Interfaces = Interfaces;
@@ -94,11 +94,11 @@ namespace BusinessLayerRestaurant.Classes
             return koko;
         }
     }
-    public class clsOrdersWriter :  IOrdersServiceWriter
+    public class OrdersWriter :  IOrdersServiceWriter
     {
         private IOrdersServiceContainer _Interfaces;
         private IMyLogger _Logger;
-        public clsOrdersWriter
+        public OrdersWriter
             (IMyLogger Logger, IOrdersServiceContainer Interfaces)
         {
             _Logger = Logger;
@@ -143,13 +143,13 @@ namespace BusinessLayerRestaurant.Classes
     }
 
 
-    public class clsOrdersService : IOrdersService
+    public class OrdersService : IOrdersService
     {
         private IOrdersServiceContainer _Interface;
         private IOrdersServiceWriter _IWrite;
         private IOrdersServiceReader _Read;
 
-        public clsOrdersService(
+        public OrdersService(
             IOrdersServiceWriter Write,             
             IOrdersServiceReader read,
             IOrdersServiceContainer Interface)
