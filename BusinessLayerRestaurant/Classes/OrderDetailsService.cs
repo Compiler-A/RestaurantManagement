@@ -10,7 +10,7 @@ using DomainLayer.Entities;
 namespace BusinessLayerRestaurant.Classes
 {
 
-    public class clsOrderDetailsContainer : IOrderDetailsServiceContainer
+    public class OrderDetailsContainer : IOrderDetailsServiceContainer
     {
         private IOrderDetailsRepository _IDataOrderDetail;
         public IOrderDetailsRepository IData
@@ -32,7 +32,7 @@ namespace BusinessLayerRestaurant.Classes
             set => _IBusinessMenuItem = value;
         }
 
-        public clsOrderDetailsContainer(IOrderDetailsRepository iData, IOrdersService iBusinessOrder, IMenuItemsService iBusinessMenuItem)
+        public OrderDetailsContainer(IOrderDetailsRepository iData, IOrdersService iBusinessOrder, IMenuItemsService iBusinessMenuItem)
         {
             _IDataOrderDetail = iData;
             _IBusinessOrder = iBusinessOrder;
@@ -41,11 +41,11 @@ namespace BusinessLayerRestaurant.Classes
     }
 
 
-    public class clsOrderDetailsReader : IOrderDetailsServiceReader
+    public class OrderDetailsReader : IOrderDetailsServiceReader
     {
         private IOrderDetailsServiceContainer _Interfaces;
         private IMyLogger _Logger;
-        public clsOrderDetailsReader
+        public OrderDetailsReader
             (IOrderDetailsServiceContainer Interfaces,  IMyLogger logger) 
         {
             _Interfaces = Interfaces;
@@ -87,11 +87,11 @@ namespace BusinessLayerRestaurant.Classes
         }
     }
 
-    public class clsOrderDetailsWriter : IOrderDetailsServiceWriter
+    public class OrderDetailsWriter : IOrderDetailsServiceWriter
     {
         private IOrderDetailsServiceContainer _Interfaces;
         private IMyLogger _Logger;
-        public clsOrderDetailsWriter
+        public OrderDetailsWriter
             (IMyLogger Logger ,IOrderDetailsServiceContainer @interface) 
         {
             _Interfaces = @interface;
@@ -142,13 +142,13 @@ namespace BusinessLayerRestaurant.Classes
 
 
 
-    public class clsOrderDetailsService : IOrderDetailsService
+    public class OrderDetailsService : IOrderDetailsService
     {
         private IOrderDetailsServiceContainer _Interface;
         private IOrderDetailsServiceWriter _IWrite;
         private IOrderDetailsServiceReader _Read;
 
-        public clsOrderDetailsService(
+        public OrderDetailsService(
             IOrderDetailsServiceWriter Write,
             IOrderDetailsServiceReader read,
             IOrderDetailsServiceContainer interfaces)

@@ -11,13 +11,13 @@ namespace APILayer.Extensions.Services
         public static IServiceCollection AddOrderDetailsServices(this IServiceCollection Services)
         {
 
-            Services.AddScoped<IOrderDetailsRepositoryReader, clsOrderDetailsRepositoryReader>();
-            Services.AddScoped<IOrderDetailsRepositoryWriter, clsOrderDetailsRepositoryWriter>();
-            Services.AddScoped<IOrderDetailsRepository, clsOrderDetailsRepository>();
-            Services.AddScoped<IOrderDetailsServiceReader, clsOrderDetailsReader>();
-            Services.AddScoped<IOrderDetailsServiceWriter, clsOrderDetailsWriter>();
-            Services.AddScoped<IOrderDetailsServiceContainer, clsOrderDetailsContainer>();
-            Services.AddScoped<IOrderDetailsService, clsOrderDetailsService>();
+            Services.AddScoped<IOrderDetailsRepositoryReader, OrderDetailsRepositoryReader>();
+            Services.AddScoped<IOrderDetailsRepositoryWriter, OrderDetailsRepositoryWriter>();
+            Services.AddScoped<IOrderDetailsRepository, OrderDetailsRepository>();
+            Services.AddScoped<IOrderDetailsServiceReader, OrderDetailsReader>();
+            Services.AddScoped<IOrderDetailsServiceWriter, OrderDetailsWriter>();
+            Services.AddScoped<IOrderDetailsServiceContainer, OrderDetailsContainer>();
+            Services.AddScoped<IOrderDetailsService, OrderDetailsService>();
             return Services;
         }
     }
