@@ -11,13 +11,13 @@ namespace APILayer.Extensions.Services
         public static IServiceCollection AddLoginServices(this IServiceCollection Services)
         {
 
-            Services.AddScoped<ILoginRepositoryReader, clsLoginRepositoryReader>();
-            Services.AddScoped<ILoginRepositoryWriter, clsLoginRepositoryWriter>();
-            Services.AddScoped<ILoginRepository, clsLoginRepository>();
-            Services.AddScoped<ILoginServiceReader, clsLoginReader>();
-            Services.AddScoped<ILoginServiceWriter, clsLoginWriter>();
-            Services.AddScoped<ILoginServiceContainer, clsLoginContainer>();
-            Services.AddScoped<ILoginService, clsLoginService>();
+            Services.AddScoped<ILoginRepositoryReader, LoginRepositoryReader>();
+            Services.AddScoped<ILoginRepositoryWriter, LoginRepositoryWriter>();
+            Services.AddScoped<ILoginRepository, LoginRepository>();
+            Services.AddScoped<ILoginServiceReader, LoginReader>();
+            Services.AddScoped<ILoginServiceWriter, LoginWriter>();
+            Services.AddScoped<ILoginServiceContainer, LoginContainer>();
+            Services.AddScoped<ILoginService, LoginService>();
             return Services;
         }
     }

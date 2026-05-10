@@ -10,10 +10,10 @@ namespace DataLayerRestaurant.Classes
 {
 
 
-    public class clsLoginRepositoryReader : ILoginRepositoryReader
+    public class LoginRepositoryReader : ILoginRepositoryReader
     {
         protected readonly clsMySettings _Setting;
-        public clsLoginRepositoryReader(IOptions<clsMySettings> Setting) 
+        public LoginRepositoryReader(IOptions<clsMySettings> Setting) 
         {
             _Setting = Setting.Value;
         }
@@ -63,10 +63,10 @@ namespace DataLayerRestaurant.Classes
         }
     }
 
-    public class clsLoginRepositoryWriter : ILoginRepositoryWriter
+    public class LoginRepositoryWriter : ILoginRepositoryWriter
     {
         private readonly clsMySettings _Setting;
-        public clsLoginRepositoryWriter(IOptions<clsMySettings> settings)
+        public LoginRepositoryWriter(IOptions<clsMySettings> settings)
         {
             _Setting = settings.Value;
         }
@@ -128,11 +128,11 @@ namespace DataLayerRestaurant.Classes
         }
     }
 
-    public class clsLoginRepository : ILoginRepository
+    public class LoginRepository : ILoginRepository
     {
         private readonly ILoginRepositoryReader _reader;
         private readonly ILoginRepositoryWriter _writer;
-        public clsLoginRepository(ILoginRepositoryReader reader, ILoginRepositoryWriter writer)
+        public LoginRepository(ILoginRepositoryReader reader, ILoginRepositoryWriter writer)
         {
             _reader = reader;
             _writer = writer;

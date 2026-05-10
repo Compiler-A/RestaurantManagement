@@ -17,7 +17,7 @@ using ContractsLayerRestaurant.DTOResponse;
 namespace BusinessLayerRestaurant.Classes
 {
 
-    public class clsLoginContainer : ILoginServiceContainer
+    public class LoginContainer : ILoginServiceContainer
     {
         private IEmployeesService _IEmployees;
         public IEmployeesService IEmployee
@@ -32,7 +32,7 @@ namespace BusinessLayerRestaurant.Classes
             set => _ILoginRepository = value;
         }
 
-        public clsLoginContainer(IEmployeesService Employee, ILoginRepository loginRepository)
+        public LoginContainer(IEmployeesService Employee, ILoginRepository loginRepository)
         {
             _IEmployees = Employee;
             _ILoginRepository = loginRepository;
@@ -40,12 +40,12 @@ namespace BusinessLayerRestaurant.Classes
     }
 
 
-    public class clsLoginReader : ILoginServiceReader
+    public class LoginReader : ILoginServiceReader
     {
         private ILoginServiceContainer _Interface;
         private readonly IMyLogger _Logger;
 
-        public clsLoginReader(ILoginServiceContainer Interface, IMyLogger Logger)
+        public LoginReader(ILoginServiceContainer Interface, IMyLogger Logger)
         {
             _Interface = Interface;
             _Logger = Logger;
@@ -63,13 +63,13 @@ namespace BusinessLayerRestaurant.Classes
         }
     }
 
-    public class clsLoginWriter : ILoginServiceWriter
+    public class LoginWriter : ILoginServiceWriter
     {
         private ILoginServiceContainer _Interface;
         private ILoginServiceReader _Reader;
         private IOptions<JwtSettings> _Options;
 
-        public clsLoginWriter(IOptions<JwtSettings> Options,ILoginServiceContainer Interface,ILoginServiceReader Reader)
+        public LoginWriter(IOptions<JwtSettings> Options,ILoginServiceContainer Interface,ILoginServiceReader Reader)
         {
             _Interface = Interface;
             _Reader = Reader;
@@ -217,13 +217,13 @@ namespace BusinessLayerRestaurant.Classes
     }
 
 
-    public class clsLoginService : ILoginService
+    public class LoginService : ILoginService
     {
         private ILoginServiceReader _Reader;
         private ILoginServiceWriter _Writer;
         private ILoginServiceContainer _Interface;
 
-        public clsLoginService(ILoginServiceContainer Interface, ILoginServiceReader Reader, ILoginServiceWriter Writer)
+        public LoginService(ILoginServiceContainer Interface, ILoginServiceReader Reader, ILoginServiceWriter Writer)
         {
             _Interface = Interface;
             _Reader = Reader;
