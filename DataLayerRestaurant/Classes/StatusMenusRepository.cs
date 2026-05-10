@@ -9,11 +9,11 @@ using System.Data;
 namespace DataLayerRestaurant.Classes
 { 
 
-    public class clsStatusMenusRepositoryReader : IStatusMenusRepositoryReader
+    public class StatusMenusRepositoryReader : IStatusMenusRepositoryReader
     {
         private readonly clsMySettings _Settings;
 
-        public clsStatusMenusRepositoryReader(IOptions<clsMySettings> settings)
+        public StatusMenusRepositoryReader(IOptions<clsMySettings> settings)
         {
             _Settings = settings.Value;
         }
@@ -86,11 +86,11 @@ namespace DataLayerRestaurant.Classes
         }
     }
     
-    public class clsStatusMenusRepositoryWriter : IStatusMenusRepositoryWriter
+    public class StatusMenusRepositoryWriter : IStatusMenusRepositoryWriter
     {
         private readonly clsMySettings _Settings;
 
-        public clsStatusMenusRepositoryWriter(IOptions<clsMySettings> settings)
+        public StatusMenusRepositoryWriter(IOptions<clsMySettings> settings)
         {
             _Settings = settings.Value;
         }
@@ -154,12 +154,12 @@ namespace DataLayerRestaurant.Classes
         }
     }
 
-    public class clsStatusMenusRepository : IStatusMenusRepository
+    public class StatusMenusRepository : IStatusMenusRepository
     {
         IStatusMenusRepositoryReader _IRead;
         IStatusMenusRepositoryWriter _IWrite;
 
-        public clsStatusMenusRepository(IStatusMenusRepositoryReader read, IStatusMenusRepositoryWriter write)
+        public StatusMenusRepository(IStatusMenusRepositoryReader read, IStatusMenusRepositoryWriter write)
         {
             _IRead = read;
             _IWrite = write;

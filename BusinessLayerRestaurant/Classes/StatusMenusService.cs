@@ -10,7 +10,7 @@ using DomainLayer.Entities;
 namespace BusinessLayerRestaurant.Classes
 {
 
-    public class clsStatusMenusContainer : IStatusMenusServiceContainer
+    public class StatusMenusContainer : IStatusMenusServiceContainer
     {
         private IStatusMenusRepository _IData;
         public IStatusMenusRepository IData
@@ -19,17 +19,17 @@ namespace BusinessLayerRestaurant.Classes
             set => _IData = value;
         }
 
-        public clsStatusMenusContainer(IStatusMenusRepository IData)
+        public StatusMenusContainer(IStatusMenusRepository IData)
         {
             _IData = IData;
         }
     }
 
-    public class clsStatusMenusReader : IStatusMenusServiceReader
+    public class StatusMenusReader : IStatusMenusServiceReader
     {
         private IStatusMenusServiceContainer _Interface;
         private IMyLogger _Logger;
-        public clsStatusMenusReader(IStatusMenusServiceContainer @interface, IMyLogger logger)
+        public StatusMenusReader(IStatusMenusServiceContainer @interface, IMyLogger logger)
         {
             _Interface = @interface;
             _Logger = logger;
@@ -60,11 +60,11 @@ namespace BusinessLayerRestaurant.Classes
         }
     }
 
-    public class clsStatusMenusWriter : IStatusMenusServiceWriter
+    public class StatusMenusWriter : IStatusMenusServiceWriter
     {
         private IStatusMenusServiceContainer _Interface;
         private IMyLogger _Logger;
-        public clsStatusMenusWriter(IStatusMenusServiceContainer @interface, IMyLogger logger)
+        public StatusMenusWriter(IStatusMenusServiceContainer @interface, IMyLogger logger)
         {
             _Interface = @interface;
             _Logger = logger;
@@ -108,12 +108,12 @@ namespace BusinessLayerRestaurant.Classes
     }
 
     
-    public class clsStatusMenusService : IStatusMenusService
+    public class StatusMenusService : IStatusMenusService
     {
         IStatusMenusServiceReader _IRead;
         IStatusMenusServiceWriter _IWrite;
 
-        public clsStatusMenusService( IStatusMenusServiceWriter Write, IStatusMenusServiceReader Read)
+        public StatusMenusService( IStatusMenusServiceWriter Write, IStatusMenusServiceReader Read)
         {
             _IRead = Read;
             _IWrite = Write;
