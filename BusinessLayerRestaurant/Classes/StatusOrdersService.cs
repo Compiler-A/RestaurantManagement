@@ -10,10 +10,10 @@ using DomainLayer.Entities;
 namespace BusinessLayerRestaurant.Classes
 {
 
-    public class clsStatusOrdersContainer : IStatusOrdersServiceContainer
+    public class StatusOrdersContainer : IStatusOrdersServiceContainer
     {
         private IStatusOrdersRepository _IDataStatusOrder;
-        public clsStatusOrdersContainer(IStatusOrdersRepository IDataStatusOrder)
+        public StatusOrdersContainer(IStatusOrdersRepository IDataStatusOrder)
         {
             this._IDataStatusOrder = IDataStatusOrder;
         }
@@ -24,11 +24,11 @@ namespace BusinessLayerRestaurant.Classes
         }
     }
 
-    public class clsStatusOrdersReader : IStatusOrdersServiceReader
+    public class StatusOrdersReader : IStatusOrdersServiceReader
     {
         private IStatusOrdersServiceContainer _Interface;
         private IMyLogger _Logger;
-        public clsStatusOrdersReader(IStatusOrdersServiceContainer Interface, IMyLogger logger)
+        public StatusOrdersReader(IStatusOrdersServiceContainer Interface, IMyLogger logger)
         {
             _Interface = Interface;
             _Logger = logger;
@@ -57,11 +57,11 @@ namespace BusinessLayerRestaurant.Classes
             return dto;
         }
     }
-    public class clsStatusOrdersWriter : IStatusOrdersServiceWriter
+    public class StatusOrdersWriter : IStatusOrdersServiceWriter
     {
         private IStatusOrdersServiceContainer _Interface;
         private IMyLogger _Logger;
-        public clsStatusOrdersWriter(IStatusOrdersServiceContainer setting, IMyLogger Logger)
+        public StatusOrdersWriter(IStatusOrdersServiceContainer setting, IMyLogger Logger)
         {
             _Interface = setting;
             _Logger = Logger;
@@ -106,12 +106,12 @@ namespace BusinessLayerRestaurant.Classes
     }
 
 
-    public class clsStatusOrdersService : IStatusOrdersService
+    public class StatusOrdersService : IStatusOrdersService
     {
         private IStatusOrdersServiceReader _IRead;
         private IStatusOrdersServiceWriter _IWrite;
 
-        public clsStatusOrdersService(IStatusOrdersServiceReader read, IStatusOrdersServiceWriter write)
+        public StatusOrdersService(IStatusOrdersServiceReader read, IStatusOrdersServiceWriter write)
         {
             _IRead = read;
             _IWrite = write;

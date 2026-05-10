@@ -9,13 +9,13 @@ namespace APILayer.Extensions.Services
     {
         public static IServiceCollection AddStatusOrdersServices(this IServiceCollection Services)
         {
-            Services.AddScoped<IStatusOrdersRepositoryReader, clsStatusOrdersRepositoryReader>();
-            Services.AddScoped<IStatusOrdersRepositoryWriter, clsStatusOrdersRepositoryWriter>();
-            Services.AddScoped<IStatusOrdersRepository, clsStatusOrdersRepository>();
-            Services.AddScoped<IStatusOrdersServiceReader, clsStatusOrdersReader>();
-            Services.AddScoped<IStatusOrdersServiceWriter, clsStatusOrdersWriter>();
-            Services.AddScoped<IStatusOrdersServiceContainer, clsStatusOrdersContainer>();
-            Services.AddScoped<IStatusOrdersService, clsStatusOrdersService>();
+            Services.AddScoped<IStatusOrdersRepositoryReader, StatusOrdersRepositoryReader>();
+            Services.AddScoped<IStatusOrdersRepositoryWriter, StatusOrdersRepositoryWriter>();
+            Services.AddScoped<IStatusOrdersRepository, StatusOrdersRepository>();
+            Services.AddScoped<IStatusOrdersServiceReader, StatusOrdersReader>();
+            Services.AddScoped<IStatusOrdersServiceWriter, StatusOrdersWriter>();
+            Services.AddScoped<IStatusOrdersServiceContainer, StatusOrdersContainer>();
+            Services.AddScoped<IStatusOrdersService, StatusOrdersService>();
             return Services;
         }
     }
