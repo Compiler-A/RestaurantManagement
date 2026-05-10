@@ -2,6 +2,7 @@
 using BusinessLayerRestaurant.Interfaces;
 using ContractsLayerRestaurant.DTORequest.Auth;
 using ContractsLayerRestaurant.DTOResponse;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 
@@ -44,6 +45,7 @@ namespace APILayer.Controllers
             return CreateResponse(Data, StatusCodes.Status200OK, "Refresh Successfully!");
         }
 
+        [Authorize]
         [HttpPost("logout")]
         public async Task<ActionResult<ApiResponse<bool>>> Logout([FromBody] DTOLogoutRequest request)
         {

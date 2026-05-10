@@ -24,7 +24,7 @@ namespace APILayer.Controllers
         private readonly IOrderDetailsService _businessOrderDetail;
 
 
-        [Authorize(Roles = "Manager,Chef,Sous Chef,Waiter")]
+        [Authorize(Roles = $"{RoleNames.Manager},{RoleNames.Chef},{RoleNames.SousChef},{RoleNames.Waiter}")]
         [HttpGet(Name = "GetAllOrderDetails")]
         [EnableRateLimiting(NameRateLimitPolicies.GetAll)]
         public async Task<ActionResult<ApiResponse<IEnumerable<DTOOrderDetailResponse>>>> GetAllAsync([FromQuery] int page = 1)
@@ -38,7 +38,7 @@ namespace APILayer.Controllers
             return CreateResponse<IEnumerable<DTOOrderDetailResponse>>(listResponse, StatusCodes.Status200OK, $"Row: {listResponse.Count}");
         }
 
-        [Authorize(Roles = "Manager,Chef,Sous Chef,Waiter")]
+        [Authorize(Roles = $"{RoleNames.Manager},{RoleNames.Chef},{RoleNames.SousChef},{RoleNames.Waiter}")]
         [HttpGet("all-orderid/{orderID}", Name = "GetAllOrderDetailsByOrderID")]
         [EnableRateLimiting(NameRateLimitPolicies.GetAll)]
         public async Task<ActionResult<ApiResponse<IEnumerable<DTOOrderDetailResponse>>>> GetAllByOrderIDAsync(int orderID)
@@ -53,7 +53,7 @@ namespace APILayer.Controllers
 
         }
 
-        [Authorize(Roles = "Manager,Chef,Sous Chef,Waiter")]
+        [Authorize(Roles = $"{RoleNames.Manager},{RoleNames.Chef},{RoleNames.SousChef},{RoleNames.Waiter}")]
         [EnableRateLimiting(NameRateLimitPolicies.GetOne)]
         [HttpGet("{ID}", Name = "GetOrderDetailByID")]
         public async Task<ActionResult<ApiResponse<DTOOrderDetailResponse>>> GetByIDAsync(int ID)
@@ -66,7 +66,7 @@ namespace APILayer.Controllers
             return CreateResponse<DTOOrderDetailResponse>(order!.ToResponse(), StatusCodes.Status200OK, "Found Successfully!");
         }
 
-        [Authorize(Roles = "Manager,Waiter")]
+        [Authorize(Roles = $"{RoleNames.Manager},{RoleNames.Waiter}")]
         [EnableRateLimiting(NameRateLimitPolicies.Add)]
         [HttpPost(Name = "AddNewOrderDetail")]
         public async Task<ActionResult<ApiResponse<DTOOrderDetailResponse>>> CreateAsync
@@ -88,7 +88,7 @@ namespace APILayer.Controllers
 
         }
 
-        [Authorize(Roles = "Manager,Chef,Sous Chef,Waiter")]
+        [Authorize(Roles = $"{RoleNames.Manager},{RoleNames.Chef},{RoleNames.SousChef},{RoleNames.Waiter}")]
         [EnableRateLimiting(NameRateLimitPolicies.Update)]
         [HttpPut(Name = "UpdateOrderDetail")]
         public async Task<ActionResult<ApiResponse<DTOOrderDetailResponse>>> UpdateAsync
@@ -109,7 +109,7 @@ namespace APILayer.Controllers
 
         }
 
-        [Authorize(Roles = "Manager,Waiter")]
+        [Authorize(Roles = $"{RoleNames.Manager},{RoleNames.Waiter}")]
         [EnableRateLimiting(NameRateLimitPolicies.Delete)]
         [HttpDelete("{ID}")]
         public async Task<ActionResult<ApiResponse<bool>>> DeleteAsync(int ID)

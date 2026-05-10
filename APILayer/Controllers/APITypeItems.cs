@@ -51,7 +51,7 @@ namespace APILayer.Controllers
 
         }
 
-        [Authorize(Roles = "Manager")]
+        [Authorize(Roles = $"{RoleNames.Manager}")]
         [EnableRateLimiting(NameRateLimitPolicies.Add)]
         [HttpPost(Name = "AddTypeItem")]
         public async Task<ActionResult<ApiResponse<DTOTypeItemResponse>>> CreateAsync([FromBody] DTOTypeItemsCRequest typeItem)
@@ -66,7 +66,7 @@ namespace APILayer.Controllers
 
         }
 
-        [Authorize(Roles = "Manager")]
+        [Authorize(Roles = $"{RoleNames.Manager}")]
         [EnableRateLimiting(NameRateLimitPolicies.Update)]
         [HttpPut(Name = "UpdateTypeItem")]
         public async Task<ActionResult<ApiResponse<DTOTypeItemResponse>>> UpdateAsync([FromBody] DTOTypeItemsURequest typeItem)
@@ -79,7 +79,7 @@ namespace APILayer.Controllers
 
         }
 
-        [Authorize(Roles = "Manager")]
+        [Authorize(Roles = $"{RoleNames.Manager}")]
         [EnableRateLimiting(NameRateLimitPolicies.Delete)]
         [HttpDelete("{ID}", Name = "DeleteTypeItem")]
         public async Task<ActionResult<ApiResponse<bool>>> DeleteAsync([FromRoute] int ID)

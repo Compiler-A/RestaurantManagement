@@ -53,7 +53,7 @@ namespace APILayer.Controllers
 
         }
 
-        [Authorize(Roles = "Manager")]
+        [Authorize(Roles = $"{RoleNames.Manager}")]
         [EnableRateLimiting(NameRateLimitPolicies.Add)]
         [HttpPost(Name = "AddStatusTable")]
         public async Task<ActionResult<ApiResponse<DTOStatusTableResponse>>> CreateAsync([FromBody] DTOStatusTablesCRequest Request)
@@ -70,7 +70,7 @@ namespace APILayer.Controllers
         }
 
 
-        [Authorize(Roles = "Manager")]
+        [Authorize(Roles = $"{RoleNames.Manager}")]
         [EnableRateLimiting(NameRateLimitPolicies.Update)]
         [HttpPut(Name = "UpdateStatusTable")]
         public async Task<ActionResult<ApiResponse<DTOStatusTableResponse>>> UpdateAsync([FromBody] DTOStatusTablesURequest Request)
@@ -86,7 +86,7 @@ namespace APILayer.Controllers
             
         }
 
-        [Authorize(Roles = "Manager")]
+        [Authorize(Roles = $"{RoleNames.Manager}")]
         [EnableRateLimiting(NameRateLimitPolicies.Delete)]
         [HttpDelete("{ID}", Name = "DeleteStatusTable")]
         public async Task<ActionResult<ApiResponse<bool>>> DeleteAsync([FromRoute] int ID)

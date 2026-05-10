@@ -136,7 +136,7 @@ namespace APILayer.Controllers
 
         }
 
-        [Authorize(Roles = "Manager")]
+        [Authorize(Roles = $"{RoleNames.Manager}")]
         [EnableRateLimiting(NameRateLimitPolicies.Add)]
         [HttpPost(Name = "AddTable")]
         public async Task<ActionResult<ApiResponse<DTOTableResponse>>> CreateAsync(DTOTablesCRequest Table)
@@ -150,7 +150,7 @@ namespace APILayer.Controllers
             return CreatedAtRoute("GetTableByID", new { ID = dto!.ID }, dto.ToResponse());
         }
 
-        [Authorize(Roles = "Manager,Cleaner")]
+        [Authorize(Roles = $"{RoleNames.Manager},{RoleNames.Cleaner}")]
         [EnableRateLimiting(NameRateLimitPolicies.Update)]
         [HttpPut(Name = "UpdateTable")]
         public async Task<ActionResult<ApiResponse<DTOTableResponse>>> UpdateAsync(DTOTablesURequest Table)
@@ -165,7 +165,7 @@ namespace APILayer.Controllers
 
         }
 
-        [Authorize(Roles = "Manager")]
+        [Authorize(Roles = $"{RoleNames.Manager}")]
         [EnableRateLimiting(NameRateLimitPolicies.Delete)]
         [HttpDelete("{ID}" , Name = "DeleteTable")]
         public async Task<ActionResult<ApiResponse<bool>>> DeleteAsync([FromRoute] int ID)

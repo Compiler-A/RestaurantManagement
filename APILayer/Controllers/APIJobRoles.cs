@@ -50,7 +50,7 @@ namespace APILayer.Controllers
             return CreateResponse<DTOJobRoleResponse>(DTO!.ToResponse(), StatusCodes.Status200OK, "Found Successfully!");
         }
 
-        [Authorize(Roles = "Manager")]
+        [Authorize(Roles = $"{RoleNames.Manager}")]
         [EnableRateLimiting(NameRateLimitPolicies.Add)]
         [HttpPost(Name = "AddJobRole")]
         public async Task<ActionResult<ApiResponse<DTOJobRoleResponse>>> CreateAsync([FromBody] DTOJobRolesCRequest JobRole)
@@ -64,7 +64,7 @@ namespace APILayer.Controllers
             return CreatedAtRoute("GetJobRoleByID", new { ID = result!.ID }, result.ToResponse());
         }
 
-        [Authorize(Roles = "Manager")]
+        [Authorize(Roles = $"{RoleNames.Manager}")]
         [EnableRateLimiting(NameRateLimitPolicies.Update)]
         [HttpPut(Name = "UpdateJobRole")]
         public async Task<ActionResult<ApiResponse<DTOJobRoleResponse>>> UpdateAsync([FromBody] DTOJobRolesURequest Update)
@@ -81,7 +81,7 @@ namespace APILayer.Controllers
            
         }
 
-        [Authorize(Roles = "Manager")]
+        [Authorize(Roles = $"{RoleNames.Manager}")]
         [EnableRateLimiting(NameRateLimitPolicies.Delete)]
         [HttpDelete("{id}", Name = "DeleteJobRole")]
         public async Task<ActionResult<ApiResponse<bool>>> DeleteAsync([FromRoute] int id)

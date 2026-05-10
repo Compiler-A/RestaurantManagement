@@ -23,7 +23,7 @@ namespace APILayer.Controllers
             _BusinessSettings = s;
         }
 
-        [Authorize(Roles = "Manager")]
+        [Authorize(Roles = $"{RoleNames.Manager}")]
         [HttpGet(Name = "GetAllSettings")]
         [EnableRateLimiting(NameRateLimitPolicies.GetAll)]
         public async Task<ActionResult<ApiResponse<IEnumerable<DTOSettingResponse>>>> GetAllAsync([FromQuery] int page = 1)
@@ -38,7 +38,7 @@ namespace APILayer.Controllers
             return CreateResponse<IEnumerable<DTOSettingResponse>>(listResponse, StatusCodes.Status200OK, $"Row: {listResponse.Count}");
         }
 
-        [Authorize(Roles = "Manager")]
+        [Authorize(Roles = $"{RoleNames.Manager}")]
         [EnableRateLimiting(NameRateLimitPolicies.GetOne)]
         [HttpGet("{ID}", Name = "GetSettingByID")]
         public async Task<ActionResult<ApiResponse<DTOSettingResponse>>> GetByIDAsync([FromRoute] int ID = 1)
@@ -51,7 +51,7 @@ namespace APILayer.Controllers
             return CreateResponse<DTOSettingResponse>(DTO!.ToResponse(), StatusCodes.Status200OK, "Found Successfully!");
         }
 
-        [Authorize(Roles = "Manager")]
+        [Authorize(Roles = $"{RoleNames.Manager}")]
         [EnableRateLimiting(NameRateLimitPolicies.Add)]
         [HttpPost(Name = "AddSetting")]
         public async Task<ActionResult<ApiResponse<DTOSettingResponse>>> CreateAsync([FromBody] DTOSettingsCRequest Setting)
@@ -67,7 +67,7 @@ namespace APILayer.Controllers
 
         }
 
-        [Authorize(Roles = "Manager")]
+        [Authorize(Roles = $"{RoleNames.Manager}")]
         [EnableRateLimiting(NameRateLimitPolicies.Update)]
         [HttpPut(Name = "UpdateSetting")]
         public async Task<ActionResult<ApiResponse<DTOSettingResponse>>> UpdateAsync([FromBody] DTOSettingsURequest Setting)
@@ -83,7 +83,7 @@ namespace APILayer.Controllers
 
         }
 
-        [Authorize(Roles = "Manager")]
+        [Authorize(Roles = $"{RoleNames.Manager}")]
         [EnableRateLimiting(NameRateLimitPolicies.Delete)]
         [HttpDelete("{ID}", Name = "DeleteSetting")]
         public async Task<ActionResult<ApiResponse<bool>>> DeleteAsync([FromRoute] int ID)

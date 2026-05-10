@@ -80,7 +80,7 @@ namespace APILayer.Controllers
             return CreateResponse<DTOMenuItemResponse>(menuItem!.ToResponse(), StatusCodes.Status200OK, "Found Successfully!");
         }
 
-        [Authorize(Roles = "Manager,Chef")]
+        [Authorize(Roles = $"{RoleNames.Manager}, {RoleNames.Chef}")]
         [EnableRateLimiting(NameRateLimitPolicies.Add)]
         [HttpPost(Name ="AddMenuItem")]
         public async Task<ActionResult<ApiResponse<DTOMenuItemResponse>>> CreateAsync([FromBody] DTOMenuItemsCRequest menuItem)
@@ -97,7 +97,7 @@ namespace APILayer.Controllers
         }
 
 
-        [Authorize(Roles = "Manager,Chef,Sous Chef")]
+        [Authorize(Roles = $"{RoleNames.Manager}, {RoleNames.Chef},{RoleNames.SousChef}")]
         [EnableRateLimiting(NameRateLimitPolicies.Update)]
         [HttpPut(Name ="UpdateMenuItem")]
         public async Task<ActionResult<ApiResponse<DTOMenuItemResponse>>> UpdateAsync([FromBody] DTOMenuItemsURequest menuItem)
@@ -112,7 +112,7 @@ namespace APILayer.Controllers
             return CreateResponse<DTOMenuItemResponse>(dto!.ToResponse(), StatusCodes.Status200OK, "Menu Item Updated Successfully!");
         }
 
-        [Authorize(Roles = "Manager,Chef")]
+        [Authorize(Roles = $"{RoleNames.Manager}, {RoleNames.Chef}")]
         [EnableRateLimiting(NameRateLimitPolicies.Delete)]
         [HttpDelete("{ID}")]
         public async Task<ActionResult<ApiResponse<bool>>> DeleteAsync([FromRoute] int ID)

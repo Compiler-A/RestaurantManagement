@@ -53,7 +53,7 @@ namespace APILayer.Controllers
             return CreateResponse<DTOStatusOrderResponse>(DTO!.ToResponse(), StatusCodes.Status200OK, "Found Successfully!");
         }
 
-        [Authorize(Roles = "Manager")]
+        [Authorize(Roles = $"{RoleNames.Manager}")]
         [EnableRateLimiting(NameRateLimitPolicies.Add)]
         [HttpPost(Name = "AddStatusOrder")]
         public async Task<ActionResult<ApiResponse<DTOStatusOrderResponse>>> CreateAsync([FromBody] DTOStatusOrdersCRequest Request)
@@ -68,7 +68,7 @@ namespace APILayer.Controllers
 
         }
 
-        [Authorize(Roles = "Manager")]
+        [Authorize(Roles = $"{RoleNames.Manager}")]
         [EnableRateLimiting(NameRateLimitPolicies.Update)]
         [HttpPut(Name = "UpdateStatusOrder")]
         public async Task<ActionResult<ApiResponse<DTOStatusOrderResponse>>> UpdateAsync([FromBody] DTOStatusOrdersURequest Request)
@@ -83,7 +83,7 @@ namespace APILayer.Controllers
             return CreateResponse<DTOStatusOrderResponse>(result!.ToResponse(), StatusCodes.Status200OK, "Status Order Updated Successfully!");
         }
 
-        [Authorize(Roles = "Manager")]
+        [Authorize(Roles = $"{RoleNames.Manager}")]
         [EnableRateLimiting(NameRateLimitPolicies.Delete)]
         [HttpDelete("{ID}",Name = "DeleteStatusOrder")]
         public async Task<ActionResult<ApiResponse<bool>>> DeleteAsync([FromRoute] int ID)

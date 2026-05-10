@@ -25,7 +25,7 @@ namespace APILayer.Controllers
             this.employees = employees;
         }
 
-        [Authorize(Roles = "Manager")]
+        [Authorize(Roles = $"{RoleNames.Manager}")]
         [HttpGet(Name = "GetAllEmployeesAsync")]
         [EnableRateLimiting(NameRateLimitPolicies.GetAll)]
         public async Task<ActionResult<ApiResponse<IEnumerable<DTOEmployeeResponse>>>> GetAllAsync([FromQuery] int page = 1)
@@ -40,6 +40,7 @@ namespace APILayer.Controllers
             return CreateResponse<IEnumerable<DTOEmployeeResponse>>(listResponse, StatusCodes.Status200OK, $"Row: {listResponse.Count}");
         }
 
+        
         [HttpGet("{ID}", Name = "GetEmployeeByID")]
         [EnableRateLimiting(NameRateLimitPolicies.GetOne)]
         public async Task<ActionResult<ApiResponse<DTOEmployeeResponse>>> GetByIDAsync
@@ -61,7 +62,7 @@ namespace APILayer.Controllers
             return CreateResponse<DTOEmployeeResponse>(DTO!.ToResponse(), StatusCodes.Status200OK, "Found Successfully!");
         }
 
-        [Authorize(Roles = "Manager")]
+        [Authorize(Roles = $"{RoleNames.Manager}")]
         [HttpPost(Name = "AddEmployee")]
         [EnableRateLimiting(NameRateLimitPolicies.Add)]
         public async Task<ActionResult<ApiResponse<DTOEmployeeResponse>>> CreateAsync([FromBody] DTOEmployeesCRequest employee)
@@ -76,7 +77,7 @@ namespace APILayer.Controllers
             return CreatedAtRoute("GetEmployeeByID", new { ID = success!.ID }, success.ToResponse());
         }
 
-        [Authorize(Roles = "Manager")]
+        [Authorize(Roles = $"{RoleNames.Manager}")]
         [EnableRateLimiting(NameRateLimitPolicies.Update)]
         [HttpPut(Name = "UpdateEmployee")]
         public async Task<ActionResult<ApiResponse<DTOEmployeeResponse>>> UpdateAsync([FromBody] DTOEmployeesURequest employee)
@@ -91,7 +92,7 @@ namespace APILayer.Controllers
             return CreateResponse<DTOEmployeeResponse>(dto!.ToResponse(), StatusCodes.Status200OK, "Employee Updated Successfully!");
         }
 
-        [Authorize(Roles = "Manager")]
+        [Authorize(Roles = $"{RoleNames.Manager}")]
         [EnableRateLimiting(NameRateLimitPolicies.Delete)]
         [HttpDelete("{ID}", Name = "DeleteEmployee")]
         public async Task<ActionResult<ApiResponse<bool>>> DeleteAsync([FromRoute] int ID)
