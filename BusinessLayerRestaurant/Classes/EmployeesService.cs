@@ -9,7 +9,7 @@ namespace BusinessLayerRestaurant.Classes
 {
     
 
-    public class clsEmployeesContainer : IEmployeesServiceContainer
+    public class EmployeesContainer : IEmployeesServiceContainer
     {
         private IEmployeesRepository _IEmployees;
         public IEmployeesRepository IData
@@ -25,7 +25,7 @@ namespace BusinessLayerRestaurant.Classes
             set => _IJobRoles = value;
         }
 
-        public clsEmployeesContainer(IEmployeesRepository Employee, IJobRolesService JobRoles)
+        public EmployeesContainer(IEmployeesRepository Employee, IJobRolesService JobRoles)
         {
             _IEmployees = Employee;
             _IJobRoles = JobRoles;
@@ -33,13 +33,13 @@ namespace BusinessLayerRestaurant.Classes
     }
 
 
-    public class clsEmployeesReader :  IEmployeesServiceReader
+    public class EmployeesReader :  IEmployeesServiceReader
     {
         private IEmployeesServiceContainer _Interface;
         private readonly IMyLogger _Logger;
         private readonly IHashingService _HashingService;
 
-        public clsEmployeesReader(IHashingService HashingService, IEmployeesServiceContainer Interface, IMyLogger Logger) 
+        public EmployeesReader(IHashingService HashingService, IEmployeesServiceContainer Interface, IMyLogger Logger) 
         {
             _Interface = Interface;
             _HashingService = HashingService;
@@ -85,12 +85,12 @@ namespace BusinessLayerRestaurant.Classes
 
     }
 
-    public class clsEmployeesWriter : IEmployeesServiceWriter
+    public class EmployeesWriter : IEmployeesServiceWriter
     {
         private IEmployeesServiceContainer _Interface;
         private IHashingService _HashingService;
         private readonly IMyLogger _Logger;
-        public clsEmployeesWriter(IHashingService HashingService,IEmployeesServiceContainer Interface, IMyLogger Logger)
+        public EmployeesWriter(IHashingService HashingService,IEmployeesServiceContainer Interface, IMyLogger Logger)
         {
             _Interface = Interface;
             _HashingService = HashingService;
@@ -161,13 +161,13 @@ namespace BusinessLayerRestaurant.Classes
         }
     }
 
-    public class clsEmployeesService : IEmployeesService
+    public class EmployeesService : IEmployeesService
     {
         IEmployeesServiceReader _IRead;
         IEmployeesServiceWriter _IWrite;
         IEmployeesServiceContainer _Interface;
 
-        public clsEmployeesService
+        public EmployeesService
             (IEmployeesServiceReader Read, IEmployeesServiceWriter Write, IEmployeesServiceContainer Interface)
         {
             _IRead = Read;

@@ -11,14 +11,14 @@ namespace APILayer.Extensions.Services
         public static IServiceCollection AddEmployeesServices(this IServiceCollection Services)
         {
 
-            Services.AddScoped<IEmployeesRepositoryReader, clsEmployeesRepositoryReader>();
-            Services.AddScoped<IEmployeesRepositoryWriter, clsEmployeesRepositoryWriter>();
-            Services.AddScoped<IEmployeesRepository, clsEmployeesRepository>();
+            Services.AddScoped<IEmployeesRepositoryReader, EmployeesRepositoryReader>();
+            Services.AddScoped<IEmployeesRepositoryWriter, EmployeesRepositoryWriter>();
+            Services.AddScoped<IEmployeesRepository, EmployeesRepository>();
 
-            Services.AddScoped<IEmployeesServiceReader, clsEmployeesReader>();
-            Services.AddScoped<IEmployeesServiceWriter, clsEmployeesWriter>();
-            Services.AddScoped<IEmployeesServiceContainer, clsEmployeesContainer>();
-            Services.AddScoped<IEmployeesService, clsEmployeesService>();
+            Services.AddScoped<IEmployeesServiceReader, EmployeesReader>();
+            Services.AddScoped<IEmployeesServiceWriter, EmployeesWriter>();
+            Services.AddScoped<IEmployeesServiceContainer, EmployeesContainer>();
+            Services.AddScoped<IEmployeesService, EmployeesService>();
             return Services;
         }
     }

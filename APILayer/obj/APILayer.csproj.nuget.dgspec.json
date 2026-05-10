@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Programming\\Projects\\RestaurantProjectv2\\APILayer\\APILayer.csproj": {}
+    "D:\\Programming\\Projects\\RestaurantProject\\APILayer\\APILayer.csproj": {}
   },
   "projects": {
-    "D:\\Programming\\Projects\\RestaurantProjectv2\\APILayer\\APILayer.csproj": {
+    "D:\\Programming\\Projects\\RestaurantProject\\APILayer\\APILayer.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Programming\\Projects\\RestaurantProjectv2\\APILayer\\APILayer.csproj",
+        "projectUniqueName": "D:\\Programming\\Projects\\RestaurantProject\\APILayer\\APILayer.csproj",
         "projectName": "APILayer",
-        "projectPath": "D:\\Programming\\Projects\\RestaurantProjectv2\\APILayer\\APILayer.csproj",
+        "projectPath": "D:\\Programming\\Projects\\RestaurantProject\\APILayer\\APILayer.csproj",
         "packagesPath": "C:\\Users\\Lenovo\\.nuget\\packages\\",
-        "outputPath": "D:\\Programming\\Projects\\RestaurantProjectv2\\APILayer\\obj\\",
+        "outputPath": "D:\\Programming\\Projects\\RestaurantProject\\APILayer\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -33,8 +33,8 @@
             "framework": "net8.0",
             "targetAlias": "net8.0",
             "projectReferences": {
-              "D:\\Programming\\Projects\\RestaurantProjectv2\\BusinessLayerRestaurant\\BusinessLayerRestaurant.csproj": {
-                "projectPath": "D:\\Programming\\Projects\\RestaurantProjectv2\\BusinessLayerRestaurant\\BusinessLayerRestaurant.csproj"
+              "D:\\Programming\\Projects\\RestaurantProject\\BusinessLayerRestaurant\\BusinessLayerRestaurant.csproj": {
+                "projectPath": "D:\\Programming\\Projects\\RestaurantProject\\BusinessLayerRestaurant\\BusinessLayerRestaurant.csproj"
               }
             }
           }
@@ -104,14 +104,14 @@
         }
       }
     },
-    "D:\\Programming\\Projects\\RestaurantProjectv2\\BusinessLayerRestaurant\\BusinessLayerRestaurant.csproj": {
+    "D:\\Programming\\Projects\\RestaurantProject\\BusinessLayerRestaurant\\BusinessLayerRestaurant.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Programming\\Projects\\RestaurantProjectv2\\BusinessLayerRestaurant\\BusinessLayerRestaurant.csproj",
+        "projectUniqueName": "D:\\Programming\\Projects\\RestaurantProject\\BusinessLayerRestaurant\\BusinessLayerRestaurant.csproj",
         "projectName": "BusinessLayerRestaurant",
-        "projectPath": "D:\\Programming\\Projects\\RestaurantProjectv2\\BusinessLayerRestaurant\\BusinessLayerRestaurant.csproj",
+        "projectPath": "D:\\Programming\\Projects\\RestaurantProject\\BusinessLayerRestaurant\\BusinessLayerRestaurant.csproj",
         "packagesPath": "C:\\Users\\Lenovo\\.nuget\\packages\\",
-        "outputPath": "D:\\Programming\\Projects\\RestaurantProjectv2\\BusinessLayerRestaurant\\obj\\",
+        "outputPath": "D:\\Programming\\Projects\\RestaurantProject\\BusinessLayerRestaurant\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -133,8 +133,8 @@
             "framework": "net8.0",
             "targetAlias": "net8.0",
             "projectReferences": {
-              "D:\\Programming\\Projects\\RestaurantProjectv2\\DataLayerRestaurant\\DataLayerRestaurant.csproj": {
-                "projectPath": "D:\\Programming\\Projects\\RestaurantProjectv2\\DataLayerRestaurant\\DataLayerRestaurant.csproj"
+              "D:\\Programming\\Projects\\RestaurantProject\\DataLayerRestaurant\\DataLayerRestaurant.csproj": {
+                "projectPath": "D:\\Programming\\Projects\\RestaurantProject\\DataLayerRestaurant\\DataLayerRestaurant.csproj"
               }
             }
           }
@@ -201,14 +201,14 @@
         }
       }
     },
-    "D:\\Programming\\Projects\\RestaurantProjectv2\\ContractsLayerRestaurant\\ContractsLayerRestaurant.csproj": {
+    "D:\\Programming\\Projects\\RestaurantProject\\ContractsLayerRestaurant\\ContractsLayerRestaurant.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Programming\\Projects\\RestaurantProjectv2\\ContractsLayerRestaurant\\ContractsLayerRestaurant.csproj",
+        "projectUniqueName": "D:\\Programming\\Projects\\RestaurantProject\\ContractsLayerRestaurant\\ContractsLayerRestaurant.csproj",
         "projectName": "ContractsLayerRestaurant",
-        "projectPath": "D:\\Programming\\Projects\\RestaurantProjectv2\\ContractsLayerRestaurant\\ContractsLayerRestaurant.csproj",
+        "projectPath": "D:\\Programming\\Projects\\RestaurantProject\\ContractsLayerRestaurant\\ContractsLayerRestaurant.csproj",
         "packagesPath": "C:\\Users\\Lenovo\\.nuget\\packages\\",
-        "outputPath": "D:\\Programming\\Projects\\RestaurantProjectv2\\ContractsLayerRestaurant\\obj\\",
+        "outputPath": "D:\\Programming\\Projects\\RestaurantProject\\ContractsLayerRestaurant\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -286,14 +286,14 @@
         }
       }
     },
-    "D:\\Programming\\Projects\\RestaurantProjectv2\\DataLayerRestaurant\\DataLayerRestaurant.csproj": {
+    "D:\\Programming\\Projects\\RestaurantProject\\DataLayerRestaurant\\DataLayerRestaurant.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Programming\\Projects\\RestaurantProjectv2\\DataLayerRestaurant\\DataLayerRestaurant.csproj",
+        "projectUniqueName": "D:\\Programming\\Projects\\RestaurantProject\\DataLayerRestaurant\\DataLayerRestaurant.csproj",
         "projectName": "DataLayerRestaurant",
-        "projectPath": "D:\\Programming\\Projects\\RestaurantProjectv2\\DataLayerRestaurant\\DataLayerRestaurant.csproj",
+        "projectPath": "D:\\Programming\\Projects\\RestaurantProject\\DataLayerRestaurant\\DataLayerRestaurant.csproj",
         "packagesPath": "C:\\Users\\Lenovo\\.nuget\\packages\\",
-        "outputPath": "D:\\Programming\\Projects\\RestaurantProjectv2\\DataLayerRestaurant\\obj\\",
+        "outputPath": "D:\\Programming\\Projects\\RestaurantProject\\DataLayerRestaurant\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -315,11 +315,11 @@
             "framework": "net8.0",
             "targetAlias": "net8.0",
             "projectReferences": {
-              "D:\\Programming\\Projects\\RestaurantProjectv2\\ContractsLayerRestaurant\\ContractsLayerRestaurant.csproj": {
-                "projectPath": "D:\\Programming\\Projects\\RestaurantProjectv2\\ContractsLayerRestaurant\\ContractsLayerRestaurant.csproj"
+              "D:\\Programming\\Projects\\RestaurantProject\\ContractsLayerRestaurant\\ContractsLayerRestaurant.csproj": {
+                "projectPath": "D:\\Programming\\Projects\\RestaurantProject\\ContractsLayerRestaurant\\ContractsLayerRestaurant.csproj"
               },
-              "D:\\Programming\\Projects\\RestaurantProjectv2\\DomainLayer\\DomainLayer.csproj": {
-                "projectPath": "D:\\Programming\\Projects\\RestaurantProjectv2\\DomainLayer\\DomainLayer.csproj"
+              "D:\\Programming\\Projects\\RestaurantProject\\DomainLayer\\DomainLayer.csproj": {
+                "projectPath": "D:\\Programming\\Projects\\RestaurantProject\\DomainLayer\\DomainLayer.csproj"
               }
             }
           }
@@ -390,14 +390,14 @@
         }
       }
     },
-    "D:\\Programming\\Projects\\RestaurantProjectv2\\DomainLayer\\DomainLayer.csproj": {
+    "D:\\Programming\\Projects\\RestaurantProject\\DomainLayer\\DomainLayer.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Programming\\Projects\\RestaurantProjectv2\\DomainLayer\\DomainLayer.csproj",
+        "projectUniqueName": "D:\\Programming\\Projects\\RestaurantProject\\DomainLayer\\DomainLayer.csproj",
         "projectName": "DomainLayer",
-        "projectPath": "D:\\Programming\\Projects\\RestaurantProjectv2\\DomainLayer\\DomainLayer.csproj",
+        "projectPath": "D:\\Programming\\Projects\\RestaurantProject\\DomainLayer\\DomainLayer.csproj",
         "packagesPath": "C:\\Users\\Lenovo\\.nuget\\packages\\",
-        "outputPath": "D:\\Programming\\Projects\\RestaurantProjectv2\\DomainLayer\\obj\\",
+        "outputPath": "D:\\Programming\\Projects\\RestaurantProject\\DomainLayer\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

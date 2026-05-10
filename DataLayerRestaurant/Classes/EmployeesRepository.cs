@@ -11,10 +11,10 @@ namespace DataLayerRestaurant.Classes
 
 
 
-    public class clsEmployeesRepositoryReader : IEmployeesRepositoryReader
+    public class EmployeesRepositoryReader : IEmployeesRepositoryReader
     {
         private readonly clsMySettings _Setting;
-        public clsEmployeesRepositoryReader(IOptions<clsMySettings> settings)
+        public EmployeesRepositoryReader(IOptions<clsMySettings> settings)
         {
             _Setting = settings.Value;
         }
@@ -119,10 +119,10 @@ namespace DataLayerRestaurant.Classes
     }
 
 
-    public class clsEmployeesRepositoryWriter : IEmployeesRepositoryWriter
+    public class EmployeesRepositoryWriter : IEmployeesRepositoryWriter
     {
         private readonly clsMySettings _Setting;
-        public clsEmployeesRepositoryWriter(IOptions<clsMySettings> settings)
+        public EmployeesRepositoryWriter(IOptions<clsMySettings> settings)
         {
             _Setting = settings.Value;
         }
@@ -219,12 +219,12 @@ namespace DataLayerRestaurant.Classes
 
     }
 
-    public class clsEmployeesRepository : IEmployeesRepository
+    public class EmployeesRepository : IEmployeesRepository
     {
         private IEmployeesRepositoryReader _IRead;
         private IEmployeesRepositoryWriter _IWrite;
 
-        public clsEmployeesRepository(IEmployeesRepositoryReader Read, IEmployeesRepositoryWriter Write)
+        public EmployeesRepository(IEmployeesRepositoryReader Read, IEmployeesRepositoryWriter Write)
         {
             _IRead = Read;
             _IWrite = Write;
