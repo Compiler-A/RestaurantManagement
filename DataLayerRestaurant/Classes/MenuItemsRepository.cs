@@ -11,11 +11,11 @@ namespace DataLayerRestaurant.Classes
 {
 
 
-    public class clsMenuItemsRepositoryReader :  IMenuItemsRepositoryReader
+    public class MenuItemsRepositoryReader :  IMenuItemsRepositoryReader
     {
         private readonly clsMySettings _Settings;
 
-        public clsMenuItemsRepositoryReader(IOptions<clsMySettings> settings)
+        public MenuItemsRepositoryReader(IOptions<clsMySettings> settings)
         { 
             _Settings = settings.Value;
         }
@@ -135,10 +135,10 @@ namespace DataLayerRestaurant.Classes
 
     }
 
-    public class clsMenuItemsRepositoryWriter : IMenuItemsRepositoryWriter
+    public class MenuItemsRepositoryWriter : IMenuItemsRepositoryWriter
     {
         private readonly clsMySettings _Settings;
-        public clsMenuItemsRepositoryWriter(IOptions<clsMySettings> settings)
+        public MenuItemsRepositoryWriter(IOptions<clsMySettings> settings)
         {
             _Settings = settings.Value;
         }
@@ -217,13 +217,13 @@ namespace DataLayerRestaurant.Classes
     }
 
 
-    public class clsMenuItemsRepository : IMenuItemsRepository
+    public class MenuItemsRepository : IMenuItemsRepository
     {
 
         IMenuItemsRepositoryReader _IRead;
         IMenuItemsRepositoryWriter _IWrite;
 
-        public clsMenuItemsRepository(IMenuItemsRepositoryReader iRead, IMenuItemsRepositoryWriter iWrite)
+        public MenuItemsRepository(IMenuItemsRepositoryReader iRead, IMenuItemsRepositoryWriter iWrite)
         {
             _IRead = iRead;
             _IWrite = iWrite;

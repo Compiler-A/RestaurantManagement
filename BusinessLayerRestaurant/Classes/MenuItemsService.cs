@@ -9,7 +9,7 @@ using DomainLayer.Entities;
 namespace BusinessLayerRestaurant.Classes
 {
 
-    public class clsMenuItemsContainer : IMenuItemsServiceContainer
+    public class MenuItemsContainer : IMenuItemsServiceContainer
     {
         private IMenuItemsRepository _IData;
         public IMenuItemsRepository IData
@@ -31,7 +31,7 @@ namespace BusinessLayerRestaurant.Classes
             set => _IBusinessStatusMenu = value;
         }
 
-        public clsMenuItemsContainer(IMenuItemsRepository iData, ITypeItemsService iTypeItem, IStatusMenusService iStatusMenu)
+        public MenuItemsContainer(IMenuItemsRepository iData, ITypeItemsService iTypeItem, IStatusMenusService iStatusMenu)
         {
             _IData = iData;
             _IBusinessTypeItem = iTypeItem;
@@ -40,11 +40,11 @@ namespace BusinessLayerRestaurant.Classes
     }
 
 
-    public class clsMenuItemsReader : IMenuItemsServiceReader
+    public class MenuItemsReader : IMenuItemsServiceReader
     {
         IMenuItemsServiceContainer _Interface;
         private IMyLogger _Logger;
-        public clsMenuItemsReader(IMenuItemsServiceContainer Interface,IMyLogger Logger)
+        public MenuItemsReader(IMenuItemsServiceContainer Interface,IMyLogger Logger)
         { 
             _Interface = Interface;
             _Logger = Logger;
@@ -100,11 +100,11 @@ namespace BusinessLayerRestaurant.Classes
         }
     }
 
-    public class clsMenuItemsWriter : IMenuItemsServiceWriter
+    public class MenuItemsWriter : IMenuItemsServiceWriter
     {
         IMenuItemsServiceContainer _Interface;
         private IMyLogger _Logger;
-        public clsMenuItemsWriter(IMenuItemsServiceContainer Interface,IMyLogger Logger)
+        public MenuItemsWriter(IMenuItemsServiceContainer Interface,IMyLogger Logger)
         {
             _Interface = Interface;
             _Logger = Logger;
@@ -147,13 +147,13 @@ namespace BusinessLayerRestaurant.Classes
     }
 
 
-    public class clsMenuItemService : IMenuItemsService
+    public class MenuItemsService : IMenuItemsService
     {
         IMenuItemsServiceContainer _Interface;
         IMenuItemsServiceReader _IRead;
         IMenuItemsServiceWriter _IWrite;
 
-        public clsMenuItemService( IMenuItemsServiceContainer Interface, IMenuItemsServiceReader IRead, IMenuItemsServiceWriter IWrite)
+        public MenuItemsService( IMenuItemsServiceContainer Interface, IMenuItemsServiceReader IRead, IMenuItemsServiceWriter IWrite)
         {
             _Interface = Interface;
             _IRead = IRead;

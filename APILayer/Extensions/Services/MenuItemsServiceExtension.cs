@@ -10,14 +10,14 @@ namespace APILayer.Extensions.Services
     {
         public static IServiceCollection AddMenuItemsServices(this IServiceCollection Services)
         {
-            Services.AddScoped<IMenuItemsRepositoryReader, clsMenuItemsRepositoryReader>();
-            Services.AddScoped<IMenuItemsRepositoryWriter, clsMenuItemsRepositoryWriter>();
-            Services.AddScoped<IMenuItemsRepository, clsMenuItemsRepository>();
+            Services.AddScoped<IMenuItemsRepositoryReader, MenuItemsRepositoryReader>();
+            Services.AddScoped<IMenuItemsRepositoryWriter, MenuItemsRepositoryWriter>();
+            Services.AddScoped<IMenuItemsRepository, MenuItemsRepository>();
 
-            Services.AddScoped<IMenuItemsServiceContainer, clsMenuItemsContainer>();
-            Services.AddScoped<IMenuItemsServiceReader, clsMenuItemsReader>();
-            Services.AddScoped<IMenuItemsServiceWriter, clsMenuItemsWriter>();
-            Services.AddScoped<IMenuItemsService, clsMenuItemService>();
+            Services.AddScoped<IMenuItemsServiceContainer, MenuItemsContainer>();
+            Services.AddScoped<IMenuItemsServiceReader, MenuItemsReader>();
+            Services.AddScoped<IMenuItemsServiceWriter, MenuItemsWriter>();
+            Services.AddScoped<IMenuItemsService, MenuItemsService>();
             return Services;
         }
     }
