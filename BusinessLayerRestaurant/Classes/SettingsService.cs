@@ -10,7 +10,7 @@ using DomainLayer.Entities;
 namespace BusinessLayerRestaurant.Classes
 {
 
-    public class clsSettingsContainer : ISettingsServiceContainer
+    public class SettingsContainer : ISettingsServiceContainer
     {
         private ISettingsRepository _IDataSetting;
         public ISettingsRepository IData 
@@ -19,7 +19,7 @@ namespace BusinessLayerRestaurant.Classes
             set => _IDataSetting = value; 
         }
 
-        public clsSettingsContainer(ISettingsRepository dataSetting)
+        public SettingsContainer(ISettingsRepository dataSetting)
         {
             _IDataSetting = dataSetting;
         }
@@ -27,11 +27,11 @@ namespace BusinessLayerRestaurant.Classes
 
 
 
-    public class clsSettingsReader : ISettingsServiceReader
+    public class SettingsReader : ISettingsServiceReader
     {
         private IMyLogger _Logger;
         private ISettingsServiceContainer _Interface;
-        public clsSettingsReader(ISettingsServiceContainer setting, IMyLogger logger)
+        public SettingsReader(ISettingsServiceContainer setting, IMyLogger logger)
         {
             _Interface = setting;
             _Logger = logger;
@@ -59,11 +59,11 @@ namespace BusinessLayerRestaurant.Classes
             return dto;
         }
     }
-    public class clsSettingsWriter : ISettingsServiceWriter
+    public class SettingsWriter : ISettingsServiceWriter
     {
         private IMyLogger _Logger;
         private ISettingsServiceContainer _Interface;
-        public clsSettingsWriter(ISettingsServiceContainer setting, IMyLogger Logger)
+        public SettingsWriter(ISettingsServiceContainer setting, IMyLogger Logger)
         {
             _Interface = setting;
             _Logger = Logger;
@@ -109,12 +109,12 @@ namespace BusinessLayerRestaurant.Classes
     }
 
 
-    public class clsSettingsService : ISettingsService
+    public class SettingsService : ISettingsService
     {
         private ISettingsServiceWriter _IWrite;
         private ISettingsServiceReader _IRead;
 
-        public clsSettingsService(
+        public SettingsService(
             ISettingsServiceWriter Write,
             ISettingsServiceReader read)
         {

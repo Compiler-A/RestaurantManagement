@@ -9,13 +9,13 @@ namespace APILayer.Extensions.Services
     {
         public static IServiceCollection AddSettingsServices(this IServiceCollection Services)
         {
-            Services.AddScoped<ISettingsRepository, clsSettingsRepository>();
-            Services.AddScoped<ISettingsRepositoryWriter, clsSettingsRepositoryWriter>();
-            Services.AddScoped<ISettingsRepositoryReader, clsSettingsRepositoryReader>();
-            Services.AddScoped<ISettingsServiceReader, clsSettingsReader>();
-            Services.AddScoped<ISettingsServiceWriter, clsSettingsWriter>();
-            Services.AddScoped<ISettingsServiceContainer, clsSettingsContainer>();
-            Services.AddScoped<ISettingsService, clsSettingsService>();
+            Services.AddScoped<ISettingsRepository, SettingsRepository>();
+            Services.AddScoped<ISettingsRepositoryWriter, SettingsRepositoryWriter>();
+            Services.AddScoped<ISettingsRepositoryReader, SettingsRepositoryReader>();
+            Services.AddScoped<ISettingsServiceReader, SettingsReader>();
+            Services.AddScoped<ISettingsServiceWriter, SettingsWriter>();
+            Services.AddScoped<ISettingsServiceContainer, SettingsContainer>();
+            Services.AddScoped<ISettingsService, SettingsService>();
             return Services;
         }
     }
