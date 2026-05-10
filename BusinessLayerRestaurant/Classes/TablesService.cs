@@ -11,7 +11,7 @@ namespace BusinessLayerRestaurant.Classes
 {
 
 
-    public class clsTablesContainer : ITablesServiceContainer
+    public class TablesContainer : ITablesServiceContainer
     {
         private ITablesRepository _IDataTable;
         public ITablesRepository IData
@@ -26,7 +26,7 @@ namespace BusinessLayerRestaurant.Classes
             set => _IBusinessStatusTable = value;
         }
 
-        public clsTablesContainer(ITablesRepository @Data, IStatusTablesService @IBusinessStatusTable)
+        public TablesContainer(ITablesRepository @Data, IStatusTablesService @IBusinessStatusTable)
         {
             _IDataTable = @Data;
             _IBusinessStatusTable = @IBusinessStatusTable;
@@ -36,11 +36,11 @@ namespace BusinessLayerRestaurant.Classes
 
 
 
-    public class clsTablesReader :  ITablesServiceReader
+    public class TablesReader :  ITablesServiceReader
     {
         private ITablesServiceContainer _Interface;
         private IMyLogger _Logger;
-        public clsTablesReader(ITablesServiceContainer @interface,IMyLogger Logger)
+        public TablesReader(ITablesServiceContainer @interface,IMyLogger Logger)
         {
             _Interface = @interface;
             _Logger = Logger;
@@ -128,11 +128,11 @@ namespace BusinessLayerRestaurant.Classes
         }
     }
 
-    public class clsTablesWriter : ITablesServiceWriter
+    public class TablesWriter : ITablesServiceWriter
     {
         private ITablesServiceContainer _Interfaces;
         private IMyLogger _Logger;
-        public clsTablesWriter
+        public TablesWriter
             (IMyLogger Logger, ITablesServiceContainer @interface)
         {
             _Logger = Logger;
@@ -180,13 +180,13 @@ namespace BusinessLayerRestaurant.Classes
     }
 
 
-    public class clsTablesService : ITablesService
+    public class TablesService : ITablesService
     {
         private ITablesServiceContainer _Interfaces;
         private ITablesServiceWriter _IWrite;
         private ITablesServiceReader _IRead;
 
-        public clsTablesService( ITablesServiceContainer table, ITablesServiceWriter write, 
+        public TablesService( ITablesServiceContainer table, ITablesServiceWriter write, 
             ITablesServiceReader read)
         {
             _Interfaces = table;

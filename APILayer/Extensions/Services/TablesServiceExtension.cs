@@ -10,13 +10,13 @@ namespace APILayer.Extensions.Services
     {
         public static IServiceCollection AddTablesServices(this IServiceCollection Services)
         {
-            Services.AddScoped<ITablesRepositoryReader, clsTablesRepositoryReader>();
-            Services.AddScoped<ITablesRepositoryWriter, clsTablesRepositoryWriter>();
-            Services.AddScoped<ITablesRepository, clsTablesRepository>();
-            Services.AddScoped<ITablesServiceReader, clsTablesReader>();
-            Services.AddScoped<ITablesServiceWriter, clsTablesWriter>();
-            Services.AddScoped<ITablesServiceContainer, clsTablesContainer>();
-            Services.AddScoped<ITablesService, clsTablesService>();
+            Services.AddScoped<ITablesRepositoryReader, TablesRepositoryReader>();
+            Services.AddScoped<ITablesRepositoryWriter, TablesRepositoryWriter>();
+            Services.AddScoped<ITablesRepository, TablesRepository>();
+            Services.AddScoped<ITablesServiceReader, TablesReader>();
+            Services.AddScoped<ITablesServiceWriter, TablesWriter>();
+            Services.AddScoped<ITablesServiceContainer, TablesContainer>();
+            Services.AddScoped<ITablesService, TablesService>();
             return Services;
         }
     }
