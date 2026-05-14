@@ -52,7 +52,7 @@ namespace BusinessLayerRestaurant.Classes
             {
                 throw new KeyNotFoundException("Not Found!");
             }
-            _Logger.EventLogs($"StatusOrder Found, Name: {dto.Name}", EventLogEntryType.Information);
+            _Logger.EventLogs($"StatusOrder Found, Name: {dto.StatusOrderName}", EventLogEntryType.Information);
 
             return dto;
         }
@@ -77,7 +77,7 @@ namespace BusinessLayerRestaurant.Classes
             {
                 throw new InvalidOperationException("Not Created!");
             }
-            _Logger.EventLogs($"StatusOrder Created, Name: {dto.Name}", EventLogEntryType.Information);
+            _Logger.EventLogs($"StatusOrder Created, Name: {dto.StatusOrderName}", EventLogEntryType.Information);
             return dto;
         }
         public async Task<StatusOrder?> UpdateAsync(DTOStatusOrdersURequest Request)
@@ -87,7 +87,7 @@ namespace BusinessLayerRestaurant.Classes
             {
                 throw new InvalidOperationException("Not Updated!");
             }
-            _Logger.EventLogs($"StatusOrder Updated, Name: {dto.Name}", EventLogEntryType.Information);
+            _Logger.EventLogs($"StatusOrder Updated, Name: {dto.StatusOrderName}", EventLogEntryType.Information);
 
             return dto;
         }

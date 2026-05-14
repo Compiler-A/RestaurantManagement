@@ -3,9 +3,9 @@ namespace DomainLayer.Entities
 {
     public class TypeItem
     {
-        public int ID { get; set; }
-        public string Name { get; set; }
-        public string? Description { get; set; }
+        public int TypeItemID { get; set; }
+        public string TypeName { get; set; } = null!;
+        public string? TypeDescription { get; set; }
 
     }
 

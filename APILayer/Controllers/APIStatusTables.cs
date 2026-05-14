@@ -65,7 +65,7 @@ namespace APILayer.Controllers
             }
 
             var result = await _businessStatusTables.CreateAsync(Request);
-            return CreatedAtRoute("GetStatusTableByID", new { ID = result!.ID }, result.ToResponse());
+            return CreatedAtRoute("GetStatusTableByID", new { ID = result!.StatusTableID }, result.ToResponse());
 
         }
 

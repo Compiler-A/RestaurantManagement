@@ -119,22 +119,22 @@ namespace BusinessLayerRestaurant.Classes
                 throw new AuthenticationException("Invalid credentials");
 
             bool isValidPassword =
-                BCrypt.Net.BCrypt.Verify(Request.Password, auth.Employees.PasswordHashed);
+                BCrypt.Net.BCrypt.Verify(Request.Password, auth.Employees.Password);
 
             if (!isValidPassword)
                 throw new AuthenticationException("Invalid credentials");
 
-            if (auth.Employees.JobRoles == null)
+            if (auth.Employees.JobRole == null)
             {
                 throw new InvalidOperationException("Not Found Job Role");
             }
 
-            var accessToken = _GetAccessToken(auth.Employees.ID, auth.Employees.UserName, auth.Employees.JobRoles.Name);
+            var accessToken = _GetAccessToken(auth.Employees.EmployeeID, auth.Employees.Username, auth.Employees.JobRole.JobName);
             var refreshToken = GenerateRefreshToken();
 
             var request = new DTOAuthCURequest
             {
-                EmployeeID = auth.Employees.ID,
+                EmployeeID = auth.Employees.EmployeeID,
                 RefreshTokenHash = BCrypt.Net.BCrypt.HashPassword(refreshToken),
                 RefreshTokenExpiresAt = DateTime.UtcNow.AddDays(7)
             };
@@ -169,18 +169,18 @@ namespace BusinessLayerRestaurant.Classes
             if (!refreshValid)
                 throw new AuthenticationException("Invalid refresh token");
 
-            if (auth.Employees == null || auth.Employees.JobRoles ==null)
+            if (auth.Employees == null || auth.Employees.JobRole ==null)
             {
                 throw new InvalidOperationException("Not Found Job Role or Employee");
             }
 
-            var newAccessToken = _GetAccessToken(auth.Employees.ID, auth.Employees.UserName, auth.Employees.JobRoles.Name);
+            var newAccessToken = _GetAccessToken(auth.Employees.EmployeeID, auth.Employees.Username, auth.Employees.JobRole.JobName);
 
             // Rotation: replace refresh token
             var newRefreshToken = GenerateRefreshToken();
             var request = new DTOAuthCURequest
             {
-                EmployeeID = auth.Employees.ID,
+                EmployeeID = auth.Employees.EmployeeID,
                 RefreshTokenHash = BCrypt.Net.BCrypt.HashPassword(newRefreshToken),
                 RefreshTokenExpiresAt = DateTime.UtcNow.AddDays(7)
             };

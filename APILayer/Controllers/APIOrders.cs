@@ -84,7 +84,7 @@ namespace APILayer.Controllers
             if (!authResult.Succeeded)
                 throw new UnauthorizedAccessException("Access denied.");
             var result = await _businessOrders.CreateAsync(dto);
-            return CreatedAtRoute("GetOrderByID", new { ID = result!.ID }, result.ToResponse());
+            return CreatedAtRoute("GetOrderByID", new { ID = result!.OrderID }, result.ToResponse());
 
         }
 

@@ -12,9 +12,9 @@ namespace BusinessLayerRestaurant.Mapper
                 throw new ArgumentNullException(nameof(typeItem));
             return new DTOTypeItemResponse
             {
-                ID = typeItem.ID,
-                Name = typeItem.Name,
-                Description = typeItem.Description
+                ID = typeItem.TypeItemID,
+                Name = typeItem.TypeName,
+                Description = typeItem.TypeDescription
             };
         }
     }

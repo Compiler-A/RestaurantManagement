@@ -11,8 +11,8 @@ namespace BusinessLayerRestaurant.Mapper
                 throw new ArgumentNullException(nameof(statusTable));
             return new DTOStatusTableResponse
             {
-                ID = statusTable.ID,
-                Name = statusTable.Name,
+                ID = statusTable.StatusTableID,
+                Name = statusTable.StatusTableName,
             };
         }
     }

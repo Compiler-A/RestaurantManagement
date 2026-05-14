@@ -18,18 +18,18 @@ namespace DataLayerRestaurant.Classes
         }
         public async Task LoadBatchAsync(List<Order> orders)
         {
-            var orderIds = orders.Select(o => o.ID).ToList();
+            var orderIds = orders.Select(o => o.OrderID).ToList();
             var details = await _OrderDetail.GetAllDataByOrderIdsAsync(orderIds);
-            var detailsByOrderId = details.GroupBy(d => d.Order!.ID).ToDictionary(g => g.Key, g => g.ToList());
+            var detailsByOrderId = details.GroupBy(d => d.Order!.OrderID).ToDictionary(g => g.Key, g => g.ToList());
             foreach (var order in orders)
             {
-                if (detailsByOrderId.TryGetValue(order.ID, out var orderDetails))
+                if (detailsByOrderId.TryGetValue(order.OrderID, out var orderDetails))
                 {
-                    order.Details = orderDetails;
+                    order.OrderDetails = orderDetails;
                 }
                 else
                 {
-                    order.Details = new List<OrderDetail>();
+                    order.OrderDetails = new List<OrderDetail>();
                 }
             }
         }

@@ -3,12 +3,12 @@ namespace DomainLayer.Entities
 {
     public class Employee
     {
-        public int ID { get; set; }
-        public string Name { get; set; } = string.Empty;
-        public int JobID { get; set; }
-        public string UserName { get; set; } = string.Empty;
-        public string PasswordHashed { get; set; } = string.Empty;
-        public JobRole? JobRoles { get; set; }
+        public int EmployeeID { get; set; }
+        public string Name { get; set; } = null!;
+        public int JobRoleID { get; set; }
+        public string Username { get; set; } = null!;
+        public string Password { get; set; } = null!;
+        public JobRole JobRole { get; set; } = null!;
 
     }
 }

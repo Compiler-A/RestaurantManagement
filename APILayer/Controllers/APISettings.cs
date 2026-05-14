@@ -63,7 +63,7 @@ namespace APILayer.Controllers
 
 
             var success = await _BusinessSettings.CreateAsync(Setting);
-            return CreatedAtRoute("GetSettingByID", new { ID = success!.ID }, success.ToResponse());
+            return CreatedAtRoute("GetSettingByID", new { ID = success!.SettingID }, success.ToResponse());
 
         }
 

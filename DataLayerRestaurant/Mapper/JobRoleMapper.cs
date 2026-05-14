@@ -10,8 +10,8 @@ namespace DataLayerRestaurant.Mapper
         {
             return new JobRole
             {
-                ID = reader.GetInt32(reader.GetOrdinal("JobRoleID")),
-                Name = reader.GetString(reader.GetOrdinal("JobName")),
+                JobRoleID = reader.GetInt32(reader.GetOrdinal("JobRoleID")),
+                JobName = reader.GetString(reader.GetOrdinal("JobName")),
                 Description = reader.IsDBNull(reader.GetOrdinal("Description"))
                     ? null
                     : reader.GetString(reader.GetOrdinal("Description"))

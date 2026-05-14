@@ -14,8 +14,8 @@ namespace BusinessLayerRestaurant.Mapper
 
             return new DTOJobRoleResponse
             {
-                ID = jobRole.ID,
-                Name = jobRole.Name,
+                ID = jobRole.JobRoleID,
+                Name = jobRole.JobName,
                 Description = jobRole.Description
             };
         }

@@ -13,13 +13,13 @@ namespace BusinessLayerRestaurant.Mapper
                 throw new ArgumentNullException(nameof(order));
             return new DTOOrderResponse
             {
-                ID = order.ID,
+                ID = order.OrderID,
                 TotalAmount = order.TotalAmount,
                 OrderDate = order.OrderDate,
                 UserName = order.employees?.UserName ?? string.Empty,
                 tableNumber = order.tables?.Name ?? string.Empty,
                 statusOrderName = order.statusOrders?.Name ?? string.Empty,
-                Details = order.Details?.Select(d => d.ToResponse()).ToList() ?? new List<DTOOrderDetailResponse>()
+                Details = order.OrderDetails?.Select(d => d.ToResponse()).ToList() ?? new List<DTOOrderDetailResponse>()
             };
         }
     }

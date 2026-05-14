@@ -3,7 +3,9 @@ namespace DomainLayer.Entities
 {
     public class StatusOrder
     {
-        public int ID { get; set; }
-        public string Name { get; set; }
+        public int StatusOrderID { get; set; }
+        public string StatusOrderName { get; set; } = null!;
+
+        public ICollection<Order> Orders { get; set; } = new List<Order>();
     }
 }

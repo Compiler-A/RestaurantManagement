@@ -11,12 +11,12 @@ namespace BusinessLayerRestaurant.Mapper
                 throw new ArgumentNullException(nameof(menuItem));
             return new DTOMenuItemResponse
             {
-                ID = menuItem.ID,
-                Name = menuItem.Name,
+                ID = menuItem.ItemID,
+                Name = menuItem.ItemName,
                 Price = menuItem.Price,
                 Image = menuItem.Image,
-                TypeName = menuItem.TypeItems?.Name ?? string.Empty,
-                StatusMenuName = menuItem.StatusMenus?.Name ?? string.Empty
+                TypeName = menuItem.TypeItems?.TypeName ?? string.Empty,
+                StatusMenuName = menuItem.StatusMenus?.StatusMenuName ?? string.Empty
             };
         }
     }

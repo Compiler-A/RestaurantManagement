@@ -58,7 +58,7 @@ namespace BusinessLayerRestaurant.Classes
                 throw new KeyNotFoundException("Not Found!");
             }
 
-            _Logger.EventLogs($"MenuItem Found, Name: {dto.Name}", EventLogEntryType.Information);
+            _Logger.EventLogs($"MenuItem Found, Name: {dto.ItemName}", EventLogEntryType.Information);
             return dto;
         }
 
@@ -117,7 +117,7 @@ namespace BusinessLayerRestaurant.Classes
             {
                 throw new InvalidOperationException("Not Created!");
             }
-            _Logger.EventLogs($"MenuItem Created, Name: {dto.Name}", EventLogEntryType.Information);
+            _Logger.EventLogs($"MenuItem Created, Name: {dto.ItemName}", EventLogEntryType.Information);
 
             return dto;
         }
@@ -129,7 +129,7 @@ namespace BusinessLayerRestaurant.Classes
             {
                 throw new InvalidOperationException("Not Updated!");
             }
-            _Logger.EventLogs($"MenuItem Updated, Name: {dto.Name}", EventLogEntryType.Information);
+            _Logger.EventLogs($"MenuItem Updated, Name: {dto.ItemName}", EventLogEntryType.Information);
             return dto;
         }
 

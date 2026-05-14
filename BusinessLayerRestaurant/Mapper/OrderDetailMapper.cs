@@ -12,11 +12,11 @@ namespace BusinessLayerRestaurant.Mapper
                 throw new ArgumentNullException(nameof(orderDetail));
             return new DTOOrderDetailResponse
             {
-                ID = orderDetail.ID,
+                ID = orderDetail.OrderDetailID,
                 Quantity = orderDetail.Quantity,
                 SubTotal = orderDetail.SubTotal,
-                OrderID = orderDetail.Order!.ID,
-                ItemName = orderDetail.Item!.Name
+                OrderID = orderDetail.Order!.OrderID,
+                ItemName = orderDetail.Item!.ItemName
             };
         }
     }

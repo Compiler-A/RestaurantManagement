@@ -84,7 +84,7 @@ namespace APILayer.Controllers
 
 
             var result = await _businessOrderDetail.CreateAsync(dto);
-            return CreatedAtRoute("GetOrderDetailByID", new { ID = result!.ID }, result.ToResponse());
+            return CreatedAtRoute("GetOrderDetailByID", new { ID = result!.OrderDetailID }, result.ToResponse());
 
         }
 

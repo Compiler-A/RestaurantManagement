@@ -10,7 +10,7 @@ namespace DataLayerRestaurant.Mapper
         {
             return new OrderDetail
             {
-                ID = reader.GetInt32(reader.GetOrdinal("OrderDetailID")),
+                OrderDetailID = reader.GetInt32(reader.GetOrdinal("OrderDetailID")),
                 OrderID = reader.GetInt32(reader.GetOrdinal("OrderID")),
                 ItemID = reader.GetInt32(reader.GetOrdinal("ItemID")),
                 Quantity = reader.GetInt32(reader.GetOrdinal("Quantity")),
@@ -22,16 +22,16 @@ namespace DataLayerRestaurant.Mapper
         {
             return new OrderDetail
             {
-                ID = reader.GetInt32(reader.GetOrdinal("OrderDetailID")),
+                OrderDetailID = reader.GetInt32(reader.GetOrdinal("OrderDetailID")),
                 ItemID = reader.GetInt32(reader.GetOrdinal("ItemID")),
                 Order = new Order
                 {
-                    ID = reader.GetInt32(reader.GetOrdinal("OrderID")),
+                    OrderID = reader.GetInt32(reader.GetOrdinal("OrderID")),
                 },
                 Item = new MenuItem
                 {
-                    ID = reader.GetInt32(reader.GetOrdinal("ItemID")),
-                    Name = reader.GetString(reader.GetOrdinal("ItemName")),
+                    ItemID = reader.GetInt32(reader.GetOrdinal("ItemID")),
+                    ItemName = reader.GetString(reader.GetOrdinal("ItemName")),
                 },
                 Quantity = reader.GetInt32(reader.GetOrdinal("Quantity")),
                 SubTotal = reader.GetDecimal(reader.GetOrdinal("SubTotal"))

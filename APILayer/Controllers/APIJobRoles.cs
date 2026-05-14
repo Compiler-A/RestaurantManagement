@@ -61,7 +61,7 @@ namespace APILayer.Controllers
             }
 
             var result = await jobRoles.CreateAsync(JobRole);
-            return CreatedAtRoute("GetJobRoleByID", new { ID = result!.ID }, result.ToResponse());
+            return CreatedAtRoute("GetJobRoleByID", new { ID = result!.JobRoleID }, result.ToResponse());
         }
 
         [Authorize(Roles = $"{RoleNames.Manager}")]

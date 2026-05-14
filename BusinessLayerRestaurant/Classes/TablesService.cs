@@ -64,7 +64,7 @@ namespace BusinessLayerRestaurant.Classes
             {
                 throw new KeyNotFoundException("Not Found!");
             }
-            _Logger.EventLogs($"Table Found, Name: {dto.Name}", EventLogEntryType.Information);
+            _Logger.EventLogs($"Table Found, Name: {dto.TableNumber}", EventLogEntryType.Information);
 
             return dto;
         }
@@ -104,7 +104,7 @@ namespace BusinessLayerRestaurant.Classes
             {
                 throw new KeyNotFoundException("Not Found!");
             }
-            _Logger.EventLogs($"Table Found, Name: ${dto.Name}", EventLogEntryType.Information);
+            _Logger.EventLogs($"Table Found, Name: ${dto.TableNumber}", EventLogEntryType.Information);
 
             return dto;
         }
@@ -144,7 +144,7 @@ namespace BusinessLayerRestaurant.Classes
             var dto = await _Interfaces.IData.CreateDataAsync(Request);
             if (dto != null)
             {
-                _Logger.EventLogs($"Table Created, Name: {dto.Name}", EventLogEntryType.Information);
+                _Logger.EventLogs($"Table Created, Name: {dto.TableNumber}", EventLogEntryType.Information);
 
                 return dto;
             }
@@ -157,7 +157,7 @@ namespace BusinessLayerRestaurant.Classes
             var dto = await _Interfaces.IData.UpdateDataAsync(Request);
             if (dto != null)
             {
-                _Logger.EventLogs($"Table Updated, Name: {dto.Name}", EventLogEntryType.Information);
+                _Logger.EventLogs($"Table Updated, Name: {dto.TableNumber}", EventLogEntryType.Information);
 
                 return dto;
             }

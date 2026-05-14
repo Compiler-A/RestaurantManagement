@@ -12,10 +12,10 @@ namespace BusinessLayerRestaurant.Mapper
 
             return new DTOEmployeeResponse
             {
-                ID = employee.ID,
+                ID = employee.EmployeeID,
                 Name = employee.Name,
-                UserName = employee.UserName,
-                JobName = employee.JobRoles?.Name ?? string.Empty,
+                UserName = employee.Username,
+                JobName = employee.JobRole?.JobName ?? string.Empty,
             };
         }
     }

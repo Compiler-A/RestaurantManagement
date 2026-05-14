@@ -92,7 +92,7 @@ namespace APILayer.Controllers
 
 
             var dto = await _BusinessMenuItem.CreateAsync(menuItem);
-            return CreatedAtRoute("GetMenuItemByID", new { ID = dto!.ID }, dto.ToResponse());
+            return CreatedAtRoute("GetMenuItemByID", new { ID = dto!.ItemID }, dto.ToResponse());
 
         }
 

@@ -12,10 +12,10 @@ namespace BusinessLayerRestaurant.Mapper
                 throw new ArgumentNullException(nameof(table));
             return new DTOTableResponse
             {
-                ID = table.ID,
-                Name = table.Name,
+                ID = table.TableID,
+                Name = table.TableNumber,
                 Seats = table.Seats,
-                StatusTableName = table.StatusTable!.Name
+                StatusTableName = table.StatusTable!.StatusTableName
             };
         }
     }

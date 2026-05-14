@@ -10,11 +10,11 @@ namespace DataLayerRestaurant.Mapper
         {
             return new Employee
             {
-                ID = reader.GetInt32(reader.GetOrdinal("EmployeeID")),
+                EmployeeID = reader.GetInt32(reader.GetOrdinal("EmployeeID")),
                 Name = reader.GetString(reader.GetOrdinal("Name")),
-                JobID = reader.GetInt32(reader.GetOrdinal("JobRoleID")),
-                UserName = reader.GetString(reader.GetOrdinal("UserName")),
-                PasswordHashed = reader.GetString(reader.GetOrdinal("Password"))
+                JobRoleID = reader.GetInt32(reader.GetOrdinal("JobRoleID")),
+                Username = reader.GetString(reader.GetOrdinal("UserName")),
+                Password = reader.GetString(reader.GetOrdinal("Password"))
             };
         }
 
@@ -22,14 +22,14 @@ namespace DataLayerRestaurant.Mapper
         {
             return new Employee
             {
-                ID = reader.GetInt32(reader.GetOrdinal("EmployeeID")),
+                EmployeeID = reader.GetInt32(reader.GetOrdinal("EmployeeID")),
                 Name = reader.GetString(reader.GetOrdinal("Name")),
-                JobID = reader.GetInt32(reader.GetOrdinal("JobRoleID")),
-                UserName = reader.GetString(reader.GetOrdinal("UserName")),
-                JobRoles = new JobRole
+                JobRoleID = reader.GetInt32(reader.GetOrdinal("JobRoleID")),
+                Username = reader.GetString(reader.GetOrdinal("UserName")),
+                JobRole = new JobRole
                 {
-                    ID = reader.GetInt32(reader.GetOrdinal("JobRoleID")),
-                    Name = reader.GetString(reader.GetOrdinal("JobName"))
+                    JobRoleID = reader.GetInt32(reader.GetOrdinal("JobRoleID")),
+                    JobName = reader.GetString(reader.GetOrdinal("JobName"))
                 }
             };
         }

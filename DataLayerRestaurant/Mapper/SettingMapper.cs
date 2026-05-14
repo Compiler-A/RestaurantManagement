@@ -10,7 +10,7 @@ namespace DataLayerRestaurant.Mapper
         {
             return new Setting
             {
-                ID = reader.GetInt32(reader.GetOrdinal("SettingID")),
+                SettingID = reader.GetInt32(reader.GetOrdinal("SettingID")),
                 Name = reader.GetString(reader.GetOrdinal("Name")),
                 Value = reader.GetDecimal(reader.GetOrdinal("Value"))
             };

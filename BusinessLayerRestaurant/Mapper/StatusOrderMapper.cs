@@ -11,8 +11,8 @@ namespace BusinessLayerRestaurant.Mapper
                 throw new ArgumentNullException(nameof(statusOrder));
             return new DTOStatusOrderResponse
             {
-                ID = statusOrder.ID,
-                Name = statusOrder.Name,
+                ID = statusOrder.StatusOrderID,
+                Name = statusOrder.StatusOrderName,
             };
         }
     }

@@ -76,7 +76,7 @@ namespace BusinessLayerRestaurant.Classes
             {
                 throw new KeyNotFoundException("Not Found!");
             }
-            _Logger.EventLogs($"Order Found, ID: {dto.ID}", EventLogEntryType.Information);
+            _Logger.EventLogs($"Order Found, ID: {dto.OrderID}", EventLogEntryType.Information);
 
             return dto;
         }
@@ -111,7 +111,7 @@ namespace BusinessLayerRestaurant.Classes
             var dto = await _Interfaces.IData.CreateDataAsync(Request);
             if (dto != null)
             {
-                _Logger.EventLogs($"Order Created, ID: {dto.ID}", EventLogEntryType.Information);
+                _Logger.EventLogs($"Order Created, ID: {dto.OrderID}", EventLogEntryType.Information);
                 return dto;
             }
             throw new InvalidOperationException("Not Created!");
@@ -122,7 +122,7 @@ namespace BusinessLayerRestaurant.Classes
             var dto = await _Interfaces.IData.UpdateDataAsync(Request);
             if (dto != null)
             {
-                _Logger.EventLogs($"Order Updated, ID: {dto.ID}", EventLogEntryType.Information);
+                _Logger.EventLogs($"Order Updated, ID: {dto.OrderID}", EventLogEntryType.Information);
                 return dto;
             }
             throw new InvalidOperationException("Not Updated!");

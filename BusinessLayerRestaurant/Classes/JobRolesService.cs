@@ -53,7 +53,7 @@ namespace BusinessLayerRestaurant.Classes
             {
                 throw new KeyNotFoundException("Not Found!");
             }
-            _Logger.EventLogs($"Job Found, Name: {dto.Name}", EventLogEntryType.Information);
+            _Logger.EventLogs($"Job Found, Name: {dto.JobName}", EventLogEntryType.Information);
             return dto;
         }
     }
@@ -78,7 +78,7 @@ namespace BusinessLayerRestaurant.Classes
             {
                 throw new InvalidOperationException("Not Created!");
             }
-            _Logger.EventLogs($"Job Created, Name: {dto.Name}", EventLogEntryType.Information);
+            _Logger.EventLogs($"Job Created, Name: {dto.JobName}", EventLogEntryType.Information);
             return dto;
         }
         public async Task<JobRole?> UpdateAsync(DTOJobRolesURequest Request)
@@ -88,7 +88,7 @@ namespace BusinessLayerRestaurant.Classes
             {
                 throw new InvalidOperationException("Not Update!");
             }
-            _Logger.EventLogs($"Job Updated, Name: {dto.Name}", EventLogEntryType.Information);
+            _Logger.EventLogs($"Job Updated, Name: {dto.JobName}", EventLogEntryType.Information);
             return dto;
         }
 

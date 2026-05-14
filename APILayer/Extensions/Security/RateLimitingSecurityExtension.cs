@@ -21,7 +21,7 @@ namespace APILayer.Extensions.Security
                     factory: _ => new FixedWindowRateLimiterOptions
                     {
                         PermitLimit = RLP.PermitLimit,
-                        Window = TimeSpan.FromMinutes(RLP.TimeSpam),
+                        Window = TimeSpan.FromMinutes(RLP.TimeSpan),
                         QueueLimit = RLP.QueueLimit
                     });
             });

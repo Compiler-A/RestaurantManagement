@@ -42,7 +42,7 @@ namespace BusinessLayerRestaurant.Classes
             {
                 throw new KeyNotFoundException("Not Found!");
             }
-            _Logger.EventLogs($"StatusTable Found, Name: {result.Name}", EventLogEntryType.Information);
+            _Logger.EventLogs($"StatusTable Found, Name: {result.StatusTableName}", EventLogEntryType.Information);
 
             return result;
         }
@@ -87,7 +87,7 @@ namespace BusinessLayerRestaurant.Classes
             var dto = await _Interface.IData.CreateDataAsync(Request);
             if (dto != null)
             {
-                _Logger.EventLogs($"StatusTable Created, Name: {dto.Name}", EventLogEntryType.Information);
+                _Logger.EventLogs($"StatusTable Created, Name: {dto.StatusTableName}", EventLogEntryType.Information);
                 return dto;
             }
             throw new InvalidOperationException("Not Created!");
@@ -98,7 +98,7 @@ namespace BusinessLayerRestaurant.Classes
             var dto = await _Interface.IData.UpdateDataAsync(Request);
             if (dto != null)
             {
-                _Logger.EventLogs($"StatusTable Updated, Name: {dto.Name}", EventLogEntryType.Information);
+                _Logger.EventLogs($"StatusTable Updated, Name: {dto.StatusTableName}", EventLogEntryType.Information);
                 return dto;
             }
             throw new InvalidOperationException("Not Updated!");

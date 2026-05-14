@@ -10,8 +10,8 @@ namespace DataLayerRestaurant.Mapper
         {
             return new Table
             {
-                ID = Reader.GetInt32(Reader.GetOrdinal("TableID")),
-                Name = Reader.GetString(Reader.GetOrdinal("TableNumber")),
+                TableID = Reader.GetInt32(Reader.GetOrdinal("TableID")),
+                TableNumber = Reader.GetString(Reader.GetOrdinal("TableNumber")),
                 Seats = Reader.GetInt32(Reader.GetOrdinal("Seats")),
                 StatusTableID = Reader.GetInt32(Reader.GetOrdinal("StatusTableID"))
             };
@@ -21,14 +21,14 @@ namespace DataLayerRestaurant.Mapper
         {
             return new Table
             {
-                ID = Reader.GetInt32(Reader.GetOrdinal("TableID")),
-                Name = Reader.GetString(Reader.GetOrdinal("TableNumber")),
+                TableID = Reader.GetInt32(Reader.GetOrdinal("TableID")),
+                TableNumber = Reader.GetString(Reader.GetOrdinal("TableNumber")),
                 Seats = Reader.GetInt32(Reader.GetOrdinal("Seats")),
                 StatusTableID = Reader.GetInt32(Reader.GetOrdinal("StatusTableID")),
                 StatusTable = new StatusTable
                 {
-                    ID = Reader.GetInt32(Reader.GetOrdinal("StatusTableID")),
-                    Name = Reader.GetString(Reader.GetOrdinal("StatusTableName")),
+                    StatusTableID = Reader.GetInt32(Reader.GetOrdinal("StatusTableID")),
+                    StatusTableName = Reader.GetString(Reader.GetOrdinal("StatusTableName")),
                 }
             };
         }

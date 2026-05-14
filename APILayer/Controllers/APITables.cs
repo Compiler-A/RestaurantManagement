@@ -147,7 +147,7 @@ namespace APILayer.Controllers
 
 
             var dto = await dataTablesBusiness.CreateAsync(Table);
-            return CreatedAtRoute("GetTableByID", new { ID = dto!.ID }, dto.ToResponse());
+            return CreatedAtRoute("GetTableByID", new { ID = dto!.TableID }, dto.ToResponse());
         }
 
         [Authorize(Roles = $"{RoleNames.Manager},{RoleNames.Cleaner}")]

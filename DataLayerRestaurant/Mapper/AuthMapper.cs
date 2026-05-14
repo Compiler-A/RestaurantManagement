@@ -13,11 +13,11 @@ namespace DataLayerRestaurant.Mapper
             {
                 Employees = new Employee
                 {
-                    ID = reader.GetInt32(reader.GetOrdinal("EmployeeID")),
-                    UserName = reader.GetString(reader.GetOrdinal("Username")),
-                    JobRoles = new JobRole
+                    EmployeeID = reader.GetInt32(reader.GetOrdinal("EmployeeID")),
+                    Username = reader.GetString(reader.GetOrdinal("Username")),
+                    JobRole = new JobRole
                     {
-                        Name = reader.GetString(reader.GetOrdinal("JobName"))
+                        JobName = reader.GetString(reader.GetOrdinal("JobName"))
                     }
                 },
 
@@ -34,12 +34,12 @@ namespace DataLayerRestaurant.Mapper
             {
                 Employees = new Employee
                 {
-                    ID = reader.GetInt32(reader.GetOrdinal("EmployeeID")),
-                    PasswordHashed = reader.GetString(reader.GetOrdinal("Password")),
-                    UserName = reader.GetString(reader.GetOrdinal("UserName")),
-                    JobRoles = new JobRole
+                    EmployeeID = reader.GetInt32(reader.GetOrdinal("EmployeeID")),
+                    Password = reader.GetString(reader.GetOrdinal("Password")),
+                    Username = reader.GetString(reader.GetOrdinal("UserName")),
+                    JobRole = new JobRole
                     {
-                        Name = reader.GetString(reader.GetOrdinal("JobName"))
+                        JobName = reader.GetString(reader.GetOrdinal("JobName"))
                     }
                 }
             };

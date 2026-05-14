@@ -12,7 +12,7 @@ namespace BusinessLayerRestaurant.Mapper
                 throw new ArgumentNullException(nameof(setting));
             return new DTOSettingResponse
             {
-                ID = setting.ID,
+                ID = setting.SettingID,
                 Name = setting.Name,
                 Value = setting.Value
             };

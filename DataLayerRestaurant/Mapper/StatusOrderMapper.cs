@@ -10,8 +10,8 @@ namespace DataLayerRestaurant.Mapper
         {
             return new StatusOrder
             {
-                ID = reader.GetInt32(reader.GetOrdinal("StatusOrderID")),
-                Name = reader.GetString(reader.GetOrdinal("StatusOrderName"))
+                StatusOrderID = reader.GetInt32(reader.GetOrdinal("StatusOrderID")),
+                StatusOrderName = reader.GetString(reader.GetOrdinal("StatusOrderName"))
             };
         }
     }

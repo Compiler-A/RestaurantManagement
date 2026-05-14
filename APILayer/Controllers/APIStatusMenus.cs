@@ -65,7 +65,7 @@ namespace APILayer.Controllers
 
 
             var dto = await _dataStatusMenus.CreateAsync(statusMenu);
-            return CreatedAtRoute("GetStatusMenuByID", new { ID = dto!.ID }, dto.ToResponse());
+            return CreatedAtRoute("GetStatusMenuByID", new { ID = dto!.StatusMenuID }, dto.ToResponse());
 
         }
 

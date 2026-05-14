@@ -62,7 +62,7 @@ namespace APILayer.Controllers
 
 
             var dto = await _dataLayer.CreateAsync(typeItem);
-            return CreatedAtRoute("GetTypeItemById", new { ID = dto!.ID }, dto.ToResponse());
+            return CreatedAtRoute("GetTypeItemById", new { ID = dto!.TypeItemID }, dto.ToResponse());
 
         }
 

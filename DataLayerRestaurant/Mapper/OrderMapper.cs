@@ -10,7 +10,7 @@ namespace DataLayerRestaurant.Mapper
         {
             return new Order
             {
-                ID = reader.GetInt32(reader.GetOrdinal("OrderID")),
+                OrderID = reader.GetInt32(reader.GetOrdinal("OrderID")),
                 TableID = reader.GetInt32(reader.GetOrdinal("TableID")),
                 EmployeeID = reader.GetInt32(reader.GetOrdinal("EmployeeID")),
                 StatusOrderID = reader.GetInt32(reader.GetOrdinal("StatusOrderID")),
@@ -25,7 +25,7 @@ namespace DataLayerRestaurant.Mapper
         {
             return new Order
             {
-                ID = reader.GetInt32(reader.GetOrdinal("OrderID")),
+                OrderID = reader.GetInt32(reader.GetOrdinal("OrderID")),
                 TableID = reader.GetInt32(reader.GetOrdinal("TableID")),
                 EmployeeID = reader.GetInt32(reader.GetOrdinal("EmployeeID")),
                 StatusOrderID = reader.GetInt32(reader.GetOrdinal("StatusOrderID")),
@@ -35,18 +35,18 @@ namespace DataLayerRestaurant.Mapper
                     : reader.GetDecimal(reader.GetOrdinal("TotalAmount")),
                 employees = new Employee
                 {
-                    ID = reader.GetInt32(reader.GetOrdinal("EmployeeID")),
-                    UserName = reader.GetString(reader.GetOrdinal("username"))
+                    EmployeeID = reader.GetInt32(reader.GetOrdinal("EmployeeID")),
+                    Username = reader.GetString(reader.GetOrdinal("username"))
                 },
                 tables = new Table
                 {
-                    ID = reader.GetInt32(reader.GetOrdinal("TableID")),
-                    Name = reader.GetString(reader.GetOrdinal("TableNumber"))
+                    TableID = reader.GetInt32(reader.GetOrdinal("TableID")),
+                    TableNumber = reader.GetString(reader.GetOrdinal("TableNumber"))
                 },
                 statusOrders = new StatusOrder
                 {
-                    ID = reader.GetInt32(reader.GetOrdinal("StatusOrderID")),
-                    Name = reader.GetString(reader.GetOrdinal("StatusOrderName"))
+                    StatusOrderID = reader.GetInt32(reader.GetOrdinal("StatusOrderID")),
+                    StatusOrderName = reader.GetString(reader.GetOrdinal("StatusOrderName"))
                 }
                 
             };

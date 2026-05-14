@@ -9,8 +9,8 @@ namespace DataLayerRestaurant.Mapper
         {
             return new StatusMenu
             {
-                ID = reader.GetInt32(reader.GetOrdinal("StatusMenuID")),
-                Name = reader.GetString(reader.GetOrdinal("StatusMenuName")),
+                StatusMenuID = reader.GetInt32(reader.GetOrdinal("StatusMenuID")),
+                StatusMenuName = reader.GetString(reader.GetOrdinal("StatusMenuName")),
                 Description = reader.IsDBNull(reader.GetOrdinal("Description"))
                     ? null
                     : reader.GetString(reader.GetOrdinal("Description"))

@@ -54,7 +54,7 @@ namespace BusinessLayerRestaurant.Classes
             {
                 throw new KeyNotFoundException("Not Found!");
             }
-            _Logger.EventLogs($"Employee Found, UserName: {result.UserName}", EventLogEntryType.Information);
+            _Logger.EventLogs($"Employee Found, UserName: {result.Username}", EventLogEntryType.Information);
 
             return result;
         }
@@ -66,7 +66,7 @@ namespace BusinessLayerRestaurant.Classes
             {
                 throw new KeyNotFoundException("Not Found!");
             }
-            _Logger.EventLogs($"Employee Found, UserName: {dto.UserName}", EventLogEntryType.Information);
+            _Logger.EventLogs($"Employee Found, UserName: {dto.Username}", EventLogEntryType.Information);
             return dto;
         }
 
@@ -104,7 +104,7 @@ namespace BusinessLayerRestaurant.Classes
             {
                 throw new KeyNotFoundException("Not Found!");
             }
-            var Valid = _HashingService.ValidationBCrypt(Request.CurrentPassword, Data.PasswordHashed);
+            var Valid = _HashingService.ValidationBCrypt(Request.CurrentPassword, Data.Password);
             if (!Valid)
             {
                 throw new InvalidOperationException("Bad password!");
@@ -130,7 +130,7 @@ namespace BusinessLayerRestaurant.Classes
             {
                 throw new InvalidOperationException("Not Created!");
             }
-            _Logger.EventLogs($"Employee Created, UserName: {result.UserName}", EventLogEntryType.Information);
+            _Logger.EventLogs($"Employee Created, UserName: {result.Username}", EventLogEntryType.Information);
             return result;
         }
 
@@ -144,7 +144,7 @@ namespace BusinessLayerRestaurant.Classes
             {
                 throw new InvalidOperationException("Not Updated!");
             }
-            _Logger.EventLogs($"Employees Updated, UserName: {result.UserName}", EventLogEntryType.Information);
+            _Logger.EventLogs($"Employees Updated, UserName: {result.Username}", EventLogEntryType.Information);
 
             return result;
         }

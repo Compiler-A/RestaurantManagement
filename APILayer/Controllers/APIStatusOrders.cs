@@ -64,7 +64,7 @@ namespace APILayer.Controllers
             }
 
             var result = await _StatusOrder.CreateAsync(Request);
-            return CreatedAtRoute("GetStatusOrderByID", new { ID = result!.ID }, result.ToResponse());
+            return CreatedAtRoute("GetStatusOrderByID", new { ID = result!.StatusOrderID }, result.ToResponse());
 
         }
 
