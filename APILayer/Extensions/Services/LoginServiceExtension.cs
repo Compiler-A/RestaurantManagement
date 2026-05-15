@@ -1,6 +1,6 @@
 ﻿using BusinessLayerRestaurant.Classes;
 using BusinessLayerRestaurant.Interfaces;
-using DataLayerRestaurant.Classes;
+using DataLayerRestaurant.Classes.SQL;
 using DataLayerRestaurant.Interfaces;
 
 

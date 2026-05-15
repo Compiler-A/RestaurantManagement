@@ -6,7 +6,7 @@ using DomainLayer.Entities;
 using DataLayerRestaurant.Mapper;
 
 
-namespace DataLayerRestaurant.Classes
+namespace DataLayerRestaurant.Classes.SQL
 {
 
 

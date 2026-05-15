@@ -1,4 +1,4 @@
-﻿using ContractsLayerRestaurant.DTORequest.JobRoles;
+﻿using ContractsLayerRestaurant.DTORequest.Settings;
 using DataLayerRestaurant.Interfaces;
 using DataLayerRestaurant.Mapper;
 using DomainLayer.Entities;
@@ -6,26 +6,24 @@ using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Options;
 using System.Data;
 
+namespace DataLayerRestaurant.Classes.SQL
+{
 
-
-namespace DataLayerRestaurant.Classes
-{ 
-
-    public class JobRolesRepositoryReader: IJobRolesRepositoryReader
+    public class SettingsRepositoryReader : ISettingsRepositoryReader
     {
-        private readonly clsMySettings _Settings;
-        public JobRolesRepositoryReader(IOptions<clsMySettings> mySettings)
-        {
-            _Settings = mySettings.Value;
-        }
-        
 
-        public async Task<List<JobRole>> GetAllDataAsync(List<int> Ids)
+        private readonly clsMySettings _Settings;
+
+        public SettingsRepositoryReader(IOptions<clsMySettings> settings)
         {
-            List<JobRole> result = new List<JobRole>();
+            _Settings = settings.Value;
+        }
+        public async Task<List<Setting>> GetAllDataAsync(List<int> Ids)
+        {
+            List<Setting> result = new List<Setting>();
             using (SqlConnection Connection = new SqlConnection(_Settings.ConnectionString))
             {
-                using (SqlCommand Command = new SqlCommand("JobRoles.SP_GetAllJobRolesByIds", Connection))
+                using (SqlCommand Command = new SqlCommand("Settings.SP_GetAllSettingsByIds", Connection))
                 {
                     Command.CommandType = System.Data.CommandType.StoredProcedure;
 
@@ -41,7 +39,7 @@ namespace DataLayerRestaurant.Classes
                     {
                         while (await reader.ReadAsync())
                         {
-                            result.Add(JobRoleMapper.ReaderToEntity(reader));
+                            result.Add(SettingMapper.ReaderToEntity(reader));
                         }
                     }
                 }
@@ -49,12 +47,12 @@ namespace DataLayerRestaurant.Classes
             return result;
         }
 
-        public async Task<List<JobRole>> GetAllDataAsync(int page)
+        public async Task<List<Setting>> GetAllDataAsync(int page)
         {
-            List<JobRole> result = new List<JobRole>();
+            List<Setting> result = new List<Setting>();
             using (SqlConnection Connection = new SqlConnection(_Settings.ConnectionString))
             {
-                using (SqlCommand Command = new SqlCommand("JobRoles.SP_GetAllJobRoles", Connection))
+                using (SqlCommand Command = new SqlCommand("Settings.SP_GetAllSettings", Connection))
                 {
                     Command.CommandType = System.Data.CommandType.StoredProcedure;
                     Command.Parameters.AddWithValue("@Page", page);
@@ -65,7 +63,7 @@ namespace DataLayerRestaurant.Classes
                     {
                         while (await reader.ReadAsync())
                         {
-                            result.Add(JobRoleMapper.ReaderToEntity(reader));
+                            result.Add(SettingMapper.ReaderToEntity(reader));
                         }
                     }
                 }
@@ -73,12 +71,12 @@ namespace DataLayerRestaurant.Classes
             return result;
         }
 
-        public async Task<JobRole?> GetDataAsync(int ID)
+        public async Task<Setting?> GetDataAsync(int ID)
         {
-            JobRole? result = null;
+            Setting? result = null;
             using (SqlConnection Connection = new SqlConnection(_Settings.ConnectionString))
             {
-                using (SqlCommand Command = new SqlCommand("JobRoles.SP_GetJobRoleByID", Connection))
+                using (SqlCommand Command = new SqlCommand("Settings.SP_GetSettingByID", Connection))
                 {
                     Command.CommandType = System.Data.CommandType.StoredProcedure;
                     Command.Parameters.AddWithValue("@ID", ID);
@@ -88,7 +86,7 @@ namespace DataLayerRestaurant.Classes
                     {
                         if (await reader.ReadAsync())
                         {
-                            result = (JobRoleMapper.ReaderToEntity(reader));
+                            result = (SettingMapper.ReaderToEntity(reader));
                         }
                     }
                 }
@@ -96,75 +94,70 @@ namespace DataLayerRestaurant.Classes
             return result;
         }
     }
-    
-    public class JobRolesRepositoryWriter : IJobRolesRepositoryWriter
+    public class SettingsRepositoryWriter : ISettingsRepositoryWriter
     {
+
         private readonly clsMySettings _Settings;
-        public JobRolesRepositoryWriter(IOptions<clsMySettings> mySettings)
+        public SettingsRepositoryWriter(IOptions<clsMySettings> settings)
         {
-            _Settings = mySettings.Value;
+            _Settings = settings.Value;
         }
 
-        public async Task<JobRole?> CreateDataAsync(DTOJobRolesCRequest DTO)
+        public async Task<Setting?> CreateDataAsync(DTOSettingsCRequest dto)
         {
             using (SqlConnection Connection = new SqlConnection(_Settings.ConnectionString))
             {
-                using (SqlCommand Command = new SqlCommand("JobRoles.SP_AddJobRole", Connection))
+                using (SqlCommand Command = new SqlCommand("Settings.SP_AddSetting", Connection))
                 {
                     Command.CommandType = System.Data.CommandType.StoredProcedure;
-                    Command.Parameters.AddWithValue("@Name", DTO.Name);
-                    Command.Parameters.AddWithValue("@Description", (object?)DTO.Description ?? DBNull.Value);
-
-                    await Connection.OpenAsync(); 
-                    using (SqlDataReader reader = await Command.ExecuteReaderAsync())
-                    {
-                        if (await reader.ReadAsync())
-                        {
-                            return (JobRoleMapper.ReaderToEntity(reader));
-                        }
-                    }
-                }
-            }
-            return null;
-        }
-
-        public async Task<JobRole?> UpdateDataAsync(DTOJobRolesURequest DTO)
-        {
-            using (SqlConnection Connection = new SqlConnection(_Settings.ConnectionString))
-            {
-                using (SqlCommand Command = new SqlCommand("JobRoles.SP_UpdateJobRole", Connection))
-                {
-                    Command.CommandType = System.Data.CommandType.StoredProcedure;
-                    Command.Parameters.AddWithValue("@Name", DTO.Name);
-                    Command.Parameters.AddWithValue("@Description", (object?)DTO.Description ?? DBNull.Value);
-                    Command.Parameters.AddWithValue("@ID", DTO.ID);
+                    Command.Parameters.AddWithValue("@Name", dto.Name);
+                    Command.Parameters.AddWithValue("@Value", (object?)dto.Value ?? DBNull.Value);
 
                     await Connection.OpenAsync();
                     using (SqlDataReader reader = await Command.ExecuteReaderAsync())
                     {
                         if (await reader.ReadAsync())
                         {
-                            return (JobRoleMapper.ReaderToEntity(reader));
+                            return (SettingMapper.ReaderToEntity(reader));
                         }
                     }
                 }
             }
             return null;
         }
-
+        public async Task<Setting?> UpdateDataAsync(DTOSettingsURequest DTO)
+        {
+            using (SqlConnection Connection = new SqlConnection(_Settings.ConnectionString))
+            {
+                using (SqlCommand Command = new SqlCommand("Settings.SP_UpdateSetting", Connection))
+                {
+                    Command.CommandType = System.Data.CommandType.StoredProcedure;
+                    Command.Parameters.AddWithValue("@Name", DTO.Name);
+                    Command.Parameters.AddWithValue("@Value", (object?)DTO.Value ?? DBNull.Value);
+                    Command.Parameters.AddWithValue("@ID", DTO.ID);
+                    await Connection.OpenAsync();
+                    using (SqlDataReader reader = await Command.ExecuteReaderAsync())
+                    {
+                        if (await reader.ReadAsync())
+                        {
+                            return (SettingMapper.ReaderToEntity(reader));
+                        }
+                    }
+                }
+            }
+            return null;
+        }
         public async Task<bool> DeleteDataAsync(int ID)
         {
             bool Deleted = false;
             using (SqlConnection Connection = new SqlConnection(_Settings.ConnectionString))
             {
-                using (SqlCommand Command = new SqlCommand("JobRoles.SP_DeleteJobRole", Connection))
+                using (SqlCommand Command = new SqlCommand("Settings.SP_DeleteSetting", Connection))
                 {
                     Command.CommandType = System.Data.CommandType.StoredProcedure;
                     Command.Parameters.AddWithValue("@ID", ID);
-
                     await Connection.OpenAsync();
                     int Row = await Command.ExecuteNonQueryAsync();
-
                     Deleted = Row > 0;
                 }
             }
@@ -172,45 +165,47 @@ namespace DataLayerRestaurant.Classes
         }
     }
 
-    public class JobRolesRepository : IJobRolesRepository
+    public class SettingsRepository : ISettingsRepository
     {
-        IJobRolesRepositoryWriter _IWrite;
-        IJobRolesRepositoryReader _IRead;
+        private readonly ISettingsRepositoryWriter _Write;
+        private readonly ISettingsRepositoryReader _Read;
 
-        public JobRolesRepository(IJobRolesRepositoryWriter write,  IJobRolesRepositoryReader read)
+        public SettingsRepository(ISettingsRepositoryWriter write, ISettingsRepositoryReader read)
         {
-            _IRead = read;
-            _IWrite = write;
+            _Write = write;
+            _Read = read;
         }
 
-        public async Task<List<JobRole>> GetAllDataAsync(int page)
+        public async Task<List<Setting>> GetAllDataAsync(List<int> Ids)
         {
-           return await _IRead.GetAllDataAsync(page);
+            return await _Read.GetAllDataAsync(Ids);
         }
 
-        public async Task<List<JobRole>> GetAllDataAsync(List<int> Ids)
+        public async Task<List<Setting>> GetAllDataAsync(int page)
         {
-            return await _IRead.GetAllDataAsync(Ids);
+            return await _Read.GetAllDataAsync(page);
         }
 
-        public async Task<JobRole?> GetDataAsync(int ID)
-        {
-            return await _IRead.GetDataAsync(ID);
+        public async Task<Setting?> GetDataAsync(int ID)
+        { 
+            return await _Read.GetDataAsync(ID);
         }
 
-        public async Task<JobRole?> CreateDataAsync(DTOJobRolesCRequest DTO)
+        public async Task<Setting?> CreateDataAsync(DTOSettingsCRequest DTO)
         {
-            return await _IWrite.CreateDataAsync(DTO);
+
+            return await _Write.CreateDataAsync(DTO);
         }
 
-        public async Task<JobRole?> UpdateDataAsync(DTOJobRolesURequest DTO)
+        public async Task<Setting?> UpdateDataAsync(DTOSettingsURequest DTO)
         {
-            return await _IWrite.UpdateDataAsync(DTO);
+
+            return await _Write.UpdateDataAsync(DTO);
         }
 
         public async Task<bool> DeleteDataAsync(int ID)
-        {
-            return await _IWrite.DeleteDataAsync(ID);
+        { 
+            return await _Write.DeleteDataAsync(ID);
         }
     }
 }

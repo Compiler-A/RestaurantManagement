@@ -6,7 +6,7 @@ using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Options;
 using System.Data;
 
-namespace DataLayerRestaurant.Classes
+namespace DataLayerRestaurant.Classes.SQL
 {
 
     public class TablesRepositoryReader : ITablesRepositoryReader

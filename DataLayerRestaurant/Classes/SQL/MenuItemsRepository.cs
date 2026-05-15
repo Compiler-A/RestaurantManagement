@@ -7,7 +7,7 @@ using Microsoft.Extensions.Options;
 using System.Data;
 
 
-namespace DataLayerRestaurant.Classes
+namespace DataLayerRestaurant.Classes.SQL
 {
 
 
