@@ -30,12 +30,12 @@ namespace DataLayerRestaurant.Mapper
                 Image = reader.IsDBNull(reader.GetOrdinal("Image")) ? null : reader.GetString(reader.GetOrdinal("Image")),
                 TypeItemID = reader.GetInt32(reader.GetOrdinal("TypeItemID")),
                 StatusMenuID = reader.GetInt32(reader.GetOrdinal("StatusMenuID")),
-                TypeItems = new TypeItem
+                TypeItem = new TypeItem
                 {
                     TypeItemID = reader.GetInt32(reader.GetOrdinal("TypeItemID")),
                     TypeName = reader.GetString(reader.GetOrdinal("TypeName"))
                 },
-                StatusMenus = new StatusMenu
+                StatusMenu = new StatusMenu
                 {
                     StatusMenuID = reader.GetInt32(reader.GetOrdinal("StatusMenuID")),
                     StatusMenuName = reader.GetString(reader.GetOrdinal("StatusMenuName"))

@@ -24,5 +24,9 @@ namespace DataLayerRestaurant.Data
         public DbSet<TypeItem> TypeItems { get; set; }
         public DbSet<Setting> Settings { get; set; }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDBContext).Assembly);
+        }
     } 
 }

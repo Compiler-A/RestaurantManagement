@@ -15,8 +15,8 @@ namespace BusinessLayerRestaurant.Mapper
                 Name = menuItem.ItemName,
                 Price = menuItem.Price,
                 Image = menuItem.Image,
-                TypeName = menuItem.TypeItems?.TypeName ?? string.Empty,
-                StatusMenuName = menuItem.StatusMenus?.StatusMenuName ?? string.Empty
+                TypeName = menuItem.TypeItem?.TypeName ?? string.Empty,
+                StatusMenuName = menuItem.StatusMenu?.StatusMenuName ?? string.Empty
             };
         }
     }

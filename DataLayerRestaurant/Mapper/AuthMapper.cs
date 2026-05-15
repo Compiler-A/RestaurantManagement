@@ -11,7 +11,8 @@ namespace DataLayerRestaurant.Mapper
         {
             return new Auth
             {
-                Employees = new Employee
+                EmployeeID = reader.GetInt32(reader.GetOrdinal("EmployeeID")),
+                Employee = new Employee
                 {
                     EmployeeID = reader.GetInt32(reader.GetOrdinal("EmployeeID")),
                     Username = reader.GetString(reader.GetOrdinal("Username")),
@@ -32,7 +33,7 @@ namespace DataLayerRestaurant.Mapper
         {
             return new Auth
             {
-                Employees = new Employee
+                Employee = new Employee
                 {
                     EmployeeID = reader.GetInt32(reader.GetOrdinal("EmployeeID")),
                     Password = reader.GetString(reader.GetOrdinal("Password")),

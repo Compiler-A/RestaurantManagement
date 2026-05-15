@@ -10,5 +10,9 @@ namespace DomainLayer.Entities
         public string Password { get; set; } = null!;
         public JobRole JobRole { get; set; } = null!;
 
+        public ICollection<Order> Orders { get; set; } = new List<Order>();
+
+        public ICollection<Auth> RefreshTokens { get; set; } = new List<Auth>();
+
     }
 }

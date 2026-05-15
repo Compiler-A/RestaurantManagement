@@ -33,17 +33,17 @@ namespace DataLayerRestaurant.Mapper
                 TotalAmount = reader.IsDBNull(reader.GetOrdinal("TotalAmount"))
                     ? null
                     : reader.GetDecimal(reader.GetOrdinal("TotalAmount")),
-                employees = new Employee
+                Employee = new Employee
                 {
                     EmployeeID = reader.GetInt32(reader.GetOrdinal("EmployeeID")),
                     Username = reader.GetString(reader.GetOrdinal("username"))
                 },
-                tables = new Table
+                Table = new Table
                 {
                     TableID = reader.GetInt32(reader.GetOrdinal("TableID")),
                     TableNumber = reader.GetString(reader.GetOrdinal("TableNumber"))
                 },
-                statusOrders = new StatusOrder
+                StatusOrder = new StatusOrder
                 {
                     StatusOrderID = reader.GetInt32(reader.GetOrdinal("StatusOrderID")),
                     StatusOrderName = reader.GetString(reader.GetOrdinal("StatusOrderName"))

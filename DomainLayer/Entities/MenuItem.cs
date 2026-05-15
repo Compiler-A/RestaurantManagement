@@ -14,7 +14,7 @@ namespace DomainLayer.Entities
         public ICollection<OrderDetail> OrderDetails { get; set; } = new List<OrderDetail>();
 
         public string? Image { get; set; }
-        public TypeItem TypeItems { get; set; } = null!;
-        public StatusMenu StatusMenus { get; set; } = null!;
+        public TypeItem TypeItem { get; set; } = null!;
+        public StatusMenu StatusMenu { get; set; } = null!;
     }
 }
