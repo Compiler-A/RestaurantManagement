@@ -2,6 +2,7 @@
 using BusinessLayerRestaurant.Classes;
 using DataLayerRestaurant.Interfaces;
 using DataLayerRestaurant.Classes.SQL;
+using DataLayerRestaurant.Classes.Repository;
 
 namespace APILayer.Extensions.Services
 {
@@ -9,7 +10,6 @@ namespace APILayer.Extensions.Services
     {
         public static IServiceCollection AddJobRolesServices(this IServiceCollection Services)
         {
-
             Services.AddScoped<IJobRolesRepositoryReader, JobRolesRepositoryReader>();
             Services.AddScoped<IJobRolesRepositoryWriter, JobRolesRepositoryWriter>();
             Services.AddScoped<IJobRolesRepository, JobRolesRepository>();
