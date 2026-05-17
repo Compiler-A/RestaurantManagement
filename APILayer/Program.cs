@@ -2,6 +2,7 @@ using APILayer.Extensions.Configuration;
 using APILayer.Extensions.Security;
 using APILayer.Extensions.Services;
 using APILayer.Middleware;
+using DataLayerRestaurant.Data;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -27,7 +28,7 @@ builder.Services.AddControllers(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGenExtension();
 
-
+builder.Services.AddDbContextConfiguration(builder.Configuration);
 builder.Services.AddServicesExtensions();
 
 builder.Services.AddCorsSecurityExtension(builder.Configuration);
