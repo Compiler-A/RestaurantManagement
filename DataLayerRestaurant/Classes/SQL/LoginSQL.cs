@@ -12,7 +12,7 @@ namespace DataLayerRestaurant.Classes.SQL
 
     public class LoginRepositoryReader : ILoginRepositoryReader
     {
-        protected readonly clsMySettings _Setting;
+        private readonly clsMySettings _Setting;
         public LoginRepositoryReader(IOptions<clsMySettings> Setting) 
         {
             _Setting = Setting.Value;

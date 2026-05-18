@@ -18,15 +18,5 @@ namespace ContractsLayerRestaurant.DTORequest.MenuItems
         [Range(1, int.MaxValue, ErrorMessage = "StatusMenuID must be greater than 0.")]
         public int StatusMenuID { get; set; }
         public string? Image { get; set; }
-
-        public DTOMenuItemsCRequest(string Name, string? Description, decimal Price, int TypeItemID, int StatusMenuID, string? Image)
-        {
-            this.Name = Name;
-            this.Description = Description;
-            this.Price = Price;
-            this.TypeItemID = TypeItemID;
-            this.StatusMenuID = StatusMenuID;
-            this.Image = Image;
-        }
     }
 }

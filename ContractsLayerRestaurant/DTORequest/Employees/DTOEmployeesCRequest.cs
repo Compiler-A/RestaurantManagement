@@ -16,13 +16,5 @@ namespace ContractsLayerRestaurant.DTORequest.Employees
 
         [Required(ErrorMessage = "Password is required")]
         public string Password { get; set; } = string.Empty;
-
-        public DTOEmployeesCRequest(string name, int jobID, string userName, string password)
-        {
-            Name = name;
-            JobID = jobID;
-            UserName = userName;
-            Password = password;
-        }
     }
 }

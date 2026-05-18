@@ -18,13 +18,5 @@ namespace ContractsLayerRestaurant.DTORequest.Orders
 
         [Range(0, double.MaxValue, ErrorMessage = "TotalAmount must be non-negative.")]
         public decimal? TotalAmount { get; set; }
-        public DTOOrderCRequest(int tableID, int employerID, int statusOrderID, DateTime orderDate, decimal? totalAmount)
-        {
-            TableID = tableID;
-            EmployeeID = employerID;
-            StatusOrderID = statusOrderID;
-            OrderDate = orderDate;
-            TotalAmount = totalAmount;
-        }
     }
 }

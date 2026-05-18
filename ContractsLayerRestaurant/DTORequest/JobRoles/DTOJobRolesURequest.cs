@@ -7,10 +7,5 @@ namespace ContractsLayerRestaurant.DTORequest.JobRoles
     {
         [Range(1, int.MaxValue, ErrorMessage = "ID must be greater than 0.")]
         public int ID { get; set; }
-
-        public DTOJobRolesURequest(int ID, string Name, string Description) : base(Name, Description)
-        {
-            this.ID = ID;
-        }
     }
 }

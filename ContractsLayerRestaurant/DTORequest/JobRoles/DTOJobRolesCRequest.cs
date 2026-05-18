@@ -8,11 +8,5 @@ namespace ContractsLayerRestaurant.DTORequest.JobRoles
         [Required(ErrorMessage = "Name is required.")]
         public string Name { get; set; }
         public string? Description { get; set; }
-
-        public DTOJobRolesCRequest(string Name, string Description)
-        {
-            this.Name = Name;
-            this.Description = Description;
-        }
     }
 }

@@ -13,7 +13,5 @@ namespace ContractsLayerRestaurant.DTORequest.MenuItems
 
         [Range(0, int.MaxValue, ErrorMessage = "TypeItemID must be greater than 0.")]
         public int TypeItemID { get; set; }
-
-
     }
 }

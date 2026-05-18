@@ -16,12 +16,5 @@ namespace ContractsLayerRestaurant.DTORequest.OrderDetails
 
         [Range(0, double.MaxValue, ErrorMessage = "SubTotal must be greater than 0.")]
         public decimal SubTotal { get; set; }
-        public DTOOrderDetailsCRequest(int orderID, int itemID, int quantity, decimal subTotal)
-        {
-            OrderID = orderID;
-            ItemID = itemID;
-            Quantity = quantity;
-            SubTotal = subTotal;
-        }
     }
 }

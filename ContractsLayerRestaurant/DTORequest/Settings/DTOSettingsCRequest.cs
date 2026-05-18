@@ -11,11 +11,5 @@ namespace ContractsLayerRestaurant.DTORequest.Settings
 
         [Range(0, double.MaxValue, ErrorMessage = "Value must be greater than 0.")]
         public decimal Value { get; set; }
-
-        public DTOSettingsCRequest(string name, decimal value)
-        {
-            Name = name;
-            Value = value;
-        }
     }
 }

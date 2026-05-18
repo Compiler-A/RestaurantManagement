@@ -14,11 +14,5 @@ namespace ContractsLayerRestaurant.DTORequest.Employees
         [Required(ErrorMessage = "NewPassword is required")]
         public string NewPassword { get; set; } = string.Empty;
 
-        public DTOEmployeesChangedPassword(int ID, string CurrentPassword, string NewPassword)
-        {
-            this.ID = ID;
-            this.CurrentPassword = CurrentPassword;
-            this.NewPassword = NewPassword;
-        }
     }
 }
