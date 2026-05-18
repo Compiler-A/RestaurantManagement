@@ -1,14 +1,11 @@
 ﻿using ContractsLayerRestaurant.DTORequest.Employees;
 using DataLayerRestaurant.Data;
 using DataLayerRestaurant.Interfaces;
-using DataLayerRestaurant.Mapper;
 using DomainLayer.Entities;
-using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Data;
-using System.Net.WebSockets;
 
 
 namespace DataLayerRestaurant.Classes.EF
@@ -26,18 +23,9 @@ namespace DataLayerRestaurant.Classes.EF
         }
         public async Task<List<Employee>> GetAllDataAsync(List<int> Ids)
         {
-            throw new NotImplementedException("GetAllDataAsync with Ids");
-        }
-
-        public async Task<Employee?> GetDataAsync(string UserName)
-        {
-            throw new NotImplementedException("GetDataAsync with UserName");
-        }
-
-
-        public async Task<List<Employee>> GetAllDataAsync(int page)
-        {
             var query = _DbContext.Employees
+                .AsNoTracking()
+                .Where(x => Ids.Contains(x.EmployeeID))
                 .Select(x => new Employee
                 {
                     EmployeeID = x.EmployeeID,
@@ -50,18 +38,38 @@ namespace DataLayerRestaurant.Classes.EF
                         JobName = x.JobRole.JobName,
                     }
                 });
-                
 
-            var data = query.Skip((page - 1) * _Setting.RowsPerPage)
-                            .Take(_Setting.RowsPerPage);
-
-            return await data.AsNoTracking().ToListAsync();
+            return await query.ToListAsync();
         }
 
-        public async Task<Employee?> GetDataAsync(int ID)
+        public async Task<Employee?> GetDataAsync(string UserName)
         {
             var query = _DbContext.Employees
-                .Where(x => x.EmployeeID == ID)
+                .AsNoTracking()
+                .Where(x => x.Username == UserName)
+                .Select(x => new Employee
+                {
+                    EmployeeID = x.EmployeeID,
+                    Name = x.Name,
+                    JobRoleID = x.JobRoleID,
+                    Username = x.Username,
+                    Password = x.Password,
+                    JobRole = new JobRole
+                    {
+                        JobRoleID = x.JobRole.JobRoleID,
+                        JobName = x.JobRole.JobName,
+                    }
+                });
+
+            return await query.FirstOrDefaultAsync();
+        }
+
+
+        public async Task<List<Employee>> GetAllDataAsync(int page)
+        {
+            var query = _DbContext.Employees
+                .AsNoTracking()
+                .OrderBy(x => x.EmployeeID)
                 .Select(x => new Employee
                 {
                     EmployeeID = x.EmployeeID,
@@ -73,10 +81,32 @@ namespace DataLayerRestaurant.Classes.EF
                         JobRoleID = x.JobRole.JobRoleID,
                         JobName = x.JobRole.JobName,
                     }
-                })
-                .AsNoTracking();
+                });
 
-            _Logger.LogInformation("SQL Query: {Query}", query.ToQueryString());
+            var data = query.Skip((page - 1) * _Setting.RowsPerPage)
+                            .Take(_Setting.RowsPerPage);
+
+            return await data.ToListAsync();
+        }
+
+        public async Task<Employee?> GetDataAsync(int ID)
+        { 
+            var query = _DbContext.Employees
+                .AsNoTracking()
+                .Where(x => x.EmployeeID == ID)
+                .Select(x => new Employee
+                {
+                    EmployeeID = x.EmployeeID,
+                    Name = x.Name,
+                    JobRoleID = x.JobRoleID,
+                    Username = x.Username,
+                    Password = x.Password,
+                    JobRole = new JobRole
+                    {
+                        JobRoleID = x.JobRole.JobRoleID,
+                        JobName = x.JobRole.JobName,
+                    }
+                });
 
             return await query.FirstOrDefaultAsync();
         }
@@ -95,22 +125,70 @@ namespace DataLayerRestaurant.Classes.EF
 
         public async Task<bool> ChangedDataPasswordAsync(DTOEmployeesChangedPassword clsChanged)
         {
-            throw new NotImplementedException("Changed Password");
+            var existingEmployee = await _DbContext.Employees.FindAsync(clsChanged.ID);
+            if (existingEmployee == null)
+            {
+                return false;
+            }
+
+            existingEmployee.Password = clsChanged.NewPassword;
+            return await _DbContext.SaveChangesAsync() > 0;
         }
 
         public async Task<Employee?> CreateDataAsync(DTOEmployeesCRequest employee)
         {
-            throw new NotImplementedException("Create Data Async");
+            var jobRole = await _DbContext.JobRoles.FindAsync(employee.JobID);
+            if (jobRole == null) return null;
+
+            var newEmployee = new Employee
+            {
+                JobRoleID = employee.JobID,
+                Name = employee.Name,
+                Username = employee.UserName,
+                Password = employee.Password
+            };
+
+            await _DbContext.Employees.AddAsync(newEmployee);
+            await _DbContext.SaveChangesAsync();
+
+            newEmployee.JobRole = jobRole;
+            return newEmployee;
         }
 
         public async Task<Employee?> UpdateDataAsync(DTOEmployeesURequest employee)
         {
-           throw new NotImplementedException("Update Data Async");
+            var jobRole = await _DbContext.JobRoles.FindAsync(employee.JobID);
+            if (jobRole == null) return null;
+
+            var existingEmployee = await _DbContext.Employees.FindAsync(employee.ID);
+            if (existingEmployee == null)
+            {
+                return null;
+            }
+
+            existingEmployee.Name = employee.Name;
+            existingEmployee.JobRoleID = employee.JobID;
+            existingEmployee.Username = employee.UserName;
+            existingEmployee.Password = employee.Password;
+
+            await _DbContext.SaveChangesAsync();
+
+            existingEmployee.JobRole = jobRole;
+            return existingEmployee;
         }
 
         public async Task<bool> DeleteDataAsync(int ID)
         {
-           throw new NotImplementedException("Delete Data Async");
+            var RemoveEmployee = await _DbContext.Employees.FindAsync(ID);
+            if (RemoveEmployee == null)
+            {
+                return false;
+            }
+
+            _DbContext.Employees.Remove(RemoveEmployee);
+
+            int AffectRows = await _DbContext.SaveChangesAsync();
+            return AffectRows > 0;
         }
 
     }   

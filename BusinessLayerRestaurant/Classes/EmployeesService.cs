@@ -117,7 +117,7 @@ namespace BusinessLayerRestaurant.Classes
             {
                 throw new InvalidOperationException("Not Changed!");
             }
-            _Logger.EventLogs($"Changed Password Saccessfully.", EventLogEntryType.Information);
+            _Logger.EventLogs($"Changed Password Successfully.", EventLogEntryType.Information);
             return result;
         }
 
