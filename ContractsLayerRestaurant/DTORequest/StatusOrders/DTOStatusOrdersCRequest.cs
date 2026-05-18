@@ -8,10 +8,5 @@ namespace ContractsLayerRestaurant.DTORequest.StatusOrders
     {
         [Required(ErrorMessage = "Name is required.")]
         public string Name { get; set; }
-
-        public DTOStatusOrdersCRequest(string statusName)
-        {
-            this.Name = statusName;
-        }
     }
 }

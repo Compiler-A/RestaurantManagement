@@ -13,7 +13,7 @@ namespace DataLayerRestaurant.Classes.SQL
 
     public class StatusOrdersRepositoryReader : IStatusOrdersRepositoryReader
     {
-        public readonly clsMySettings _Settings;
+        private readonly clsMySettings _Settings;
 
         public StatusOrdersRepositoryReader(IOptions<clsMySettings> Settings)
         {

@@ -9,10 +9,5 @@ namespace ContractsLayerRestaurant.DTORequest.StatusOrders
 
         [Range(1, int.MaxValue, ErrorMessage = "ID must be greater than 0.")]
         public int ID { get; set; }
-
-        public DTOStatusOrdersURequest(int ID, string statusOrderName) : base(statusOrderName)
-        {
-            this.ID = ID;
-        }
     }
 }
