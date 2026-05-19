@@ -53,7 +53,7 @@ namespace APILayer.Controllers
             return CreateResponse<DTOStatusMenuResponse>(resource!.ToResponse(), StatusCodes.Status200OK, "Found Successfully!");
         }
 
-        [AllowAnonymous]
+        [Authorize(Roles = $"{RoleNames.Manager}")]
         [EnableRateLimiting(NameRateLimitPolicies.Add)]
         [HttpPost(Name = "AddStatusMenu")]
         public async Task<ActionResult<ApiResponse<DTOStatusMenuResponse>>> CreateAsync([FromBody] DTOStatusMenusCRequest statusMenu)

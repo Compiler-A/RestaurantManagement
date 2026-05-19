@@ -11,6 +11,7 @@ using BusinessLayerRestaurant.Mapper;
 namespace APILayer.Controllers
 {
     [Authorize]
+    [ApiController]
     [Route("api/TypeItems")]
     [TypeFilter(typeof(ValidateModelAttribute))]
     public class APITypeItems : BaseController
