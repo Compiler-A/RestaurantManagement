@@ -88,7 +88,8 @@ namespace DataLayerRestaurant.Classes.EF
         public async Task<List<MenuItem>> GetAllDataAsync(int Page)
         {
             var query = _DbContext.MenuItems
-                .AsNoTracking();
+                .AsNoTracking()
+                .OrderBy(x => x.ItemID);
 
             var data = query
                 .Select(x => new MenuItem
@@ -151,6 +152,7 @@ namespace DataLayerRestaurant.Classes.EF
         {
             var query = _DbContext.MenuItems
                 .AsNoTracking()
+                .OrderBy(x => x.ItemID)
                 .Where(x => (x.StatusMenuID == Request.StatusMenuID || Request.StatusMenuID == 0) 
                 && (x.TypeItemID == Request.TypeItemID || Request.TypeItemID == 0));
 

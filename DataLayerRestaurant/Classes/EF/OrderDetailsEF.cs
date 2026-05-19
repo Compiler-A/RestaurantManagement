@@ -99,6 +99,7 @@ namespace DataLayerRestaurant.Classes.EF
         {
             var query = _DbContext.OrderDetails
                  .AsNoTracking()
+                 .OrderBy(x => x.OrderDetailID)
                  .Select(x => new OrderDetail
                  {
                      OrderDetailID = x.OrderDetailID,

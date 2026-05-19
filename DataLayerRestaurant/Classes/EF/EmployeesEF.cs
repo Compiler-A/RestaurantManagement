@@ -26,7 +26,6 @@ namespace DataLayerRestaurant.Classes.EF
             var query = _DbContext.Employees
                 .AsNoTracking()
                 .Where(x => Ids.Contains(x.EmployeeID))
-                .OrderBy(x => x.EmployeeID)
                 .Select(x => new Employee
                 {
                     EmployeeID = x.EmployeeID,

@@ -92,6 +92,7 @@ namespace DataLayerRestaurant.Classes.EF
         {
             var query = _DbContext.Orders
                 .AsNoTracking()
+                .OrderBy(x => x.OrderID)
                 .Select(x => new Order
                 {
                     OrderID = x.OrderID,
@@ -168,6 +169,7 @@ namespace DataLayerRestaurant.Classes.EF
         {
             var query = _DbContext.Orders
                 .AsNoTracking()
+                .OrderBy(x => x.OrderID)
                 .Where(x => (x.StatusOrderID == Request.StatusOrderID || x.StatusOrderID == 0) 
                 && (x.TableID == Request.TableID || Request.TableID == 0) 
                 && (x.EmployeeID == Request.EmployeeID || Request.EmployeeID == 0))

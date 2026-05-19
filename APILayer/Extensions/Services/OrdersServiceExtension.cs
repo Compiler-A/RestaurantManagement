@@ -11,10 +11,10 @@ namespace APILayer.Extensions.Services
     {
         public static IServiceCollection AddOrdersServices(this IServiceCollection Services)
         {
-            Services.AddScoped<IOrderDetailBatchLoader, DataLayerRestaurant.Classes.EF.OrderDetailBatchLoader>();
+            Services.AddScoped<IOrderDetailBatchLoader, DataLayerRestaurant.Classes.SQL.OrderDetailBatchLoader>();
 
             Services.AddScoped<IOrdersRepositoryWriter, OrdersRepositoryWriter>();
-            Services.AddScoped<IOrdersRepositoryReader, OrdersRepositoryReaderEF>();
+            Services.AddScoped<IOrdersRepositoryReader, OrdersRepositoryReader>();
             Services.AddScoped<IOrdersRepository, OrdersRepository>();
             Services.AddScoped<IOrdersServiceWriter, OrdersWriter>();
             Services.AddScoped<IOrdersServiceReader, OrdersReader>();
