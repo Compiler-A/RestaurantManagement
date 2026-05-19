@@ -3,6 +3,7 @@ using BusinessLayerRestaurant.Classes;
 using DataLayerRestaurant.Interfaces;
 using DataLayerRestaurant.Classes.SQL;
 using DataLayerRestaurant.Classes.Repository;
+using DataLayerRestaurant.Classes.EF;
 
 namespace APILayer.Extensions.Services
 {
@@ -10,10 +11,10 @@ namespace APILayer.Extensions.Services
     {
         public static IServiceCollection AddOrdersServices(this IServiceCollection Services)
         {
-            Services.AddScoped<IOrderDetailBatchLoader, OrderDetailBatchLoader>();
+            Services.AddScoped<IOrderDetailBatchLoader, DataLayerRestaurant.Classes.EF.OrderDetailBatchLoader>();
 
             Services.AddScoped<IOrdersRepositoryWriter, OrdersRepositoryWriter>();
-            Services.AddScoped<IOrdersRepositoryReader, OrdersRepositoryReader>();
+            Services.AddScoped<IOrdersRepositoryReader, OrdersRepositoryReaderEF>();
             Services.AddScoped<IOrdersRepository, OrdersRepository>();
             Services.AddScoped<IOrdersServiceWriter, OrdersWriter>();
             Services.AddScoped<IOrdersServiceReader, OrdersReader>();

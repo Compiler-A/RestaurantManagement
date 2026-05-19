@@ -30,6 +30,10 @@ namespace DataLayerRestaurant.Classes.EF
                 {
                     OrderDetailID = x.OrderDetailID,
                     OrderID = x.OrderID,
+                    Order = new Order
+                    {
+                        OrderID = x.Order.OrderID
+                    },
                     Item = new MenuItem
                     {
                         ItemID = x.ItemID,
@@ -50,6 +54,10 @@ namespace DataLayerRestaurant.Classes.EF
                 {
                     OrderDetailID = x.OrderDetailID,
                     OrderID = x.OrderID,
+                    Order = new Order
+                    {
+                        OrderID = x.Order.OrderID
+                    },
                     Item = new MenuItem
                     {
                         ItemID = x.ItemID,
@@ -71,6 +79,10 @@ namespace DataLayerRestaurant.Classes.EF
                 {
                     OrderDetailID = x.OrderDetailID,
                     OrderID = x.OrderID,
+                    Order = new Order
+                    {
+                        OrderID = x.Order.OrderID
+                    },
                     Item = new MenuItem
                     {
                         ItemID = x.ItemID,
@@ -91,6 +103,10 @@ namespace DataLayerRestaurant.Classes.EF
                  {
                      OrderDetailID = x.OrderDetailID,
                      OrderID = x.OrderID,
+                     Order = new Order
+                     {
+                         OrderID = x.Order.OrderID
+                     },
                      Item = new MenuItem
                      {
                          ItemID = x.ItemID,
@@ -114,6 +130,10 @@ namespace DataLayerRestaurant.Classes.EF
                 {
                     OrderDetailID = x.OrderDetailID,
                     OrderID = x.OrderID,
+                    Order = new Order
+                    {
+                        OrderID = x.Order.OrderID
+                    },
                     Item = new MenuItem
                     {
                         ItemID = x.ItemID,

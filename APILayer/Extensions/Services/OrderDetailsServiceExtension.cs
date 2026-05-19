@@ -13,7 +13,7 @@ namespace APILayer.Extensions.Services
         public static IServiceCollection AddOrderDetailsServices(this IServiceCollection Services)
         {
 
-            Services.AddScoped<IOrderDetailsRepositoryReader, OrderDetailsRepositoryReader>();
+            Services.AddScoped<IOrderDetailsRepositoryReader, OrderDetailsRepositoryReaderEF>();
             Services.AddScoped<IOrderDetailsRepositoryWriter, OrderDetailsRepositoryWriter>();
             Services.AddScoped<IOrderDetailsRepository, OrderDetailsRepository>();
             Services.AddScoped<IOrderDetailsServiceReader, OrderDetailsReader>();
