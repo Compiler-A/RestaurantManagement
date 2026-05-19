@@ -7,5 +7,8 @@ namespace ContractsLayerRestaurant.DTORequest.OrderDetails
     {
         [Range(1, int.MaxValue, ErrorMessage = "ID must be greater than 0.")]
         public int ID { get; set; }
+
+        [Range(0, double.MaxValue, ErrorMessage = "SubTotal must be greater than 0.")]
+        public decimal SubTotal { get; set; }
     }
 }

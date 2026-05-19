@@ -13,8 +13,5 @@ namespace ContractsLayerRestaurant.DTORequest.OrderDetails
 
         [Range(0, int.MaxValue, ErrorMessage = "Quantity must be greater than 0.")]
         public int Quantity { get; set; }
-
-        [Range(0, double.MaxValue, ErrorMessage = "SubTotal must be greater than 0.")]
-        public decimal SubTotal { get; set; }
     }
 }
