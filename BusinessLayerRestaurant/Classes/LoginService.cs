@@ -1,8 +1,8 @@
 ﻿#pragma warning disable CA1416 // Validate platform compatibility
-using BusinessLayerRestaurant.Interfaces;
+using ContractsLayerRestaurant.Interfaces.Services;
 using System.Security.Authentication;
 using ContractsLayerRestaurant.DTORequest.Auth;
-using DataLayerRestaurant.Interfaces;
+using ContractsLayerRestaurant.Interfaces.Repositories;
 using Microsoft.IdentityModel.Tokens;
 using System.Diagnostics;
 using System.IdentityModel.Tokens.Jwt;

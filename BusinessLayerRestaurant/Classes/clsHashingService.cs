@@ -1,5 +1,4 @@
-﻿using BusinessLayerRestaurant.Interfaces;
-
+﻿using ContractsLayerRestaurant.Interfaces.Services;
 
 namespace BusinessLayerRestaurant.Classes
 {

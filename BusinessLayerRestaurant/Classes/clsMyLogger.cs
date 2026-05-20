@@ -1,6 +1,6 @@
 ﻿#pragma warning disable CA1416 // Validate platform compatibility
 using System.Diagnostics;
-using BusinessLayerRestaurant.Interfaces;
+using ContractsLayerRestaurant.Interfaces.Services;
 
 namespace BusinessLayerRestaurant.Classes
 {

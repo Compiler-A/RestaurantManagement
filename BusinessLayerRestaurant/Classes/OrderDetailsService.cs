@@ -1,7 +1,7 @@
 ﻿#pragma warning disable CA1416 // Validate platform compatibility
 using System.Diagnostics;
-using BusinessLayerRestaurant.Interfaces;
-using DataLayerRestaurant.Interfaces;
+using ContractsLayerRestaurant.Interfaces.Services;
+using ContractsLayerRestaurant.Interfaces.Repositories;
 using ContractsLayerRestaurant.DTORequest.OrderDetails;
 using DomainLayer.Entities;
 
