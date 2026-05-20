@@ -1,6 +1,6 @@
 ﻿using System.Security.Authentication;
 using System.Text.Json;
-using BusinessLayerRestaurant.Interfaces;
+using ContractsLayerRestaurant.Interfaces.Services;
 using System.Diagnostics;
 
 namespace APILayer.Middleware
