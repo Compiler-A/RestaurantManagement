@@ -1,40 +1,39 @@
-﻿
-using Microsoft.Data.SqlClient;
+﻿using Microsoft.Data.SqlClient;
 
-namespace RestaurantDataLayer
+namespace ContractsLayerRestaurant.Interfaces
 {
 
-    public interface IRepositoryReader <Tentity>
+    public interface IRepositoryReader<Tentity>
     {
         Task<List<Tentity>> GetAllDataAsync(List<int> ids);
         Task<List<Tentity>> GetAllDataAsync(int page);
         Task<Tentity?> GetDataAsync(int ID);
     }
-    public interface IRepositoryWriter <Entity,DTOCreate, DTOUpdate>
+    public interface IRepositoryWriter<Entity, DTOCreate, DTOUpdate>
     {
         Task<Entity?> CreateDataAsync(DTOCreate dto);
         Task<Entity?> UpdateDataAsync(DTOUpdate dto);
         Task<bool> DeleteDataAsync(int id);
     }
 
-    public interface IServiceReader <Tentity>
+    public interface IServiceReader<Tentity>
     {
         Task<List<Tentity>> GetAllAsync(int page);
         Task<Tentity?> GetAsync(int ID);
     }
-    public interface IServiceWriter <TDTO,DTOCreate, DTOUpdate>
+    public interface IServiceWriter<TDTO, DTOCreate, DTOUpdate>
     {
         Task<TDTO?> CreateAsync(DTOCreate dto);
         Task<TDTO?> UpdateAsync(DTOUpdate dto);
         Task<bool> DeleteAsync(int ID);
     }
 
-    public interface ICompositionDataBase <DTO>
+    public interface ICompositionDataBase<DTO>
     {
         DTO GetDataFromDataBase(SqlDataReader reader);
     }
 
-    public interface IServiceContainer <DataInterface>
+    public interface IServiceContainer<DataInterface>
     {
         DataInterface IData { get; set; }
     }
