@@ -1,9 +1,8 @@
 ﻿using ContractsLayerRestaurant.DTORequest.Employees;
 using DataLayerRestaurant.Data;
-using DataLayerRestaurant.Interfaces;
+using ContractsLayerRestaurant.Interfaces.Repositories;
 using DomainLayer.Entities;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Data;
 

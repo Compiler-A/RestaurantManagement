@@ -1,11 +1,7 @@
-﻿
-
-using ContractsLayerRestaurant.DTORequest.Settings;
+﻿using ContractsLayerRestaurant.DTORequest.Settings;
 using DataLayerRestaurant.Data;
-using DataLayerRestaurant.Interfaces;
-using DataLayerRestaurant.Mapper;
 using DomainLayer.Entities;
-using Microsoft.Data.SqlClient;
+using ContractsLayerRestaurant.Interfaces.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using System.Data;

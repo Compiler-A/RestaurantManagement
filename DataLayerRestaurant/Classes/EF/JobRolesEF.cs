@@ -1,14 +1,11 @@
-﻿
-
-using ContractsLayerRestaurant.DTORequest.JobRoles;
+﻿using ContractsLayerRestaurant.DTORequest.JobRoles;
 using DataLayerRestaurant.Data;
-using DataLayerRestaurant.Interfaces;
-using DataLayerRestaurant.Mapper;
+using ContractsLayerRestaurant.Interfaces.Repositories;
 using DomainLayer.Entities;
-using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using System.Data;
+
 
 namespace DataLayerRestaurant.Classes.EF
 {

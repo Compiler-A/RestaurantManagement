@@ -1,5 +1,5 @@
 ﻿using ContractsLayerRestaurant.DTORequest.Auth;
-using DataLayerRestaurant.Interfaces;
+using ContractsLayerRestaurant.Interfaces.Repositories;
 using DomainLayer.Entities;
 
 

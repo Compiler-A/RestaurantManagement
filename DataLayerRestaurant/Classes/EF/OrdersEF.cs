@@ -1,14 +1,10 @@
 ﻿using ContractsLayerRestaurant.DTORequest.Orders;
 using DataLayerRestaurant.Data;
-using DataLayerRestaurant.Interfaces;
-using DataLayerRestaurant.Mapper;
+using ContractsLayerRestaurant.Interfaces.Repositories;
 using DomainLayer.Entities;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using System.Data;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 
 namespace DataLayerRestaurant.Classes.EF

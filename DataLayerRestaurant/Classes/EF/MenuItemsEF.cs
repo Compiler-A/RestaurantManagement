@@ -1,19 +1,10 @@
 ﻿using ContractsLayerRestaurant.DTORequest.MenuItems;
 using DataLayerRestaurant.Data;
-using DataLayerRestaurant.Interfaces;
-using DataLayerRestaurant.Mapper;
+using ContractsLayerRestaurant.Interfaces.Repositories;
 using DomainLayer.Entities;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
-using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace DataLayerRestaurant.Classes.EF
 {

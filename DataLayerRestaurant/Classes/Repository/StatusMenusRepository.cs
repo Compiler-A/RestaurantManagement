@@ -1,5 +1,5 @@
 ﻿using ContractsLayerRestaurant.DTORequest.StatusMenus;
-using DataLayerRestaurant.Interfaces;
+using ContractsLayerRestaurant.Interfaces.Repositories;
 using DomainLayer.Entities;
 
 namespace DataLayerRestaurant.Classes.Repository
