@@ -1,5 +1,5 @@
 ﻿using APILayer.Filters;
-using BusinessLayerRestaurant.Interfaces;
+using ContractsLayerRestaurant.Interfaces.Services;
 using BusinessLayerRestaurant.Mapper;
 using ContractsLayerRestaurant.DTORequest.Tables;
 using ContractsLayerRestaurant.DTOResponse;

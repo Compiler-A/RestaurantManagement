@@ -1,5 +1,5 @@
 ﻿using APILayer.Filters;
-using BusinessLayerRestaurant.Interfaces;
+using ContractsLayerRestaurant.Interfaces.Services;
 using ContractsLayerRestaurant.DTORequest.Orders;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

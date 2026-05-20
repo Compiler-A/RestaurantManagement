@@ -1,7 +1,7 @@
 ﻿using APILayer.Authorization.Employee;
 using APILayer.Authorization.Order;
 using BusinessLayerRestaurant.Classes;
-using BusinessLayerRestaurant.Interfaces;
+using ContractsLayerRestaurant.Interfaces.Services;
 using Microsoft.AspNetCore.Authorization;
 
 namespace APILayer.Extensions.Services

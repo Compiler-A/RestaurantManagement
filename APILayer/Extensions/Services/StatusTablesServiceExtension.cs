@@ -1,6 +1,6 @@
-﻿using BusinessLayerRestaurant.Interfaces;
+﻿using ContractsLayerRestaurant.Interfaces.Services;
+using ContractsLayerRestaurant.Interfaces.Repositories;
 using BusinessLayerRestaurant.Classes;
-using DataLayerRestaurant.Interfaces;
 using DataLayerRestaurant.Classes.SQL;
 using DataLayerRestaurant.Classes.EF;
 using DataLayerRestaurant.Classes.Repository;

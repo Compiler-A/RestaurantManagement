@@ -1,5 +1,5 @@
 ﻿using BusinessLayerRestaurant.Classes;
-using BusinessLayerRestaurant.Interfaces;
+using ContractsLayerRestaurant.Interfaces.Services;
 
 
 namespace APILayer.Extensions.Services
