@@ -14,11 +14,9 @@ namespace DataLayerRestaurant.Classes.EF
     {
         private readonly clsMySettings _Setting;
         private readonly AppDBContext _DbContext;
-        private readonly ILogger<EmployeesRepositoryReaderEF> _Logger;
-        public EmployeesRepositoryReaderEF(IOptions<clsMySettings> settings, AppDBContext DbContext, ILogger<EmployeesRepositoryReaderEF> logger)
+        public EmployeesRepositoryReaderEF(IOptions<clsMySettings> settings, AppDBContext DbContext)
         {
             _DbContext = DbContext;
-            _Logger = logger;
             _Setting = settings.Value;
         }
         public async Task<List<Employee>> GetAllDataAsync(List<int> Ids)
