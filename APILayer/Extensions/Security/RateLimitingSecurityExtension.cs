@@ -7,7 +7,7 @@ namespace APILayer.Extensions.Security
 {
     
 
-    public static class RateLimitingSecurityExtension
+    public static partial class SecurityExtension
     {
 
         private static void _AddPolicies(RateLimiterOptions options,RateLimitePoliciesOptions RLP)

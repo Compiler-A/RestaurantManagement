@@ -1,11 +1,11 @@
-﻿using BusinessLayerRestaurant.Classes;
+﻿using ContractsLayerRestaurant.Configuration;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
 namespace APILayer.Extensions.Security
 {
-    public static class AuthenticationSecurityExtension
+    public static partial class SecurityExtension
     {
         
         public static IServiceCollection AddAuthenticationExtension(this IServiceCollection services , IConfiguration Configuration)

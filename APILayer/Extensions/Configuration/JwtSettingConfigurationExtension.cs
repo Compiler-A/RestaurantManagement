@@ -1,8 +1,8 @@
-﻿using BusinessLayerRestaurant.Classes;
+﻿using ContractsLayerRestaurant.Configuration;
 
 namespace APILayer.Extensions.Configuration
 {
-    public static class JwtSettingConfigurationExtension
+    public static partial class ConfigurationExtension
     {
         public static IServiceCollection AddJwtSettingConfiguration(this IServiceCollection Services, IConfiguration Configuration)
         {

@@ -3,7 +3,7 @@ using APILayer.Authorization.Order;
 
 namespace APILayer.Extensions.Security
 {
-    public static class AuthorizationSecurityExtension
+    public static partial class SecurityExtension
     {
         public static IServiceCollection AddAuthorizationExtension(this IServiceCollection services)
         {

@@ -4,18 +4,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace APILayer.Extensions.Configuration
 {
-    public static class MySettingConfigurationExtension
+    public static partial class ConfigurationExtension
     {
         public static IServiceCollection AddMySettingsConfiguration(this IServiceCollection Services, IConfiguration Configuration)
         {
-            var setting = Configuration.GetSection("MySettings").Get<clsMySettings>();
-            if (setting == null)
-            {
-                throw new InvalidOperationException(
-                    "setting is null");
-            }
-            Services.AddDbContext<AppDBContext>(option => option.UseSqlServer(setting.ConnectionString));
-
+            Services.Configure<clsMySettings>(
+               Configuration.GetSection("MySettings"));
             return Services;
         }
     }

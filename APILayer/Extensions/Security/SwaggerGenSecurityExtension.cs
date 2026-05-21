@@ -3,7 +3,7 @@ using Microsoft.OpenApi.Models;
 
 namespace APILayer.Extensions.Security
 {
-    public static class SwaggerGenSecurityExtension
+    public static partial class SecurityExtension
     {
         public static IServiceCollection AddSwaggerGenExtension(this IServiceCollection services)
         {

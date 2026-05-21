@@ -1,6 +1,6 @@
 ﻿namespace APILayer.Extensions.Security
 {
-    public static class CorsSecurityExtension
+    public static partial class SecurityExtension
     {
         public static IServiceCollection AddCorsSecurityExtension(this IServiceCollection services, IConfiguration Configuration)
         {
