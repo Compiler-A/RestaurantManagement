@@ -1,10 +1,10 @@
-﻿using BusinessLayerRestaurant.Classes;
+﻿using BusinessLayerRestaurant.Operations;
 using ContractsLayerRestaurant.Interfaces.Services;
 
 
 namespace APILayer.Extensions.Services
 {
-    public static class HashingServiceExtension
+    public static partial class ServiceExtension
     {
         public static IServiceCollection AddHashingServices(this IServiceCollection Services)
         {

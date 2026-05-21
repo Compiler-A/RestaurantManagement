@@ -1,6 +1,7 @@
 ﻿using ContractsLayerRestaurant.Interfaces.Services;
-using BusinessLayerRestaurant.Classes;
 using ContractsLayerRestaurant.Interfaces.Repositories;
+using BusinessLayerRestaurant.Services;
+using BusinessLayerRestaurant.Operations;
 using DataLayerRestaurant.Classes.SQL;
 using DataLayerRestaurant.Classes.Repository;
 using DataLayerRestaurant.Classes.EF;
@@ -8,13 +9,20 @@ using DataLayerRestaurant.Classes.EF;
 
 namespace APILayer.Extensions.Services
 {
-    public static class EmployeesServiceExtension
+    public static partial class ServiceExtension
     {
-        public static IServiceCollection AddEmployeesServices(this IServiceCollection Services)
+        public static IServiceCollection AddEmployeesServices(this IServiceCollection Services, string DataAccessStrategy)
         {
-
-            Services.AddScoped<IEmployeesRepositoryReader, EmployeesRepositoryReader>();
-            Services.AddScoped<IEmployeesRepositoryWriter, EmployeesRepositoryWriter>();
+            if (DataAccessStrategy == "EF")
+            {
+                Services.AddScoped<IEmployeesRepositoryReader, EmployeesRepositoryReaderEF>();
+                Services.AddScoped<IEmployeesRepositoryWriter, EmployeesRepositoryWriterEF>();
+            }
+            else
+            {
+                Services.AddScoped<IEmployeesRepositoryReader, EmployeesRepositoryReader>();
+                Services.AddScoped<IEmployeesRepositoryWriter, EmployeesRepositoryWriter>();
+            }
             Services.AddScoped<IEmployeesRepository, EmployeesRepository>();
 
             Services.AddScoped<IEmployeesServiceReader, EmployeesReader>();

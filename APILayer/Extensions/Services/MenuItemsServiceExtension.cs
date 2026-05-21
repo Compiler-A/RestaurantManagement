@@ -1,5 +1,6 @@
 ﻿using ContractsLayerRestaurant.Interfaces.Services;
-using BusinessLayerRestaurant.Classes;
+using BusinessLayerRestaurant.Services;
+using BusinessLayerRestaurant.Operations;
 using ContractsLayerRestaurant.Interfaces.Repositories;
 using DataLayerRestaurant.Classes.SQL;
 using DataLayerRestaurant.Classes.EF;
@@ -8,12 +9,21 @@ using DataLayerRestaurant.Classes.Repository;
 
 namespace APILayer.Extensions.Services
 {
-    public static class MenuItemsServiceExtension
+    public static partial class ServiceExtension
     {
-        public static IServiceCollection AddMenuItemsServices(this IServiceCollection Services)
+        public static IServiceCollection AddMenuItemsServices(this IServiceCollection Services, string DataAccessStrategy)
         {
-            Services.AddScoped<IMenuItemsRepositoryReader, MenuItemsRepositoryReader>();
-            Services.AddScoped<IMenuItemsRepositoryWriter, MenuItemsRepositoryWriter>();
+            if (DataAccessStrategy == "EF")
+            {
+                Services.AddScoped<IMenuItemsRepositoryReader, MenuItemsRepositoryReaderEF>();
+                Services.AddScoped<IMenuItemsRepositoryWriter, MenuItemsRepositoryWriterEF>();
+            }
+            else
+            {
+                Services.AddScoped<IMenuItemsRepositoryReader, MenuItemsRepositoryReader>();
+                Services.AddScoped<IMenuItemsRepositoryWriter, MenuItemsRepositoryWriter>();
+            }
+            
             Services.AddScoped<IMenuItemsRepository, MenuItemsRepository>();
 
             Services.AddScoped<IMenuItemsServiceContainer, MenuItemsContainer>();

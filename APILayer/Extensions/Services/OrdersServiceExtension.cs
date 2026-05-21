@@ -1,5 +1,6 @@
 ﻿using ContractsLayerRestaurant.Interfaces.Services;
-using BusinessLayerRestaurant.Classes;
+using BusinessLayerRestaurant.Services;
+using BusinessLayerRestaurant.Operations;
 using ContractsLayerRestaurant.Interfaces.Repositories;
 using DataLayerRestaurant.Classes.SQL;
 using DataLayerRestaurant.Classes.Repository;
@@ -7,14 +8,24 @@ using DataLayerRestaurant.Classes.EF;
 
 namespace APILayer.Extensions.Services
 {
-    public static class OrdersServiceExtension
+    public static partial class ServiceExtension
     {
-        public static IServiceCollection AddOrdersServices(this IServiceCollection Services)
+        public static IServiceCollection AddOrdersServices(this IServiceCollection Services, string DataAccessStrategy)
         {
-            Services.AddScoped<IOrderDetailBatchLoader, DataLayerRestaurant.Classes.SQL.OrderDetailBatchLoader>();
+            if (DataAccessStrategy == "EF")
+            {
+                Services.AddScoped<IOrderDetailBatchLoader, DataLayerRestaurant.Classes.EF.OrderDetailBatchLoader>();
+                Services.AddScoped<IOrdersRepositoryWriter, OrdersRepositoryWriterEF>();
+                Services.AddScoped<IOrdersRepositoryReader, OrdersRepositoryReaderEF>();
+            }
+            else
+            {
+                Services.AddScoped<IOrderDetailBatchLoader, DataLayerRestaurant.Classes.SQL.OrderDetailBatchLoader>();
+                Services.AddScoped<IOrdersRepositoryWriter, OrdersRepositoryWriter>();
+                Services.AddScoped<IOrdersRepositoryReader, OrdersRepositoryReader>();
+            }
 
-            Services.AddScoped<IOrdersRepositoryWriter, OrdersRepositoryWriter>();
-            Services.AddScoped<IOrdersRepositoryReader, OrdersRepositoryReader>();
+
             Services.AddScoped<IOrdersRepository, OrdersRepository>();
             Services.AddScoped<IOrdersServiceWriter, OrdersWriter>();
             Services.AddScoped<IOrdersServiceReader, OrdersReader>();

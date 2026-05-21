@@ -1,19 +1,28 @@
 ﻿using ContractsLayerRestaurant.Interfaces.Services;
 using ContractsLayerRestaurant.Interfaces.Repositories;
-using BusinessLayerRestaurant.Classes;
+using BusinessLayerRestaurant.Services;
+using BusinessLayerRestaurant.Operations;
 using DataLayerRestaurant.Classes.SQL;
 using DataLayerRestaurant.Classes.Repository;
 using DataLayerRestaurant.Classes.EF;
 
 namespace APILayer.Extensions.Services
 {
-    public static class TypeItemsServiceExtension
+    public static partial class ServiceExtension
     {
-        public static IServiceCollection AddTypeItemsServices(this IServiceCollection Services)
+        public static IServiceCollection AddTypeItemsServices(this IServiceCollection Services, string DataAccessStrategy)
         {
-
-            Services.AddScoped<ITypeItemsRepositoryReader, TypeItemsRepositoryReader>();
-            Services.AddScoped<ITypeItemsRepositoryWriter, TypeItemsRepositoryWriter>();
+            if (DataAccessStrategy == "EF")
+            {
+                Services.AddScoped<ITypeItemsRepositoryReader, TypeItemsRepositoryReaderEF>();
+                Services.AddScoped<ITypeItemsRepositoryWriter, TypeItemsRepositoryWriterEF>();
+            }
+            else
+            {
+                Services.AddScoped<ITypeItemsRepositoryReader, TypeItemsRepositoryReader>();
+                Services.AddScoped<ITypeItemsRepositoryWriter, TypeItemsRepositoryWriter>();
+            }
+            
             Services.AddScoped<ITypeItemsRepository, TypeItemsRepository>();
             Services.AddScoped<ITypeItemsServiceContainer, TypeItemsContainer>();
             Services.AddScoped<ITypeItemsServiceReader, TypeItemsReader>();
