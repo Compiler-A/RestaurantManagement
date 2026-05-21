@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿#pragma warning disable CA1416 // Validate platform compatibility
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using ContractsLayerRestaurant.Interfaces.Services;
 using System.Diagnostics;

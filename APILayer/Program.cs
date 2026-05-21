@@ -29,7 +29,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGenExtension();
 
 builder.Services.AddDbContextConfiguration(builder.Configuration);
-builder.Services.AddServicesExtensions();
+builder.Services.AddServicesExtensions(builder.Configuration);
 
 builder.Services.AddCorsSecurityExtension(builder.Configuration);
 

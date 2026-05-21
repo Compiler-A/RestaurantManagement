@@ -1,4 +1,5 @@
-﻿using System.Security.Authentication;
+﻿#pragma warning disable CA1416 // Validate platform compatibility
+using System.Security.Authentication;
 using System.Text.Json;
 using ContractsLayerRestaurant.Interfaces.Services;
 using System.Diagnostics;
