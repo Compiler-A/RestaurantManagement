@@ -10,6 +10,6 @@ namespace ContractsLayerRestaurant.DTOResponse
         public string UserName { get; set; } = string.Empty;
         public string statusOrderName { get; set; } = string.Empty;
 
-        public List<DTOOrderDetailResponse> Details { get; set; }
+        public List<DTOOrderDetailResponse> Details { get; set; } = new List<DTOOrderDetailResponse>();
     }
 }
