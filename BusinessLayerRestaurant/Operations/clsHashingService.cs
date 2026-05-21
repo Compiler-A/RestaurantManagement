@@ -1,6 +1,6 @@
 ﻿using ContractsLayerRestaurant.Interfaces.Services;
 
-namespace BusinessLayerRestaurant.Classes
+namespace BusinessLayerRestaurant.Operations
 {
     public class clsSH256 : ISHA256
     {
