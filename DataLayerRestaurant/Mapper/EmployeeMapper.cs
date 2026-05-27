@@ -1,5 +1,6 @@
 ﻿using DomainLayer.Entities;
 using Microsoft.Data.SqlClient;
+using System.Data;
 
 
 namespace DataLayerRestaurant.Mapper
@@ -11,7 +12,6 @@ namespace DataLayerRestaurant.Mapper
             return new Employee
             {
                 EmployeeID = reader.GetInt32(reader.GetOrdinal("EmployeeID")),
-                Name = reader.GetString(reader.GetOrdinal("Name")),
                 JobRoleID = reader.GetInt32(reader.GetOrdinal("JobRoleID")),
                 Username = reader.GetString(reader.GetOrdinal("UserName")),
                 Password = reader.GetString(reader.GetOrdinal("Password"))
@@ -23,7 +23,6 @@ namespace DataLayerRestaurant.Mapper
             return new Employee
             {
                 EmployeeID = reader.GetInt32(reader.GetOrdinal("EmployeeID")),
-                Name = reader.GetString(reader.GetOrdinal("Name")),
                 JobRoleID = reader.GetInt32(reader.GetOrdinal("JobRoleID")),
                 Username = reader.GetString(reader.GetOrdinal("UserName")),
                 Password = reader.GetString(reader.GetOrdinal("Password")),
@@ -31,7 +30,13 @@ namespace DataLayerRestaurant.Mapper
                 {
                     JobRoleID = reader.GetInt32(reader.GetOrdinal("JobRoleID")),
                     JobName = reader.GetString(reader.GetOrdinal("JobName"))
-                }
+                },
+                PersonID = reader.GetInt32(reader.GetOrdinal("PersonID")),
+                FirstName = reader.GetString(reader.GetOrdinal("FirstName")),
+                Gender = reader.GetString(reader.GetOrdinal("Gender"))[0],
+                LastName = reader.GetString(reader.GetOrdinal("LastName")),
+                DateOfBirth = reader.GetDateTime(reader.GetOrdinal("DateOfBirth")),
+                ProfileImage = reader.IsDBNull(reader.GetOrdinal("ProfileImage")) ? null : reader.GetString(reader.GetOrdinal("ProfileImage"))
             };
         }
     }

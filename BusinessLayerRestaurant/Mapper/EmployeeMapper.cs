@@ -13,9 +13,14 @@ namespace BusinessLayerRestaurant.Mapper
             return new DTOEmployeeResponse
             {
                 ID = employee.EmployeeID,
-                Name = employee.Name,
                 UserName = employee.Username,
                 JobName = employee.JobRole?.JobName ?? string.Empty,
+                PersonID = employee.PersonID,
+                FirstName = employee.FirstName,
+                LastName = employee.LastName,
+                Gender = employee.Gender,
+                DateOfBirth = employee.DateOfBirth,
+                ProfileImage = employee.ProfileImage
             };
         }
     }
