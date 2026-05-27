@@ -5,6 +5,7 @@ using DomainLayer.Entities;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Options;
 using System.Data;
+using System.Reflection;
 
 namespace DataLayerRestaurant.Classes.SQL
 {
@@ -150,9 +151,13 @@ namespace DataLayerRestaurant.Classes.SQL
             using (SqlConnection Connection = new SqlConnection(_Setting.ConnectionString))
             {
                 using (SqlCommand Command = new SqlCommand("Employees.SP_AddEmployee", Connection))
-                {
+                { 
                     Command.CommandType = System.Data.CommandType.StoredProcedure;
-                    Command.Parameters.AddWithValue("@Name", employee.Name);
+                    Command.Parameters.AddWithValue("@FirstName", employee.FirstName);
+                    Command.Parameters.AddWithValue("@LastName", employee.LastName);
+                    Command.Parameters.AddWithValue("@Gender", employee.Gender);
+                    Command.Parameters.AddWithValue("@DateOfBirth", employee.DateOfBirth);
+                    Command.Parameters.AddWithValue("@ProfileImage", (object?)employee.ProfileImage ?? DBNull.Value);
                     Command.Parameters.AddWithValue("@JobID", employee.JobID);
                     Command.Parameters.AddWithValue("@UserName", employee.UserName);
                     Command.Parameters.AddWithValue("@Password", employee.Password);
@@ -179,10 +184,15 @@ namespace DataLayerRestaurant.Classes.SQL
                 {
                     Command.CommandType = System.Data.CommandType.StoredProcedure;
                     Command.Parameters.AddWithValue("@ID", employee.ID);
-                    Command.Parameters.AddWithValue("@Name", employee.Name);
+                    Command.Parameters.AddWithValue("@FirstName", employee.FirstName);
+                    Command.Parameters.AddWithValue("@LastName", employee.LastName);
+                    Command.Parameters.AddWithValue("@Gender", employee.Gender);
+                    Command.Parameters.AddWithValue("@DateOfBirth", employee.DateOfBirth);
+                    Command.Parameters.AddWithValue("@ProfileImage", (object?)employee.ProfileImage ?? DBNull.Value);
                     Command.Parameters.AddWithValue("@JobID", employee.JobID);
                     Command.Parameters.AddWithValue("@UserName", employee.UserName);
                     Command.Parameters.AddWithValue("@Password", employee.Password);
+                    Command.Parameters.AddWithValue("@PersonID", employee.PersonID);
                     await Connection.OpenAsync();
                     using (SqlDataReader reader = await Command.ExecuteReaderAsync())
                     {

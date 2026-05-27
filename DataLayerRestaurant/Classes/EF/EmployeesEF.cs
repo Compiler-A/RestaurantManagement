@@ -140,7 +140,6 @@ namespace DataLayerRestaurant.Classes.EF
             var newEmployee = new Employee
             {
                 JobRoleID = employee.JobID,
-                Name = employee.Name,
                 Username = employee.UserName,
                 Password = employee.Password
             };
@@ -163,7 +162,6 @@ namespace DataLayerRestaurant.Classes.EF
                 return null;
             }
 
-            existingEmployee.Name = employee.Name;
             existingEmployee.JobRoleID = employee.JobID;
             existingEmployee.Username = employee.UserName;
             existingEmployee.Password = employee.Password;
