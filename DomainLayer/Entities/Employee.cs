@@ -1,7 +1,7 @@
 ﻿
 namespace DomainLayer.Entities
 {
-    public class Employee
+    public class Employee : Person
     {
         public int EmployeeID { get; set; }
         public string Name { get; set; } = null!;
