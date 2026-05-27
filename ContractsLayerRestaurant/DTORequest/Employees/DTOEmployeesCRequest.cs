@@ -1,13 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using ContractsLayerRestaurant.DTORequest.People;
+using System.ComponentModel.DataAnnotations;
 
 
 namespace ContractsLayerRestaurant.DTORequest.Employees
 {
-    public class DTOEmployeesCRequest
+    public class DTOEmployeesCRequest : DTOPeopleRequest
     {
-        [Required(ErrorMessage = "Name is required")]
-        public string Name { get; set; } = string.Empty;
-
         [Range(1, int.MaxValue, ErrorMessage = "JobID must be greater than 0")]
         public int JobID { get; set; }
 
